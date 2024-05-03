@@ -1,4 +1,8 @@
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names
+
 class ProjectStrings {
+  static const String general_font_family = "SF Pro Display";
+
   static String carousel_next = "Next";
   static String carousel_back = "Back";
   static String carousel_finish = "Finish";
@@ -14,4 +18,10 @@ class ProjectStrings {
   static String carousel_5_body = "Immerse yourself in a modern and visually appealing app design for an enhanced user experience.";
   static String carousel_6_header = "Structured Rental Process";
   static String carousel_6_body = "Experience swift and efficient transactions - book a unit, submit necessary requirements, await approval, and you're all set to hit the road!";
+
+  //  Account openning
+  static String account_opening_header = "Let's start!";
+  static String account_opening_body = "Welcome! What would you like to do?";
+  static String account_sign_in_button_text = "Sign in now";
+  static String account_register_button_text = "New to the app? Register now";
 }

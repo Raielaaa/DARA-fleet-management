@@ -91,7 +91,7 @@ class CarouselPage4 extends StatelessWidget {
                 fontSize: 32,
                 fontFamily: "SF Pro Display"
               ),
-              child: Text(ProjectStrings.carousel_4_header),
+              child: Text(ProjectStrings.carousel_4_header, style: const TextStyle(color: Color.fromARGB(210, 0, 0, 0))),
             ),
             const SizedBox(height: 20),
             DefaultTextStyle(
@@ -103,7 +103,7 @@ class CarouselPage4 extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: Text(ProjectStrings.carousel_4_body),
+                child: Text(ProjectStrings.carousel_4_body, style: const TextStyle(color: Color.fromARGB(200, 0, 0, 0))),
               ),
             ),
             const SizedBox(height: 70),
