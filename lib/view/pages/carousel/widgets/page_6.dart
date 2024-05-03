@@ -15,67 +15,73 @@ class CarouselPage6 extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              "lib/assets/pictures/carousel_image_1.png",
-              width: double.infinity,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Image.asset(
+                "lib/assets/pictures/carousel_image_1.png",
+                width: double.infinity,
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(height: 20),
             DefaultTextStyle(
@@ -101,34 +107,78 @@ class CarouselPage6 extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 70),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(100),
-                    bottomLeft: Radius.circular(100)
-                  ),
-                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 15,
-                    bottom: 15,
-                    right: 35,
-                    left: 35
-                  ),
-                  child: DefaultTextStyle(
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "SF Pro Display"
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Aligns items to the start and end of the row
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "entry_page_5");
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(100),
+                          bottomRight: Radius.circular(100),
+                        ),
+                        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 15,
+                          bottom: 15,
+                          right: 35,
+                          left: 35,
+                        ),
+                        child: DefaultTextStyle(
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "SF Pro Display",
+                          ),
+                          child: Text(ProjectStrings.carousel_back),
+                        ),
+                      ),
                     ),
-                    child: Text(ProjectStrings.carousel_next),
                   ),
                 ),
-              ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "account_opening_page");
+                  },
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(100),
+                          bottomLeft: Radius.circular(100),
+                        ),
+                        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 15,
+                          bottom: 15,
+                          right: 35,
+                          left: 35,
+                        ),
+                        child: DefaultTextStyle(
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "SF Pro Display",
+                          ),
+                          child: Text(ProjectStrings.carousel_finish),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             )
           ],
         )

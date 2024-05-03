@@ -15,67 +15,73 @@ class CarouselPage1 extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              "lib/assets/pictures/carousel_image_1.png",
-              width: double.infinity,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Image.asset(
+                "lib/assets/pictures/carousel_image_1.png",
+                width: double.infinity,
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 45,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 45,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(height: 20),
             DefaultTextStyle(

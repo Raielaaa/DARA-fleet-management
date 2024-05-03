@@ -1,6 +1,7 @@
 class ProjectStrings {
   static String carousel_next = "Next";
   static String carousel_back = "Back";
+  static String carousel_finish = "Finish";
   static String carousel_1_header = "Rent Online";
   static String carousel_1_body = "Enjoy the convenience of booking your car online securely, eliminating the need for face-to-face transactions.";
   static String carousel_2_header = "Customer Support";

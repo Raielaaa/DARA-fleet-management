@@ -1,3 +1,4 @@
+import 'package:dara_app/view/pages/account/account_opening.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_1.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_2.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_3.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       home: const EntryPage(),
       routes: {
         "entry_page_1": (context) => const CarouselPage1(),
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         "entry_page_3": (context) => const CarouselPage3(),
         "entry_page_4": (context) => const CarouselPage4(),
         "entry_page_5": (context) => const CarouselPage5(),
-        "entry_page_6": (context) => const CarouselPage6()
+        "entry_page_6": (context) => const CarouselPage6(),
+        "account_opening_page": (context) => const AccountOpening()
       },
     );
   }
