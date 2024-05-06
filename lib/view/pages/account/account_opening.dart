@@ -13,92 +13,69 @@ class AccountOpening extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(25),
       color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          //  Back button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 100),
             child: Image.asset("lib/assets/pictures/app_logo_name.png"),
           ),
+
+          //  Image
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0),
             child: Image.asset("lib/assets/pictures/account_intro.png"),
           ),
+
+          //  Text header
           Align(
             alignment: Alignment.centerLeft,
             child: CustomComponents.displayText(
               ProjectStrings.account_opening_header,
               fontWeight: FontWeight.bold,
               fontSize: 32,
-              color: const Color.fromARGB(210, 0, 0, 0)
+              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             )
           ),
+
+          //  Text subheader
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Align(
               alignment: Alignment.centerLeft,
               child: CustomComponents.displayText(
                 ProjectStrings.account_opening_body,
-                color: const Color.fromARGB(200, 0, 0, 0)
+                color: Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16))
               )
             ),
           ),
 
+          //  Login button
           const SizedBox(height: 35),
-
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll<Color>(
-                  Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
-                ),
-                shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7)
-                  )
-                )
-              ),
+            child: CustomComponents.displayElevatedButton(
+              ProjectStrings.account_sign_in_button_text,
               onPressed: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: CustomComponents.displayText(
-                  ProjectStrings.account_sign_in_button_text,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold
-                ),
-              )
             ),
           ),
 
+          //   Register button
           const SizedBox(height: 15),
-
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll<Color>(
-                  Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16))
-                ),
-                shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7),
-                  )
-                )
-              ),
-              onPressed: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: CustomComponents.displayText(
-                  ProjectStrings.account_register_button_text,
-                  color: const Color.fromARGB(200, 0, 0, 0),
-                  fontWeight: FontWeight.bold
-                ),
-              )
+            child: CustomComponents.displayElevatedButton(
+              ProjectStrings.account_register_button_text,
+              textColor: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              buttonColor: Color(int.parse(ProjectColors.mainColorBackground)),
+              onPressed: () {
+                Navigator.pushNamed(context, "register_main");
+              },
             ),
-          ),
+          )
         ],
       ),
     );

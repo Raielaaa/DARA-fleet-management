@@ -37,6 +37,7 @@ dependencies:
   flutter_svg: ^2.0.5
   chewie: ^1.8.1
   video_player: ^2.8.6
+  flutter_rounded_date_picker: ^3.0.4
 
 dev_dependencies:
   flutter_test:

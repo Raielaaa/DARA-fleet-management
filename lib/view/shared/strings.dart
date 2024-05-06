@@ -1,9 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
 class ProjectStrings {
+  //  General strings
   static const String general_font_family = "SF Pro Display";
+  static String general_next_button = "Next";
 
-  static String carousel_next = "Next";
+  //  Information carousel
   static String carousel_back = "Back";
   static String carousel_finish = "Finish";
   static String carousel_1_header = "Rent Online";
@@ -22,6 +24,17 @@ class ProjectStrings {
   //  Account openning
   static String account_opening_header = "Let's start!";
   static String account_opening_body = "Welcome! What would you like to do?";
-  static String account_sign_in_button_text = "Sign in now";
-  static String account_register_button_text = "New to the app? Register now";
+  static String account_sign_in_button_text = "Log in";
+  static String account_register_button_text = "New to the app? Register now!";
+
+  //  Register page
+  static String account_register_1_header = "Hello There!";
+  static String account_register_1_subheader = "Sign up new account";
+  static String account_register_1_firstname = "First Name";
+  static String account_register_1_firstname_hint = "Your first name";
+  static String account_register_1_lastname = "Last Name";
+  static String account_register_1_lastname_hint = "Your last name";
+  static String account_register_1_birthday = "Birthday";
+  static String account_register_1_birthday_hint = "MM/DD/YY";
+  static String account_register_1_condition = "By tapping Next, you are agreeing to DARA's Terms and Conditions and are acknowledging our Privacy Notice applies.";
 }

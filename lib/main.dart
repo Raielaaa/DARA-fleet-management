@@ -1,4 +1,5 @@
 import 'package:dara_app/view/pages/account/account_opening.dart';
+import 'package:dara_app/view/pages/account/register/register.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_1.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_2.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_3.dart';
@@ -27,7 +28,9 @@ class MyApp extends StatelessWidget {
         "entry_page_4": (context) => const CarouselPage4(),
         "entry_page_5": (context) => const CarouselPage5(),
         "entry_page_6": (context) => const CarouselPage6(),
-        "account_opening_page": (context) => const AccountOpening()
+        "account_opening_page": (context) => const AccountOpening(),
+
+        "register_main": (context) => const Register()
       },
     );
   }

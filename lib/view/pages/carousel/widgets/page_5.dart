@@ -172,7 +172,7 @@ class CarouselPage5 extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontFamily: "SF Pro Display",
                           ),
-                          child: Text(ProjectStrings.carousel_next),
+                          child: Text(ProjectStrings.general_next_button),
                         ),
                       ),
                     ),
