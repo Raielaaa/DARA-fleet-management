@@ -1,4 +1,5 @@
 import 'package:dara_app/view/shared/colors.dart';
+import 'package:dara_app/view/shared/components.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import "package:flutter/material.dart";
 
@@ -6,7 +7,7 @@ class CarouselPage6 extends StatelessWidget {
   const CarouselPage6({super.key});
 
   @override
-  Widget build(BuildContext context) {
+    Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -27,86 +28,64 @@ class CarouselPage6 extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 45,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
-                    ),
+                  CustomComponents.displayCarouselIndicator(
+                    width: 25,
+                    height: 5,
+                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16))
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    width: 45,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
-                    ),
+                  CustomComponents.displayCarouselIndicator(
+                    width: 25,
+                    height: 5,
+                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16))
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    width: 45,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
-                    ),
+                  CustomComponents.displayCarouselIndicator(
+                    width: 25,
+                    height: 5,
+                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16))
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    width: 45,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
-                    ),
+                  CustomComponents.displayCarouselIndicator(
+                    width: 25,
+                    height: 5,
+                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16))
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    width: 45,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)),
-                    ),
+                  CustomComponents.displayCarouselIndicator(
+                    width: 25,
+                    height: 5,
+                    color: Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16))
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    width: 45,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                    ),
+                  CustomComponents.displayCarouselIndicator(
+                    width: 25,
+                    height: 5
                   ),
                 ],
               ),
             ),
+
+            //  Header
             const SizedBox(height: 20),
-            DefaultTextStyle(
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 32,
-                fontFamily: "SF Pro Display"
-              ),
-              child: Text(ProjectStrings.carousel_6_header, style: const TextStyle(color: Color.fromARGB(210, 0, 0, 0))),
+            CustomComponents.displayText(
+              ProjectStrings.carousel_6_header,
+              fontWeight: FontWeight.bold,
+              fontSize: 26
             ),
-            const SizedBox(height: 20),
-            DefaultTextStyle(
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontFamily: "SF Pro Display"
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: Text(ProjectStrings.carousel_6_body, style: const TextStyle(color: Color.fromARGB(200, 0, 0, 0))),
+
+            //  Body
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: CustomComponents.displayText(
+                ProjectStrings.carousel_6_body,
+                fontSize: 14,
+                textAlign: TextAlign.center
               ),
             ),
-            const SizedBox(height: 70),
+
+            const SizedBox(height: 150),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween, // Aligns items to the start and end of the row
               children: [
@@ -131,15 +110,11 @@ class CarouselPage6 extends StatelessWidget {
                           right: 35,
                           left: 35,
                         ),
-                        child: DefaultTextStyle(
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "SF Pro Display",
-                          ),
-                          child: Text(ProjectStrings.carousel_back),
-                        ),
+                        child: CustomComponents.displayText(
+                          ProjectStrings.general_back_button,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                        )
                       ),
                     ),
                   ),
@@ -165,15 +140,11 @@ class CarouselPage6 extends StatelessWidget {
                           right: 35,
                           left: 35,
                         ),
-                        child: DefaultTextStyle(
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "SF Pro Display",
-                          ),
-                          child: Text(ProjectStrings.carousel_finish),
-                        ),
+                        child: CustomComponents.displayText(
+                          ProjectStrings.general_next_button,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                        )
                       ),
                     ),
                   ),

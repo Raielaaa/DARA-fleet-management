@@ -8,7 +8,7 @@ class CustomComponents {
     {
       Color color = Colors.black,
       String fontFamily = ProjectStrings.general_font_family,
-      double fontSize = 18,
+      double fontSize = 14,
       FontWeight fontWeight = FontWeight.normal,
       TextAlign textAlign = TextAlign.start
     }
@@ -22,6 +22,23 @@ class CustomComponents {
         fontWeight: fontWeight
       ),
       child: Text(text)
+    );
+  }
+
+  static Container displayCarouselIndicator(
+    {
+      double width = 45,
+      double height = 10,
+      Color color = const Color(0xff3FA2BE)
+    }
+  ) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: color
+      ),
     );
   }
 
@@ -52,9 +69,11 @@ class CustomComponents {
       maxLength: maxLength,
       style: const TextStyle(
         color: Colors.black,
-        fontFamily: ProjectStrings.general_font_family
+        fontFamily: ProjectStrings.general_font_family,
+        fontSize: 14
       ),
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7)
         ),
@@ -66,9 +85,9 @@ class CustomComponents {
         ),
         labelText: label,
         labelStyle: TextStyle(
-          fontWeight: labelWeight,
+          fontWeight: FontWeight.normal,
           color: labelColor,
-          fontSize: 14
+          fontSize: 12
         ),
         floatingLabelStyle: const TextStyle(
           color: Color(0xff3FA2BE),
@@ -97,11 +116,12 @@ class CustomComponents {
         )
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(15),
         child: CustomComponents.displayText(
           buttonText,
           color: textColor,
-          fontWeight: FontWeight.bold
+          fontWeight: FontWeight.bold,
+          fontSize: 14
         ),
       ),
     );

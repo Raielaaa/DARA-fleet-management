@@ -36,7 +36,7 @@ class AccountOpening extends StatelessWidget {
             child: CustomComponents.displayText(
               ProjectStrings.account_opening_header,
               fontWeight: FontWeight.bold,
-              fontSize: 32,
+              fontSize: 28,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             )
           ),
@@ -48,7 +48,8 @@ class AccountOpening extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: CustomComponents.displayText(
                 ProjectStrings.account_opening_body,
-                color: Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16))
+                color: Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16)),
+                fontSize: 14
               )
             ),
           ),

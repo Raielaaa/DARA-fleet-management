@@ -4,6 +4,7 @@ class ProjectStrings {
   //  General strings
   static const String general_font_family = "SF Pro Display";
   static String general_next_button = "Next";
+  static String general_back_button = "Back";
 
   //  Information carousel
   static String carousel_back = "Back";
@@ -37,4 +38,14 @@ class ProjectStrings {
   static String account_register_1_birthday = "Birthday";
   static String account_register_1_birthday_hint = "MM/DD/YY";
   static String account_register_1_condition = "By tapping Next, you are agreeing to DARA's Terms and Conditions and are acknowledging our Privacy Notice applies.";
+
+  //  Register page - email and password
+  static String account_register_ep_header = "Almost There!";
+  static String account_register_ep_subheader = "Sign up new account";
+  static String account_register_ep_email = "Email";
+  static String account_register_ep_email_hint = "Your email";
+  static String account_register_ep_password = "Password";
+  static String account_register_ep_password_hint = "Your password";
+  static String account_register_ep_confirm_password = "Confirm Password";
+  static String account_register_ep_confirm_password_hint = "Your password";
 }

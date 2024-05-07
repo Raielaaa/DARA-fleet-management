@@ -90,7 +90,7 @@ class _RegisterState extends State<Register> {
             const SizedBox(height: 10),
             CustomComponents.displayText(
               ProjectStrings.account_register_1_subheader,
-              fontSize: 18,
+              fontSize: 14,
               color: Colors.grey
             ),
 
@@ -98,7 +98,7 @@ class _RegisterState extends State<Register> {
             const SizedBox(height: 40),
             CustomComponents.displayText(
               ProjectStrings.account_register_1_firstname,
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             ),
@@ -111,7 +111,7 @@ class _RegisterState extends State<Register> {
             //  Last name
             CustomComponents.displayText(
               ProjectStrings.account_register_1_lastname,
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             ),
@@ -121,7 +121,7 @@ class _RegisterState extends State<Register> {
             //  Birthday
             CustomComponents.displayText(
               ProjectStrings.account_register_1_birthday,
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             ),
@@ -145,12 +145,14 @@ class _RegisterState extends State<Register> {
             ),
 
             //  Button
-            const SizedBox(height: 50),
+            const SizedBox(height: 80),
             SizedBox(
               width: double.infinity,
               child: CustomComponents.displayElevatedButton(
-                "Next",
-                onPressed: () {},
+                ProjectStrings.general_next_button,
+                onPressed: () {
+                  Navigator.pushNamed(context, "register_email_pass");
+                },
               ),
             ),
           ],
