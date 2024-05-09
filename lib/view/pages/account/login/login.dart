@@ -3,14 +3,14 @@ import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 
-class RegisterEmailPass extends StatefulWidget {
-  const RegisterEmailPass({super.key});
+class LoginMain extends StatefulWidget {
+  const LoginMain({super.key});
 
   @override
-  State<RegisterEmailPass> createState() => _RegisterEmailPassState();
+  State<LoginMain> createState() => _LoginMain();
 }
 
-class _RegisterEmailPassState extends State<RegisterEmailPass> {
+class _LoginMain extends State<LoginMain> {
 
   @override
   Widget build(BuildContext context) {
@@ -78,16 +78,16 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             const SizedBox(height: 10),
             CustomComponents.displayTextField(ProjectStrings.account_register_ep_email_hint),
 
-            //  Confirm password
-            CustomComponents.displayText(
-              ProjectStrings.account_register_ep_confirm_password,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
-            ),
-            const SizedBox(height: 10),
-            CustomComponents.displayTextField(
-              ProjectStrings.account_register_ep_confirm_password_hint,
+            //  Text - Forgot password
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.centerRight,
+              child: CustomComponents.displayText(
+                ProjectStrings.account_login_main_forgot_password,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+              ),
             ),
 
             //  Button
@@ -100,14 +100,72 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
               ),
             ),
 
-            //  TextView - Already have an account
-            const SizedBox(height: 10),
-            CustomComponents.displayText(
-              ProjectStrings.account_register_ep_have_an_account,
-              color: Colors.grey,
-              fontSize: 12,
-              textAlign: TextAlign.center
-            )
+            //  Row - "Or" TextView
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                //  First line
+                Expanded(
+                  child: Container(
+                    height: 1,
+                    color: Colors.grey,
+                  )
+                ),
+
+                //  Text - "Or"
+                const SizedBox(width: 10),
+                CustomComponents.displayText(
+                  ProjectStrings.account_login_main_or,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold
+                ),
+                const SizedBox(width: 10),
+
+                //  Second line
+                Expanded(
+                  child: Container(
+                    height: 1,
+                    color: Colors.grey,
+                  )
+                )
+              ],
+            ),
+
+            //  Google sign-in button
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                ),
+              ),
+              child: Stack(
+                alignment: Alignment.centerLeft,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: CustomComponents.displayText(
+                      ProjectStrings.account_login_main_login_google,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ]
+              ),
+            ),
           ],
         )
       ),

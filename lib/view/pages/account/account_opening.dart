@@ -60,7 +60,9 @@ class AccountOpening extends StatelessWidget {
             width: double.infinity,
             child: CustomComponents.displayElevatedButton(
               ProjectStrings.account_sign_in_button_text,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, "login_main");
+              },
             ),
           ),
 

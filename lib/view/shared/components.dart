@@ -116,7 +116,7 @@ class CustomComponents {
         )
       ),
       child: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(17),
         child: CustomComponents.displayText(
           buttonText,
           color: textColor,

@@ -155,6 +155,15 @@ class _RegisterState extends State<Register> {
                 },
               ),
             ),
+
+            //  TextView - Already have an account
+            const SizedBox(height: 10),
+            CustomComponents.displayText(
+              ProjectStrings.account_register_ep_have_an_account,
+              color: Colors.grey,
+              fontSize: 14,
+              textAlign: TextAlign.center
+            )
           ],
         )
       ),

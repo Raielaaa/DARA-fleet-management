@@ -48,4 +48,18 @@ class ProjectStrings {
   static String account_register_ep_password_hint = "Your password";
   static String account_register_ep_confirm_password = "Confirm Password";
   static String account_register_ep_confirm_password_hint = "Your password";
+  static String account_register_ep_have_an_account = "Have an account? Sign In";
+
+  //  Login page - main
+  static String account_login_main_header = "Welcome Back!";
+  static String account_login_main_subheader = "Sign to your account";
+  static String account_login_main_email = "Email";
+  static String account_login_main_email_hint = "Your email";
+  static String account_login_main_password = "Password";
+  static String account_login_main_password_hint = "Your password";
+  static String account_login_main_forgot_password = "Forgot password?";
+  static String account_login_main_login_button = "Login";
+  static String account_login_main_or = "Or";
+  static String account_login_main_login_google = "Sign in with Google";
+  static String account_login_main_no_account = "Don't have an account? Register now!";
 }

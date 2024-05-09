@@ -19,7 +19,7 @@ class CarouselPage6 extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Image.asset(
-                "lib/assets/pictures/carousel_image_1.png",
+                "lib/assets/pictures/carousel_image_6.png",
                 width: double.infinity,
               ),
             ),

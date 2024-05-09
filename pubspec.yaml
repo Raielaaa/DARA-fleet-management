@@ -65,8 +65,10 @@ flutter:
     - lib/assets/videos/
     - lib/assets/pictures/carousel_image_1.png
     - lib/assets/pictures/carousel_image_2.png
+    - lib/assets/pictures/carousel_image_3.png
     - lib/assets/pictures/carousel_image_4.png
     - lib/assets/pictures/carousel_image_5.png
+    - lib/assets/pictures/carousel_image_6.png
     - lib/assets/pictures/app_logo_name.png
     - lib/assets/pictures/account_intro.png
 
