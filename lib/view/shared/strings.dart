@@ -62,4 +62,45 @@ class ProjectStrings {
   static String account_login_main_or = "Or";
   static String account_login_main_login_google = "Sign in with Google";
   static String account_login_main_no_account = "Don't have an account? Register now!";
+
+  //  Terms and conditions
+  static String terms_and_conditions_header_main = "Terms and Conditions";
+  static String terms_and_conditions_subheader_main = "Your acceptance of these terms. These Terms apply to all users, whether they are members or non-members, who access and use our vehicle renting application. By accessing and using the app, users are bound by these Terms and Conditions.";
+
+  static String terms_and_conditions_header_1 = "1. Access and Use of this App";
+  static String terms_and_conditions_header_1_content_1 = "1.1 Reservation. By reserving a car through our platform, you agree to abide by the terms and conditions outlined herein.";
+  static String terms_and_conditions_header_1_content_2 = "1.2 Booking. All bookings are subject to availability. We reserve the right to refuse or cancel bookings at our discretion.";
+  static String terms_and_conditions_hedear_1_content_3 = "1.3 Return. The vehicle must be returned to the specified location at the agreed-upon time.";
+  static String terms_and_conditions_header_1_content_4 = "1.4 Condition. The vehicle must be returned to the same condition as when it was rented, excluding normal wear and tear. Cleaning fees may apply if the vehicle is returned excessively dirty.";
+  static String terms_and_conditions_header_1_content_5 = "1.5 Google Maps Integration. Our rental vehicles are equipped with Google Maps integration for navigation purposes. By using this feature, you agree to comply with Google's terms of service.";
+
+  static String terms_and_conditions_header_2 = "2. Rental of Cars/Units through the Application";
+  static String terms_and_conditions_header_2_content_1 = "2.1 Users are required to provide valid identification and payment information to rent cars/units through the application.";
+  static String terms_and_conditions_header_2_content_2 = "2.2 Rental agreements are subject to availability and additional terms and conditions specified by the vehicle rental provider.";
+  static String terms_and_conditions_header_2_content_3 = "2.3 Users agree to inspect rental vehicles for any damages or discrepancies before and after use, and to report any issues to the rental provider promptly.";
+  static String terms_and_conditions_header_2_content_4 = "2.4 Users are responsible for complying with all traffic laws, regulations, and insurance requirements while operating rented vehicles.";
+  static String terms_and_conditions_header_2_content_5 = "2.5 The application reserves the right to suspend or terminate user accounts in cases of misuse, violation of rental terms, or fraudulent activity related to vehicle rentals.";
+
+  static String terms_and_conditions_header_3 = "3. Intellectual Property Rights";
+  static String terms_and_conditions_header_3_content_1 = "3.1 Users acknowledge that all content, trademarks, copyrights, and other intellectual property rights associated with the application belong to the app or its affiliates. Users agree not to infringe upon these rights.";
+
+  static String terms_and_conditions_header_4 = "4. Third-Party Links";
+  static String terms_and_conditions_header_4_content_1 = "4.1 Our application may provide links to third-party resources. Users acknowledge that we are not responsible or liable for the content or practices of these third-party resources.";
+
+  static String terms_and_conditions_header_5 = "5. Data Protections";
+  static String terms_and_conditions_header_5_content_1 = "5.1 Users agree to the storage and use of their personal data for internal purposes and acknowledge that the application may access, monitor, and retrieve password-protected information as necessary to fulfill legal obligations.";
+  static String terms_and_conditions_header_5_content_2 = "5.2 Upon using the renting cars vehicle units’ application, users are authorized to access its features in accordance with the provided Terms. The application is intended for personal, non-commercial use only, and users are strictly prohibited from copying, distributing, or modifying any aspect of the app without obtaining prior written authorization. Any modifications required for the app's intended functionality must align with the Terms outlined herein. This ensures that users adhere to the established guidelines while maximizing the app's capabilities for their vehicle rental needs.";
+
+  static String terms_and_conditions_header_6 = "6. Obligations";
+  static String terms_and_conditions_header_6_content_1 = "6.1 Users are required to utilize the renting cars unit application exclusively for lawful activities, adhering to all pertinent laws and regulations governing vehicle rental services.";
+  static String terms_and_conditions_header_6_content_2 = "6.2 Users consent to abstain from uploading, posting, or transmitting any harmful software or objectionable content through the renting cars vehicle units’ application. This encompasses a range of prohibited materials, such as viruses, threatening content, or racially offensive material.";
+  static String terms_and_conditions_header_6_content_3 = "6.3 Users are barred from distributing unlawful, defamatory, or harassing content through the renting cars vehicle units’ application, thereby ensuring that all shared content complies with legal standards and community guidelines.";
+  static String terms_and_conditions_header_6_content_4 = "6.4 Users pledge to avoid utilizing the renting cars vehicle units’ application in ways that could disrupt its functionality or diminish the overall user experience. This commitment ensures the continued efficiency and effectiveness of the app for all users, especially considering its integration with Google Maps for enhanced features.";
+  static String terms_and_conditions_header_6_content_5 = "6.5 Users acknowledge and agree to refrain from gathering any personally identifiable information from the renting cars vehicle units’ application or leveraging its communication systems for commercial solicitation purposes. This commitment underscores the paramount importance of upholding the privacy and security of fellow users within the context of the application's vehicle rental services.";
+  static String terms_and_conditions_header_6_content_6 = "6.6 Users are bound by the obligation to uphold the rights of individuals, firms, and companies while engaging with the renting cars vehicle units’ application. It is imperative that users refrain from any actions that could potentially infringe upon intellectual property rights or other legal protections. This commitment underscores the importance of conducting oneself ethically and responsibly within the framework of the application's services, ensuring a fair and lawful environment for all users and stakeholders involved in the vehicle rental process.";
+  static String terms_and_conditions_header_6_content_7 = "6.7 Should disputes or claims arise from the actions of other users within the renting cars vehicle units’ application, users consent to addressing such matters independently. However, in instances of reported abuse, where users violate the app's terms and conditions, appropriate actions, including the termination of offending user accounts, may be taken by the app. This provision ensures that users can rely on a fair and accountable resolution process while using the application for their vehicle rental needs.";
+  static String terms_and_conditions_header_6_content_8 = "6.8 By using the renting cars vehicle units’ application, users explicitly recognize that all content, trademarks, and intellectual property rights associated with the app are owned by the app itself or its affiliates. Users agree to respect and not infringe upon these rights, ensuring that they do not engage in any unauthorized use or reproduction of the app's content or trademarks. This acknowledgment underscores the importance of respecting the ownership and intellectual property of the app and its affiliates, fostering a fair and lawful environment for all users within the vehicle rental community.";
+
+  static String terms_and_conditions_accept_button = "Accept";
+  static String terms_and_conditions_decline_button = "Decline";
 }

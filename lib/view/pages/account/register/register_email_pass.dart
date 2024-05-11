@@ -111,12 +111,13 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             //  Button
             const SizedBox(height: 50),
             SizedBox(
-              width: double.infinity,
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.general_next_button,
                 onPressed: () {
                   //  Display ModalBottomSheet
                   showModalBottomSheet<void>(
+                    backgroundColor: Colors.transparent,
+                    isScrollControlled: true,
                     context: context,
                     builder: (BuildContext context) {
                       return termsAndCondition(context);
