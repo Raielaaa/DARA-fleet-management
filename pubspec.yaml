@@ -71,6 +71,7 @@ flutter:
     - lib/assets/pictures/carousel_image_6.png
     - lib/assets/pictures/app_logo_name.png
     - lib/assets/pictures/account_intro.png
+    - lib/assets/pictures/google.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

@@ -54,10 +54,14 @@ class CustomComponents {
       int maxLength = 20,
       int maxLines = 1,
       FontWeight labelWeight = FontWeight.bold,
-      Color labelColor = Colors.grey
+      Color labelColor = Colors.grey,
+      bool isIconPresent = false,
+      bool isTextHidden = false,
+      Function()? iconPressed
     }
   ) {
     return TextField(
+      obscureText: isTextHidden,
       autofocus: isFocused,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
@@ -73,6 +77,16 @@ class CustomComponents {
         fontSize: 14
       ),
       decoration: InputDecoration(
+        // suffixIcon: isIconPresent ? const Icon(Icons.remove_red_eye_outlined) : null,
+        suffixIcon: isIconPresent
+          ? IconButton(
+              onPressed: iconPressed,
+              icon: Icon(
+                isTextHidden ? Icons.visibility_off : Icons.visibility,
+                color: const Color(0xff3FA2BE)
+              ),
+            )
+          : null,
         contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7)
@@ -91,8 +105,8 @@ class CustomComponents {
         ),
         floatingLabelStyle: const TextStyle(
           color: Color(0xff3FA2BE),
-          fontWeight: FontWeight.bold
-        )
+          // fontWeight: FontWeight.bold
+        ),
       ),
     );
   }
@@ -116,7 +130,7 @@ class CustomComponents {
         )
       ),
       child: Padding(
-        padding: const EdgeInsets.all(17),
+        padding: const EdgeInsets.all(19),
         child: CustomComponents.displayText(
           buttonText,
           color: textColor,

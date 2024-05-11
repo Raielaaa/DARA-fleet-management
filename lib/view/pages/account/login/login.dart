@@ -11,21 +11,23 @@ class LoginMain extends StatefulWidget {
 }
 
 class _LoginMain extends State<LoginMain> {
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        padding: const EdgeInsets.all(25),
+        padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25, top: 62),
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               //  Back button
               alignment: Alignment.centerLeft,
               child: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "register_name_birthday");
+                  Navigator.pushNamed(context, "account_opening_page");
                 },
                 icon: const Icon(Icons.arrow_back),
                 iconSize: 25.0, // desired size
@@ -40,7 +42,7 @@ class _LoginMain extends State<LoginMain> {
             //  Text header
             const SizedBox(height: 30),
             CustomComponents.displayText(
-              ProjectStrings.account_register_ep_header,
+              ProjectStrings.account_login_main_header,
               fontWeight: FontWeight.bold,
               fontSize: 32,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
@@ -49,7 +51,7 @@ class _LoginMain extends State<LoginMain> {
             //  Text subheader
             const SizedBox(height: 10),
             CustomComponents.displayText(
-              ProjectStrings.account_register_ep_subheader,
+              ProjectStrings.account_login_main_subheader,
               fontSize: 14,
               color: Colors.grey
             ),
@@ -76,7 +78,16 @@ class _LoginMain extends State<LoginMain> {
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
-            CustomComponents.displayTextField(ProjectStrings.account_register_ep_email_hint),
+            CustomComponents.displayTextField(
+              ProjectStrings.account_login_main_password_hint,
+              isTextHidden: !_isPasswordVisible,
+              isIconPresent: true,
+              iconPressed: () {
+                setState(() {
+                  _isPasswordVisible = !_isPasswordVisible;
+                });
+              }
+            ),
 
             //  Text - Forgot password
             const SizedBox(height: 20),
@@ -90,12 +101,12 @@ class _LoginMain extends State<LoginMain> {
               ),
             ),
 
-            //  Button
+            //  Login button
             const SizedBox(height: 50),
             SizedBox(
               width: double.infinity,
               child: CustomComponents.displayElevatedButton(
-                ProjectStrings.general_next_button,
+                ProjectStrings.account_login_main_login_button,
                 onPressed: () {},
               ),
             ),
@@ -136,6 +147,7 @@ class _LoginMain extends State<LoginMain> {
             ElevatedButton(
               onPressed: () {},
               style: ButtonStyle(
+                padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(3)),
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -149,9 +161,18 @@ class _LoginMain extends State<LoginMain> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                      width: 20,
-                      height: 20,
-                      color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(7)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset(
+                          "lib/assets/pictures/google.png",
+                          width: 28,
+                          height: 28,
+                        ),
+                      ),
                     ),
                   ),
                   Align(
@@ -162,10 +183,19 @@ class _LoginMain extends State<LoginMain> {
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),
-                  ),
+                  )
                 ]
               ),
             ),
+
+            //  Text - No account
+            const SizedBox(height: 10),
+            CustomComponents.displayText(
+              ProjectStrings.account_login_main_no_account,
+              color: Colors.grey,
+              fontSize: 14,
+              textAlign: TextAlign.center
+            )
           ],
         )
       ),

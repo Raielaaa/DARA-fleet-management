@@ -1,3 +1,4 @@
+import "package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -11,6 +12,7 @@ class RegisterEmailPass extends StatefulWidget {
 }
 
 class _RegisterEmailPassState extends State<RegisterEmailPass> {
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +75,19 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
               ProjectStrings.account_register_ep_password,
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
+              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
             ),
             const SizedBox(height: 10),
-            CustomComponents.displayTextField(ProjectStrings.account_register_ep_email_hint),
+            CustomComponents.displayTextField(
+              ProjectStrings.account_register_ep_email_hint,
+              isIconPresent: true,
+              isTextHidden: !_isPasswordVisible,
+              iconPressed: () {
+                setState(() {
+                  _isPasswordVisible = !_isPasswordVisible;
+                });
+              }
+            ),
 
             //  Confirm password
             CustomComponents.displayText(
@@ -88,6 +99,13 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
               ProjectStrings.account_register_ep_confirm_password_hint,
+              isIconPresent: true,
+              isTextHidden: !_isPasswordVisible,
+              iconPressed: () {
+                setState(() {
+                  _isPasswordVisible = !_isPasswordVisible;
+                });
+              }
             ),
 
             //  Button
@@ -96,7 +114,15 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
               width: double.infinity,
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.general_next_button,
-                onPressed: () {},
+                onPressed: () {
+                  //  Display ModalBottomSheet
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return termsAndCondition(context);
+                    }
+                  );
+                },
               ),
             ),
 

@@ -20,29 +20,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: true,
-      home: const EntryPage(),
-      routes: {
-        //  Info carousel
-        "entry_page_1": (context) => const CarouselPage1(),
-        "entry_page_2": (context) => const CarouselPage2(),
-        "entry_page_3": (context) => const CarouselPage3(),
-        "entry_page_4": (context) => const CarouselPage4(),
-        "entry_page_5": (context) => const CarouselPage5(),
-        "entry_page_6": (context) => const CarouselPage6(),
-
-        //  Login register opening page
-        "account_opening_page": (context) => const AccountOpening(),
-
-        //  Register
-        "register_main": (context) => const Register(),
-        "register_name_birthday": (context) => const Register(),
-        "register_email_pass": (context) => const RegisterEmailPass(),
-
-        //  Login main
-        "login_main": (context) => const LoginMain()
-      },
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: true,
+        home: const EntryPage(),
+        routes: {
+          //  Info carousel
+          "entry_page_1": (context) => const CarouselPage1(),
+          "entry_page_2": (context) => const CarouselPage2(),
+          "entry_page_3": (context) => const CarouselPage3(),
+          "entry_page_4": (context) => const CarouselPage4(),
+          "entry_page_5": (context) => const CarouselPage5(),
+          "entry_page_6": (context) => const CarouselPage6(),
+      
+          //  Login register opening page
+          "account_opening_page": (context) => const AccountOpening(),
+      
+          //  Register
+          "register_main": (context) => const Register(),
+          "register_name_birthday": (context) => const Register(),
+          "register_email_pass": (context) => const RegisterEmailPass(),
+      
+          //  Login main
+          "login_main": (context) => const LoginMain()
+        },
+      ),
     );
   }
 }
