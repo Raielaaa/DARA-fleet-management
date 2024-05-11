@@ -2,6 +2,7 @@ import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 
 class Register extends StatefulWidget {
@@ -158,11 +159,29 @@ class _RegisterState extends State<Register> {
 
             //  TextView - Already have an account
             const SizedBox(height: 10),
-            CustomComponents.displayText(
-              ProjectStrings.account_register_ep_have_an_account,
-              color: Colors.grey,
-              fontSize: 14,
-              textAlign: TextAlign.center
+            Align(
+              alignment: Alignment.center,
+              child: RichText(
+                text: const TextSpan(
+                  text: ProjectStrings.account_register_ep_have_an_account_1,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff08080a),
+                    fontFamily: ProjectStrings.general_font_family
+                  ),
+                  children: <TextSpan> [
+                    TextSpan(
+                      text: ProjectStrings.account_register_ep_have_an_account_2,
+                      style: TextStyle(
+                        color: Color(0xff3FA2BE),
+                        fontFamily: ProjectStrings.general_font_family,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14
+                      )
+                    )
+                  ]
+                )
+              ),
             )
           ],
         )

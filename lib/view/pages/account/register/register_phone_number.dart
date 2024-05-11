@@ -1,8 +1,9 @@
+// ignore_for_file: unused_element
+
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
-import "package:flutter/widgets.dart";
 
 class RegisterPhoneNumber extends StatefulWidget {
   const RegisterPhoneNumber({super.key});
@@ -12,6 +13,7 @@ class RegisterPhoneNumber extends StatefulWidget {
 }
 
 class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -56,7 +58,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
 
             //  Image display
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
               child: Image.asset("lib/assets/pictures/phone_1.png"),
             ),
 

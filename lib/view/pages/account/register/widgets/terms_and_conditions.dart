@@ -1,3 +1,4 @@
+import "package:dara_app/view/pages/account/register/register_email_pass.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -415,9 +416,7 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
 
                 CustomComponents.displayElevatedButton(
                   ProjectStrings.terms_and_conditions_accept_button,
-                  onPressed: () {
-                    Navigator.pushNamed(context, "register_phone_number");
-                  }
+                  onPressed: () => CustomComponents.showAlertDialog(context)
                 )
               ],
             ),

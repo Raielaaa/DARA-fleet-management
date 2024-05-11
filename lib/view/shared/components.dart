@@ -1,5 +1,8 @@
+// ignore_for_file: unused_element
+
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
 class CustomComponents {
@@ -138,6 +141,38 @@ class CustomComponents {
           fontWeight: FontWeight.bold,
           fontSize: 14
         ),
+      ),
+    );
+  }
+
+  // This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
+  static void showAlertDialog(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text(ProjectStrings.register_dialog_title),
+        content: const Text(ProjectStrings.register_dialog_content),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            /// This parameter indicates this action is the default,
+            /// and turns the action's text to bold text.
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pushNamed(context, "register_phone_number");
+            },
+            child: const Text(ProjectStrings.general_dialog_no),
+          ),
+          CupertinoDialogAction(
+            /// This parameter indicates the action would perform
+            /// a destructive action such as deletion, and turns
+            /// the action's text color to red.
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pushNamed(context, "register_phone_number");
+            },
+            child: const Text(ProjectStrings.general_dialog_yes),
+          ),
+        ],
       ),
     );
   }

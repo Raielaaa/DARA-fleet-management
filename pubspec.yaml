@@ -38,6 +38,7 @@ dependencies:
   chewie: ^1.8.1
   video_player: ^2.8.6
   flutter_rounded_date_picker: ^3.0.4
+  flutter_otp_text_field: ^1.1.3+2
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,7 @@ flutter:
     - lib/assets/pictures/google.png
     - lib/assets/pictures/phone_1.png
     - lib/assets/pictures/phone_2.png
+    - lib/assets/pictures/register_successful.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

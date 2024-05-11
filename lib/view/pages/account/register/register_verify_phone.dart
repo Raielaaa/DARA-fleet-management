@@ -2,6 +2,7 @@ import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
+import "package:flutter_otp_text_field/flutter_otp_text_field.dart";
 
 class RegisterVerifyNumber extends StatefulWidget {
   const RegisterVerifyNumber({super.key});
@@ -55,80 +56,62 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
 
             //  Image display
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
               child: Image.asset("lib/assets/pictures/phone_2.png"),
             ),
 
-            //  Text - phone number textfield
-            const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white38,
-                borderRadius: BorderRadius.circular(7)
+            //  Text - enter OTP
+            const SizedBox(height: 50.0),
+            OtpTextField(
+              textStyle: const TextStyle(
+                fontFamily: ProjectStrings.general_font_family,
+                fontWeight: FontWeight.bold
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Row(
-                  children: [
-                    //  Text - 63
-                    CustomComponents.displayText(
-                      ProjectStrings.register_phone_number_63,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.grey
-                    ),
-
-                    //  Vertical divider
-                    const SizedBox(width: 15),
-                    Container(
-                      height: 15,
-                      width: 1,
-                      color: Colors.grey,
-                    ),
-                    const SizedBox(width: 15),
-
-                    //  Textfield - phone number input
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: TextField(
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: ProjectStrings.general_font_family,
-                            color: Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16))
-                          ),
-                          keyboardType: TextInputType.phone,
-                          decoration: InputDecoration.collapsed(
-                            hintText: ProjectStrings.register_phone_number_label_hint,
-                            hintStyle: const TextStyle(
-                              fontFamily: ProjectStrings.general_font_family,
-                              fontSize: 14,
-                              color: Colors.grey
-                            )
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              focusedBorderColor: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+              cursorColor: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+              mainAxisAlignment: MainAxisAlignment.center,
+              numberOfFields: 6,
+              fillColor: Colors.black.withOpacity(0.04),
+              filled: true,
+              onSubmit: (code) {}
+              // onSubmit: (code) => print("OTP is => $code")
             ),
 
             //  Text - didn't receive code
             const SizedBox(height: 20),
-            CustomComponents.displayText(
-              ProjectStrings.register_verify_resent_otp,
-              textAlign: TextAlign.center,
-              color: Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16))
+            Align(
+              alignment: Alignment.center,
+              child: RichText(
+                text: const TextSpan(
+                  text: ProjectStrings.register_verify_resent_otp_1,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff08080a),
+                    fontFamily: ProjectStrings.general_font_family
+                  ),
+                  children: <TextSpan> [
+                    TextSpan(
+                      text: ProjectStrings.register_verify_resent_otp_2,
+                      style: TextStyle(
+                        color: Color(0xff3FA2BE),
+                        fontFamily: ProjectStrings.general_font_family,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14
+                      )
+                    )
+                  ]
+                )
+              ),
             ),
-            const SizedBox(height: 20),
 
             //  Next Button
-            const SizedBox(height: 50),
+            const SizedBox(height: 70),
             SizedBox(
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.register_verify_button,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, "register_successful");
+                },
               ),
             ),
           ],

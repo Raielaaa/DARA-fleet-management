@@ -5,6 +5,8 @@ class ProjectStrings {
   static const String general_font_family = "SF Pro Display";
   static String general_next_button = "Next";
   static String general_back_button = "Back";
+  static const String general_dialog_no = "No";
+  static const String general_dialog_yes = "Yes";
 
   //  Information carousel
   static String carousel_back = "Back";
@@ -48,7 +50,9 @@ class ProjectStrings {
   static String account_register_ep_password_hint = "Your password";
   static String account_register_ep_confirm_password = "Confirm Password";
   static String account_register_ep_confirm_password_hint = "Your password";
-  static String account_register_ep_have_an_account = "Have an account? Sign In";
+  static const String account_register_ep_have_an_account_1 = "Have an account? ";
+  static const String account_register_ep_have_an_account_2 = "Sign In";
+
 
   //  Login page - main
   static String account_login_main_header = "Welcome Back!";
@@ -115,6 +119,16 @@ class ProjectStrings {
   //  Register page - verify phone number
   static String register_verify_number_header = "Verify your account";
   static String register_verify_subheader = "Sign up new account";
-  static String register_verify_resent_otp = "Didn't receive a code? Resend OTP";
+  static const String register_verify_resent_otp_1 = "Didn't receive a code? ";
+  static const String register_verify_resent_otp_2 = "Resend OTP";
   static String register_verify_button = "Verify";
+
+  //  Register page - successful page
+  static String register_complete_header = "Congratulations!";
+  static String register_complete_subheader = "Your account has been created successfully";
+  static String register_complete_continue_button = "Continue";
+
+  //  Register dialog - confirm number transaction
+  static const String register_dialog_title = "Alert";
+  static const String register_dialog_content = "Proceeding with phone number verification is recommended for users intending to rent a unit. Do you wish to continue with phone registration?";
 }
