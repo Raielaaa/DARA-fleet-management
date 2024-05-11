@@ -2,6 +2,7 @@ import 'package:dara_app/view/pages/account/account_opening.dart';
 import 'package:dara_app/view/pages/account/login/login.dart';
 import 'package:dara_app/view/pages/account/register/register.dart';
 import 'package:dara_app/view/pages/account/register/register_email_pass.dart';
+import 'package:dara_app/view/pages/account/register/register_phone_number.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_1.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_2.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_3.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           "register_main": (context) => const Register(),
           "register_name_birthday": (context) => const Register(),
           "register_email_pass": (context) => const RegisterEmailPass(),
+          "register_phone_number": (context) => const RegisterPhoneNumber(),
       
           //  Login main
           "login_main": (context) => const LoginMain()

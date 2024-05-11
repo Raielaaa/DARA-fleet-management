@@ -57,6 +57,12 @@ class CustomComponents {
       Color labelColor = Colors.grey,
       bool isIconPresent = false,
       bool isTextHidden = false,
+      InputBorder inputBorder = const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(7)),
+        borderSide: BorderSide(
+          color: Color(0xff3FA2BE)
+        )
+      ),
       Function()? iconPressed
     }
   ) {
@@ -91,12 +97,7 @@ class CustomComponents {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7)
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(7)),
-          borderSide: BorderSide(
-            color: Color(0xff3FA2BE)
-          )
-        ),
+        focusedBorder: inputBorder,
         labelText: label,
         labelStyle: TextStyle(
           fontWeight: FontWeight.normal,

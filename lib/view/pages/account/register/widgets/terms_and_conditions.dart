@@ -416,7 +416,7 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
                 CustomComponents.displayElevatedButton(
                   ProjectStrings.terms_and_conditions_accept_button,
                   onPressed: () {
-
+                    Navigator.pushNamed(context, "register_phone_number");
                   }
                 )
               ],
