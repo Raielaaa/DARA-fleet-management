@@ -137,7 +137,9 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
             SizedBox(
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.general_next_button,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, "register_verify_number");
+                },
               ),
             ),
           ],

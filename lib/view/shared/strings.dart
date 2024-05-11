@@ -104,7 +104,6 @@ class ProjectStrings {
   static String terms_and_conditions_accept_button = "Accept";
   static String terms_and_conditions_decline_button = "Decline";
 
-
   //  Register page - phone number
   static String register_phone_number_header = "Nearly done!";
   static String register_phone_number_subheader = "Sign up new account";
@@ -112,4 +111,10 @@ class ProjectStrings {
   static String register_phone_number_send_verification = "We will send you the 6 digit verification code";
   static String register_phone_number_63 = "+63";
   static String register_phone_number_label_hint = "970xxxxxxx";
+
+  //  Register page - verify phone number
+  static String register_verify_number_header = "Verify your account";
+  static String register_verify_subheader = "Sign up new account";
+  static String register_verify_resent_otp = "Didn't receive a code? Resend OTP";
+  static String register_verify_button = "Verify";
 }
