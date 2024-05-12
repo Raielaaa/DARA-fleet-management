@@ -39,7 +39,10 @@ class ProjectStrings {
   static String account_register_1_lastname_hint = "Your last name";
   static String account_register_1_birthday = "Birthday";
   static String account_register_1_birthday_hint = "MM/DD/YY";
-  static String account_register_1_condition = "By tapping Next, you are agreeing to DARA's Terms and Conditions and are acknowledging our Privacy Notice applies.";
+  static const String account_register_1_condition_1 = "By tapping Next, you are agreeing to DARA's ";
+  static const String account_register_1_condition_2 = "Terms and Conditions ";
+  static const String account_register_1_condition_3 = "and are acknowledging our ";
+  static const String account_register_1_condition_4 = "Privacy Notice ";
 
   //  Register page - email and password
   static String account_register_ep_header = "Almost There!";
@@ -65,7 +68,8 @@ class ProjectStrings {
   static String account_login_main_login_button = "Login";
   static String account_login_main_or = "Or";
   static String account_login_main_login_google = "Sign in with Google";
-  static String account_login_main_no_account = "Don't have an account? Register now!";
+  static String account_login_main_no_account_1 = "Don't have an account? ";
+  static String account_login_main_no_account_2 = "Register now!";
 
   //  Terms and conditions
   static String terms_and_conditions_header_main = "Terms and Conditions";

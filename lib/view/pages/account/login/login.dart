@@ -189,12 +189,27 @@ class _LoginMain extends State<LoginMain> {
             ),
 
             //  Text - No account
-            const SizedBox(height: 10),
-            CustomComponents.displayText(
-              ProjectStrings.account_login_main_no_account,
-              color: Colors.grey,
-              fontSize: 14,
-              textAlign: TextAlign.center
+            const SizedBox(height: 15),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: ProjectStrings.account_login_main_no_account_1,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Color(0xff08080a),
+                  fontFamily: ProjectStrings.general_font_family
+                ),
+                children: [
+                  TextSpan(
+                    text: ProjectStrings.account_login_main_no_account_2,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xff3FA2BE),
+                      fontFamily: ProjectStrings.general_font_family
+                    )
+                  )
+                ]
+              )
             )
           ],
         )

@@ -138,15 +138,51 @@ class _RegisterState extends State<Register> {
 
             //  Condition
             const SizedBox(height: 20),
-            CustomComponents.displayText(
-              ProjectStrings.account_register_1_condition,
-              textAlign: TextAlign.justify,
-              color: Colors.grey,
-              fontSize: 14
+            Align(
+              alignment: Alignment.center,
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: const TextSpan(
+                  text: ProjectStrings.account_register_1_condition_1,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff08080a),
+                    fontFamily: ProjectStrings.general_font_family
+                  ),
+                  children: <TextSpan> [
+                    TextSpan(
+                      text: ProjectStrings.account_register_1_condition_2,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xff3FA2BE),
+                        fontFamily: ProjectStrings.general_font_family
+                      )
+                    ),
+
+                    TextSpan(
+                      text: ProjectStrings.account_register_1_condition_3,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xff08080a),
+                        fontFamily: ProjectStrings.general_font_family
+                      )
+                    ),
+
+                    TextSpan(
+                      text: ProjectStrings.account_register_1_condition_4,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xff3FA2BE),
+                        fontFamily: ProjectStrings.general_font_family
+                      )
+                    )
+                  ]
+                ),
+              ),
             ),
 
             //  Button
-            const SizedBox(height: 80),
+            const SizedBox(height: 100),
             SizedBox(
               width: double.infinity,
               child: CustomComponents.displayElevatedButton(
@@ -173,8 +209,8 @@ class _RegisterState extends State<Register> {
                     TextSpan(
                       text: ProjectStrings.account_register_ep_have_an_account_2,
                       style: TextStyle(
-                        color: Color(0xff3FA2BE),
                         fontFamily: ProjectStrings.general_font_family,
+                        color: Color(0xff3FA2BE),
                         fontWeight: FontWeight.bold,
                         fontSize: 14
                       )
