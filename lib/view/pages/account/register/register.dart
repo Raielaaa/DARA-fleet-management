@@ -1,9 +1,11 @@
+import "package:dara_app/controller/account/register_controller.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
+import "package:intl/intl.dart";
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -13,6 +15,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _birthdayController = TextEditingController();
+
   DateTime? _selectedDate; // State for storing selected date
 
   Future<void> _selectDate(BuildContext context) async {
@@ -49,6 +55,7 @@ class _RegisterState extends State<Register> {
     if (picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
+        _birthdayController.text = DateFormat("MMMM dd, yyyy").format(_selectedDate!);
       });
     }
   }
@@ -106,7 +113,8 @@ class _RegisterState extends State<Register> {
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
               ProjectStrings.account_register_1_firstname_hint,
-              isFocused: true
+              isFocused: true,
+              controller: _firstNameController
             ),
 
             //  Last name
@@ -117,7 +125,10 @@ class _RegisterState extends State<Register> {
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
-            CustomComponents.displayTextField(ProjectStrings.account_register_1_lastname_hint),
+            CustomComponents.displayTextField(
+              ProjectStrings.account_register_1_lastname_hint,
+              controller: _lastNameController
+            ),
 
             //  Birthday
             CustomComponents.displayText(
@@ -131,7 +142,8 @@ class _RegisterState extends State<Register> {
               onTap: () => _selectDate(context), // Show date picker on tap
               child: AbsorbPointer(
                 child: CustomComponents.displayTextField(
-                  _selectedDate != null ? _selectedDate.toString() : ProjectStrings.account_register_1_birthday_hint,
+                  ProjectStrings.account_register_1_birthday_hint,
+                  controller: _birthdayController
                 ),
               ),
             ),
@@ -181,14 +193,20 @@ class _RegisterState extends State<Register> {
               ),
             ),
 
-            //  Button
-            const SizedBox(height: 100),
+            //  Button - next
+            const SizedBox(height: 120),
             SizedBox(
               width: double.infinity,
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.general_next_button,
                 onPressed: () {
-                  Navigator.pushNamed(context, "register_email_pass");
+                  //  Validates inputted entries
+                  RegisterController().validateInputs(
+                    context: context,
+                    firstName: _firstNameController.text,
+                    lastName: _lastNameController.text,
+                    birthday: _birthdayController.text
+                  );
                 },
               ),
             ),

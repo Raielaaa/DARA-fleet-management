@@ -1,10 +1,13 @@
 // ignore_for_file: unused_element
 
+import "package:dara_app/controller/account/register_controller.dart";
+import "package:dara_app/controller/providers/register_provider.dart";
 import "package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
 class RegisterEmailPass extends StatefulWidget {
   const RegisterEmailPass({super.key});
@@ -15,6 +18,9 @@ class RegisterEmailPass extends StatefulWidget {
 
 class _RegisterEmailPassState extends State<RegisterEmailPass> {
   bool _isPasswordVisible = false;
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
+  final TextEditingController _controllerConfirmPassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +75,8 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
               ProjectStrings.account_register_ep_email_hint,
-              isFocused: true
+              isFocused: true,
+              controller: _controllerEmail
             ),
 
             //  Password
@@ -83,12 +90,21 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             CustomComponents.displayTextField(
               ProjectStrings.account_register_ep_email_hint,
               isIconPresent: true,
+              isFocused: !context.watch<RegisterProvider>().isPasswordMatch,
               isTextHidden: !_isPasswordVisible,
+              controller: _controllerPassword,
               iconPressed: () {
                 setState(() {
                   _isPasswordVisible = !_isPasswordVisible;
                 });
-              }
+              },
+              inputBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(7)),
+                borderSide: BorderSide(
+                  // color: Color(0xff3FA2BE)
+                  color: context.watch<RegisterProvider>().isPasswordMatch ? const Color(0xff3FA2BE) : Colors.red
+                )
+              ),
             ),
 
             //  Confirm password
@@ -103,27 +119,33 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
               ProjectStrings.account_register_ep_confirm_password_hint,
               isIconPresent: true,
               isTextHidden: !_isPasswordVisible,
+              controller: _controllerConfirmPassword,
               iconPressed: () {
                 setState(() {
                   _isPasswordVisible = !_isPasswordVisible;
                 });
-              }
+              },
+              inputBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(7)),
+                borderSide: BorderSide(
+                  // color: Color(0xff3FA2BE)
+                  color: context.watch<RegisterProvider>().isPasswordMatch ? const Color(0xff3FA2BE) : Colors.red
+                )
+              ),
             ),
 
             //  Button
-            const SizedBox(height: 50),
+            const SizedBox(height: 120),
             SizedBox(
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.general_next_button,
                 onPressed: () {
-                  //  Display ModalBottomSheet
-                  showModalBottomSheet<void>(
-                    backgroundColor: Colors.transparent,
-                    isScrollControlled: true,
+                  //  Checks if all fields have entries
+                  RegisterController().validateCredentialsInputted(
                     context: context,
-                    builder: (BuildContext context) {
-                      return termsAndCondition(context);
-                    }
+                    emailController: _controllerEmail,
+                    passwordController: _controllerPassword,
+                    confirmPasswordController: _controllerConfirmPassword
                   );
                 },
               ),

@@ -5,6 +5,7 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
+import "package:simple_loading_dialog/simple_loading_dialog.dart";
 
 Widget makeDismissible({
   required BuildContext context,
@@ -400,9 +401,12 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
           ),
 
           const SizedBox(height: 50),
+
+          //  Accept and Decline button
           UnconstrainedBox(
             child: Row(
               children: [
+                //  Decline button
                 CustomComponents.displayElevatedButton(
                   ProjectStrings.terms_and_conditions_decline_button,
                   buttonColor: Colors.white70,
@@ -412,11 +416,27 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
                   }
                 ),
 
+                //  Accept button
                 const SizedBox(width: 40),
-
                 CustomComponents.displayElevatedButton(
                   ProjectStrings.terms_and_conditions_accept_button,
-                  onPressed: () => CustomComponents.showAlertDialog(context)
+                  onPressed: () {
+                    CustomComponents.showCupertinoLoadingDialog(
+                      "Please wait, the system is processing your request.",
+                      context
+                    );
+                  },
+                  // onPressed: () => CustomComponents.showAlertDialog(
+                  //   context: context,
+                  //   title: ProjectStrings.register_dialog_title,
+                  //   content: ProjectStrings.register_dialog_content,
+                  //   onPressedPositive: () {
+                  //     Navigator.pushNamed(context, "register_phone_number");
+                  //   },
+                  //   onPressedNegative: () {
+                  //     Navigator.pushNamed(context, "register_phone_number");
+                  //   }
+                  // )
                 )
               ],
             ),

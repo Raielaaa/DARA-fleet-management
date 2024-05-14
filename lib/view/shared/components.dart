@@ -4,8 +4,48 @@ import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:simple_loading_dialog/simple_loading_dialog.dart";
 
 class CustomComponents {
+  static void showCupertinoLoadingDialog(
+    String content,
+    BuildContext context,
+  ) {
+    showSimpleLoadingDialog<String>(
+      context: context,
+      future: () {
+        // Perform your void functions here
+        // await someAsyncFunction();
+        // someSyncFunction();
+        return Future.delayed(const Duration(seconds: 5), () {
+          return "";
+        });
+
+        // Return a string at the end
+      },
+      dialogBuilder: (context, _) => AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 15),
+            CupertinoActivityIndicator(
+              radius: 15.0, // Customize the size
+              animating: true, // Control animation
+              color: Color(
+                int.parse(ProjectColors.mainColorHex.substring(2), radix: 16),
+              ), // Customize color
+            ),
+            const SizedBox(height: 25),
+            displayText(
+              content,
+              textAlign: TextAlign.center
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   static DefaultTextStyle displayText(
     String text,
     {
@@ -48,6 +88,7 @@ class CustomComponents {
   static TextField displayTextField(
     String label,
     {
+      TextEditingController? controller,
       bool isFocused = false,
       TextInputType keyboardType = TextInputType.emailAddress,
       TextInputAction textInputAction = TextInputAction.next,
@@ -70,6 +111,7 @@ class CustomComponents {
     }
   ) {
     return TextField(
+      controller: controller,
       obscureText: isTextHidden,
       autofocus: isFocused,
       keyboardType: keyboardType,
@@ -86,7 +128,6 @@ class CustomComponents {
         fontSize: 14
       ),
       decoration: InputDecoration(
-        // suffixIcon: isIconPresent ? const Icon(Icons.remove_red_eye_outlined) : null,
         suffixIcon: isIconPresent
           ? IconButton(
               onPressed: iconPressed,
@@ -146,32 +187,63 @@ class CustomComponents {
   }
 
   // This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
-  static void showAlertDialog(BuildContext context) {
+  static void showAlertDialog({
+    Function()? onPressedPositive,
+    Function()? onPressedNegative,
+    String positiveButtonText = "",
+    String negativeButtonText = "",
+    int numberOfOptions = 2,
+    required BuildContext context,
+    required String title,
+    required String content,
+  }) {
     showCupertinoModalPopup<void>(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
-        title: const Text(ProjectStrings.register_dialog_title),
-        content: const Text(ProjectStrings.register_dialog_content),
+        title: displayText(
+          title,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          textAlign: TextAlign.center
+        ),
+        content: Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: displayText(
+            content,
+            fontSize: 14,
+            textAlign: TextAlign.center
+          ),
+        ),
         actions: <CupertinoDialogAction>[
-          CupertinoDialogAction(
-            /// This parameter indicates this action is the default,
-            /// and turns the action's text to bold text.
-            isDefaultAction: true,
-            onPressed: () {
-              Navigator.pushNamed(context, "register_phone_number");
-            },
-            child: const Text(ProjectStrings.general_dialog_no),
-          ),
-          CupertinoDialogAction(
-            /// This parameter indicates the action would perform
-            /// a destructive action such as deletion, and turns
-            /// the action's text color to red.
-            isDestructiveAction: true,
-            onPressed: () {
-              Navigator.pushNamed(context, "register_phone_number");
-            },
-            child: const Text(ProjectStrings.general_dialog_yes),
-          ),
+          if (numberOfOptions == 1)
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: const Text(ProjectStrings.general_dialog_ok),
+              onPressed: () {
+                if (onPressedPositive != null) onPressedPositive();
+              },
+            ),
+          if (numberOfOptions == 2)
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              onPressed: () {
+                if (onPressedPositive != null) onPressedPositive();
+              },
+              child: Text(
+                positiveButtonText.isEmpty ? ProjectStrings.general_dialog_yes : positiveButtonText
+              ),
+            ),
+          if (numberOfOptions == 2)
+            CupertinoDialogAction(
+              isDestructiveAction: true,
+              onPressed: () {
+                if (onPressedNegative != null) onPressedNegative();
+              },
+              child: Text(
+                negativeButtonText.isEmpty ? ProjectStrings.general_dialog_no : negativeButtonText
+              ),
+            ),
         ],
       ),
     );

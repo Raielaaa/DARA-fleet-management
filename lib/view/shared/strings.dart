@@ -7,6 +7,7 @@ class ProjectStrings {
   static String general_back_button = "Back";
   static const String general_dialog_no = "No";
   static const String general_dialog_yes = "Yes";
+  static const String general_dialog_ok = "Ok";
 
   //  Information carousel
   static String carousel_back = "Back";
@@ -43,6 +44,9 @@ class ProjectStrings {
   static const String account_register_1_condition_2 = "Terms and Conditions ";
   static const String account_register_1_condition_3 = "and are acknowledging our ";
   static const String account_register_1_condition_4 = "Privacy Notice ";
+  static String account_register_dialog_warning_1_title = "Warning";
+  static String account_register_dialog_warning_1_content = "Please fill out all required fields.";
+  static String account_register_dialog_warning_2_content = "The password and confirm password entries do not match.";
 
   //  Register page - email and password
   static String account_register_ep_header = "Almost There!";
