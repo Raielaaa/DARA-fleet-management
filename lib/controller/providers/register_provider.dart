@@ -1,3 +1,4 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -24,6 +25,10 @@ class RegisterProvider extends ChangeNotifier {
           return termsAndCondition(context);
         }
       );
+
+      //  Stores password to the persistent_data singleton class
+      PersistentData persistentData = PersistentData();
+      persistentData.setPassword = confirmPasswordController.text;
     } else {
       isPasswordMatch = false;
       passwordController.clear();

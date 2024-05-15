@@ -8,6 +8,9 @@ class ProjectStrings {
   static const String general_dialog_no = "No";
   static const String general_dialog_yes = "Yes";
   static const String general_dialog_ok = "Ok";
+  static String general_dialog_db_error_header = "Warning";
+  static String general_dialog_db_error_body = "An error occurred during the database operation. Details: ";
+  static String general_dialog_db_process_request = "Please wait, the system is processing your request.";
 
   //  Information carousel
   static String carousel_back = "Back";

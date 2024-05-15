@@ -1,12 +1,83 @@
+// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers
+
 import 'package:dara_app/controller/providers/register_provider.dart';
+import 'package:dara_app/controller/singleton/persistent_data.dart';
+import 'package:dara_app/model/account/register_model.dart';
+import 'package:dara_app/model/constants/firebase_constants.dart';
+import 'package:dara_app/services/firebase/auth.dart';
+import 'package:dara_app/services/firebase/firestore.dart';
 import 'package:dara_app/view/shared/components.dart';
 import 'package:dara_app/view/shared/strings.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class RegisterController {
+  void insertCredentialsAndUserDetailesToDB({
+    required BuildContext context,
+  }) {
+    CustomComponents.showCupertinoLoadingDialog(
+      ProjectStrings.general_dialog_db_process_request,
+      context,
+      [
+        () async {
+          PersistentData _persistentData = PersistentData();
+          try {
+            //  Craeting user account
+            UserCredential _userCredentials = await Auth().createUserWithEmailAndPassword(
+              email: _persistentData.getEmail!,
+              password: _persistentData.getPassword!,
+            );
+
+            //  Get the user ID (UID) after successful user creation
+            String _userID = _userCredentials.user!.uid;
+
+            //  Add user id, first name, last name, birthday, and email to firestore
+            RegisterModel _userData = RegisterModel(
+              id: _userID,
+              firstName: _persistentData.getFirstName.toString(),
+              lastName: _persistentData.getLastName.toString(),
+              birthday: _persistentData.getBirthday.toString(),
+              email: _persistentData.getEmail.toString(),
+              number: ""
+            );
+
+            try {
+              await Firestore().addUserInfo(
+                collectionName: FirebaseConstants.registerCollection,
+                documentName: _userID,
+                data: _userData.getModelData()
+              );
+            } on FirebaseException catch (exception) {
+              CustomComponents.showAlertDialog(
+                context: context,
+                title: ProjectStrings.general_dialog_db_error_header,
+                content: "${ProjectStrings.general_dialog_db_error_body}${exception.message}",
+                numberOfOptions: 1,
+                onPressedPositive: () {
+                  Navigator.of(context).pop();
+                },
+              );
+            }
+
+          } on FirebaseAuthException catch (exception) {
+            CustomComponents.showAlertDialog(
+              context: context,
+              title: ProjectStrings.general_dialog_db_error_header,
+              content: "${ProjectStrings.general_dialog_db_error_body}${exception.message}",
+              numberOfOptions: 1,
+              onPressedPositive: () {
+                Navigator.of(context).pop();
+              },
+            );
+          }
+        },
+      ],
+    );
+  }
+
   void validateInputs(
     {
       required BuildContext context,
@@ -31,6 +102,12 @@ class RegisterController {
       );
     } else {
       Navigator.pushNamed(context, "register_email_pass");
+
+      //  Store name and birthday on persistent_data singleton class
+      PersistentData persistentData = PersistentData();
+      persistentData.setFirstName = firstName;
+      persistentData.setLastName = lastName;
+      persistentData.setBirthday = birthday;
     }
   }
 
@@ -61,6 +138,10 @@ class RegisterController {
         passwordController: passwordController,
         confirmPasswordController: confirmPasswordController,
       );
+
+      //  Stores the email address in the persistent_data singleton class
+      PersistentData persistentData = PersistentData();
+      persistentData.setEmail = emailController.text;
     }
   }
 }

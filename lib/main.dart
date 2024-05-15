@@ -13,15 +13,24 @@ import 'package:dara_app/view/pages/carousel/widgets/page_4.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_5.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_6.dart';
 import 'package:dara_app/view/pages/entry/entry_page_video.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
@@ -30,34 +39,34 @@ class MyApp extends StatelessWidget {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (context) => RegisterProvider()
-          )
+            create: (context) => RegisterProvider(),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: true,
           home: const EntryPage(),
           routes: {
-            //  Info carousel
+            // Info carousel
             "entry_page_1": (context) => const CarouselPage1(),
             "entry_page_2": (context) => const CarouselPage2(),
             "entry_page_3": (context) => const CarouselPage3(),
             "entry_page_4": (context) => const CarouselPage4(),
             "entry_page_5": (context) => const CarouselPage5(),
             "entry_page_6": (context) => const CarouselPage6(),
-        
-            //  Login register opening page
+
+            // Login register opening page
             "account_opening_page": (context) => const AccountOpening(),
-        
-            //  Register
+
+            // Register
             "register_main": (context) => const Register(),
             "register_name_birthday": (context) => const Register(),
             "register_email_pass": (context) => const RegisterEmailPass(),
             "register_phone_number": (context) => const RegisterPhoneNumber(),
             "register_verify_number": (context) => const RegisterVerifyNumber(),
             "register_successful": (context) => const RegisterSuccessful(),
-        
-            //  Login main
-            "login_main": (context) => const LoginMain()
+
+            // Login main
+            "login_main": (context) => const LoginMain(),
           },
         ),
       ),

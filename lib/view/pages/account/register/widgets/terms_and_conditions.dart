@@ -1,9 +1,14 @@
+import "package:dara_app/controller/account/register_controller.dart";
+import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/services/firebase/auth.dart";
 import "package:dara_app/view/pages/account/register/register_email_pass.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter/widgets.dart";
 import "package:simple_loading_dialog/simple_loading_dialog.dart";
 
@@ -421,22 +426,8 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
                 CustomComponents.displayElevatedButton(
                   ProjectStrings.terms_and_conditions_accept_button,
                   onPressed: () {
-                    CustomComponents.showCupertinoLoadingDialog(
-                      "Please wait, the system is processing your request.",
-                      context
-                    );
+                    RegisterController().insertCredentialsAndUserDetailesToDB(context: context);
                   },
-                  // onPressed: () => CustomComponents.showAlertDialog(
-                  //   context: context,
-                  //   title: ProjectStrings.register_dialog_title,
-                  //   content: ProjectStrings.register_dialog_content,
-                  //   onPressedPositive: () {
-                  //     Navigator.pushNamed(context, "register_phone_number");
-                  //   },
-                  //   onPressedNegative: () {
-                  //     Navigator.pushNamed(context, "register_phone_number");
-                  //   }
-                  // )
                 )
               ],
             ),

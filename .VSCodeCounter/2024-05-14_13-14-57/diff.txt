@@ -1,0 +1,38 @@
+Date : 2024-05-14 13:14:57
+Directory : c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib
+Total : 5 files,  80 codes, 5 comments, 4 blanks, all 89 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Dart     |          5 |         80 |          5 |          4 |         89 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                     | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                        |          5 |         80 |          5 |          4 |         89 |
+| controller                                                                                                               |          1 |         55 |          1 |          1 |         57 |
+| controller\account                                                                                                       |          1 |         55 |          1 |          1 |         57 |
+| view                                                                                                                     |          4 |         25 |          4 |          3 |         32 |
+| view\pages                                                                                                               |          3 |        -21 |          0 |          1 |        -20 |
+| view\pages\account                                                                                                       |          3 |        -21 |          0 |          1 |        -20 |
+| view\pages\account\register                                                                                              |          3 |        -21 |          0 |          1 |        -20 |
+| view\pages\account\register (Files)                                                                                      |          2 |          0 |          0 |          1 |          1 |
+| view\pages\account\register\widgets                                                                                      |          1 |        -21 |          0 |          0 |        -21 |
+| view\shared                                                                                                              |          1 |         46 |          4 |          2 |         52 |
++--------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                                 | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\controller\account\register_controller.dart                   | Dart     |         55 |          1 |          1 |         57 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\account\register\register.dart                     | Dart     |         16 |          1 |          1 |         18 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\account\register\register_email_pass.dart          | Dart     |        -16 |         -1 |          0 |        -17 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\account\register\widgets\terms_and_conditions.dart | Dart     |        -21 |          0 |          0 |        -21 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\shared\components.dart                                   | Dart     |         46 |          4 |          2 |         52 |
+| Total                                                                                                                    |          |         80 |          5 |          4 |         89 |
++--------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

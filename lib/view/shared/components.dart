@@ -1,5 +1,9 @@
 // ignore_for_file: unused_element
 
+import "dart:async";
+
+import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/services/firebase/auth.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/cupertino.dart";
@@ -10,18 +14,21 @@ class CustomComponents {
   static void showCupertinoLoadingDialog(
     String content,
     BuildContext context,
+    List<void Function()> functions,
   ) {
+    Completer<void> completer = Completer<void>();
+
     showSimpleLoadingDialog<String>(
       context: context,
-      future: () {
-        // Perform your void functions here
-        // await someAsyncFunction();
-        // someSyncFunction();
-        return Future.delayed(const Duration(seconds: 5), () {
-          return "";
+      future: () async {
+        //  execute all provided void functions synchronously
+        await Future.forEach(functions, (Function function) async {
+          await function();
         });
 
-        // Return a string at the end
+        completer.complete();
+
+        return "Task completed";
       },
       dialogBuilder: (context, _) => AlertDialog(
         content: Column(
@@ -44,6 +51,11 @@ class CustomComponents {
         ),
       ),
     );
+
+    completer.future.then((_) => {
+      // Navigator.of(context).pop()
+      Navigator.pushNamed(context, "register_phone_number")
+    });
   }
 
   static DefaultTextStyle displayText(

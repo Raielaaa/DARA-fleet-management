@@ -13,6 +13,37 @@ class RegisterPhoneNumber extends StatefulWidget {
 }
 
 class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //  Calls showDialog method right after screen display
+      showDialog();
+    });
+  }
+  //  Shows dialog if the previous registration process is successful
+  void showDialog() {
+    CustomComponents.showAlertDialog(
+      context: context,
+      title: "Registration Successful",
+      content: "Your account has been successfully registered. Thank you for joining us!",
+      numberOfOptions: 1,
+      onPressedPositive: () {
+        Navigator.of(context).pop();
+        CustomComponents.showAlertDialog(
+          context: context,
+          title: ProjectStrings.register_dialog_title,
+          content: ProjectStrings.register_dialog_content,
+          onPressedPositive: () {
+            Navigator.of(context).pop();
+          },
+          onPressedNegative: () {
+            Navigator.of(context).pop();
+          }
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +58,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
               alignment: Alignment.centerLeft,
               child: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "register_email_pass");
+                  // Navigator.pushNamed(context, "register_email_pass");
                 },
                 icon: const Icon(Icons.arrow_back),
                 iconSize: 25.0, // desired size
