@@ -1,7 +1,10 @@
+import "package:dara_app/controller/account/login_controller.dart";
+import "package:dara_app/services/google/google.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
+import "package:google_sign_in/google_sign_in.dart";
 
 class LoginMain extends StatefulWidget {
   const LoginMain({super.key});
@@ -12,6 +15,13 @@ class LoginMain extends StatefulWidget {
 
 class _LoginMain extends State<LoginMain> {
   bool _isPasswordVisible = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  //  Google sign-in
+  final GoogleLogin _googleLogin = GoogleLogin();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  late GoogleSignInAccount _userObj;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +77,8 @@ class _LoginMain extends State<LoginMain> {
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
               ProjectStrings.account_register_ep_email_hint,
-              isFocused: true
+              isFocused: true,
+              controller: _emailController
             ),
 
             //  Password
@@ -82,6 +93,7 @@ class _LoginMain extends State<LoginMain> {
               ProjectStrings.account_login_main_password_hint,
               isTextHidden: !_isPasswordVisible,
               isIconPresent: true,
+              controller: _passwordController,
               iconPressed: () {
                 setState(() {
                   _isPasswordVisible = !_isPasswordVisible;
@@ -107,7 +119,14 @@ class _LoginMain extends State<LoginMain> {
               width: double.infinity,
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.account_login_main_login_button,
-                onPressed: () {},
+                onPressed: () {
+                  LoginController loginController = LoginController();
+                  loginController.validateInputs(
+                    context: context,
+                    email: _emailController.text,
+                    password: _passwordController.text
+                  );
+                },
               ),
             ),
 
@@ -145,7 +164,22 @@ class _LoginMain extends State<LoginMain> {
             //  Google sign-in button
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                // Call signInWithGoogle function when the button is pressed
+                final user = await _googleLogin.signInWithGoogle(context);
+                if (user != null) {
+                  // User is logged in successfully, you can now access user details
+                  final String? name = user.displayName;
+                  final String? email = user.email;
+                  final String? birthday = '';
+                  
+                  debugPrint("name: $name");
+                  debugPrint("email: $email");
+                  debugPrint("uid: ${user.uid}");
+                  debugPrint("phone: ${user.phoneNumber}");
+                  // Do something with the user details
+                }
+              },
               style: ButtonStyle(
                 padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(3)),
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),

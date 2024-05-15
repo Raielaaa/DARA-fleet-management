@@ -12,6 +12,7 @@ import "package:simple_loading_dialog/simple_loading_dialog.dart";
 
 class CustomComponents {
   static void showCupertinoLoadingDialog(
+    int eventCode,
     String content,
     BuildContext context,
     List<void Function()> functions,
@@ -53,8 +54,11 @@ class CustomComponents {
     );
 
     completer.future.then((_) => {
-      // Navigator.of(context).pop()
-      Navigator.pushNamed(context, "register_phone_number")
+      if (eventCode == 1) {
+        Navigator.pushNamed(context, "register_phone_number")
+      } else if (eventCode == 2) {
+        Navigator.pushNamed(context, "home_main")
+      }
     });
   }
 

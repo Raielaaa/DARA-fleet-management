@@ -19,6 +19,7 @@ class RegisterController {
     required BuildContext context,
   }) {
     CustomComponents.showCupertinoLoadingDialog(
+      1,
       ProjectStrings.general_dialog_db_process_request,
       context,
       [

@@ -12,7 +12,20 @@
           "package_name": "com.example.dara_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "766376203192-llggtgnj49t7dmnkpdlt0nd1km0b4hk6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dara_app",
+            "certificate_hash": "371409ea204f0e6bea1f4ac1d6006c7d6d6de346"
+          }
+        },
+        {
+          "client_id": "766376203192-4qaif215oldv824jcvta6k9cpesae3tk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCVWPuGCS7Bmd5oiixpSHbx-ix4sn5VvnE"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766376203192-4qaif215oldv824jcvta6k9cpesae3tk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "766376203192-lnkvrtgvmo2bomo25153ui7p5k9kmrqv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.daraApp"
+              }
+            }
+          ]
         }
       }
     }
