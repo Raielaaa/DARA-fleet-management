@@ -78,6 +78,9 @@ class _HomePageState extends State<HomePage> {
           title: ("Map"),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey,
+          onPressed: (context) {
+            IntentUtils.launchAntripIOT(androidPackageName: "com.slxk.gpsantu");
+          }
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(CupertinoIcons.profile_circled),

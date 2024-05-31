@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,6 +18,20 @@ class IntentUtils {
       await launchUrl(uri);
     } else {
       debugPrint('An error occurred');
+    }
+  }
+
+  static Future<void> launchAntripIOT({
+    required String androidPackageName
+  }) async {
+    if (Platform.isAndroid) {
+      final androidOpenAppUrl = Uri.parse("market://launch?id=$androidPackageName");
+      final appInstalled = await canLaunchUrl(androidOpenAppUrl);
+
+      if (appInstalled) {
+        //  If we can open the url then open the app
+        await launchUrl(androidOpenAppUrl);
+      }
     }
   }
 }

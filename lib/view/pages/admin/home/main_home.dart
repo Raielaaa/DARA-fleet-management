@@ -15,6 +15,90 @@ class AdminHome extends StatefulWidget {
 
 class _AdminHomeState extends State<AdminHome> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showOpeningBanner();
+    });
+  }
+
+  Future<void> _showOpeningBanner() async {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.zero,
+            color: Colors.transparent,
+            width: MediaQuery.of(context).size.width - 10,
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Adjust the height based on content
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(7),
+                  child: Image.asset(
+                    "lib/assets/pictures/home_opening_banner.png",
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                SizedBox(
+                  width: double.infinity, // Makes the button take the full width of the parent container
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                    ),
+                    height: 35,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CustomComponents.displayText(
+                        "Check more offers",
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity, // Makes the button take the full width of the parent container
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.transparent,
+                      border: Border.all(
+                        width: 1,
+                        color: Colors.white,
+                      ),
+                    ),
+                    height: 35,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CustomComponents.displayText(
+                        "Close",
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
@@ -600,7 +684,7 @@ class _AdminHomeState extends State<AdminHome> {
 
                           const SizedBox(height: 10),
                           SizedBox(
-                            height: 120,
+                            height: 125,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 25),
                               child: ListView(
