@@ -1,5 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'package:dara_app/controller/utils/intent_utils.dart';
 import 'package:dara_app/view/pages/admin/car_list/car_list_.dart';
 import 'package:dara_app/view/pages/admin/home/main_home.dart';
 import 'package:dara_app/view/pages/admin/profile/profile.dart';
@@ -98,7 +99,9 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.only(bottom: 55),
         child: FloatingActionButton(
           backgroundColor: Colors.white,
-          onPressed: () {},
+          onPressed: () async {
+            await IntentUtils.launchGoogleMaps();
+          },
           shape: const CircleBorder(),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(100),
