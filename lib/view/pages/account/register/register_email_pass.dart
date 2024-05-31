@@ -53,7 +53,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
               ProjectStrings.account_register_ep_header,
               fontWeight: FontWeight.bold,
               fontSize: 32,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
 
             //  Text subheader
@@ -61,7 +61,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_subheader,
               fontSize: 14,
-              color: Colors.grey
+              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
             ),
 
             //  Email
@@ -69,22 +69,23 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_email,
               fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
+              fontWeight: FontWeight.w600,
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
               ProjectStrings.account_register_ep_email_hint,
               isFocused: true,
-              controller: _controllerEmail
+              controller: _controllerEmail,
+              labelColor: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
             ),
 
             //  Password
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_password,
               fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              fontWeight: FontWeight.w600,
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
@@ -92,6 +93,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
               isIconPresent: true,
               isFocused: !context.watch<RegisterProvider>().isPasswordMatch,
               isTextHidden: !_isPasswordVisible,
+              labelColor: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
               controller: _controllerPassword,
               iconPressed: () {
                 setState(() {
@@ -111,8 +113,8 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_confirm_password,
               fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
+              fontWeight: FontWeight.w600,
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
@@ -120,6 +122,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
               isIconPresent: true,
               isTextHidden: !_isPasswordVisible,
               controller: _controllerConfirmPassword,
+              labelColor: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
               iconPressed: () {
                 setState(() {
                   _isPasswordVisible = !_isPasswordVisible;
@@ -159,7 +162,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
                 text: const TextSpan(
                   text: ProjectStrings.account_register_ep_have_an_account_1,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: Color(0xff08080a),
                     fontFamily: ProjectStrings.general_font_family
                   ),
@@ -169,8 +172,8 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
                       style: TextStyle(
                         color: Color(0xff3FA2BE),
                         fontFamily: ProjectStrings.general_font_family,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12
                       )
                     )
                   ]

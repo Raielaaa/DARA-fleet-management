@@ -112,7 +112,7 @@ class CarouselPage5 extends StatelessWidget {
                         ),
                         child: CustomComponents.displayText(
                           ProjectStrings.general_back_button,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                           color: Colors.white
                         )
                       ),
@@ -142,7 +142,7 @@ class CarouselPage5 extends StatelessWidget {
                         ),
                         child: CustomComponents.displayText(
                           ProjectStrings.general_next_button,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                           color: Colors.white
                         )
                       ),

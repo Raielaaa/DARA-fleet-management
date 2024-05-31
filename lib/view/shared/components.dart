@@ -65,16 +65,18 @@ class CustomComponents {
   static DefaultTextStyle displayText(
     String text,
     {
-      Color color = Colors.black,
+      Color color = const Color(0xff404040),
       String fontFamily = ProjectStrings.general_font_family,
       double fontSize = 14,
       FontWeight fontWeight = FontWeight.normal,
-      TextAlign textAlign = TextAlign.start
+      TextAlign textAlign = TextAlign.start,
+      FontStyle fontStyle = FontStyle.normal
     }
   ) {
     return DefaultTextStyle(
       textAlign: textAlign,
       style: TextStyle(
+        fontStyle: fontStyle,
         color: color,
         fontFamily: fontFamily,
         fontSize: fontSize,
@@ -195,7 +197,7 @@ class CustomComponents {
         child: CustomComponents.displayText(
           buttonText,
           color: textColor,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
           fontSize: 14
         ),
       ),

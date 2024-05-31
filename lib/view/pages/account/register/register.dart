@@ -91,7 +91,7 @@ class _RegisterState extends State<Register> {
               ProjectStrings.account_register_1_header,
               fontWeight: FontWeight.bold,
               fontSize: 32,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
 
             //  Text subheader
@@ -99,7 +99,7 @@ class _RegisterState extends State<Register> {
             CustomComponents.displayText(
               ProjectStrings.account_register_1_subheader,
               fontSize: 14,
-              color: Colors.grey
+              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
             ),
 
             //  First name
@@ -107,12 +107,13 @@ class _RegisterState extends State<Register> {
             CustomComponents.displayText(
               ProjectStrings.account_register_1_firstname,
               fontSize: 14,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
               ProjectStrings.account_register_1_firstname_hint,
+              labelColor: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
               isFocused: true,
               controller: _firstNameController
             ),
@@ -121,21 +122,22 @@ class _RegisterState extends State<Register> {
             CustomComponents.displayText(
               ProjectStrings.account_register_1_lastname,
               fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
+              fontWeight: FontWeight.w600,
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
               ProjectStrings.account_register_1_lastname_hint,
-              controller: _lastNameController
+              controller: _lastNameController,
+              labelColor: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
             ),
 
             //  Birthday
             CustomComponents.displayText(
               ProjectStrings.account_register_1_birthday,
               fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
+              fontWeight: FontWeight.w600,
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
             GestureDetector(
@@ -157,7 +159,7 @@ class _RegisterState extends State<Register> {
                 text: const TextSpan(
                   text: ProjectStrings.account_register_1_condition_1,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: Color(0xff08080a),
                     fontFamily: ProjectStrings.general_font_family
                   ),
@@ -165,7 +167,7 @@ class _RegisterState extends State<Register> {
                     TextSpan(
                       text: ProjectStrings.account_register_1_condition_2,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Color(0xff3FA2BE),
                         fontFamily: ProjectStrings.general_font_family
                       )
@@ -174,7 +176,7 @@ class _RegisterState extends State<Register> {
                     TextSpan(
                       text: ProjectStrings.account_register_1_condition_3,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Color(0xff08080a),
                         fontFamily: ProjectStrings.general_font_family
                       )
@@ -183,7 +185,7 @@ class _RegisterState extends State<Register> {
                     TextSpan(
                       text: ProjectStrings.account_register_1_condition_4,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Color(0xff3FA2BE),
                         fontFamily: ProjectStrings.general_font_family
                       )
@@ -219,7 +221,7 @@ class _RegisterState extends State<Register> {
                 text: const TextSpan(
                   text: ProjectStrings.account_register_ep_have_an_account_1,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: Color(0xff08080a),
                     fontFamily: ProjectStrings.general_font_family
                   ),
@@ -229,8 +231,8 @@ class _RegisterState extends State<Register> {
                       style: TextStyle(
                         fontFamily: ProjectStrings.general_font_family,
                         color: Color(0xff3FA2BE),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12
                       )
                     )
                   ]

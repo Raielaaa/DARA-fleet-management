@@ -13,7 +13,7 @@ import 'package:dara_app/view/pages/carousel/widgets/page_4.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_5.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_6.dart';
 import 'package:dara_app/view/pages/entry/entry_page_video.dart';
-import 'package:dara_app/view/pages/home/home_page.dart';
+import 'package:dara_app/view/pages/admin/home/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
             "login_main": (context) => const LoginMain(),
 
             // Home page
-            "home_main": (context) => const HomePage()
+            "home_main": (context) => const HomePage(),
           },
         ),
       ),

@@ -42,6 +42,9 @@ class LoginController {
               );
 
               debugPrint("login success");
+
+              // if (!context.mounted) return;
+              // Navigator.pushNamed(context, "home_main_admin");
             } on FirebaseAuthException catch (e) {
               debugPrint("Auth login error - ${e.message}");
             }

@@ -56,7 +56,7 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
               ProjectStrings.terms_and_conditions_header_main,
               fontWeight: FontWeight.bold,
               fontSize: 28,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
           ),
     
@@ -75,9 +75,9 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_1,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: 14,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
           ),
     
@@ -147,9 +147,9 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_2,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: 14,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
           ),
     
@@ -219,9 +219,9 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_3,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: 14,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
           ),
     
@@ -243,9 +243,9 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_4,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: 14,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
           ),
     
@@ -267,9 +267,9 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_5,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: 14,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
           ),
     
@@ -303,9 +303,9 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: 14,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
           ),
     

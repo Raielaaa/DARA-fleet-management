@@ -38,7 +38,6 @@ class AccountOpening extends StatelessWidget {
                 ProjectStrings.account_opening_header,
                 fontWeight: FontWeight.bold,
                 fontSize: 28,
-                color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
               )
             ),
       
@@ -49,7 +48,6 @@ class AccountOpening extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: CustomComponents.displayText(
                   ProjectStrings.account_opening_body,
-                  color: Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16)),
                   fontSize: 14
                 )
               ),
@@ -73,7 +71,7 @@ class AccountOpening extends StatelessWidget {
               width: double.infinity,
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.account_register_button_text,
-                textColor: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+                textColor: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
                 buttonColor: Color(int.parse(ProjectColors.mainColorBackground)),
                 onPressed: () {
                   Navigator.pushNamed(context, "register_main");

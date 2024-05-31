@@ -51,7 +51,7 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
             CustomComponents.displayText(
               ProjectStrings.register_verify_subheader,
               fontSize: 14,
-              color: Colors.grey
+              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
             ),
 
             //  Image display
@@ -95,7 +95,7 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
                       style: TextStyle(
                         color: Color(0xff3FA2BE),
                         fontFamily: ProjectStrings.general_font_family,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                         fontSize: 14
                       )
                     )

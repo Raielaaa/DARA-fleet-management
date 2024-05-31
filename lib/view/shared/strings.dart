@@ -2,7 +2,8 @@
 
 class ProjectStrings {
   //  General strings
-  static const String general_font_family = "SF Pro Display";
+  // static const String general_font_family = "SF Pro Display";
+  static const String general_font_family = "Poppins";
   static String general_next_button = "Next";
   static String general_back_button = "Back";
   static const String general_dialog_no = "No";
@@ -142,4 +143,25 @@ class ProjectStrings {
   //  Register dialog - confirm number transaction
   static const String register_dialog_title = "Alert";
   static const String register_dialog_content = "Proceeding with phone number verification is recommended for users intending to rent a unit. Do you wish to continue with phone registration?";
+
+  //  Admin - Home
+  static const String admin_home_top_options_inquire = "Inquire";
+  static const String admin_home_top_options_contact = "Contact";
+  static const String admin_home_top_options_report = "Report";
+  static const String admin_home_top_options_settings = "Settings";
+  static const String admin_home_top_options_manage = "Manage";
+  static const String admin_home_weather_header = "Weather Update";
+  static const String admin_home_weather_date_placeholder = "as of May 16, 2024";
+  static const String admin_home_featured_header = "Featured Car Units";
+  static const String admin_home_featured_see_all = "see all";
+  
+  static const String admin_home_car_info_placeholder_name_1 = "Hyundai Accent 2019";
+  static const String admin_home_car_info_placeholder_name_2 = "Toyota Innova 2023";
+  static const String admin_home_car_info_placeholder_name_3 = "Mitsubishi Mirage G4 2024";
+  static const String admin_home_car_info_placeholder_1 = "Recondition";
+  static const String admin_home_car_info_placeholder_2 = "15760 KM";
+  static const String admin_home_car_info_placeholder_3 = "Automatic";
+  static const String admin_home_car_info_placeholder_price = "2,500.00 PHP";
+
+  static const String admin_home_banner_header = "Latest Rent Promos Offerings";
 }

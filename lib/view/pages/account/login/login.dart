@@ -55,7 +55,7 @@ class _LoginMain extends State<LoginMain> {
               ProjectStrings.account_login_main_header,
               fontWeight: FontWeight.bold,
               fontSize: 32,
-              color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
+              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
 
             //  Text subheader
@@ -63,7 +63,7 @@ class _LoginMain extends State<LoginMain> {
             CustomComponents.displayText(
               ProjectStrings.account_login_main_subheader,
               fontSize: 14,
-              color: Colors.grey
+              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
             ),
 
             //  Email
@@ -71,21 +71,22 @@ class _LoginMain extends State<LoginMain> {
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_email,
               fontSize: 14,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
               ProjectStrings.account_register_ep_email_hint,
               isFocused: true,
-              controller: _emailController
+              controller: _emailController,
+              labelColor: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
             ),
 
             //  Password
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_password,
               fontSize: 14,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16))
             ),
             const SizedBox(height: 10),
@@ -94,6 +95,7 @@ class _LoginMain extends State<LoginMain> {
               isTextHidden: !_isPasswordVisible,
               isIconPresent: true,
               controller: _passwordController,
+              labelColor: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
               iconPressed: () {
                 setState(() {
                   _isPasswordVisible = !_isPasswordVisible;
@@ -107,7 +109,7 @@ class _LoginMain extends State<LoginMain> {
               alignment: Alignment.centerRight,
               child: CustomComponents.displayText(
                 ProjectStrings.account_login_main_forgot_password,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 fontSize: 12,
                 color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
               ),
@@ -146,7 +148,7 @@ class _LoginMain extends State<LoginMain> {
                 const SizedBox(width: 10),
                 CustomComponents.displayText(
                   ProjectStrings.account_login_main_or,
-                  color: Colors.black,
+                  color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
                   fontWeight: FontWeight.bold
                 ),
                 const SizedBox(width: 10),
@@ -172,7 +174,7 @@ class _LoginMain extends State<LoginMain> {
                   final String? name = user.displayName;
                   final String? email = user.email;
                   final String? birthday = '';
-                  
+
                   debugPrint("name: $name");
                   debugPrint("email: $email");
                   debugPrint("uid: ${user.uid}");
@@ -214,7 +216,7 @@ class _LoginMain extends State<LoginMain> {
                     child: CustomComponents.displayText(
                       ProjectStrings.account_login_main_login_google,
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                       fontSize: 14,
                     ),
                   )
@@ -229,17 +231,18 @@ class _LoginMain extends State<LoginMain> {
               text: TextSpan(
                 text: ProjectStrings.account_login_main_no_account_1,
                 style: const TextStyle(
-                  fontSize: 14,
-                  color: Color(0xff08080a),
+                  fontSize: 12,
+                  color: Color(0xff404040),
                   fontFamily: ProjectStrings.general_font_family
                 ),
                 children: [
                   TextSpan(
                     text: ProjectStrings.account_login_main_no_account_2,
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       color: Color(0xff3FA2BE),
-                      fontFamily: ProjectStrings.general_font_family
+                      fontFamily: ProjectStrings.general_font_family,
+                      fontWeight: FontWeight.w600
                     )
                   )
                 ]
