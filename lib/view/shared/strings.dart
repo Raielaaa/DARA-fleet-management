@@ -187,4 +187,18 @@ class ProjectStrings {
   static const String car_list_top_deal_price_desc = "Starting Price per Day";
   static const String car_list_top_deal_rent_button = "Rent Now";
   static const String car_list_top_deal_available = "Available";
+
+  static const String car_list_vehicle_type_header = "Vehicle Type";
+  static const String car_list_vehicle_type_subheader = "Select your preferred vehicle type";
+  static const String car_list_vehicle_type_switch_sedan = "Sedan";
+  static const String car_list_vehicle_type_switch_suv = "Suv";
+  static const String car_list_vehicle_type_rating = "4.6";
+  static const String car_list_vehicle_type_visit = "Visit";
+  static const String car_list_vehicle_type_unavailable = "Unavailable";
+  static const String car_list_vehicle_type_available = "Available";
+  static const String car_list_vehicle_type_unavailable_2 = "Unavailable";
+  static const String car_list_vehicle_type_car_name = "Mirage G4 2024";
+  static const String car_list_vehicle_type_car_type = "Mitsubishi";
+  static const String car_list_vehicle_type_price = "PHP 2,500.00";
+  static const String car_list_vehicle_type_price_desc = "Starting Price per Day";
 }

@@ -50,6 +50,7 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   url_launcher: ^6.2.6
   external_app_launcher: ^4.0.0
+  slide_switcher: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -114,6 +115,9 @@ flutter:
     - lib/assets/pictures/fuel_variant_icon.png
     - lib/assets/pictures/gear_icon.png
     - lib/assets/pictures/color_icon.png
+    - lib/assets/pictures/expand.png
+    - lib/assets/pictures/hyundai_accent_bg.jpg
+    - lib/assets/pictures/toyota_innova_bg.jpg
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png
