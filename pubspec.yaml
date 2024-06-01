@@ -102,6 +102,18 @@ flutter:
     - lib/assets/pictures/home_bottom_banner_3.jpg
     - lib/assets/pictures/google_maps_icon.png
     - lib/assets/pictures/home_opening_banner.png
+    - lib/assets/pictures/bottom_nav_bar_antrip.png
+    - lib/assets/pictures/bottom_nav_bar_home.png
+    - lib/assets/pictures/left_arrow.png
+    - lib/assets/pictures/three_vertical_dots.png
+    - lib/assets/pictures/car_list_featured_placeholder.jpg
+    - lib/assets/pictures/star.png
+    - lib/assets/pictures/mileage_icon.png
+    - lib/assets/pictures/capacity_icon.png
+    - lib/assets/pictures/fuel_icon.png
+    - lib/assets/pictures/fuel_variant_icon.png
+    - lib/assets/pictures/gear_icon.png
+    - lib/assets/pictures/color_icon.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

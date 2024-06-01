@@ -164,4 +164,27 @@ class ProjectStrings {
   static const String admin_home_car_info_placeholder_price = "2,500.00 PHP";
 
   static const String admin_home_banner_header = "Latest Rent Promos Offerings";
+
+  //  Car list
+  static const String car_list_top_deal_header = "Top Deal";
+  static const String car_list_top_deal_subheader = "Discover our most popular renting option";
+  static const String car_list_top_deal_car_name = "Mitsubishi Mirage G4 2024";
+  static const String car_list_top_deal_car_desc = "Made for the streets, but packs the performance power to take you almost everywhere";
+  static const String car_list_top_deal_ratings = "4.6 (125 review)";
+  static const String car_list_top_deal_mileage = "Mileage";
+  static const String car_list_top_deal_mileage_count = "15849 Km";
+  static const String car_list_top_deal_capacity = "Capacity";
+  static const String car_list_top_deal_capacity_count = "5 seats";
+  static const String car_list_top_deal_fuel = "Fuel";
+  static const String car_list_top_deal_fuel_count = "34 Liters";
+  static const String car_list_top_deal_fuel_variant = "Fuel Variant";
+  static const String car_list_top_deal_fuel_variant_count = "Gasoline";
+  static const String car_list_top_deal_gear = "Gear";
+  static const String car_list_top_deal_gear_count = "Automatic";
+  static const String car_list_top_deal_color = "Color";
+  static const String car_list_top_deal_color_count = "White";
+  static const String car_list_top_deal_price = "PHP 2,500.00";
+  static const String car_list_top_deal_price_desc = "Starting Price per Day";
+  static const String car_list_top_deal_rent_button = "Rent Now";
+  static const String car_list_top_deal_available = "Available";
 }

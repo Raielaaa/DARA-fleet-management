@@ -6,4 +6,6 @@ class ProjectColors {
   static String blackBody = "0xff08080a";
   static String lightGray = "0xffaeaeae";
   static String darkGray = "0xff404040";
+  static String greenButtonBackground = "0xffe6ffe6";
+  static String greenButtonMain = "0xff00ff00";
 }

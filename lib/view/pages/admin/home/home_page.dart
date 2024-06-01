@@ -62,20 +62,35 @@ class _HomePageState extends State<HomePage> {
     List<PersistentBottomNavBarItem> _navBarsItems() {
       return [
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.home),
+          icon: const Icon(Icons.home),
           title: ("Home"),
+          textStyle: const TextStyle(
+            fontSize: 10,
+            fontFamily: ProjectStrings.general_font_family,
+          ),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.list_bullet_below_rectangle),
+          icon: const Icon(Icons.explore),
           title: ("Explore"),
+          textStyle: const TextStyle(
+            fontSize: 10,
+            fontFamily: ProjectStrings.general_font_family,
+          ),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.map, color: Colors.white),
-          title: ("Map"),
+          icon: Tab(
+            icon: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Image.asset(
+                "lib/assets/pictures/bottom_nav_bar_antrip.png",
+              ),
+            )
+          ),
+          title: (" "),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey,
           onPressed: (context) {
@@ -83,14 +98,22 @@ class _HomePageState extends State<HomePage> {
           }
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.profile_circled),
+          icon: const Icon(Icons.person),
           title: ("Profile"),
+          textStyle: const TextStyle(
+            fontSize: 10,
+            fontFamily: ProjectStrings.general_font_family,
+          ),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.settings),
+          icon: const Icon(Icons.settings),
           title: ("Settings"),
+          textStyle: const TextStyle(
+            fontSize: 10,
+            fontFamily: ProjectStrings.general_font_family,
+          ),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
