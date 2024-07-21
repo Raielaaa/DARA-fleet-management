@@ -8,7 +8,7 @@ import 'package:dara_app/view/pages/admin/settings/settings.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,6 +29,8 @@ class _HomePageState extends State<HomePage> {
 
   // Shows dialog if the previous registration process is successful
   void showSuccessfulRegisterSnackbar() {
+    // Print statement for debugging purposes
+    print("Attempting to show snackbar");
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
@@ -59,115 +61,114 @@ class _HomePageState extends State<HomePage> {
       ];
     }
 
-    List<PersistentBottomNavBarItem> _navBarsItems() {
+    List<PersistentTabConfig> _navBarsItems() {
       return [
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.home),
-          title: ("Home"),
-          textStyle: const TextStyle(
-            fontSize: 10,
-            fontFamily: ProjectStrings.general_font_family,
+        PersistentTabConfig(
+          screen: const AdminHome(),
+          item: ItemConfig(
+            icon: const Icon(Icons.home),
+            title: "Home",
+            textStyle: const TextStyle(
+              fontSize: 10,
+              fontFamily: ProjectStrings.general_font_family,
+            ),
+            activeForegroundColor: CupertinoColors.activeBlue,
+            inactiveForegroundColor: CupertinoColors.systemGrey,
           ),
-          activeColorPrimary: CupertinoColors.activeBlue,
-          inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.explore),
-          title: ("Explore"),
-          textStyle: const TextStyle(
-            fontSize: 10,
-            fontFamily: ProjectStrings.general_font_family,
+        PersistentTabConfig(
+          screen: const CarList(),
+          item: ItemConfig(
+            icon: const Icon(Icons.explore),
+            title: "Explore",
+            textStyle: const TextStyle(
+              fontSize: 10,
+              fontFamily: ProjectStrings.general_font_family,
+            ),
+            activeForegroundColor: CupertinoColors.activeBlue,
+            inactiveForegroundColor: CupertinoColors.systemGrey,
           ),
-          activeColorPrimary: CupertinoColors.activeBlue,
-          inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
-        PersistentBottomNavBarItem(
-          icon: Tab(
-            icon: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Image.asset(
-                "lib/assets/pictures/bottom_nav_bar_antrip.png",
-              ),
-            )
+        PersistentTabConfig.noScreen(
+          item: ItemConfig(
+            icon: Tab(
+              icon: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Image.asset(
+                  "lib/assets/pictures/bottom_nav_bar_antrip.png",
+                ),
+              )
+            ),
+            title: " ",
+            activeForegroundColor: CupertinoColors.activeBlue,
+            inactiveForegroundColor: CupertinoColors.activeBlue,
           ),
-          title: (" "),
-          activeColorPrimary: CupertinoColors.activeBlue,
-          inactiveColorPrimary: CupertinoColors.systemGrey,
           onPressed: (context) {
             IntentUtils.launchAntripIOT(androidPackageName: "com.slxk.gpsantu");
           }
         ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.person),
-          title: ("Profile"),
-          textStyle: const TextStyle(
-            fontSize: 10,
-            fontFamily: ProjectStrings.general_font_family,
+        PersistentTabConfig(
+          screen: const Profile(),
+          item: ItemConfig(
+            icon: const Icon(Icons.person),
+            title: "Profile",
+            textStyle: const TextStyle(
+              fontSize: 10,
+              fontFamily: ProjectStrings.general_font_family,
+            ),
+            activeForegroundColor: CupertinoColors.activeBlue,
+            inactiveForegroundColor: CupertinoColors.systemGrey,
           ),
-          activeColorPrimary: CupertinoColors.activeBlue,
-          inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.settings),
-          title: ("Settings"),
-          textStyle: const TextStyle(
-            fontSize: 10,
-            fontFamily: ProjectStrings.general_font_family,
+        PersistentTabConfig(
+          screen: const AdminSettings(),
+          item: ItemConfig(
+            icon: const Icon(Icons.settings),
+            title: "Settings",
+            textStyle: const TextStyle(
+              fontSize: 10,
+              fontFamily: ProjectStrings.general_font_family,
+            ),
+            activeForegroundColor: CupertinoColors.activeBlue,
+            inactiveForegroundColor: CupertinoColors.systemGrey,
           ),
-          activeColorPrimary: CupertinoColors.activeBlue,
-          inactiveColorPrimary: CupertinoColors.systemGrey,
         ),
       ];
     }
 
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 55),
-        child: FloatingActionButton(
-          backgroundColor: Colors.white,
-          onPressed: () async {
-            await IntentUtils.launchGoogleMaps();
-          },
-          shape: const CircleBorder(),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                "lib/assets/pictures/google_maps_icon.png",
-                fit: BoxFit.fill,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 55),
+          child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            onPressed: () async {
+              await IntentUtils.launchGoogleMaps();
+            },
+            shape: const CircleBorder(),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  "lib/assets/pictures/google_maps_icon.png",
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _buildScreens(),
-        confineInSafeArea: true,
-        backgroundColor: Colors.white,
-        handleAndroidBackButtonPress: true,
-        stateManagement: true,
-        hideNavigationBarWhenKeyboardShows: true,
-        decoration: NavBarDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          colorBehindNavBar: Colors.white,
+        body: PersistentTabView(
+          backgroundColor: Colors.white,
+          handleAndroidBackButtonPress: true,
+          stateManagement: true,
+          controller: _controller,
+          popAllScreensOnTapOfSelectedTab: true,
+          tabs: _navBarsItems(),
+          navBarBuilder: (navBarConfig) => Style13BottomNavBar(
+            navBarConfig: navBarConfig,
+          ),
         ),
-        popAllScreensOnTapOfSelectedTab: true,
-        popActionScreens: PopActionScreensType.all,
-        itemAnimationProperties: const ItemAnimationProperties(
-          duration: Duration(milliseconds: 200),
-          curve: Curves.ease,
-        ),
-        screenTransitionAnimation: const ScreenTransitionAnimation(
-          animateTabTransition: true,
-          curve: Curves.ease,
-          duration: Duration(milliseconds: 200),
-        ),
-        navBarStyle: NavBarStyle.style15,
-        items: _navBarsItems(),
-      ),
-    );
+      )
+    ;
   }
 }

@@ -745,6 +745,7 @@ class _AdminHomeState extends State<AdminHome> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 40)
                   ],
                 ),
               ),
