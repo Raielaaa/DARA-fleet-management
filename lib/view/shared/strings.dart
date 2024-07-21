@@ -201,4 +201,19 @@ class ProjectStrings {
   static const String car_list_vehicle_type_car_type = "Mitsubishi";
   static const String car_list_vehicle_type_price = "PHP 2,500.00";
   static const String car_list_vehicle_type_price_desc = "Starting Price per Day";
+
+  //  Rentals page
+  static const String rentals_header_verified_button = "Verified";
+  static const String rentals_header_unverified_button = "Unverified";
+  static const String rentals_options_ongoing = "Ongoing";
+  static const String rentals_options_history = "History";
+  static const String rentals_status_complete = "Completed";
+  static const String rentals_status_cancelled = "Cancelled";
+  static const String rentals_car_name_placeholder = "Booking Mitsubishi Mirage G4";
+  static const String rentals_car_location = "Location";
+  static const String rentals_car_location_placeholder = "Adelina Pila Laguna";
+  static const String rentals_car_date = "Date";
+  static const String rentals_car_date_placeholder = "Jan 07, 2024 - Jan 18, 2024";
+  static const String rentals_see_booking_info = "see complete booking info";
+  static const String rentals_total_amount_placeholder = "PHP 78000.00 / total";
 }

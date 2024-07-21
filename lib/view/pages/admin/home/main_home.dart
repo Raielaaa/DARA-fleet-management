@@ -1,10 +1,7 @@
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
-import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import "package:flutter/rendering.dart";
-import "package:flutter/widgets.dart";
 
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});

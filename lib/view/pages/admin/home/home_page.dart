@@ -4,7 +4,7 @@ import 'package:dara_app/controller/utils/intent_utils.dart';
 import 'package:dara_app/view/pages/admin/car_list/car_list_.dart';
 import 'package:dara_app/view/pages/admin/home/main_home.dart';
 import 'package:dara_app/view/pages/admin/profile/profile.dart';
-import 'package:dara_app/view/pages/admin/settings/settings.dart';
+import 'package:dara_app/view/pages/admin/rentals/rentals.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
         const CarList(),
         const Profile(),
         const Profile(),
-        const AdminSettings()
+        const Rentals()
       ];
     }
 
@@ -108,10 +108,10 @@ class _HomePageState extends State<HomePage> {
           }
         ),
         PersistentTabConfig(
-          screen: const Profile(),
+          screen: const Rentals(),
           item: ItemConfig(
             icon: const Icon(Icons.person),
-            title: "Profile",
+            title: "Rentals",
             textStyle: const TextStyle(
               fontSize: 10,
               fontFamily: ProjectStrings.general_font_family,
@@ -121,10 +121,10 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         PersistentTabConfig(
-          screen: const AdminSettings(),
+          screen: const Profile(),
           item: ItemConfig(
             icon: const Icon(Icons.settings),
-            title: "Settings",
+            title: "Profile",
             textStyle: const TextStyle(
               fontSize: 10,
               fontFamily: ProjectStrings.general_font_family,
