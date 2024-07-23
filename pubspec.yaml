@@ -121,6 +121,9 @@ flutter:
     - lib/assets/pictures/car_list_placeholder_list.jpg
     - lib/assets/pictures/rentals_verified.png
     - lib/assets/pictures/rental_car_placeholder.png
+    - lib/assets/pictures/right_arrow.png
+    - lib/assets/pictures/rentals_pending.png
+    - lib/assets/pictures/rentals_denied.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

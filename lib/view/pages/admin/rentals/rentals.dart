@@ -180,83 +180,536 @@ class _Rentals extends State<Rentals> {
                 ],
               ),
 
-              //  First item
               const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Container(
-                          color: Colors.red,
-                        ),
-                      ),
-                      Container(
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.only(top: 0, bottom: 100),
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    //  First item
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 25, right: 25),
+                      child: Container(
                         width: double.infinity,
-                        height: 1,
-                        color: Color(int.parse(
-                            ProjectColors.lineGray.substring(2),
-                            radix: 16)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: Colors.white,
+                        ),
+                        child: Column(
                           children: [
-                            CustomComponents.displayText(
-                                ProjectStrings.rentals_total_amount_placeholder,
-                                color: Color(int.parse(
-                                    ProjectColors.mainColorHex.substring(2),
-                                    radix: 16)),
-                                fontWeight: FontWeight.bold),
-                            Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color(int.parse(
-                                      ProjectColors.lightGreen.substring(2),
-                                      radix: 16)),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 20),
-                                      child: Image.asset(
-                                        "lib/assets/pictures/rentals_verified.png",
-                                        width: 20,
-                                        height: 20,
-                                      ),
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Image.asset(
+                                      "lib/assets/pictures/rental_car_placeholder.png",
+                                      width: 120,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10,
-                                          bottom: 10,
-                                          right: 25,
-                                          left: 5),
-                                      child: CustomComponents.displayText(
-                                        ProjectStrings
-                                            .rentals_header_verified_button,
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // Ensures children are aligned to the start horizontally
+                                    children: [
+                                      CustomComponents.displayText(
+                                          ProjectStrings
+                                              .rentals_car_name_placeholder,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_car_location,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10),
+                                          CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_car_location_placeholder,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10)
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          CustomComponents.displayText(
+                                              ProjectStrings.rentals_car_date,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10),
+                                          CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_car_date_placeholder,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10)
+                                        ],
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Container(
+                                          alignment: Alignment.centerRight,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(width: 40),
+                                              CustomComponents.displayText(
+                                                ProjectStrings
+                                                    .rentals_see_booking_info,
+                                                color: Color(int.parse(
+                                                    ProjectColors.mainColorHex
+                                                        .substring(2),
+                                                    radix: 16)),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 10,
+                                              ),
+                                              const SizedBox(width: 5),
+                                              Image.asset(
+                                                "lib/assets/pictures/right_arrow.png",
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ))
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 1,
+                              color: Color(int.parse(
+                                  ProjectColors.lineGray.substring(2),
+                                  radix: 16)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 7, bottom: 7),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomComponents.displayText(
+                                      ProjectStrings
+                                          .rentals_total_amount_placeholder,
+                                      color: Color(int.parse(
+                                          ProjectColors.mainColorHex
+                                              .substring(2),
+                                          radix: 16)),
+                                      fontWeight: FontWeight.bold),
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
                                         color: Color(int.parse(
-                                            ProjectColors.greenButtonMain
+                                            ProjectColors.lightGreen
                                                 .substring(2),
                                             radix: 16)),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
                                       ),
-                                    ),
-                                  ],
-                                ))
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Image.asset(
+                                              "lib/assets/pictures/rentals_verified.png",
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10,
+                                                bottom: 10,
+                                                right: 25,
+                                                left: 5),
+                                            child: CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_status_approved,
+                                              color: Color(int.parse(
+                                                  ProjectColors.greenButtonMain
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ],
+                                      ))
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+
+                    //  Second item
+                    const SizedBox(height: 5),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 25, right: 25, top: 10),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Image.asset(
+                                      "lib/assets/pictures/rental_car_placeholder.png",
+                                      width: 120,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // Ensures children are aligned to the start horizontally
+                                    children: [
+                                      CustomComponents.displayText(
+                                          ProjectStrings
+                                              .rentals_car_name_placeholder,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_car_location,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10),
+                                          CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_car_location_placeholder,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10)
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          CustomComponents.displayText(
+                                              ProjectStrings.rentals_car_date,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10),
+                                          CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_car_date_placeholder,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10)
+                                        ],
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Container(
+                                          alignment: Alignment.centerRight,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(width: 40),
+                                              CustomComponents.displayText(
+                                                ProjectStrings
+                                                    .rentals_see_booking_info,
+                                                color: Color(int.parse(
+                                                    ProjectColors.mainColorHex
+                                                        .substring(2),
+                                                    radix: 16)),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 10,
+                                              ),
+                                              const SizedBox(width: 5),
+                                              Image.asset(
+                                                "lib/assets/pictures/right_arrow.png",
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ))
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 1,
+                              color: Color(int.parse(
+                                  ProjectColors.lineGray.substring(2),
+                                  radix: 16)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 7, bottom: 7),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomComponents.displayText(
+                                      ProjectStrings
+                                          .rentals_total_amount_placeholder,
+                                      color: Color(int.parse(
+                                          ProjectColors.mainColorHex
+                                              .substring(2),
+                                          radix: 16)),
+                                      fontWeight: FontWeight.bold),
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Color(int.parse(
+                                            ProjectColors.carouselNotSelected
+                                                .substring(2),
+                                            radix: 16)),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Image.asset(
+                                              "lib/assets/pictures/rentals_pending.png",
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10,
+                                                bottom: 10,
+                                                right: 25,
+                                                left: 5),
+                                            child: CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_status_pending,
+                                              color: Color(int.parse(
+                                                  ProjectColors.darkGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ],
+                                      ))
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    //  Third item
+                    const SizedBox(height: 5),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 25, right: 25, top: 10),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Image.asset(
+                                      "lib/assets/pictures/rental_car_placeholder.png",
+                                      width: 120,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // Ensures children are aligned to the start horizontally
+                                    children: [
+                                      CustomComponents.displayText(
+                                          ProjectStrings
+                                              .rentals_car_name_placeholder,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_car_location,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10),
+                                          CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_car_location_placeholder,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10)
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          CustomComponents.displayText(
+                                              ProjectStrings.rentals_car_date,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10),
+                                          CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_car_date_placeholder,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontSize: 10)
+                                        ],
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Container(
+                                          alignment: Alignment.centerRight,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(width: 40),
+                                              CustomComponents.displayText(
+                                                ProjectStrings
+                                                    .rentals_see_booking_info,
+                                                color: Color(int.parse(
+                                                    ProjectColors.mainColorHex
+                                                        .substring(2),
+                                                    radix: 16)),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 10,
+                                              ),
+                                              const SizedBox(width: 5),
+                                              Image.asset(
+                                                "lib/assets/pictures/right_arrow.png",
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ))
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 1,
+                              color: Color(int.parse(
+                                  ProjectColors.lineGray.substring(2),
+                                  radix: 16)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 7, bottom: 7),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomComponents.displayText(
+                                      ProjectStrings
+                                          .rentals_total_amount_placeholder,
+                                      color: Color(int.parse(
+                                          ProjectColors.mainColorHex
+                                              .substring(2),
+                                          radix: 16)),
+                                      fontWeight: FontWeight.bold),
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Color(int.parse(
+                                            ProjectColors.redButtonBackground
+                                                .substring(2),
+                                            radix: 16)),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Image.asset(
+                                              "lib/assets/pictures/rentals_denied.png",
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10,
+                                                bottom: 10,
+                                                right: 25,
+                                                left: 5),
+                                            child: CustomComponents.displayText(
+                                              ProjectStrings
+                                                  .rentals_status_denied,
+                                              color: Color(int.parse(
+                                                  ProjectColors.redButtonMain
+                                                      .substring(2),
+                                                  radix: 16)),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ],
+                                      ))
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               )
             ],
