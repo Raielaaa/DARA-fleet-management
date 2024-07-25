@@ -219,4 +219,46 @@ class ProjectStrings {
   static const String rentals_car_date_placeholder = "Jan 07, 2024 - Jan 18, 2024";
   static const String rentals_see_booking_info = "see complete booking info";
   static const String rentals_total_amount_placeholder = "PHP 78000.00 / total";
+
+  //  Details dialog
+  static const String dialog_title_1 = "Rentals Details";
+  static const String dialog_car_info_title = "Car Information";
+  static const String dialog_car_info = "Provides Key Car Specifications";
+  static const String dialog_car_model_title = "Car Model:";
+  static const String dialog_car_model = "Mitsubishi Mirage G4 2024";
+  static const String dialog_transmission_title = "Transmission:";
+  static const String dialog_transmission = "Automatic";
+  static const String dialog_capacity_title = "Seat Capacity:";
+  static const String dialog_capacity = "5 Seats";
+  static const String dialog_fuel_title = "Fuel Variant:";
+  static const String dialog_fuel = "Gasoline";
+  static const String dialog_fuel_capacity_title = "Fuel Capacity:";
+  static const String dialog_fuel_capacity = "34 Liters";
+  static const String dialog_unit_color_title = "Unit Color:";
+  static const String dialog__unit_color = "White";
+  static const String dialog_engine_title = "Engine";
+  static const String dialog_engine = "1.2 Liter Three Cylinder";
+
+  static const String dialog_title_2 = "Rent Information";
+  static const String dialog_title_2_subheader = "Provides Complete Renting Details";
+  static const String dialog_rent_start_title = "Rent Start Date:";
+  static const String dialog_rent_start = "Jan 07, 2024 - 03:35 PM";
+  static const String dialog_rent_end_title = "Rent End Date:";
+  static const String dialog__rent_end = "Jan 18, 2024 - 03:35 PM";
+  static const String dialog_delivery_mode_title = "Delivery Mode:";
+  static const String dialog_delivery_mode = "Pickup";
+  static const String dialog_delivery_location_title = "Location";
+  static const String dialog_delivery_location = "-NA";
+  static const String dialog_location_title = "Location:";
+  static const String dialog_location = "Adelina Pila Laguna";
+  static const String dialog_reserved_title = "Reserved:";
+  static const String dialog_reserved = "Yes";
+  static const String dialog_admin_notes_title = "Admin Notes:";
+  static const String dialog_admin_notes = "NONE";
+
+  static const String dialog_report_button = "Report";
+  static const String dialog_approved_button = "Approved";
+
+  static const String dialog_transaction_number_title = "Transaction number: ";
+  static const String dialog_transaction = "9484528476";
 }
