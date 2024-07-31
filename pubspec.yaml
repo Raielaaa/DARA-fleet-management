@@ -125,6 +125,11 @@ flutter:
     - lib/assets/pictures/rentals_pending.png
     - lib/assets/pictures/rentals_denied.png
     - lib/assets/pictures/header_background_curves.png
+    - lib/assets/pictures/user_info_user.png
+    - lib/assets/pictures/user_info_report.png
+    - lib/assets/pictures/user_info_documents.png
+    - lib/assets/pictures/user_info_email.png
+    - lib/assets/pictures/user_info_policy.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

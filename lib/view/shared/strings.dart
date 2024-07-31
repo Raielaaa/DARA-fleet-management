@@ -221,7 +221,7 @@ class ProjectStrings {
   static const String rentals_total_amount_placeholder = "PHP 78000.00 / total";
 
   //  Details dialog
-  static const String dialog_title_1 = "Rentals Details";
+  static const String dialog_title_1 = "Rental Details";
   static const String dialog_car_info_title = "Car Information";
   static const String dialog_car_info = "Provides Key Car Specifications";
   static const String dialog_car_model_title = "Car Model:";
@@ -261,4 +261,26 @@ class ProjectStrings {
 
   static const String dialog_transaction_number_title = "Transaction number: ";
   static const String dialog_transaction = "9484528476";
+
+
+  //  User Information
+  static const String user_info_name = "John Mark";
+  static const String user_info_full_name_title = "Full Name:";
+  static const String user_info_full_name = "John Mark Reyes";
+  static const String user_info_registered_number_title = "Registered Number:";
+  static const String user_info_registered_number = "09477468344";
+  static const String user_info_email_address_title = "Email Address:";
+  static const String user_info_email_address = "johnmark07@gmail.com";
+  static const String user_info_rental_count_title = "Rental Count:";
+  static const String user_info_rental_count = "5";
+  static const String user_info_favorite_title = "Favorite:";
+  static const String user_info_favorite = "Mitsubishi Mirage G4 2024";
+  static const String user_info_longest_rental_period_title = "Longest Rental Period:";
+  static const String user_info_longest_rental_period = "14 Days";
+  static const String user_info_total_amount_spent_title = "Total Amount Spent:";
+  static const String user_info_total_amount_spent = "PHP 14728.00";
+  static const String user_info_report = "Report";
+  static const String user_info_contact = "Contact";
+  static const String user_info_policy = "Policy";
+  static const String user_info_documents = "Documents";
 }

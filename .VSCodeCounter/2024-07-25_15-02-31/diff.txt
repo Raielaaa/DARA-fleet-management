@@ -1,0 +1,40 @@
+Date : 2024-07-25 15:02:31
+Directory : c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib
+Total : 8 files,  1356 codes, 24 comments, 34 blanks, all 1414 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Dart     |          8 |      1,356 |         24 |         34 |      1,414 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                   |          8 |      1,356 |         24 |         34 |      1,414 |
+| view                                                                                                |          8 |      1,356 |         24 |         34 |      1,414 |
+| view\pages                                                                                          |          6 |      1,301 |         22 |         29 |      1,352 |
+| view\pages\admin                                                                                    |          6 |      1,301 |         22 |         29 |      1,352 |
+| view\pages\admin\car_list                                                                           |          1 |          0 |          1 |          0 |          1 |
+| view\pages\admin\home                                                                               |          2 |         -2 |          1 |          0 |         -1 |
+| view\pages\admin\rentals                                                                            |          2 |      1,322 |         20 |         32 |      1,374 |
+| view\pages\admin\settings                                                                           |          1 |        -19 |          0 |         -3 |        -22 |
+| view\shared                                                                                         |          2 |         55 |          2 |          5 |         62 |
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                            | language | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\car_list\car_list_.dart | Dart     |          0 |          1 |          0 |          1 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\home\home_page.dart     | Dart     |          0 |          1 |          0 |          1 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\home\main_home.dart     | Dart     |         -2 |          0 |          0 |         -2 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\rentals\rentals.dart    | Dart     |      1,310 |         20 |         29 |      1,359 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\rentals\report.dart     | Dart     |         12 |          0 |          3 |         15 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\settings\settings.dart  | Dart     |        -19 |          0 |         -3 |        -22 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\shared\colors.dart                  | Dart     |          2 |          0 |          0 |          2 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\shared\strings.dart                 | Dart     |         53 |          2 |          5 |         60 |
+| Total                                                                                               |          |      1,356 |         24 |         34 |      1,414 |
++-----------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

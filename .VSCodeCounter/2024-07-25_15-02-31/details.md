@@ -1,10 +1,10 @@
 # Details
 
-Date : 2024-05-31 15:47:07
+Date : 2024-07-25 15:02:31
 
 Directory c:\\Users\\Daniel\\Desktop\\Flutter_Practice\\dara\\dara_app\\lib
 
-Total : 36 files,  4026 codes, 191 comments, 288 blanks, all 4505 lines
+Total : 39 files,  6259 codes, 233 comments, 354 blanks, all 6846 lines
 
 [Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
@@ -15,6 +15,7 @@ Total : 36 files,  4026 codes, 191 comments, 288 blanks, all 4505 lines
 | [lib/controller/account/register_controller.dart](/lib/controller/account/register_controller.dart) | Dart | 131 | 7 | 10 | 148 |
 | [lib/controller/providers/register_provider.dart](/lib/controller/providers/register_provider.dart) | Dart | 42 | 3 | 6 | 51 |
 | [lib/controller/singleton/persistent_data.dart](/lib/controller/singleton/persistent_data.dart) | Dart | 23 | 7 | 11 | 41 |
+| [lib/controller/utils/intent_utils.dart](/lib/controller/utils/intent_utils.dart) | Dart | 31 | 2 | 5 | 38 |
 | [lib/firebase_options.dart](/lib/firebase_options.dart) | Dart | 53 | 12 | 4 | 69 |
 | [lib/main.dart](/lib/main.dart) | Dart | 65 | 5 | 10 | 80 |
 | [lib/model/account/register_model.dart](/lib/model/account/register_model.dart) | Dart | 28 | 0 | 2 | 30 |
@@ -30,12 +31,14 @@ Total : 36 files,  4026 codes, 191 comments, 288 blanks, all 4505 lines
 | [lib/view/pages/account/register/register_successful.dart](/lib/view/pages/account/register/register_successful.dart) | Dart | 63 | 5 | 7 | 75 |
 | [lib/view/pages/account/register/register_verify_phone.dart](/lib/view/pages/account/register/register_verify_phone.dart) | Dart | 105 | 8 | 9 | 122 |
 | [lib/view/pages/account/register/widgets/terms_and_conditions.dart](/lib/view/pages/account/register/widgets/terms_and_conditions.dart) | Dart | 370 | 34 | 36 | 440 |
-| [lib/view/pages/admin/car_list/car_list_.dart](/lib/view/pages/admin/car_list/car_list_.dart) | Dart | 20 | 0 | 3 | 23 |
+| [lib/view/pages/admin/car_list/car_list_.dart](/lib/view/pages/admin/car_list/car_list_.dart) | Dart | 716 | 15 | 24 | 755 |
+| [lib/view/pages/admin/car_list/unit_preview.dart](/lib/view/pages/admin/car_list/unit_preview.dart) | Dart | 0 | 0 | 1 | 1 |
 | [lib/view/pages/admin/center_button/google_maps.dart](/lib/view/pages/admin/center_button/google_maps.dart) | Dart | 19 | 0 | 3 | 22 |
-| [lib/view/pages/admin/home/home_page.dart](/lib/view/pages/admin/home/home_page.dart) | Dart | 132 | 3 | 10 | 145 |
-| [lib/view/pages/admin/home/main_home.dart](/lib/view/pages/admin/home/main_home.dart) | Dart | 658 | 8 | 8 | 674 |
+| [lib/view/pages/admin/home/home_page.dart](/lib/view/pages/admin/home/home_page.dart) | Dart | 161 | 4 | 10 | 175 |
+| [lib/view/pages/admin/home/main_home.dart](/lib/view/pages/admin/home/main_home.dart) | Dart | 736 | 9 | 11 | 756 |
 | [lib/view/pages/admin/profile/profile.dart](/lib/view/pages/admin/profile/profile.dart) | Dart | 19 | 0 | 3 | 22 |
-| [lib/view/pages/admin/settings/settings.dart](/lib/view/pages/admin/settings/settings.dart) | Dart | 19 | 0 | 3 | 22 |
+| [lib/view/pages/admin/rentals/rentals.dart](/lib/view/pages/admin/rentals/rentals.dart) | Dart | 1,310 | 20 | 29 | 1,359 |
+| [lib/view/pages/admin/rentals/report.dart](/lib/view/pages/admin/rentals/report.dart) | Dart | 12 | 0 | 3 | 15 |
 | [lib/view/pages/carousel/carousel_page.dart](/lib/view/pages/carousel/carousel_page.dart) | Dart | 12 | 0 | 3 | 15 |
 | [lib/view/pages/carousel/widgets/page_1.dart](/lib/view/pages/carousel/widgets/page_1.dart) | Dart | 117 | 2 | 5 | 124 |
 | [lib/view/pages/carousel/widgets/page_2.dart](/lib/view/pages/carousel/widgets/page_2.dart) | Dart | 152 | 2 | 5 | 159 |
@@ -44,8 +47,8 @@ Total : 36 files,  4026 codes, 191 comments, 288 blanks, all 4505 lines
 | [lib/view/pages/carousel/widgets/page_5.dart](/lib/view/pages/carousel/widgets/page_5.dart) | Dart | 152 | 2 | 5 | 159 |
 | [lib/view/pages/carousel/widgets/page_6.dart](/lib/view/pages/carousel/widgets/page_6.dart) | Dart | 152 | 2 | 5 | 159 |
 | [lib/view/pages/entry/entry_page_video.dart](/lib/view/pages/entry/entry_page_video.dart) | Dart | 49 | 0 | 10 | 59 |
-| [lib/view/shared/colors.dart](/lib/view/shared/colors.dart) | Dart | 9 | 0 | 0 | 9 |
+| [lib/view/shared/colors.dart](/lib/view/shared/colors.dart) | Dart | 16 | 0 | 0 | 16 |
 | [lib/view/shared/components.dart](/lib/view/shared/components.dart) | Dart | 253 | 4 | 12 | 269 |
-| [lib/view/shared/strings.dart](/lib/view/shared/strings.dart) | Dart | 129 | 14 | 22 | 165 |
+| [lib/view/shared/strings.dart](/lib/view/shared/strings.dart) | Dart | 218 | 17 | 29 | 264 |
 
 [Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

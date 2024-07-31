@@ -13,4 +13,10 @@ class ProjectColors {
   static String redButtonBackground = "0xffffe7e7";
   static String redButtonMain = "0xffff0f0f";
   static String lineGray = "0xffc6c6c6";
+
+  //  user info
+  static String userInfoRed = "0xfffeb8bf";
+  static String userInfoGreen = "0xffbfe2d8";
+  static String userInfoBlue = "0xffc6dafc";
+  static String userInfoLightBlue = "0xffc5e3ec";
 }
