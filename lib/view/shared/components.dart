@@ -179,7 +179,9 @@ class CustomComponents {
     {
       Function()? onPressed,
       Color textColor = Colors.white,
-      Color buttonColor = const Color(0xff3FA2BE)
+      Color buttonColor = const Color(0xff3FA2BE),
+      double fontSize = 14,
+      double borderRadius = 7
     }
   ) {
     return ElevatedButton(
@@ -188,7 +190,7 @@ class CustomComponents {
         backgroundColor: MaterialStatePropertyAll<Color>(buttonColor),
         shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7)
+            borderRadius: BorderRadius.circular(borderRadius)
           )
         )
       ),
@@ -198,7 +200,7 @@ class CustomComponents {
           buttonText,
           color: textColor,
           fontWeight: FontWeight.w600,
-          fontSize: 14
+          fontSize: fontSize
         ),
       ),
     );

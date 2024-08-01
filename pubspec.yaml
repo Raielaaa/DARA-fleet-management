@@ -51,6 +51,7 @@ dependencies:
   url_launcher: ^6.2.6
   external_app_launcher: ^4.0.0
   slide_switcher: ^1.1.2
+  mobkit_dashed_border: ^0.0.6
 
 dev_dependencies:
   flutter_test:
@@ -130,6 +131,7 @@ flutter:
     - lib/assets/pictures/user_info_documents.png
     - lib/assets/pictures/user_info_email.png
     - lib/assets/pictures/user_info_policy.png
+    - lib/assets/pictures/user_info_upload.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

@@ -19,4 +19,5 @@ class ProjectColors {
   static String userInfoGreen = "0xffbfe2d8";
   static String userInfoBlue = "0xffc6dafc";
   static String userInfoLightBlue = "0xffc5e3ec";
+  static const String userInfoDialogBrokenLinesColor = "0xff488BFF";
 }

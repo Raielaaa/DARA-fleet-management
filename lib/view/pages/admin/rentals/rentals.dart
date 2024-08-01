@@ -39,6 +39,7 @@ class _Rentals extends State<Rentals> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  //  top design
                   Stack(
                     children: [
                       ClipRRect(

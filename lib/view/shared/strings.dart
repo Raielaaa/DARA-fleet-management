@@ -283,4 +283,17 @@ class ProjectStrings {
   static const String user_info_contact = "Contact";
   static const String user_info_policy = "Policy";
   static const String user_info_documents = "Documents";
+
+
+  //  User Information dialog
+  static const String user_info_header_title = "Upload Documents";
+  static const String user_info_header = "Submit your documents securely here";
+  static const String user_info_upload_file = "Upload file";
+  static const String user_info_save_documents = "Save Documents";
+  static const String user_info_government1 = "Government Valid ID 1";
+  static const String user_info_government2 = "Government Valid ID 2";
+  static const String user_info_driver_license = "Driver's License";
+  static const String user_info_proof_of_billing = "Proof of Billing";
+  static const String user_info_ltms_portal = "LTMS Portal";
+  static const String user_info_choose_a_file = "Choose a file";
 }
