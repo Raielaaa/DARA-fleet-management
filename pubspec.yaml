@@ -132,6 +132,9 @@ flutter:
     - lib/assets/pictures/user_info_email.png
     - lib/assets/pictures/user_info_policy.png
     - lib/assets/pictures/user_info_upload.png
+    - lib/assets/pictures/star.png
+    - lib/assets/pictures/exit.png
+    - lib/assets/pictures/incon.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

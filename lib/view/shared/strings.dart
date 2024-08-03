@@ -296,4 +296,28 @@ class ProjectStrings {
   static const String user_info_proof_of_billing = "Proof of Billing";
   static const String user_info_ltms_portal = "LTMS Portal";
   static const String user_info_choose_a_file = "Choose a file";
+
+
+  //  Report
+  static const String report_car_rent = "Car Rent";
+  static const String report_reviews = "4.6 (125 reviews)";
+  static const String report_unit_name = "Mitsubishi Mirage G4 2024";
+  static const String report_unit_description = "Please describe the issue in the text box below, and our team will assist you promptly.";
+  static const String report_location_title = "Location";
+  static const String report_location = "Location of Incident";
+  static const String report_add_photo = "Add a photo";
+  static const String report_maximum_photo_size = "Maximum of one photo with total size of up to 5 MB";
+  static const String report_check_all_that_applies = "Check All That Applies";
+  static const String report_check_all_subheader = "Please select and review all applicable issues:";
+  static const String report_engine_problems = "Engine problems";
+  static const String report_transmission_issues = "Transmission issues";
+  static const String report_brake_malfunction = "Brake malfunctions";
+  static const String report_other = "Other";
+  static const String report_comments = "Comments";
+  static const String report_comments_subheader = "Here you can specify the problem in more detail:";
+  static const String report_submit_report = "Submit Report";
+  static const String report_enter_your_comment = "Enter your comment here";
+
+  static const String report_dialog_title = "Sorry for the Inconvenience";
+  static const String report_dialog_subheader = "We apologize for any disruption this may have cause. Please wait as we contact you by phone";
 }

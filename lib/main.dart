@@ -6,6 +6,7 @@ import 'package:dara_app/view/pages/account/register/register_email_pass.dart';
 import 'package:dara_app/view/pages/account/register/register_phone_number.dart';
 import 'package:dara_app/view/pages/account/register/register_successful.dart';
 import 'package:dara_app/view/pages/account/register/register_verify_phone.dart';
+import 'package:dara_app/view/pages/admin/rentals/report.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_1.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_2.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_3.dart';
@@ -71,6 +72,9 @@ class _MyAppState extends State<MyApp> {
 
             // Home page
             "home_main": (context) => const HomePage(),
+
+            //  Rentals - report page
+            "rentals_report": (context) => const Report()
           },
         ),
       ),

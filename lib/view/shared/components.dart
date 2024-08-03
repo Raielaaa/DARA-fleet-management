@@ -143,7 +143,7 @@ class CustomComponents {
       style: const TextStyle(
         color: Colors.black,
         fontFamily: ProjectStrings.general_font_family,
-        fontSize: 14
+        fontSize: 10
       ),
       decoration: InputDecoration(
         suffixIcon: isIconPresent

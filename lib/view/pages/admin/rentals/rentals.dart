@@ -16,7 +16,7 @@ class _Rentals extends State<Rentals> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _seeCompleteBookingInfo();
+      // _seeCompleteBookingInfo();
     });
   }
 
@@ -546,6 +546,7 @@ class _Rentals extends State<Rentals> {
                   UnconstrainedBox(
                     child: Row(
                       children: [
+                        //  report
                         Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -564,21 +565,28 @@ class _Rentals extends State<Rentals> {
                                     height: 20,
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10, right: 25, left: 5),
-                                  child: CustomComponents.displayText(
-                                    ProjectStrings.dialog_report_button,
-                                    color: Color(int.parse(
-                                        ProjectColors.redButtonMain
-                                            .substring(2),
-                                        radix: 16)),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, "rentals_report");
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10, bottom: 10, right: 25, left: 5),
+                                    child: CustomComponents.displayText(
+                                      ProjectStrings.dialog_report_button,
+                                      color: Color(int.parse(
+                                          ProjectColors.redButtonMain
+                                              .substring(2),
+                                          radix: 16)),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10,
+                                    ),
                                   ),
                                 ),
                               ],
                             )),
+
+                        //  approved
                         const SizedBox(width: 20),
                         Container(
                             decoration: BoxDecoration(
@@ -902,29 +910,34 @@ class _Rentals extends State<Rentals> {
                                         ],
                                       ),
                                       const SizedBox(height: 15),
-                                      Container(
-                                          alignment: Alignment.centerRight,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const SizedBox(width: 40),
-                                              CustomComponents.displayText(
-                                                ProjectStrings
-                                                    .rentals_see_booking_info,
-                                                color: Color(int.parse(
-                                                    ProjectColors.mainColorHex
-                                                        .substring(2),
-                                                    radix: 16)),
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 10,
-                                              ),
-                                              const SizedBox(width: 5),
-                                              Image.asset(
-                                                "lib/assets/pictures/right_arrow.png",
-                                                width: 10,
-                                              ),
-                                            ],
-                                          ))
+                                      GestureDetector(
+                                        onTap: () {
+                                          _seeCompleteBookingInfo();
+                                        },
+                                        child: Container(
+                                            alignment: Alignment.centerRight,
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const SizedBox(width: 40),
+                                                CustomComponents.displayText(
+                                                  ProjectStrings
+                                                      .rentals_see_booking_info,
+                                                  color: Color(int.parse(
+                                                      ProjectColors.mainColorHex
+                                                          .substring(2),
+                                                      radix: 16)),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 10,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                Image.asset(
+                                                  "lib/assets/pictures/right_arrow.png",
+                                                  width: 10,
+                                                ),
+                                              ],
+                                            )),
+                                      )
                                     ],
                                   )
                                 ],
