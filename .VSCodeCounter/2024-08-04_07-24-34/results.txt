@@ -1,20 +1,20 @@
-Date : 2024-06-02 06:06:40
+Date : 2024-08-04 07:24:34
 Directory : c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib
-Total : 37 files,  4903 codes, 209 comments, 319 blanks, all 5431 lines
+Total : 39 files,  7979 codes, 281 comments, 408 blanks, all 8668 lines
 
 Languages
 +----------+------------+------------+------------+------------+------------+
 | language | files      | code       | comment    | blank      | total      |
 +----------+------------+------------+------------+------------+------------+
-| Dart     |         37 |      4,903 |        209 |        319 |      5,431 |
+| Dart     |         39 |      7,979 |        281 |        408 |      8,668 |
 +----------+------------+------------+------------+------------+------------+
 
 Directories
 +--------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                                                                     | files      | code       | comment    | blank      | total      |
 +--------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| .                                                                                                                        |         37 |      4,903 |        209 |        319 |      5,431 |
-| . (Files)                                                                                                                |          2 |        118 |         17 |         14 |        149 |
+| .                                                                                                                        |         39 |      7,979 |        281 |        408 |      8,668 |
+| . (Files)                                                                                                                |          2 |        122 |         19 |         16 |        157 |
 | controller                                                                                                               |          5 |        277 |         21 |         36 |        334 |
 | controller\account                                                                                                       |          2 |        181 |          9 |         14 |        204 |
 | controller\providers                                                                                                     |          1 |         42 |          3 |          6 |         51 |
@@ -26,25 +26,25 @@ Directories
 | services                                                                                                                 |          3 |         66 |          6 |         13 |         85 |
 | services\firebase                                                                                                        |          2 |         45 |          6 |          8 |         59 |
 | services\google                                                                                                          |          1 |         21 |          0 |          5 |         26 |
-| view                                                                                                                     |         25 |      4,411 |        165 |        254 |      4,830 |
-| view\pages                                                                                                               |         22 |      3,979 |        146 |        218 |      4,343 |
+| view                                                                                                                     |         27 |      7,483 |        235 |        341 |      8,059 |
+| view\pages                                                                                                               |         24 |      6,919 |        208 |        290 |      7,417 |
 | view\pages\account                                                                                                       |          8 |      1,369 |        108 |        121 |      1,598 |
 | view\pages\account (Files)                                                                                               |          1 |         71 |          7 |          8 |         86 |
 | view\pages\account\login                                                                                                 |          1 |        222 |         17 |         18 |        257 |
 | view\pages\account\register                                                                                              |          6 |      1,076 |         84 |         95 |      1,255 |
 | view\pages\account\register (Files)                                                                                      |          5 |        706 |         50 |         59 |        815 |
 | view\pages\account\register\widgets                                                                                      |          1 |        370 |         34 |         36 |        440 |
-| view\pages\admin                                                                                                         |          6 |      1,672 |         26 |         54 |      1,752 |
-| view\pages\admin\car_list                                                                                                |          1 |        716 |         14 |         24 |        754 |
+| view\pages\admin                                                                                                         |          8 |      4,612 |         88 |        126 |      4,826 |
+| view\pages\admin\car_list                                                                                                |          2 |        767 |         15 |         27 |        809 |
 | view\pages\admin\center_button                                                                                           |          1 |         19 |          0 |          3 |         22 |
-| view\pages\admin\home                                                                                                    |          2 |        899 |         12 |         21 |        932 |
-| view\pages\admin\profile                                                                                                 |          1 |         19 |          0 |          3 |         22 |
-| view\pages\admin\settings                                                                                                |          1 |         19 |          0 |          3 |         22 |
+| view\pages\admin\home                                                                                                    |          2 |        897 |         13 |         21 |        931 |
+| view\pages\admin\profile                                                                                                 |          1 |      1,182 |         28 |         25 |      1,235 |
+| view\pages\admin\rentals                                                                                                 |          2 |      1,747 |         32 |         50 |      1,829 |
 | view\pages\carousel                                                                                                      |          7 |        889 |         12 |         33 |        934 |
 | view\pages\carousel (Files)                                                                                              |          1 |         12 |          0 |          3 |         15 |
 | view\pages\carousel\widgets                                                                                              |          6 |        877 |         12 |         30 |        919 |
 | view\pages\entry                                                                                                         |          1 |         49 |          0 |         10 |         59 |
-| view\shared                                                                                                              |          3 |        432 |         19 |         36 |        487 |
+| view\shared                                                                                                              |          3 |        564 |         27 |         51 |        642 |
 +--------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
 Files
@@ -57,7 +57,7 @@ Files
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\controller\singleton\persistent_data.dart                     | Dart     |         23 |          7 |         11 |         41 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\controller\utils\intent_utils.dart                            | Dart     |         31 |          2 |          5 |         38 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\firebase_options.dart                                         | Dart     |         53 |         12 |          4 |         69 |
-| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\main.dart                                                     | Dart     |         65 |          5 |         10 |         80 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\main.dart                                                     | Dart     |         69 |          7 |         12 |         88 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\model\account\register_model.dart                             | Dart     |         28 |          0 |          2 |         30 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\model\constants\firebase_constants.dart                       | Dart     |          3 |          0 |          0 |          3 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\services\firebase\auth.dart                                   | Dart     |         31 |          6 |          6 |         43 |
@@ -71,12 +71,14 @@ Files
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\account\register\register_successful.dart          | Dart     |         63 |          5 |          7 |         75 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\account\register\register_verify_phone.dart        | Dart     |        105 |          8 |          9 |        122 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\account\register\widgets\terms_and_conditions.dart | Dart     |        370 |         34 |         36 |        440 |
-| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\car_list\car_list_.dart                      | Dart     |        716 |         14 |         24 |        754 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\car_list\car_list_.dart                      | Dart     |        720 |         15 |         24 |        759 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\car_list\unit_preview.dart                   | Dart     |         47 |          0 |          3 |         50 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\center_button\google_maps.dart               | Dart     |         19 |          0 |          3 |         22 |
-| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\home\home_page.dart                          | Dart     |        161 |          3 |         10 |        174 |
-| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\home\main_home.dart                          | Dart     |        738 |          9 |         11 |        758 |
-| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\profile\profile.dart                         | Dart     |         19 |          0 |          3 |         22 |
-| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\settings\settings.dart                       | Dart     |         19 |          0 |          3 |         22 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\home\home_page.dart                          | Dart     |        161 |          4 |         10 |        175 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\home\main_home.dart                          | Dart     |        736 |          9 |         11 |        756 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\profile\profile.dart                         | Dart     |      1,182 |         28 |         25 |      1,235 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\rentals\rentals.dart                         | Dart     |      1,319 |         24 |         30 |      1,373 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\admin\rentals\report.dart                          | Dart     |        428 |          8 |         20 |        456 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\carousel\carousel_page.dart                        | Dart     |         12 |          0 |          3 |         15 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\carousel\widgets\page_1.dart                       | Dart     |        117 |          2 |          5 |        124 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\carousel\widgets\page_2.dart                       | Dart     |        152 |          2 |          5 |        159 |
@@ -85,8 +87,8 @@ Files
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\carousel\widgets\page_5.dart                       | Dart     |        152 |          2 |          5 |        159 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\carousel\widgets\page_6.dart                       | Dart     |        152 |          2 |          5 |        159 |
 | c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\pages\entry\entry_page_video.dart                        | Dart     |         49 |          0 |         10 |         59 |
-| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\shared\colors.dart                                       | Dart     |         14 |          0 |          0 |         14 |
-| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\shared\components.dart                                   | Dart     |        253 |          4 |         12 |        269 |
-| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\shared\strings.dart                                      | Dart     |        165 |         15 |         24 |        204 |
-| Total                                                                                                                    |          |      4,903 |        209 |        319 |      5,431 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\shared\colors.dart                                       | Dart     |         22 |          2 |          2 |         26 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\shared\components.dart                                   | Dart     |        255 |          4 |         12 |        271 |
+| c:\Users\Daniel\Desktop\Flutter_Practice\dara\dara_app\lib\view\shared\strings.dart                                      | Dart     |        287 |         21 |         37 |        345 |
+| Total                                                                                                                    |          |      7,979 |        281 |        408 |      8,668 |
 +--------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

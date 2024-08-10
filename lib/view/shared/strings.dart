@@ -320,4 +320,45 @@ class ProjectStrings {
 
   static const String report_dialog_title = "Sorry for the Inconvenience";
   static const String report_dialog_subheader = "We apologize for any disruption this may have cause. Please wait as we contact you by phone";
+
+  //  selected item (si)
+  static const String si_car_rent = "Car Rent";
+  static const String si_available = "Available";
+  static const String si_review = "4.6 (125 reviews)";
+  static const String si_unit_name = "Mitsubishi Mirage G4 2024";
+  static const String si_unit_description = "Made for the streets, but packs the performance power to take you almost anywhere.";
+  static const String si_features = "Features";
+  static const String si_about = "About";
+  static const String si_color_title = "Color";
+  static const String si_color = "White";
+  static const String si_transmission_title = "Transmission";
+  static const String si_transmission = "Automatic";
+  static const String si_fuel_title = "Fuel";
+  static const String si_fuel = "34 Liters";
+  static const String si_horsepower_title = "HorsePower";
+  static const String si_horsepower = "6000 rpm";
+  static const String si_seats_title = "Seats";
+  static const String si_seats = "5 seats";
+  static const String si_engine_title = "Engine";
+  static const String si_engine = "1.2 Liter 3-cylinder";
+  static const String si_proceed_tp_renting_process = "Proceed To Renting Process";
+  static const String si_about_title = "Compact Sedan for Urban Commuting and Rentals";
+  static const String si_about_body = "The 2024 Mitsubishi Mirage G4 is a compact, affordable sedan ideal for urban commuting and budget-conscious drivers. Renowned for its fuel efficiency and reliability, it offers a sleek design, comfortable interior, and advanced safety features. Its compact size ensures easy maneuverability and parking in tight city spots, while the modern infotainment system and connectivity options make it perfect for tech-savvy users and an excellent choice for car rental fleets.";
+
+
+  //  information dialog (id)
+  static const String id_title_1 = "Provide Booking Details";
+  static const String id_content_1 = "Submit your reservation date, timeframe, and preferred location to ensure availability and accurate scheduling.";
+  static const String id_title_2 = "Choose Mode of Delivery";
+  static const String id_content_2 = "Select whether you would like the car delivered to your specified location or if you prefer to pick it up at our garage.";
+  static const String id_title_3 = "Quotation";
+  static const String id_content_3 = "Review the pricing details for your rental, including any applicable fees, to understand the total cost of your booking.";
+  static const String id_title_4 = "Reservation";
+  static const String id_content_4 = "Complete the payment of the reservation fee to secure your booking and confirm the rental agreement.";
+  static const String id_title_5 = "Document Submission";
+  static const String id_content_5 = "Submit scanned copies of required documents, including proof of billing (electric and water bill), two primary valid IDs, your driver’s license, and a screenshot from the LTO portal.";
+  static const String id_title_6 = "Wait for Validation";
+  static const String id_content_6 = "Please wait while our admin team validates the submitted documents. This process ensures all requirements are met and verifies the authenticity of the information provided.";
+  static const String id_title_7 = "Handover";
+  static const String id_content_7 = "Upon successful validation, the contract will be handed over along with the vehicle, completing the rental process.";
 }

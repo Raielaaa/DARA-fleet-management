@@ -135,6 +135,16 @@ flutter:
     - lib/assets/pictures/star.png
     - lib/assets/pictures/exit.png
     - lib/assets/pictures/incon.png
+    - lib/assets/pictures/unit_preview_main_image.jpg
+    - lib/assets/pictures/si_color.png
+    - lib/assets/pictures/si_transmission.png
+    - lib/assets/pictures/si_fuel.png
+    - lib/assets/pictures/si_horsepower.png
+    - lib/assets/pictures/si_seats.png
+    - lib/assets/pictures/si_engine.png
+    - lib/assets/pictures/information_dialog.png
+    - lib/assets/pictures/id_left_arrow.png
+    - lib/assets/pictures/id_right_arrow.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png
