@@ -300,29 +300,34 @@ class _AdminHomeState extends State<AdminHome> {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            color: Colors.white38,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  "lib/assets/pictures/home_top_manage.png",
-                                  fit: BoxFit.contain,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 7),
-                                  child: CustomComponents.displayText(
-                                    ProjectStrings.admin_home_top_options_manage,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 10,
-                                    color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed("manage_report");
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              color: Colors.white38,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "lib/assets/pictures/home_top_manage.png",
+                                    fit: BoxFit.contain,
                                   ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 7),
+                                    child: CustomComponents.displayText(
+                                      ProjectStrings.admin_home_top_options_manage,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 10,
+                                      color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),

@@ -1,4 +1,5 @@
 class ProjectColors {
+  //  general
   static String mainColorBackground = "0xffe8ebf2";
   static const String mainColorHex = "0xff3FA2BE";
   static const String mainColorHexBackground = "0xffd9ecf2";
@@ -13,6 +14,7 @@ class ProjectColors {
   static String redButtonBackground = "0xffffe7e7";
   static String redButtonMain = "0xffff0f0f";
   static String lineGray = "0xffc6c6c6";
+  static String antripIOTColor = "0xff007aff";
 
   //  user info
   static String userInfoRed = "0xfffeb8bf";
@@ -23,4 +25,8 @@ class ProjectColors {
 
   //  report
   static String reportMainColorBackground = "0xffecf6f8";
+  static String reportMangeSelectedItem = "0xfff2f2f2";
+  static String reportManageItemBackground = "0xffc5e3ec";
+  static String reportItemBackground = "0xffede8fb";
+  static String reportPurple = "0xff4915DB";
 }

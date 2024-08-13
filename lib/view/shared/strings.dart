@@ -361,4 +361,21 @@ class ProjectStrings {
   static const String id_content_6 = "Please wait while our admin team validates the submitted documents. This process ensures all requirements are met and verifies the authenticity of the information provided.";
   static const String id_title_7 = "Handover";
   static const String id_content_7 = "Upon successful validation, the contract will be handed over along with the vehicle, completing the rental process.";
+
+
+  //  manage reports
+  static const String manage_reports_appbar = "Reports";
+  static const String manage_reports_greetings = "Hello, Admin";
+  static const String manage_reports_date = "Sat, May 20, 2024";
+  static const String manage_reports_admin_options = "Admin Options";
+  static const String manage_reports_reports = "Reports";
+  static const String manage_reports_inquiries = "Inquiries";
+  static const String manage_reports_car_status = "Car Status";
+  static const String manage_reports_integrated_apps = "Integrated Apps";
+  static const String manage_reports_google_maps = "Google Maps";
+  static const String manage_reports_antrip_iot = "Antrip IoT";
+  static const String manage_reports_see_all = "see all";
+  static const String manage_reports_sr_icon = "SR";
+  static const String manage_reports_sr_title = "Sample Report";
+  static const String manage_reports_sr_report_number = "Report No.: 8375BFJN92756F8F33";
 }

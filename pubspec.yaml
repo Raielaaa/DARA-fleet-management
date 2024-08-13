@@ -145,6 +145,10 @@ flutter:
     - lib/assets/pictures/information_dialog.png
     - lib/assets/pictures/id_left_arrow.png
     - lib/assets/pictures/id_right_arrow.png
+    - lib/assets/pictures/manage_report_report.png
+    - lib/assets/pictures/manage_report_inquiries.png
+    - lib/assets/pictures/manage_report_car_status.png
+    - lib/assets/pictures/trash.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png
