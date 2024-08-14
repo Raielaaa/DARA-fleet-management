@@ -378,4 +378,51 @@ class ProjectStrings {
   static const String manage_reports_sr_icon = "SR";
   static const String manage_reports_sr_title = "Sample Report";
   static const String manage_reports_sr_report_number = "Report No.: 8375BFJN92756F8F33";
+
+  //  manage reports - dialog
+  static const String mr_dialog_car_info_title = "Car Information";
+  static const String mr_dialog_car_info = "Provides Key Car Specifications";
+  static const String mr_dialog_car_model_title = "Car Model:";
+  static const String mr_dialog_car_model = "Mitsubishi Mirage G4 2024";
+  static const String mr_dialog_transmission_title = "Transmission:";
+  static const String mr_dialog_transmission = "Automatic";
+  static const String mr_dialog_capacity_title = "Seat Capacity:";
+  static const String mr_dialog_capacity = "5 Seats";
+  static const String mr_dialog_fuel_title = "Fuel Variant:";
+  static const String mr_dialog_fuel = "Gasoline";
+  static const String mr_dialog_fuel_capacity_title = "Fuel Capacity:";
+  static const String mr_dialog_fuel_capacity = "34 Liters";
+  static const String mr_dialog_unit_color_title = "Unit Color:";
+  static const String mr_dialog__unit_color = "White";
+  static const String mr_dialog_engine_title = "Engine";
+  static const String mr_dialog_engine = "1.2 Liter Three Cylinder";
+
+  static const String mr_dialog_title_2 = "Renter Information";
+  static const String mr_dialog_title_2_subheader = "Provides Complete Renting Details";
+  static const String mr_dialog_rent_start_title = "Rent Start Date:";
+  static const String mr_dialog_rent_start = "Jan 07, 2024 - 03:35 PM";
+  static const String mr_dialog_rent_end_title = "Rent End Date:";
+  static const String mr_dialog__rent_end = "Jan 18, 2024 - 03:35 PM";
+  static const String mr_dialog_delivery_mode_title = "Delivery Mode:";
+  static const String mr_dialog_delivery_mode = "Pickup";
+  static const String mr_dialog_delivery_location_title = "Location";
+  static const String mr_dialog_delivery_location = "-NA";
+  static const String mr_dialog_location_title = "Location:";
+  static const String mr_dialog_location = "Adelina Pila Laguna";
+  static const String mr_dialog_reserved_title = "Reserved:";
+  static const String mr_dialog_reserved = "Yes";
+  static const String mr_dialog_admin_notes_title = "Admin Notes:";
+  static const String mr_dialog_admin_notes = "NONE";
+
+  static const String mr_dialog_title_3 = "Report Information";
+  static const String mr_dialog_title_3_subheader = "Report Number 8375BFJN92756F8F33";
+  static const String mr_dialog_photo_title = "Photo:";
+  static const String mr_dialog_photo = "see photo";
+  static const String mr_dialog_3_location_title = "Location:";
+  static const String mr_dialog_3_location = "Villa Adelina Pila Laguna";
+  static const String mr_dialog_issues_title = "Issues:";
+  static const String mr_dialog_issues = "Engine Problems";
+  static const String mr_dialog_comments_title = "Comments:";
+  static const String mr_dialog_comments = "Comments";
+  static const String mr_dialog_mark_as_resolve = "Mark as Resolve";
 }
