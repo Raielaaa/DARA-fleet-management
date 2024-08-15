@@ -883,10 +883,15 @@ class _ManageReportsState extends State<ManageReports> {
                                     Color(int.parse(ProjectColors.reportMangeSelectedItem))
                                   ),
                                   const SizedBox(width: 15),
-                                  buildAdminOption(
-                                    "lib/assets/pictures/manage_report_inquiries.png",
-                                    ProjectStrings.manage_reports_inquiries,
-                                    Colors.white
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed("manage_inquiries");
+                                    },
+                                    child: buildAdminOption(
+                                      "lib/assets/pictures/manage_report_inquiries.png",
+                                      ProjectStrings.manage_reports_inquiries,
+                                      Colors.white
+                                    ),
                                   ),
                                   const SizedBox(width: 15),
                                   buildAdminOption(

@@ -425,4 +425,39 @@ class ProjectStrings {
   static const String mr_dialog_comments_title = "Comments:";
   static const String mr_dialog_comments = "Comments";
   static const String mr_dialog_mark_as_resolve = "Mark as Resolve";
+
+  //  rent inquiries
+  static const String ri_appbar = "Rent Inquiries";
+  static const String ri_title = "Approval Pending";
+  static const String ri_subheader = "Items currently awaiting review and approval";
+  static const String ri_renter_information_title = "Renter Information";
+  static const String ri_renter_information_subheader = "Provides Complete Renter Details";
+  static const String ri_name_title = "Name:";
+  static const String ri_name = "John Mark Reyes";
+  static const String ri_email_title = "Email:";
+  static const String ri_email = "johnmark@gmail.com";
+  static const String ri_phone_number_title = "Phone Number:";
+  static const String ri_phone_number = "0947 837 2744";
+  static const String ri_rent_start_date_title = "Rent Start Date:";
+  static const String ri_rent_start_date = "Jan 07, 2024 - 03:35 PM";
+  static const String ri_rent_end_date_title = "Rent End Date:";
+  static const String ri_rent_end_date = "Jan 18, 2024 - 03:35 PM";
+  static const String ri_delivery_mode_title = "Delivery Mode:";
+  static const String ri_delivery_mode = "Pickup";
+  static const String ri_delivery_location_title = "Delivery Location";
+  static const String ri_delivery_location = "Adelina Pila Laguna";
+  static const String ri_reserved_title = "Reserved:";
+  static const String ri_reserved = "Yes";
+  static const String ri_attached_document = "Attached Documents";
+  static const String ri_jpg = "JPG";
+  static const String ri_government_id_1 = "Valid_Government_ID_1.jpg";
+  static const String ri_government_id_2 = "Valid_Government_ID_2.jpg";
+  static const String ri_driver_license = "Driver_License.jpg";
+  static const String ri_proof_of_billing = "Proof_Of_Billing.jpg";
+  static const String ri_ltms_portal = "LTMS_Portal.jpg";
+  static const String ri_size = "460 KB";
+  static const String ri_document_date = "May 09, 2024";
+  static const String ri_view = "view";
+  static const String ri_add_note = "Add Note";
+  static const String ri_approve = "Approve";
 }
