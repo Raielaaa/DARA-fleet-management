@@ -894,11 +894,16 @@ class _ManageReportsState extends State<ManageReports> {
                                     ),
                                   ),
                                   const SizedBox(width: 15),
-                                  buildAdminOption(
-                                    "lib/assets/pictures/manage_report_car_status.png",
-                                    ProjectStrings.manage_reports_car_status,
-                                    Colors.white
-                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed("manage_car_status");
+                                    },
+                                    child: buildAdminOption(
+                                      "lib/assets/pictures/manage_report_car_status.png",
+                                      ProjectStrings.manage_reports_car_status,
+                                      Colors.white
+                                    )
+                                  )
                                 ],
                               ),
                             )

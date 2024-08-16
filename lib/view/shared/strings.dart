@@ -460,4 +460,17 @@ class ProjectStrings {
   static const String ri_view = "view";
   static const String ri_add_note = "Add Note";
   static const String ri_approve = "Approve";
+
+  //  car status
+  static const String cs_appbar_title = "Vehicle Status";
+  static const String cs_car_units = "Car Units";
+  static const String cs_available = "Available";
+  static const String cs_car_name = "Mirage G4 2024";
+  static const String cs_car_brand = "Mitsubishi";
+  static const String cs_total_rentals = "Total rentals: 47";
+  static const String cs_more_info = "More Info";
+  static const String cs_item_count = "3/12";
+  static const String cs_star = "4.6";
+  static const String cs_unavailable = "Unavailable";
+  static const String cs_outsourced_units = "Outsourced Units";
 }

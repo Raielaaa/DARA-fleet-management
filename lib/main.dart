@@ -9,6 +9,7 @@ import 'package:dara_app/view/pages/account/register/register_verify_phone.dart'
 import 'package:dara_app/view/pages/admin/car_list/unit_preview.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
+import 'package:dara_app/view/pages/admin/manage/status/status.dart';
 import 'package:dara_app/view/pages/admin/rentals/report.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_1.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_2.dart';
@@ -86,7 +87,10 @@ class _MyAppState extends State<MyApp> {
             "manage_report": (context) => const ManageReports(),
 
             //  admin option - Manage inquiries
-            "manage_inquiries": (context) => const Inquiries()
+            "manage_inquiries": (context) => const Inquiries(),
+
+            //  admin option - Manage Car Status
+            "manage_car_status": (context) => const CarStatus()
           },
         ),
       ),

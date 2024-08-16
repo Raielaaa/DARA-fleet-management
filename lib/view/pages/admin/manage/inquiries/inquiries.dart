@@ -128,7 +128,8 @@ class _InquiriesState extends State<Inquiries> {
                                               ),
                                               const SizedBox(height: 2),
                                               CustomComponents.displayText(
-                                                ProjectStrings.ri_renter_information_subheader,
+                                                ProjectStrings
+                                                    .ri_renter_information_subheader,
                                                 color: Color(int.parse(
                                                     ProjectColors.lightGray
                                                         .substring(2),
@@ -160,8 +161,7 @@ class _InquiriesState extends State<Inquiries> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomComponents.displayText(
-                                            ProjectStrings
-                                                .ri_name_title,
+                                            ProjectStrings.ri_name_title,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 10,
                                             color: Color(int.parse(
@@ -186,8 +186,7 @@ class _InquiriesState extends State<Inquiries> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomComponents.displayText(
-                                            ProjectStrings
-                                                .ri_email_title,
+                                            ProjectStrings.ri_email_title,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 10,
                                             color: Color(int.parse(
@@ -238,7 +237,8 @@ class _InquiriesState extends State<Inquiries> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomComponents.displayText(
-                                            ProjectStrings.ri_rent_start_date_title,
+                                            ProjectStrings
+                                                .ri_rent_start_date_title,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 10,
                                             color: Color(int.parse(
@@ -315,7 +315,8 @@ class _InquiriesState extends State<Inquiries> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         CustomComponents.displayText(
-                                            ProjectStrings.ri_delivery_location_title,
+                                            ProjectStrings
+                                                .ri_delivery_location_title,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 10,
                                             color: Color(int.parse(
