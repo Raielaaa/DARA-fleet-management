@@ -473,4 +473,13 @@ class ProjectStrings {
   static const String cs_star = "4.6";
   static const String cs_unavailable = "Unavailable";
   static const String cs_outsourced_units = "Outsourced Units";
+
+  //  user type dialog
+  static const String user_type_dialog_title = "Select Your Role";
+  static const String user_type_outsource_title = "Outsource Partner";
+  static const String user_type_outsource_content = "Become our trusted outsource partner.";
+  static const String user_type_driver_title = "Exclusive Driver";
+  static const String user_type_driver_content = "Join our fleet as an exclusive driver.";
+  static const String user_type_user_title = "Rent & Explore";
+  static const String user_type_user_body = "Sign in to enjoy our premium services.";
 }
