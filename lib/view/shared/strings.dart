@@ -482,4 +482,57 @@ class ProjectStrings {
   static const String user_type_driver_content = "Join our fleet as an exclusive driver.";
   static const String user_type_user_title = "Rent & Explore";
   static const String user_type_user_body = "Sign in to enjoy our premium services.";
+
+  //  renting process - booking details
+  static const String rp_bk_appbar_title = "Booking Details";
+  static const String rp_bk_starting_date = "Starting Date";
+  static const String rp_bk_starting_date_label = "DD/MM/YY";
+  static const String rp_bk_ending_date = "Ending Date";
+  static const String rp_bk_ending_date_label = "DD/MM/YY";
+  static const String rp_bk_starting_time = "Starting Time";
+  static const String rp_bk_starting_time_label = "--:-- AM/PM";
+  static const String rp_bk_ending_time = "Ending Time";
+  static const String rp_bk_ending_time_label = "--:-- AM/PM";
+  static const String rp_bk_address = "Address";
+  static const String rp_bk_address_label = "Specify Your Desired Destination for the Rental";
+  static const String rp_bk_book_driver = "Rent with a Driver";
+  static const String rp_bk_book_driver_body = "Need a driver? Choose this option to rent with a professional driver";
+  static const String rp_bk_proceed = "Proceed";
+
+  //  renting process - mode of delivery
+  static const String rp_mode_appbar_title = "Delivery Mode";
+  static const String rp_mode_choose_method = "Choose Method";
+  static const String rp_mode_pick_up = "Pick Up";
+  static const String rp_mode_delivery = "Delivery";
+  static const String rp_mode_pickup_location = "Pickup Location";
+  static const String rp_mode_pickup_location_label = "Pag-Ibig Halang, Calamba, Laguna";
+  static const String rp_mode_delivery_location = "Delivery Location";
+  static const String rp_mode_delivery_location_label = "Delivery Location for the Car Unit";
+  static const String rp_mode_proceed = "Proceed";
+
+  //  renting process - details and fees
+  static const String rp_details_fees_appbar_title = "Rental Details & Fees";
+  static const String rp_details_fees_car_name = "Mitsubishi Mirage G4 - 2024";
+  static const String rp_details_fees_amount_symbol = "₱";
+  static const String rp_details_fees_amount = "2,000";
+  static const String rp_details_fees_per_day = "per Day";
+  static const String rp_details_fees_starting_date_time = "Start Date & Time";
+  static const String rp_details_fees_starting_date_time_entry = "May 18 | 10:00 AM";
+  static const String rp_details_fees_ending_date_time = "End Date & Time";
+  static const String rp_details_fees_ending_date_time_entry = "May 20 | 08:30 PM";
+  static const String rp_details_fees_pick_up_location = "Pickup Location";
+  static const String rp_details_fees_pick_up_location_entry = "Pag-Ibig Halang, Calamba, Laguna";
+  static const String rp_details_fees_price_breakdown = "Price Breakdown";
+  static const String rp_details_fees_rent_fee = "Rental Fee";
+  static const String rp_details_fees_rent_fee_entry = "₱4,000";
+  static const String rp_details_fees_mileage_fee = "Mileage Fee";
+  static const String rp_details_fees_mileage_fee_entry = "₱500";
+  static const String rp_details_fees_total_amount = "Total Amount";
+  static const String rp_details_fees_total_amount_entry = "₱4,500";
+  static const String rp_details_fees_reservation_fee = "Reservation Fee";
+  static const String rp_details_fees_reservation_fees_entry = "₱500";
+  static const String rp_details_fees_agreement = "Reservation Fee Agreement";
+  static const String rp_details_fees_agreement_entry = "By agreeing, the reservation fee will act as a down payment and be deducted from the total payment. This fee ensures priority in case of schedule conflicts.";
+  static const String rp_details_fees_proceed_to_payment = "Proceed to Payment";
+
 }

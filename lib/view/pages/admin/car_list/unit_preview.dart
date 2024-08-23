@@ -112,6 +112,8 @@ class _UnitPreviewState extends State<UnitPreview> {
                               if (_informationDialogCurrentIndex <
                                   guides.length - 1) {
                                 _informationDialogCurrentIndex++;
+                              } else {
+                                Navigator.of(context).pushNamed("rp_booking_details");
                               }
                             });
                           },

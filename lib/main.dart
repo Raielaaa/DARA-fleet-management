@@ -10,6 +10,9 @@ import 'package:dara_app/view/pages/admin/car_list/unit_preview.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
 import 'package:dara_app/view/pages/admin/manage/status/status.dart';
+import 'package:dara_app/view/pages/admin/rent_process/booking_details.dart';
+import 'package:dara_app/view/pages/admin/rent_process/delivery_mode.dart';
+import 'package:dara_app/view/pages/admin/rent_process/details_fees.dart';
 import 'package:dara_app/view/pages/admin/rentals/report.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_1.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_2.dart';
@@ -90,7 +93,12 @@ class _MyAppState extends State<MyApp> {
             "manage_inquiries": (context) => const Inquiries(),
 
             //  admin option - Manage Car Status
-            "manage_car_status": (context) => const CarStatus()
+            "manage_car_status": (context) => const CarStatus(),
+
+            //  renting process - Booking Details
+            "rp_booking_details": (context) => const RPBookingDetails(),
+            "rp_delivery_mode": (context) => const RPDeliveryMode(),
+            "rp_details_fees": (context) => const RPDetailsFees()
           },
         ),
       ),
