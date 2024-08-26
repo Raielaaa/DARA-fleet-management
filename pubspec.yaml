@@ -154,6 +154,7 @@ flutter:
     - lib/assets/pictures/user_type_driver.jpeg
     - lib/assets/pictures/delivery_mode_pick_up.png
     - lib/assets/pictures/delivery_mode_delivery.png
+    - lib/assets/pictures/payment_successful.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

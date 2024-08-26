@@ -315,7 +315,7 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                 child: CustomComponents.displayText(
                                     ProjectStrings.rp_bk_proceed,
                                     color: Colors.white,
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold),
                               ),
                             )

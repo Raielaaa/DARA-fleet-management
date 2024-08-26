@@ -524,15 +524,27 @@ class ProjectStrings {
   static const String rp_details_fees_pick_up_location_entry = "Pag-Ibig Halang, Calamba, Laguna";
   static const String rp_details_fees_price_breakdown = "Price Breakdown";
   static const String rp_details_fees_rent_fee = "Rental Fee";
-  static const String rp_details_fees_rent_fee_entry = "₱4,000";
+  static const String rp_details_fees_rent_fee_entry = "₱ 4,000";
   static const String rp_details_fees_mileage_fee = "Mileage Fee";
-  static const String rp_details_fees_mileage_fee_entry = "₱500";
+  static const String rp_details_fees_mileage_fee_entry = "₱ 500";
   static const String rp_details_fees_total_amount = "Total Amount";
-  static const String rp_details_fees_total_amount_entry = "₱4,500";
-  static const String rp_details_fees_reservation_fee = "Reservation Fee";
-  static const String rp_details_fees_reservation_fees_entry = "₱500";
-  static const String rp_details_fees_agreement = "Reservation Fee Agreement";
+  static const String rp_details_fees_total_amount_entry = "₱ 4,500";
+  static const String rp_details_fees_reservation_fee = "Reservation Fee Agreement";
+  static const String rp_details_fees_reservation_fees_entry = "₱ 500";
+  static const String rp_details_fees_agreement = "I Agree to Pay the Reservation Fee";
   static const String rp_details_fees_agreement_entry = "By agreeing, the reservation fee will act as a down payment and be deducted from the total payment. This fee ensures priority in case of schedule conflicts.";
   static const String rp_details_fees_proceed_to_payment = "Proceed to Payment";
+
+  //  payment successful
+  static const String ps_title = "Payment Successful";
+  static const String ps_subheader = "Your payment was successful. Please proceed to document submission to continue the rental process.";
+  static const String ps_reservation_title = "Your reservation has been successfully completed";
+  static const String ps_transaction_type_title = "Transaction Type:";
+  static const String ps_transaction_type_content = "Reservation";
+  static const String ps_transaction_number_title = "Transaction No.:";
+  static const String ps_transaction_number_content = "83769274748736";
+  static const String ps_transaction_date_title = "Transaction Date:";
+  static const String ps_transaction_date_content = "January 07, 2024 10:58 PM";
+  static const String ps_proceed_button = "Proceed with Document Submission";
 
 }
