@@ -535,7 +535,7 @@ class ProjectStrings {
   static const String rp_details_fees_agreement_entry = "By agreeing, the reservation fee will act as a down payment and be deducted from the total payment. This fee ensures priority in case of schedule conflicts.";
   static const String rp_details_fees_proceed_to_payment = "Proceed to Payment";
 
-  //  payment successful
+  //  payment successful (ps)
   static const String ps_title = "Payment Successful";
   static const String ps_subheader = "Your payment was successful. Please proceed to document submission to continue the rental process.";
   static const String ps_reservation_title = "Your reservation has been successfully completed";
@@ -546,5 +546,12 @@ class ProjectStrings {
   static const String ps_transaction_date_title = "Transaction Date:";
   static const String ps_transaction_date_content = "January 07, 2024 10:58 PM";
   static const String ps_proceed_button = "Proceed with Document Submission";
+
+  //  submit documents (sd)
+  static const String sd_title = "Please ensure the following:";
+  static const String sd_notice_1 = "All details on the ID must be clear and legible (including Full Name, Nationality, and Birthdate).";
+  static const String sd_notice_2 = "The ID file or image must be an original, not a photocopy.";
+  static const String sd_notice_3 = "Ensure consistency across all submitted documents.";
+  static const String sd_notice_4 = "Verify that the personal information on the ID is complete and accurate (see example above).";
 
 }

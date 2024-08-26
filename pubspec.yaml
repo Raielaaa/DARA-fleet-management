@@ -155,6 +155,7 @@ flutter:
     - lib/assets/pictures/delivery_mode_pick_up.png
     - lib/assets/pictures/delivery_mode_delivery.png
     - lib/assets/pictures/payment_successful.png
+    - lib/assets/pictures/id.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

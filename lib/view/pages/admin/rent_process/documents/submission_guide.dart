@@ -10,6 +10,7 @@ class SubmissionGuide extends StatefulWidget {
 class _SubmissionGuideState extends State<SubmissionGuide> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+    );
   }
 }

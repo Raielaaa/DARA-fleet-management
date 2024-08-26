@@ -11,6 +11,115 @@ class PaymentSuccess extends StatefulWidget {
 }
 
 class _PaymentSuccessState extends State<PaymentSuccess> {
+  Widget _informationRow(String infoCount, String info) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: Row(
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: Color(int.parse(
+                        ProjectColors.mainColorHex.substring(2),
+                        radix: 16)),
+                    borderRadius: const BorderRadius.all(Radius.circular(100))),
+                width: 30,
+                height: 30,
+              ),
+              CustomComponents.displayText(infoCount,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 10,
+                  color: Colors.white)
+            ],
+          ),
+          const SizedBox(width: 20),
+          Expanded(
+            child: CustomComponents.displayText(info, fontSize: 10),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.75, // 3/4 of the screen height
+          child: Column(
+            children: [
+              // Use Expanded to fill the available space
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.stretch, // Full width
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          "lib/assets/pictures/id.png",
+                          width: MediaQuery.of(context).size.width - 150,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      CustomComponents.displayText(ProjectStrings.sd_title,
+                          fontWeight: FontWeight.bold, fontSize: 14),
+                      _informationRow("1", ProjectStrings.sd_notice_1),
+                      _informationRow("2", ProjectStrings.sd_notice_2),
+                      _informationRow("3", ProjectStrings.sd_notice_3),
+                      _informationRow("4", ProjectStrings.sd_notice_4),
+
+                      //  proceed button
+                      const SizedBox(height: 50),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  Color(int.parse(
+                                      ProjectColors.mainColorHex.substring(2),
+                                      radix: 16))),
+                              shape: MaterialStatePropertyAll<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)))),
+                          onPressed: () {
+                            _showBottomSheet(context);
+                          },
+                          child: Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 15, bottom: 15),
+                              child: CustomComponents.displayText(
+                                  ProjectStrings.ps_proceed_button,
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +129,9 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
         width: double.infinity,
         child: Column(
           children: [
-            //  main image
             const SizedBox(height: 100),
             Image.asset("lib/assets/pictures/payment_successful.png",
                 width: MediaQuery.of(context).size.width - 150),
-            //  title and subtitle
             const SizedBox(height: 20),
             CustomComponents.displayText(ProjectStrings.ps_title,
                 fontSize: 12, fontWeight: FontWeight.bold),
@@ -35,7 +142,6 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                   fontSize: 10, textAlign: TextAlign.center),
             ),
             const SizedBox(height: 30),
-            //  main panel
             Padding(
               padding: const EdgeInsets.only(left: 25, right: 25),
               child: Container(
@@ -107,32 +213,32 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                 ),
               ),
             ),
-            //  proceed button
             const SizedBox(height: 30),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(Color(
-                          int.parse(ProjectColors.mainColorHex.substring(2),
-                              radix: 16))),
-                      shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)))),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed("rp_payment_success");
-                  },
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 15, bottom: 15),
-                      child: CustomComponents.displayText(
-                          ProjectStrings.ps_proceed_button,
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )),
-            )
+                style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll<Color>(Color(
+                        int.parse(ProjectColors.mainColorHex.substring(2),
+                            radix: 16))),
+                    shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)))),
+                onPressed: () {
+                  _showBottomSheet(context);
+                },
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15, bottom: 15),
+                    child: CustomComponents.displayText(
+                        ProjectStrings.ps_proceed_button,
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
