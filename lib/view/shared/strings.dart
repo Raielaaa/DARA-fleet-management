@@ -548,10 +548,15 @@ class ProjectStrings {
   static const String ps_proceed_button = "Proceed with Document Submission";
 
   //  submit documents (sd)
+  static const String sd_appbar_title = "Submit Documents";
   static const String sd_title = "Please ensure the following:";
   static const String sd_notice_1 = "All details on the ID must be clear and legible (including Full Name, Nationality, and Birthdate).";
   static const String sd_notice_2 = "The ID file or image must be an original, not a photocopy.";
   static const String sd_notice_3 = "Ensure consistency across all submitted documents.";
   static const String sd_notice_4 = "Verify that the personal information on the ID is complete and accurate (see example above).";
 
+  //  verify booking (vb)
+  static const String vb_title = "We're verifying your booking!";
+  static const String vb_content = "Please expect a notification from us in 24 hours, we will notify you on the status of your verification.";
+  static const String vb_button = "Back to Home";
 }

@@ -248,8 +248,11 @@ class _ProfileState extends State<Profile> {
                                     ],
                                   ),
                                 )
-                              ])),
-                        )),
+                              ]
+                            )
+                          ),
+                      )
+                    ),
 
                     //  government valid id 2
                     Padding(

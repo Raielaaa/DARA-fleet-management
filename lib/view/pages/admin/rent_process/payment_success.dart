@@ -82,7 +82,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                       //  proceed button
                       const SizedBox(height: 50),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        padding: const EdgeInsets.symmetric(horizontal: 0),
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll<Color>(
@@ -94,7 +94,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5)))),
                           onPressed: () {
-                            _showBottomSheet(context);
+                            Navigator.of(context).pushNamed("rp_submit_documents");
                           },
                           child: Center(
                             child: Padding(
