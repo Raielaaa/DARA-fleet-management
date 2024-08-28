@@ -827,6 +827,17 @@ class _Rentals extends State<Rentals> {
                 ],
               ),
 
+
+
+
+
+
+
+
+
+
+
+              //////////////////  list items  ////////////////////////
               const SizedBox(height: 15),
               Expanded(
                 child: ListView(
@@ -964,7 +975,8 @@ class _Rentals extends State<Rentals> {
                                           ProjectColors.mainColorHex
                                               .substring(2),
                                           radix: 16)),
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
                                   Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -1139,7 +1151,8 @@ class _Rentals extends State<Rentals> {
                                           ProjectColors.mainColorHex
                                               .substring(2),
                                           radix: 16)),
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
                                   Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -1314,7 +1327,8 @@ class _Rentals extends State<Rentals> {
                                           ProjectColors.mainColorHex
                                               .substring(2),
                                           radix: 16)),
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
                                   Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),

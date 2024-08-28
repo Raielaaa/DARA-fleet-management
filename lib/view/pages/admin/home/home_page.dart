@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
         PersistentTabConfig(
           screen: const AdminHome(),
           item: ItemConfig(
-            icon: const Icon(Icons.home),
+            icon: const Icon(Icons.home_rounded),
             title: "Home",
             textStyle: const TextStyle(
               fontSize: 10,
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
         PersistentTabConfig(
           screen: const Rentals(),
           item: ItemConfig(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.car_crash),
             title: "Rentals",
             textStyle: const TextStyle(
               fontSize: 10,
@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
         PersistentTabConfig(
           screen: const Profile(),
           item: ItemConfig(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.person),
             title: "Profile",
             textStyle: const TextStyle(
               fontSize: 10,
