@@ -23,6 +23,137 @@ class _LoginMain extends State<LoginMain> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   late GoogleSignInAccount _userObj;
 
+  String clickedUserType = "User";
+
+  Future<void> _showUserOptionsDialog() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            backgroundColor: Color(int.parse(
+              ProjectColors.mainColorBackground.substring(2),
+              radix: 16,
+            )),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Top design
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(5),
+                        topRight: Radius.circular(5),
+                      ),
+                      child: Image.asset(
+                        "lib/assets/pictures/header_background_curves.png",
+                        width: MediaQuery.of(context).size.width - 10,
+                        height: 70, // Adjust height as needed
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(right: 15, left: 15, top: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomComponents.displayText(
+                            ProjectStrings.user_type_dialog_title,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                          Image.asset(
+                            "lib/assets/pictures/app_logo_circle.png",
+                            width: 80.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                //  main body
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _userType(
+                        ProjectStrings.user_type_outsource_title,
+                        "lib/assets/pictures/user_type_outsource.jpg"),
+                    const SizedBox(width: 10),
+                    _userType(
+                        ProjectStrings.user_type_driver_title,
+                        "lib/assets/pictures/user_type_driver.jpeg"),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _userType(
+                        ProjectStrings.user_type_outsource_title,
+                        "lib/assets/pictures/user_type_outsource.jpg"),
+                    const SizedBox(width: 10),
+                    _userType(
+                        ProjectStrings.user_type_driver_title,
+                        "lib/assets/pictures/user_type_driver.jpeg"),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                _userType(
+                    ProjectStrings.user_type_user_title,
+                    "lib/assets/pictures/user_type_user.jpg"),
+                const SizedBox(height: 30)
+              ],
+            ),
+          );
+        });
+  }
+
+    Widget _userType(String header, String imagePath) {
+    return Container(
+      width: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+      ),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(5),
+              topRight: Radius.circular(5),
+            ),
+            child: Image.asset(
+              imagePath,
+              height: 60,
+              width: double.infinity, // Expand image to full width
+              fit: BoxFit.cover, // Cover the entire width of the container
+            ),
+          ),
+          const SizedBox(height: 13),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: CustomComponents.displayText(
+                header,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -113,7 +244,7 @@ class _LoginMain extends State<LoginMain> {
               Align(
                 alignment: Alignment.centerRight,
                 child: CustomComponents.displayText(
-                    ProjectStrings.account_login_main_forgot_password,
+                    ProjectStrings.account_login_main_not_a_user,
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
                     color: Color(int.parse(

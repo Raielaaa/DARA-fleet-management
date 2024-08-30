@@ -73,6 +73,7 @@ class ProjectStrings {
   static String account_login_main_password = "Password";
   static String account_login_main_password_hint = "Your password";
   static String account_login_main_forgot_password = "Forgot password?";
+  static String account_login_main_not_a_user = "Not a User? Click here";
   static String account_login_main_login_button = "Login";
   static String account_login_main_or = "Or";
   static String account_login_main_login_google = "Sign in with Google";
@@ -299,6 +300,7 @@ class ProjectStrings {
 
 
   //  Report
+  static const String report_appbar_title = "Report";
   static const String report_car_rent = "Car Rent";
   static const String report_reviews = "4.6 (125 reviews)";
   static const String report_unit_name = "Mitsubishi Mirage G4 2024";
@@ -559,4 +561,17 @@ class ProjectStrings {
   static const String vb_title = "We're verifying your booking!";
   static const String vb_content = "Please expect a notification from us in 24 hours, we will notify you on the status of your verification.";
   static const String vb_button = "Back to Home";
+
+  //  home top options - report
+  static const String to_appbar_title = "Report";
+  static const String to_toyota_wigo = "Toyota Wigo";
+  static const String to_mitsubishi_mirage = "Mitsubishi Mirage";
+  static const String to_toyota_avanza = "Toyota Avanza";
+  static const String to_hyundai_accent = "Hyundai Accent";
+  static const String to_suzuki_ertiga = "Suzuki Ertiga";
+  static const String to_hyundai_stargaizer = "Hyundai Stargaizer";
+  static const String to_cvt_mirage = "CVT Mirage";
+  static const String to_kia_picanto = "Kia Picanto";
+  static const String to_toyota_inova = "Toyota Inova";
+  static const String to_suzuki_apv = "Suzuki APV";
 }

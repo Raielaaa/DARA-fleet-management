@@ -1,20 +1,38 @@
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
-class Report extends StatefulWidget {
-  const Report({super.key});
+class TopOptionReport extends StatefulWidget {
+  const TopOptionReport({super.key});
 
   @override
-  State<Report> createState() => _ReportState();
+  State<TopOptionReport> createState() => _TopOptionReportState();
 }
 
-class _ReportState extends State<Report> {
+class _TopOptionReportState extends State<TopOptionReport> {
   bool engineProblemsIsChecked = false;
   bool transmissionIsChecked = false;
   bool brakeIsChecked = false;
   bool otherIsChecked = false;
+
+  //  Set an int with value -1 since no item has been selected
+  int selectedCard = 0;
+
+  //  Car name/brands
+  List<String> carBrands = [
+    ProjectStrings.to_toyota_wigo,
+    ProjectStrings.to_mitsubishi_mirage,
+    ProjectStrings.to_toyota_avanza,
+    ProjectStrings.to_hyundai_accent,
+    ProjectStrings.to_suzuki_ertiga,
+    ProjectStrings.to_hyundai_stargaizer,
+    ProjectStrings.to_cvt_mirage,
+    ProjectStrings.to_kia_picanto,
+    ProjectStrings.to_toyota_inova,
+    ProjectStrings.to_suzuki_apv
+  ];
 
   Future<void> _showInconvenienceDialog() async {
     return showDialog(
@@ -98,7 +116,7 @@ class _ReportState extends State<Report> {
                       child: Image.asset("lib/assets/pictures/left_arrow.png"),
                     ),
                     CustomComponents.displayText(
-                      ProjectStrings.report_appbar_title,
+                      ProjectStrings.to_appbar_title,
                       fontWeight: FontWeight.bold,
                     ),
                     Padding(
@@ -123,79 +141,46 @@ class _ReportState extends State<Report> {
                             borderRadius: BorderRadius.circular(5)),
                         width: double.infinity,
                         child: Padding(
-                          padding: const EdgeInsets.all(15),
+                          padding: const EdgeInsets.only(left: 15, right: 15, top: 0),
                           child: Column(
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 0),
+                              GridView.builder(
+                                padding: const EdgeInsets.only(top: 20),
+                                shrinkWrap: true,
+                                itemCount: 10,
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                  crossAxisCount: 2,
+                                  childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 8)
+                                ),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedCard = index;
+                                      });
+                                    },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Color(int.parse(
-                                            ProjectColors
-                                                .reportMainColorBackground
-                                                .substring(2),
-                                            radix: 16)),
+                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                        color: selectedCard == index ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) :
+                                        Color(int.parse(ProjectColors.reportMainColorBackground.substring(2), radix: 16))
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10,
-                                            bottom: 10,
-                                            right: 25,
-                                            left: 25),
-                                        child: CustomComponents.displayText(
-                                          ProjectStrings.report_car_rent,
-                                          color: Color(int.parse(
-                                              ProjectColors.mainColorHex
-                                                  .substring(2),
-                                              radix: 16)),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(0.0),
+                                          child: CustomComponents.displayText(
+                                            carBrands[index].toString(),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500,
+                                            color: selectedCard == index ? Colors.white : const Color(0xff404040)
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 0),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                            "lib/assets/pictures/star.png",
-                                            width: 20),
-                                        const SizedBox(width: 10),
-                                        CustomComponents.displayText(
-                                            ProjectStrings.report_reviews,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500)
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                
-                              //  unit name
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 30),
-                                  child: CustomComponents.displayText(
-                                      ProjectStrings.report_unit_name,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                
-                              //  unit description
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 5),
-                                  child: CustomComponents.displayText(
-                                      ProjectStrings.report_unit_description,
-                                      fontSize: 10),
-                                ),
+                                  );
+                                }
                               ),
                 
                               //  location
@@ -435,9 +420,12 @@ class _ReportState extends State<Report> {
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: CustomComponents.displayElevatedButton(
-                                      ProjectStrings.report_submit_report),
+                                    ProjectStrings.report_submit_report,
+                                    fontSize: 12
+                                  ),
                                 ),
-                              )
+                              ),
+                              const SizedBox(height: 20)
                             ],
                           ),
                         ),
@@ -445,7 +433,9 @@ class _ReportState extends State<Report> {
                     )
                   ],
                 ),
-              )
+              ),
+
+              const SizedBox(height: 55)
             ],
           ),
         ),

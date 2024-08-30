@@ -173,6 +173,7 @@ class _AdminHomeState extends State<AdminHome> {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Row(
                   children: [
+                    //  inquire
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -204,6 +205,7 @@ class _AdminHomeState extends State<AdminHome> {
                         ),
                       ),
                     ),
+                    //  contact
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -235,37 +237,44 @@ class _AdminHomeState extends State<AdminHome> {
                         ),
                       ),
                     ),
+                    //  report
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            color: Colors.white38,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  "lib/assets/pictures/home_top_report.png",
-                                  fit: BoxFit.contain,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 7),
-                                  child: CustomComponents.displayText(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 10,
-                                    ProjectStrings.admin_home_top_options_report,
-                                    color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed("to_report");
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              color: Colors.white38,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "lib/assets/pictures/home_top_report.png",
+                                    fit: BoxFit.contain,
                                   ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 7),
+                                    child: CustomComponents.displayText(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 10,
+                                      ProjectStrings.admin_home_top_options_report,
+                                      color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
+                    //  settings
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -297,6 +306,7 @@ class _AdminHomeState extends State<AdminHome> {
                         ),
                       ),
                     ),
+                    //  manage
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),

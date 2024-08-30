@@ -7,6 +7,7 @@ import 'package:dara_app/view/pages/account/register/register_phone_number.dart'
 import 'package:dara_app/view/pages/account/register/register_successful.dart';
 import 'package:dara_app/view/pages/account/register/register_verify_phone.dart';
 import 'package:dara_app/view/pages/admin/car_list/unit_preview.dart';
+import 'package:dara_app/view/pages/admin/home_top_option/top_report.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
 import 'package:dara_app/view/pages/admin/manage/status/status.dart';
@@ -104,7 +105,10 @@ class _MyAppState extends State<MyApp> {
             "rp_details_fees": (context) => const RPDetailsFees(),
             "rp_payment_success": (context) => const PaymentSuccess(),
             "rp_submit_documents": (context) => const SubmitDocuments(),
-            "rp_verify_booking": (context) => const VerifyBooking()
+            "rp_verify_booking": (context) => const VerifyBooking(),
+
+            //  top option - report
+            "to_report": (context) => const TopOptionReport()
           },
         ),
       ),
