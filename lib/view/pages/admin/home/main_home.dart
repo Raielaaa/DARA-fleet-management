@@ -20,6 +20,81 @@ class _AdminHomeState extends State<AdminHome> {
     });
   }
 
+  Future<void> _showContactBottomDialog() async {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16)
+        )
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.all(25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomComponents.displayText(
+                ProjectStrings.to_bottom_title,
+                fontSize: 12,
+                fontWeight: FontWeight.bold
+              ),
+              const SizedBox(height: 20),
+              _bottomSheetContactItems(
+                "lib/assets/pictures/bottom_email.png",
+                ProjectStrings.to_bottom_email_title,
+                ProjectStrings.to_bottom_email_content
+              ),
+              const SizedBox(height: 15),
+              _bottomSheetContactItems(
+                "lib/assets/pictures/bottom_chat.png",
+                ProjectStrings.to_bottom_message_title,
+                ProjectStrings.to_bottom_message_content
+              ),
+              const SizedBox(height: 15),
+              _bottomSheetContactItems(
+                "lib/assets/pictures/bottom_call.png",
+                ProjectStrings.to_bottom_call_title,
+                ProjectStrings.to_bottom_call_content
+              ),
+              const SizedBox(height: 60),
+            ],
+          ),
+        );
+      }
+    );
+  }
+
+  Widget _bottomSheetContactItems(String imagePath, String contactTitle, String contactContent) {
+    return Row(
+                children: [
+                  Image.asset(
+                    imagePath,
+                    width: 38,
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomComponents.displayText(
+                        contactTitle,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold
+                      ),
+                      const SizedBox(height: 3),
+                      CustomComponents.displayText(
+                        contactContent,
+                        fontSize: 10
+                      )
+                    ],
+                  )
+                ],
+              );
+  }
+
   Future<void> _showOpeningBanner() async {
   return showDialog(
     context: context,
@@ -209,29 +284,34 @@ class _AdminHomeState extends State<AdminHome> {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            color: Colors.white38,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  "lib/assets/pictures/home_top_contact.png",
-                                  fit: BoxFit.contain,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 7),
-                                  child: CustomComponents.displayText(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 10,
-                                    ProjectStrings.admin_home_top_options_contact,
-                                    color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                        child: GestureDetector(
+                          onTap: () {
+                            _showContactBottomDialog();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              color: Colors.white38,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "lib/assets/pictures/home_top_contact.png",
+                                    fit: BoxFit.contain,
                                   ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 7),
+                                    child: CustomComponents.displayText(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 10,
+                                      ProjectStrings.admin_home_top_options_contact,
+                                      color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),

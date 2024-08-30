@@ -63,7 +63,7 @@ class _LoginMain extends State<LoginMain> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomComponents.displayText(
-                            ProjectStrings.user_type_dialog_title,
+                            ProjectStrings.account_login_main_dialog_title,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -82,32 +82,77 @@ class _LoginMain extends State<LoginMain> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _userType(
-                        ProjectStrings.user_type_outsource_title,
-                        "lib/assets/pictures/user_type_outsource.jpg"),
+                    //  admin/manager
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          clickedUserType = "Admin/Manager";
+                        });
+                      },
+                      child: _userType(
+                          ProjectStrings.account_login_main_admin_manager,
+                          "lib/assets/pictures/admin_manager.jpg"),
+                    ),
                     const SizedBox(width: 10),
-                    _userType(
-                        ProjectStrings.user_type_driver_title,
-                        "lib/assets/pictures/user_type_driver.jpeg"),
+                    //  accountant
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          clickedUserType = "Accountant";
+                        });
+                      },
+                      child: _userType(
+                          ProjectStrings.account_login_main_accountant,
+                          "lib/assets/pictures/accountant.jpg"),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _userType(
-                        ProjectStrings.user_type_outsource_title,
-                        "lib/assets/pictures/user_type_outsource.jpg"),
+                    //  driver
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          clickedUserType = "Driver";
+                        });
+                      },
+                      child: _userType(
+                          ProjectStrings.account_login_main_driver,
+                          "lib/assets/pictures/user_type_driver.jpeg"),
+                    ),
                     const SizedBox(width: 10),
-                    _userType(
-                        ProjectStrings.user_type_driver_title,
-                        "lib/assets/pictures/user_type_driver.jpeg"),
+                    //  outsource
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          clickedUserType = "Outsource";
+                        });
+                      },
+                      child: _userType(
+                          ProjectStrings.account_login_main_outsource,
+                          "lib/assets/pictures/user_type_outsource.jpg"),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                _userType(
-                    ProjectStrings.user_type_user_title,
-                    "lib/assets/pictures/user_type_user.jpg"),
+                //  user
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      clickedUserType = "User";
+                    });
+                  },
+                  child: _userType(
+                      ProjectStrings.account_login_main_user,
+                      "lib/assets/pictures/user_type_user.jpg"),
+                ),
                 const SizedBox(height: 30)
               ],
             ),
@@ -239,17 +284,22 @@ class _LoginMain extends State<LoginMain> {
                 });
               }),
 
-              //  Text - Forgot password
+              //  Text - Change user type
               const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerRight,
-                child: CustomComponents.displayText(
-                    ProjectStrings.account_login_main_not_a_user,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: Color(int.parse(
-                        ProjectColors.mainColorHex.substring(2),
-                        radix: 16))),
+              GestureDetector(
+                onTap: () {
+                  _showUserOptionsDialog();
+                },
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: CustomComponents.displayText(
+                      "Not a $clickedUserType? Click here",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      color: Color(int.parse(
+                          ProjectColors.mainColorHex.substring(2),
+                          radix: 16))),
+                ),
               ),
 
               //  Login button

@@ -157,6 +157,11 @@ flutter:
     - lib/assets/pictures/payment_successful.png
     - lib/assets/pictures/id.png
     - lib/assets/pictures/verify_documents.png
+    - lib/assets/pictures/accountant.jpg
+    - lib/assets/pictures/admin_manager.jpg
+    - lib/assets/pictures/bottom_call.png
+    - lib/assets/pictures/bottom_chat.png
+    - lib/assets/pictures/bottom_email.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

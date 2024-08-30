@@ -79,6 +79,12 @@ class ProjectStrings {
   static String account_login_main_login_google = "Sign in with Google";
   static String account_login_main_no_account_1 = "Don't have an account? ";
   static String account_login_main_no_account_2 = "Register now!";
+  static String account_login_main_admin_manager = "Admin/Manager";
+  static String account_login_main_accountant = "Accountant";
+  static String account_login_main_driver = "Driver";
+  static String account_login_main_outsource = "Outsource";
+  static String account_login_main_user = "User";
+  static String account_login_main_dialog_title = "Login Type";
 
   //  Terms and conditions
   static String terms_and_conditions_header_main = "Terms and Conditions";
@@ -574,4 +580,11 @@ class ProjectStrings {
   static const String to_kia_picanto = "Kia Picanto";
   static const String to_toyota_inova = "Toyota Inova";
   static const String to_suzuki_apv = "Suzuki APV";
+  static const String to_bottom_title = "Contact Information";
+  static const String to_bottom_call_title = "Call";
+  static const String to_bottom_call_content = "+63 997 126 3452";
+  static const String to_bottom_message_title = "Message";
+  static const String to_bottom_message_content = "+63 997 126 3452";
+  static const String to_bottom_email_title = "Email";
+  static const String to_bottom_email_content = "donalpha.transportservice@gmail.com";
 }
