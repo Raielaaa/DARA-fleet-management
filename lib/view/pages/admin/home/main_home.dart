@@ -2,9 +2,12 @@ import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
+import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 
 class AdminHome extends StatefulWidget {
-  const AdminHome({super.key});
+  final PersistentTabController controller;
+
+  const AdminHome({super.key, required this.controller});
 
   @override
   State<AdminHome> createState() => _AdminHomeState();
@@ -13,7 +16,6 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showOpeningBanner();
@@ -22,159 +24,149 @@ class _AdminHomeState extends State<AdminHome> {
 
   Future<void> _showContactBottomDialog() async {
     return showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16)
+        isScrollControlled: true,
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16), topRight: Radius.circular(16))),
+        builder: (BuildContext context) {
+          return Padding(
+            padding: const EdgeInsets.all(25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomComponents.displayText(ProjectStrings.to_bottom_title,
+                    fontSize: 12, fontWeight: FontWeight.bold),
+                const SizedBox(height: 20),
+                _bottomSheetContactItems(
+                    "lib/assets/pictures/bottom_email.png",
+                    ProjectStrings.to_bottom_email_title,
+                    ProjectStrings.to_bottom_email_content),
+                const SizedBox(height: 15),
+                _bottomSheetContactItems(
+                    "lib/assets/pictures/bottom_chat.png",
+                    ProjectStrings.to_bottom_message_title,
+                    ProjectStrings.to_bottom_message_content),
+                const SizedBox(height: 15),
+                _bottomSheetContactItems(
+                    "lib/assets/pictures/bottom_call.png",
+                    ProjectStrings.to_bottom_call_title,
+                    ProjectStrings.to_bottom_call_content),
+                const SizedBox(height: 60),
+              ],
+            ),
+          );
+        });
+  }
+
+  Widget _bottomSheetContactItems(
+      String imagePath, String contactTitle, String contactContent) {
+    return Row(
+      children: [
+        Image.asset(
+          imagePath,
+          width: 38,
+        ),
+        const SizedBox(width: 20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomComponents.displayText(contactTitle,
+                fontSize: 10, fontWeight: FontWeight.bold),
+            const SizedBox(height: 3),
+            CustomComponents.displayText(contactContent, fontSize: 10)
+          ],
         )
-      ),
-      builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(25),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomComponents.displayText(
-                ProjectStrings.to_bottom_title,
-                fontSize: 12,
-                fontWeight: FontWeight.bold
-              ),
-              const SizedBox(height: 20),
-              _bottomSheetContactItems(
-                "lib/assets/pictures/bottom_email.png",
-                ProjectStrings.to_bottom_email_title,
-                ProjectStrings.to_bottom_email_content
-              ),
-              const SizedBox(height: 15),
-              _bottomSheetContactItems(
-                "lib/assets/pictures/bottom_chat.png",
-                ProjectStrings.to_bottom_message_title,
-                ProjectStrings.to_bottom_message_content
-              ),
-              const SizedBox(height: 15),
-              _bottomSheetContactItems(
-                "lib/assets/pictures/bottom_call.png",
-                ProjectStrings.to_bottom_call_title,
-                ProjectStrings.to_bottom_call_content
-              ),
-              const SizedBox(height: 60),
-            ],
-          ),
-        );
-      }
+      ],
     );
   }
 
-  Widget _bottomSheetContactItems(String imagePath, String contactTitle, String contactContent) {
-    return Row(
-                children: [
-                  Image.asset(
-                    imagePath,
-                    width: 38,
-                  ),
-                  const SizedBox(width: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomComponents.displayText(
-                        contactTitle,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold
-                      ),
-                      const SizedBox(height: 3),
-                      CustomComponents.displayText(
-                        contactContent,
-                        fontSize: 10
-                      )
-                    ],
-                  )
-                ],
-              );
-  }
-
   Future<void> _showOpeningBanner() async {
-  return showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-        backgroundColor: Colors.transparent,
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.zero,
-            color: Colors.transparent,
-            width: MediaQuery.of(context).size.width - 10,
-            child: Column(
-              mainAxisSize: MainAxisSize.min, // Adjust the height based on content
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(7),
-                  child: Image.asset(
-                    "lib/assets/pictures/home_opening_banner.png",
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-                const SizedBox(height: 15),
-                SizedBox(
-                  width: double.infinity, // Makes the button take the full width of the parent container
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.zero,
+              color: Colors.transparent,
+              width: MediaQuery.of(context).size.width - 10,
+              child: Column(
+                mainAxisSize:
+                    MainAxisSize.min, // Adjust the height based on content
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(7),
+                    child: Image.asset(
+                      "lib/assets/pictures/home_opening_banner.png",
+                      fit: BoxFit.fitWidth,
                     ),
-                    height: 35,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: CustomComponents.displayText(
-                        "Check more offers",
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
+                  ),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: double
+                        .infinity, // Makes the button take the full width of the parent container
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color(int.parse(
+                            ProjectColors.mainColorHex.substring(2),
+                            radix: 16)),
+                      ),
+                      height: 35,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: CustomComponents.displayText(
+                          "Check more offers",
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: double.infinity, // Makes the button take the full width of the parent container
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.transparent,
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.white,
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double
+                        .infinity, // Makes the button take the full width of the parent container
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.transparent,
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    height: 35,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: CustomComponents.displayText(
-                        "Close",
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
+                      height: 35,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: CustomComponents.displayText(
+                          "Close",
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    },
-  );
-}
-
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+        color: Color(int.parse(ProjectColors.mainColorBackground.substring(2),
+            radix: 16)),
         width: double.infinity,
         height: double.infinity,
         child: Padding(
@@ -194,10 +186,13 @@ class _AdminHomeState extends State<AdminHome> {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                        color: Color(int.parse(
+                            ProjectColors.mainColorHex.substring(2),
+                            radix: 16)),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10, right: 30, left: 30),
+                        padding: const EdgeInsets.only(
+                            top: 10, bottom: 10, right: 30, left: 30),
                         child: CustomComponents.displayText(
                           "Admin",
                           color: Colors.white,
@@ -227,7 +222,9 @@ class _AdminHomeState extends State<AdminHome> {
                           CustomComponents.displayText(
                             "PH +63 ****** 8475",
                             fontWeight: FontWeight.w600,
-                            color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                            color: Color(int.parse(
+                                ProjectColors.lightGray.substring(2),
+                                radix: 16)),
                           ),
                         ],
                       ),
@@ -235,7 +232,8 @@ class _AdminHomeState extends State<AdminHome> {
                     Expanded(
                       child: Image.asset(
                         "lib/assets/pictures/home_top_image.png",
-                        fit: BoxFit.contain, // Ensure the image fits within its container
+                        fit: BoxFit
+                            .contain, // Ensure the image fits within its container
                       ),
                     ),
                   ],
@@ -252,29 +250,37 @@ class _AdminHomeState extends State<AdminHome> {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            color: Colors.white38,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  "lib/assets/pictures/home_logo_inquire.png",
-                                  fit: BoxFit.contain,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 7),
-                                  child: CustomComponents.displayText(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 10,
-                                    ProjectStrings.admin_home_top_options_inquire,
-                                    color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                        child: GestureDetector(
+                          onTap: () {
+                            widget.controller.jumpToTab(1);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              color: Colors.white38,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "lib/assets/pictures/home_logo_inquire.png",
+                                    fit: BoxFit.contain,
                                   ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 7),
+                                    child: CustomComponents.displayText(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 10,
+                                      ProjectStrings
+                                          .admin_home_top_options_inquire,
+                                      color: Color(int.parse(
+                                          ProjectColors.darkGray.substring(2),
+                                          radix: 16)),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -306,8 +312,11 @@ class _AdminHomeState extends State<AdminHome> {
                                     child: CustomComponents.displayText(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 10,
-                                      ProjectStrings.admin_home_top_options_contact,
-                                      color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                                      ProjectStrings
+                                          .admin_home_top_options_contact,
+                                      color: Color(int.parse(
+                                          ProjectColors.darkGray.substring(2),
+                                          radix: 16)),
                                     ),
                                   )
                                 ],
@@ -343,8 +352,11 @@ class _AdminHomeState extends State<AdminHome> {
                                     child: CustomComponents.displayText(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 10,
-                                      ProjectStrings.admin_home_top_options_report,
-                                      color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                                      ProjectStrings
+                                          .admin_home_top_options_report,
+                                      color: Color(int.parse(
+                                          ProjectColors.darkGray.substring(2),
+                                          radix: 16)),
                                     ),
                                   )
                                 ],
@@ -376,8 +388,11 @@ class _AdminHomeState extends State<AdminHome> {
                                   child: CustomComponents.displayText(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 10,
-                                    ProjectStrings.admin_home_top_options_settings,
-                                    color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                                    ProjectStrings
+                                        .admin_home_top_options_settings,
+                                    color: Color(int.parse(
+                                        ProjectColors.darkGray.substring(2),
+                                        radix: 16)),
                                   ),
                                 )
                               ],
@@ -410,10 +425,13 @@ class _AdminHomeState extends State<AdminHome> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 7),
                                     child: CustomComponents.displayText(
-                                      ProjectStrings.admin_home_top_options_manage,
+                                      ProjectStrings
+                                          .admin_home_top_options_manage,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 10,
-                                      color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                                      color: Color(int.parse(
+                                          ProjectColors.darkGray.substring(2),
+                                          radix: 16)),
                                     ),
                                   )
                                 ],
@@ -426,7 +444,7 @@ class _AdminHomeState extends State<AdminHome> {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 10),
               Expanded(
                 child: ListView(
@@ -445,7 +463,9 @@ class _AdminHomeState extends State<AdminHome> {
                           ),
                           CustomComponents.displayText(
                             ProjectStrings.admin_home_weather_date_placeholder,
-                            color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                            color: Color(int.parse(
+                                ProjectColors.lightGray.substring(2),
+                                radix: 16)),
                             fontStyle: FontStyle.italic,
                             fontSize: 12,
                           ),
@@ -459,7 +479,9 @@ class _AdminHomeState extends State<AdminHome> {
                         width: double.infinity,
                         height: 150,
                         decoration: BoxDecoration(
-                          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                          color: Color(int.parse(
+                              ProjectColors.mainColorHex.substring(2),
+                              radix: 16)),
                           borderRadius: BorderRadius.circular(7),
                         ),
                       ),
@@ -477,7 +499,9 @@ class _AdminHomeState extends State<AdminHome> {
                           ),
                           CustomComponents.displayText(
                             ProjectStrings.admin_home_featured_see_all,
-                            color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                            color: Color(int.parse(
+                                ProjectColors.mainColorHex.substring(2),
+                                radix: 16)),
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.w600,
                             fontSize: 12,
@@ -497,40 +521,48 @@ class _AdminHomeState extends State<AdminHome> {
                             Padding(
                               padding: const EdgeInsets.only(right: 15),
                               child: Container(
-                                width: 250, // Set a specific width to your container
+                                width:
+                                    250, // Set a specific width to your container
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(7),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Image.asset(
                                             "lib/assets/pictures/car_list_placeholder_accent.png",
-                                            fit: BoxFit.contain, // Ensure the image fits within its container
+                                            fit: BoxFit
+                                                .contain, // Ensure the image fits within its container
                                           ),
                                         ),
                                       ),
                                       CustomComponents.displayText(
-                                        ProjectStrings.admin_home_car_info_placeholder_name_1,
+                                        ProjectStrings
+                                            .admin_home_car_info_placeholder_name_1,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 12,
                                       ),
                                       const SizedBox(height: 2),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           CustomComponents.displayText(
-                                            ProjectStrings.admin_home_car_info_placeholder_1,
+                                            ProjectStrings
+                                                .admin_home_car_info_placeholder_1,
                                             fontSize: 10,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             child: Container(
                                               width: 1,
                                               height: 10,
@@ -538,11 +570,13 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ),
                                           CustomComponents.displayText(
-                                            ProjectStrings.admin_home_car_info_placeholder_2,
+                                            ProjectStrings
+                                                .admin_home_car_info_placeholder_2,
                                             fontSize: 10,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             child: Container(
                                               width: 1,
                                               height: 10,
@@ -550,26 +584,36 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ),
                                           CustomComponents.displayText(
-                                            ProjectStrings.admin_home_car_info_placeholder_3,
+                                            ProjectStrings
+                                                .admin_home_car_info_placeholder_3,
                                             fontSize: 10,
                                           ),
                                         ],
                                       ),
                                       const SizedBox(height: 10),
                                       Padding(
-                                        padding: const EdgeInsets.only(bottom: 8),
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             CustomComponents.displayText(
-                                              ProjectStrings.admin_home_car_info_placeholder_price,
+                                              ProjectStrings
+                                                  .admin_home_car_info_placeholder_price,
                                               fontWeight: FontWeight.w600,
-                                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                              color: Color(int.parse(
+                                                  ProjectColors.mainColorHex
+                                                      .substring(2),
+                                                  radix: 16)),
                                               fontSize: 12,
                                             ),
                                             Icon(
                                               Icons.list,
-                                              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
                                             ),
                                           ],
                                         ),
@@ -583,40 +627,48 @@ class _AdminHomeState extends State<AdminHome> {
                             Padding(
                               padding: const EdgeInsets.only(right: 15),
                               child: Container(
-                                width: 250, // Set a specific width to your container
+                                width:
+                                    250, // Set a specific width to your container
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(7),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Image.asset(
                                             "lib/assets/pictures/car_list_placeholder_innova.png",
-                                            fit: BoxFit.contain, // Ensure the image fits within its container
+                                            fit: BoxFit
+                                                .contain, // Ensure the image fits within its container
                                           ),
                                         ),
                                       ),
                                       CustomComponents.displayText(
-                                        ProjectStrings.admin_home_car_info_placeholder_name_2,
+                                        ProjectStrings
+                                            .admin_home_car_info_placeholder_name_2,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 12,
                                       ),
                                       const SizedBox(height: 2),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           CustomComponents.displayText(
-                                            ProjectStrings.admin_home_car_info_placeholder_1,
+                                            ProjectStrings
+                                                .admin_home_car_info_placeholder_1,
                                             fontSize: 10,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             child: Container(
                                               width: 1,
                                               height: 10,
@@ -624,11 +676,13 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ),
                                           CustomComponents.displayText(
-                                            ProjectStrings.admin_home_car_info_placeholder_2,
+                                            ProjectStrings
+                                                .admin_home_car_info_placeholder_2,
                                             fontSize: 10,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             child: Container(
                                               width: 1,
                                               height: 10,
@@ -636,26 +690,36 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ),
                                           CustomComponents.displayText(
-                                            ProjectStrings.admin_home_car_info_placeholder_3,
+                                            ProjectStrings
+                                                .admin_home_car_info_placeholder_3,
                                             fontSize: 10,
                                           ),
                                         ],
                                       ),
                                       const SizedBox(height: 10),
                                       Padding(
-                                        padding: const EdgeInsets.only(bottom: 8),
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             CustomComponents.displayText(
-                                              ProjectStrings.admin_home_car_info_placeholder_price,
+                                              ProjectStrings
+                                                  .admin_home_car_info_placeholder_price,
                                               fontWeight: FontWeight.w600,
-                                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                              color: Color(int.parse(
+                                                  ProjectColors.mainColorHex
+                                                      .substring(2),
+                                                  radix: 16)),
                                               fontSize: 12,
                                             ),
                                             Icon(
                                               Icons.list,
-                                              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
                                             ),
                                           ],
                                         ),
@@ -669,40 +733,48 @@ class _AdminHomeState extends State<AdminHome> {
                             Padding(
                               padding: const EdgeInsets.only(right: 15),
                               child: Container(
-                                width: 250, // Set a specific width to your container
+                                width:
+                                    250, // Set a specific width to your container
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(7),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Image.asset(
                                             "lib/assets/pictures/car_list_placeholder_mirrage.png",
-                                            fit: BoxFit.contain, // Ensure the image fits within its container
+                                            fit: BoxFit
+                                                .contain, // Ensure the image fits within its container
                                           ),
                                         ),
                                       ),
                                       CustomComponents.displayText(
-                                        ProjectStrings.admin_home_car_info_placeholder_name_3,
+                                        ProjectStrings
+                                            .admin_home_car_info_placeholder_name_3,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 12,
                                       ),
                                       const SizedBox(height: 2),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           CustomComponents.displayText(
-                                            ProjectStrings.admin_home_car_info_placeholder_1,
+                                            ProjectStrings
+                                                .admin_home_car_info_placeholder_1,
                                             fontSize: 10,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             child: Container(
                                               width: 1,
                                               height: 10,
@@ -710,11 +782,13 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ),
                                           CustomComponents.displayText(
-                                            ProjectStrings.admin_home_car_info_placeholder_2,
+                                            ProjectStrings
+                                                .admin_home_car_info_placeholder_2,
                                             fontSize: 10,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
                                             child: Container(
                                               width: 1,
                                               height: 10,
@@ -722,26 +796,36 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ),
                                           CustomComponents.displayText(
-                                            ProjectStrings.admin_home_car_info_placeholder_3,
+                                            ProjectStrings
+                                                .admin_home_car_info_placeholder_3,
                                             fontSize: 10,
                                           ),
                                         ],
                                       ),
                                       const SizedBox(height: 10),
                                       Padding(
-                                        padding: const EdgeInsets.only(bottom: 8),
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             CustomComponents.displayText(
-                                              ProjectStrings.admin_home_car_info_placeholder_price,
+                                              ProjectStrings
+                                                  .admin_home_car_info_placeholder_price,
                                               fontWeight: FontWeight.w600,
-                                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                              color: Color(int.parse(
+                                                  ProjectColors.mainColorHex
+                                                      .substring(2),
+                                                  radix: 16)),
                                               fontSize: 12,
                                             ),
                                             Icon(
                                               Icons.list,
-                                              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray
+                                                      .substring(2),
+                                                  radix: 16)),
                                             ),
                                           ],
                                         ),
@@ -764,7 +848,8 @@ class _AdminHomeState extends State<AdminHome> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+                            padding: const EdgeInsets.only(
+                                left: 25, right: 25, top: 15),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: CustomComponents.displayText(
@@ -773,12 +858,12 @@ class _AdminHomeState extends State<AdminHome> {
                               ),
                             ),
                           ),
-
                           const SizedBox(height: 10),
                           SizedBox(
                             height: 125,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 25),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25),
                               child: ListView(
                                 scrollDirection: Axis.horizontal,
                                 children: [
@@ -787,8 +872,8 @@ class _AdminHomeState extends State<AdminHome> {
                                     child: Container(
                                       width: 290,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(7)
-                                      ),
+                                          borderRadius:
+                                              BorderRadius.circular(7)),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(7),
                                         child: Image.asset(
@@ -803,8 +888,8 @@ class _AdminHomeState extends State<AdminHome> {
                                     child: Container(
                                       width: 290,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(7)
-                                      ),
+                                          borderRadius:
+                                              BorderRadius.circular(7)),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(7),
                                         child: Image.asset(
@@ -819,8 +904,8 @@ class _AdminHomeState extends State<AdminHome> {
                                     child: Container(
                                       width: 290,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(7)
-                                      ),
+                                          borderRadius:
+                                              BorderRadius.circular(7)),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(7),
                                         child: Image.asset(

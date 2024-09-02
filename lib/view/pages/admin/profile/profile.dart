@@ -1,3 +1,4 @@
+import "package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -12,12 +13,204 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _seeUploadDocumentsDialog();
-    });
+  Future<void> _showContactBottomDialog() async {
+    return showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16), topRight: Radius.circular(16))),
+        builder: (BuildContext context) {
+          return Padding(
+            padding: const EdgeInsets.all(25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomComponents.displayText(ProjectStrings.to_bottom_title,
+                    fontSize: 12, fontWeight: FontWeight.bold),
+                const SizedBox(height: 20),
+                _bottomSheetContactItems(
+                    "lib/assets/pictures/bottom_email.png",
+                    ProjectStrings.to_bottom_email_title,
+                    ProjectStrings.to_bottom_email_content),
+                const SizedBox(height: 15),
+                _bottomSheetContactItems(
+                    "lib/assets/pictures/bottom_chat.png",
+                    ProjectStrings.to_bottom_message_title,
+                    ProjectStrings.to_bottom_message_content),
+                const SizedBox(height: 15),
+                _bottomSheetContactItems(
+                    "lib/assets/pictures/bottom_call.png",
+                    ProjectStrings.to_bottom_call_title,
+                    ProjectStrings.to_bottom_call_content),
+                const SizedBox(height: 60),
+              ],
+            ),
+          );
+        });
+  }
+
+  Widget _bottomSheetContactItems(
+      String imagePath, String contactTitle, String contactContent) {
+    return Row(
+      children: [
+        Image.asset(
+          imagePath,
+          width: 38,
+        ),
+        const SizedBox(width: 20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomComponents.displayText(contactTitle,
+                fontSize: 10, fontWeight: FontWeight.bold),
+            const SizedBox(height: 3),
+            CustomComponents.displayText(contactContent, fontSize: 10)
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _bottomPanelItem(String imagePath, Color bgColor, String itemLabel) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          fit: FlexFit.loose, // Use Flexible with FlexFit.loose
+          child: Container(
+            alignment: Alignment.center,
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: bgColor, // Optional: add background color to the circle
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Image.asset(
+                imagePath,
+                width: 20, // Adjust the image size as needed
+                height: 20, // Adjust the image size as needed
+                fit: BoxFit
+                    .cover, // Ensure the image covers the entire container
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 7),
+        CustomComponents.displayText(itemLabel,
+            fontWeight: FontWeight.w500, fontSize: 10),
+      ],
+    );
+  }
+
+  Widget _mainPanelItem(String label, String content) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 15, left: 15, top: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomComponents.displayText(label,
+              fontWeight: FontWeight.w500,
+              fontSize: 10,
+              color: Color(
+                  int.parse(ProjectColors.lightGray.substring(2), radix: 16))),
+          CustomComponents.displayText(
+            content,
+            fontWeight: FontWeight.bold,
+            fontSize: 10,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _uploadDocumentsItem(String documentName) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              border: DashedBorder.fromBorderSide(
+                  dashLength: 4,
+                  side: BorderSide(
+                      color: Color(int.parse(
+                          ProjectColors.userInfoDialogBrokenLinesColor
+                              .substring(2),
+                          radix: 16)),
+                      width: 1)),
+              borderRadius: const BorderRadius.all(Radius.circular(5))),
+          child: Center(
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 10, top: 10, right: 30, bottom: 10),
+              child: Image.asset(
+                "lib/assets/pictures/user_info_upload.png",
+                height: 60,
+              ),
+            ),
+            const SizedBox(width: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomComponents.displayText(
+                      ProjectStrings.user_info_upload_file,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold),
+                  CustomComponents.displayText(documentName,
+                      color: Color(int.parse(
+                        ProjectColors.lightGray.substring(2),
+                        radix: 16,
+                      )),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500),
+                  const SizedBox(height: 5),
+                  TextButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll<Color>(
+                        Color(int.parse(
+                            ProjectColors.userInfoDialogBrokenLinesColor
+                                .substring(2),
+                            radix: 16)),
+                      ),
+                      shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                      padding: MaterialStatePropertyAll<EdgeInsets>(
+                          EdgeInsets.only(
+                              left: 18,
+                              right: 18,
+                              top: 8,
+                              bottom: 8)), // Remove default padding
+                      minimumSize: MaterialStatePropertyAll<Size>(
+                          Size(0, 0)), // Ensures no minimum size
+                      tapTargetSize: MaterialTapTargetSize
+                          .shrinkWrap, // Shrinks the tap target size
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: CustomComponents.displayText(
+                        ProjectStrings.user_info_choose_a_file,
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ])),
+        ));
   }
 
   Future<void> _seeUploadDocumentsDialog() async {
@@ -150,521 +343,24 @@ class _ProfileState extends State<Profile> {
                     ),
 
                     //  government valid id 1
-                    Padding(
-                        padding:
-                            const EdgeInsets.only(left: 15, right: 15, top: 15),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: DashedBorder.fromBorderSide(
-                                  dashLength: 4,
-                                  side: BorderSide(
-                                      color: Color(int.parse(
-                                          ProjectColors
-                                              .userInfoDialogBrokenLinesColor
-                                              .substring(2),
-                                          radix: 16)),
-                                      width: 1)),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5))),
-                          child: Center(
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, top: 10, right: 30, bottom: 10),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/user_info_upload.png",
-                                    height: 60,
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CustomComponents.displayText(
-                                          ProjectStrings.user_info_upload_file,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold),
-                                      CustomComponents.displayText(
-                                          ProjectStrings.user_info_government1,
-                                          color: Color(int.parse(
-                                            ProjectColors.lightGray
-                                                .substring(2),
-                                            radix: 16,
-                                          )),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500),
-                                      const SizedBox(height: 5),
-                                      TextButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStatePropertyAll<Color>(
-                                            Color(int.parse(
-                                                ProjectColors
-                                                    .userInfoDialogBrokenLinesColor
-                                                    .substring(2),
-                                                radix: 16)),
-                                          ),
-                                          shape: MaterialStatePropertyAll<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                          ),
-                                          padding: MaterialStatePropertyAll<
-                                                  EdgeInsets>(
-                                              EdgeInsets.only(
-                                                  left: 18,
-                                                  right: 18,
-                                                  top: 8,
-                                                  bottom:
-                                                      8)), // Remove default padding
-                                          minimumSize: MaterialStatePropertyAll<
-                                                  Size>(
-                                              Size(0,
-                                                  0)), // Ensures no minimum size
-                                          tapTargetSize: MaterialTapTargetSize
-                                              .shrinkWrap, // Shrinks the tap target size
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
-                                          child: CustomComponents.displayText(
-                                            ProjectStrings
-                                                .user_info_choose_a_file,
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ]
-                            )
-                          ),
-                      )
-                    ),
+                    _uploadDocumentsItem(ProjectStrings.user_info_government1),
 
                     //  government valid id 2
-                    Padding(
-                        padding:
-                            const EdgeInsets.only(left: 15, right: 15, top: 15),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: DashedBorder.fromBorderSide(
-                                  dashLength: 4,
-                                  side: BorderSide(
-                                      color: Color(int.parse(
-                                          ProjectColors
-                                              .userInfoDialogBrokenLinesColor
-                                              .substring(2),
-                                          radix: 16)),
-                                      width: 1)),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5))),
-                          child: Center(
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, top: 10, right: 30, bottom: 10),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/user_info_upload.png",
-                                    height: 60,
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CustomComponents.displayText(
-                                          ProjectStrings.user_info_upload_file,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold),
-                                      CustomComponents.displayText(
-                                          ProjectStrings.user_info_government2,
-                                          color: Color(int.parse(
-                                            ProjectColors.lightGray
-                                                .substring(2),
-                                            radix: 16,
-                                          )),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500),
-                                      const SizedBox(height: 5),
-                                      TextButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStatePropertyAll<Color>(
-                                            Color(int.parse(
-                                                ProjectColors
-                                                    .userInfoDialogBrokenLinesColor
-                                                    .substring(2),
-                                                radix: 16)),
-                                          ),
-                                          shape: MaterialStatePropertyAll<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                          ),
-                                          padding: MaterialStatePropertyAll<
-                                                  EdgeInsets>(
-                                              EdgeInsets.only(
-                                                  left: 18,
-                                                  right: 18,
-                                                  top: 8,
-                                                  bottom:
-                                                      8)), // Remove default padding
-                                          minimumSize: MaterialStatePropertyAll<
-                                                  Size>(
-                                              Size(0,
-                                                  0)), // Ensures no minimum size
-                                          tapTargetSize: MaterialTapTargetSize
-                                              .shrinkWrap, // Shrinks the tap target size
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
-                                          child: CustomComponents.displayText(
-                                            ProjectStrings
-                                                .user_info_choose_a_file,
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ])),
-                        )),
+                    _uploadDocumentsItem(ProjectStrings.user_info_government2),
 
                     //  driver's license
-                    Padding(
-                        padding:
-                            const EdgeInsets.only(left: 15, right: 15, top: 15),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: DashedBorder.fromBorderSide(
-                                  dashLength: 4,
-                                  side: BorderSide(
-                                      color: Color(int.parse(
-                                          ProjectColors
-                                              .userInfoDialogBrokenLinesColor
-                                              .substring(2),
-                                          radix: 16)),
-                                      width: 1)),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5))),
-                          child: Center(
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, top: 10, right: 30, bottom: 10),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/user_info_upload.png",
-                                    height: 60,
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CustomComponents.displayText(
-                                          ProjectStrings.user_info_upload_file,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold),
-                                      CustomComponents.displayText(
-                                          ProjectStrings
-                                              .user_info_driver_license,
-                                          color: Color(int.parse(
-                                            ProjectColors.lightGray
-                                                .substring(2),
-                                            radix: 16,
-                                          )),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500),
-                                      const SizedBox(height: 5),
-                                      TextButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStatePropertyAll<Color>(
-                                            Color(int.parse(
-                                                ProjectColors
-                                                    .userInfoDialogBrokenLinesColor
-                                                    .substring(2),
-                                                radix: 16)),
-                                          ),
-                                          shape: MaterialStatePropertyAll<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                          ),
-                                          padding: MaterialStatePropertyAll<
-                                                  EdgeInsets>(
-                                              EdgeInsets.only(
-                                                  left: 18,
-                                                  right: 18,
-                                                  top: 8,
-                                                  bottom:
-                                                      8)), // Remove default padding
-                                          minimumSize: MaterialStatePropertyAll<
-                                                  Size>(
-                                              Size(0,
-                                                  0)), // Ensures no minimum size
-                                          tapTargetSize: MaterialTapTargetSize
-                                              .shrinkWrap, // Shrinks the tap target size
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
-                                          child: CustomComponents.displayText(
-                                            ProjectStrings
-                                                .user_info_choose_a_file,
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ])),
-                        )),
+                    _uploadDocumentsItem(
+                        ProjectStrings.user_info_driver_license),
 
                     //  proof of billing
-                    Padding(
-                        padding:
-                            const EdgeInsets.only(left: 15, right: 15, top: 15),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: DashedBorder.fromBorderSide(
-                                  dashLength: 4,
-                                  side: BorderSide(
-                                      color: Color(int.parse(
-                                          ProjectColors
-                                              .userInfoDialogBrokenLinesColor
-                                              .substring(2),
-                                          radix: 16)),
-                                      width: 1)),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5))),
-                          child: Center(
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, top: 10, right: 30, bottom: 10),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/user_info_upload.png",
-                                    height: 60,
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CustomComponents.displayText(
-                                          ProjectStrings.user_info_upload_file,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold),
-                                      CustomComponents.displayText(
-                                          ProjectStrings
-                                              .user_info_proof_of_billing,
-                                          color: Color(int.parse(
-                                            ProjectColors.lightGray
-                                                .substring(2),
-                                            radix: 16,
-                                          )),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500),
-                                      const SizedBox(height: 5),
-                                      TextButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStatePropertyAll<Color>(
-                                            Color(int.parse(
-                                                ProjectColors
-                                                    .userInfoDialogBrokenLinesColor
-                                                    .substring(2),
-                                                radix: 16)),
-                                          ),
-                                          shape: MaterialStatePropertyAll<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                          ),
-                                          padding: MaterialStatePropertyAll<
-                                                  EdgeInsets>(
-                                              EdgeInsets.only(
-                                                  left: 18,
-                                                  right: 18,
-                                                  top: 8,
-                                                  bottom:
-                                                      8)), // Remove default padding
-                                          minimumSize: MaterialStatePropertyAll<
-                                                  Size>(
-                                              Size(0,
-                                                  0)), // Ensures no minimum size
-                                          tapTargetSize: MaterialTapTargetSize
-                                              .shrinkWrap, // Shrinks the tap target size
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
-                                          child: CustomComponents.displayText(
-                                            ProjectStrings
-                                                .user_info_choose_a_file,
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ])),
-                        )),
+                    _uploadDocumentsItem(
+                        ProjectStrings.user_info_proof_of_billing),
 
                     //  ltms portal
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 15, top: 15, bottom: 20),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: DashedBorder.fromBorderSide(
-                                  dashLength: 4,
-                                  side: BorderSide(
-                                      color: Color(int.parse(
-                                          ProjectColors
-                                              .userInfoDialogBrokenLinesColor
-                                              .substring(2),
-                                          radix: 16)),
-                                      width: 1)),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5))),
-                          child: Center(
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, top: 10, right: 30, bottom: 10),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/user_info_upload.png",
-                                    height: 60,
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CustomComponents.displayText(
-                                          ProjectStrings.user_info_upload_file,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold),
-                                      CustomComponents.displayText(
-                                          ProjectStrings.user_info_ltms_portal,
-                                          color: Color(int.parse(
-                                            ProjectColors.lightGray
-                                                .substring(2),
-                                            radix: 16,
-                                          )),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500),
-                                      const SizedBox(height: 5),
-                                      TextButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStatePropertyAll<Color>(
-                                            Color(int.parse(
-                                                ProjectColors
-                                                    .userInfoDialogBrokenLinesColor
-                                                    .substring(2),
-                                                radix: 16)),
-                                          ),
-                                          shape: MaterialStatePropertyAll<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                          ),
-                                          padding: MaterialStatePropertyAll<
-                                                  EdgeInsets>(
-                                              EdgeInsets.only(
-                                                  left: 18,
-                                                  right: 18,
-                                                  top: 8,
-                                                  bottom:
-                                                      8)), // Remove default padding
-                                          minimumSize: MaterialStatePropertyAll<
-                                                  Size>(
-                                              Size(0,
-                                                  0)), // Ensures no minimum size
-                                          tapTargetSize: MaterialTapTargetSize
-                                              .shrinkWrap, // Shrinks the tap target size
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
-                                          child: CustomComponents.displayText(
-                                            ProjectStrings
-                                                .user_info_choose_a_file,
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ])),
-                        )),
+                    _uploadDocumentsItem(ProjectStrings.user_info_ltms_portal),
+
                     //  save documents button
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 30),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       width: double.infinity,
@@ -878,143 +574,30 @@ class _ProfileState extends State<Profile> {
                     const SizedBox(height: 15),
 
                     //  full name
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(right: 15, left: 15, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomComponents.displayText(
-                              ProjectStrings.user_info_full_name_title,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10,
-                              color: Color(int.parse(
-                                  ProjectColors.lightGray.substring(2),
-                                  radix: 16))),
-                          CustomComponents.displayText(
-                            ProjectStrings.user_info_full_name,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          )
-                        ],
-                      ),
-                    ),
+                    _mainPanelItem(ProjectStrings.user_info_full_name_title,
+                        ProjectStrings.user_info_full_name),
 
                     //  registered number
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(right: 15, left: 15, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomComponents.displayText(
-                              ProjectStrings.user_info_registered_number_title,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10,
-                              color: Color(int.parse(
-                                  ProjectColors.lightGray.substring(2),
-                                  radix: 16))),
-                          CustomComponents.displayText(
-                            ProjectStrings.user_info_registered_number,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          )
-                        ],
-                      ),
-                    ),
+                    _mainPanelItem(
+                        ProjectStrings.user_info_registered_number_title,
+                        ProjectStrings.user_info_registered_number),
 
                     //  email adddress
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(right: 15, left: 15, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomComponents.displayText(
-                              ProjectStrings.user_info_email_address_title,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10,
-                              color: Color(int.parse(
-                                  ProjectColors.lightGray.substring(2),
-                                  radix: 16))),
-                          CustomComponents.displayText(
-                            ProjectStrings.user_info_email_address,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          )
-                        ],
-                      ),
-                    ),
+                    _mainPanelItem(ProjectStrings.user_info_email_address_title,
+                        ProjectStrings.user_info_email_address),
 
                     //  rental count
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(right: 15, left: 15, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomComponents.displayText(
-                              ProjectStrings.user_info_rental_count_title,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10,
-                              color: Color(int.parse(
-                                  ProjectColors.lightGray.substring(2),
-                                  radix: 16))),
-                          CustomComponents.displayText(
-                            ProjectStrings.user_info_rental_count,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          )
-                        ],
-                      ),
-                    ),
+                    _mainPanelItem(ProjectStrings.user_info_rental_count_title,
+                        ProjectStrings.user_info_rental_count),
 
                     //  favorite
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(right: 15, left: 15, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomComponents.displayText(
-                              ProjectStrings.user_info_favorite_title,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10,
-                              color: Color(int.parse(
-                                  ProjectColors.lightGray.substring(2),
-                                  radix: 16))),
-                          CustomComponents.displayText(
-                            ProjectStrings.user_info_favorite,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          )
-                        ],
-                      ),
-                    ),
+                    _mainPanelItem(ProjectStrings.user_info_favorite_title,
+                        ProjectStrings.user_info_favorite),
 
                     //  longest rental period
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(right: 15, left: 15, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomComponents.displayText(
-                              ProjectStrings
-                                  .user_info_longest_rental_period_title,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10,
-                              color: Color(int.parse(
-                                  ProjectColors.lightGray.substring(2),
-                                  radix: 16))),
-                          CustomComponents.displayText(
-                            ProjectStrings.user_info_longest_rental_period,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          )
-                        ],
-                      ),
-                    ),
+                    _mainPanelItem(
+                        ProjectStrings.user_info_longest_rental_period_title,
+                        ProjectStrings.user_info_longest_rental_period),
 
                     //  total amount spent
                     Padding(
@@ -1059,172 +642,68 @@ class _ProfileState extends State<Profile> {
                   children: [
                     //  item 1
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 40, top: 20, bottom: 20, right: 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            fit: FlexFit
-                                .loose, // Use Flexible with FlexFit.loose
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Color(int.parse(
-                                    ProjectColors.userInfoRed.substring(2),
-                                    radix:
-                                        16)), // Optional: add background color to the circle
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: Image.asset(
-                                  "lib/assets/pictures/user_info_report.png",
-                                  width: 20, // Adjust the image size as needed
-                                  height: 20, // Adjust the image size as needed
-                                  fit: BoxFit
-                                      .cover, // Ensure the image covers the entire container
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 7),
-                          CustomComponents.displayText(
-                              ProjectStrings.user_info_report,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10),
-                        ],
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(
+                            left: 40, top: 20, bottom: 20, right: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed("to_report");
+                          },
+                          child: _bottomPanelItem(
+                              "lib/assets/pictures/user_info_report.png",
+                              Color(int.parse(
+                                  ProjectColors.userInfoRed.substring(2),
+                                  radix: 16)),
+                                  ProjectStrings.user_info_report),
+                        )),
 
                     //  item 2
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 10, top: 20, bottom: 20, right: 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            fit: FlexFit
-                                .loose, // Use Flexible with FlexFit.loose
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Color(int.parse(
-                                    ProjectColors.userInfoGreen.substring(2),
-                                    radix:
-                                        16)), // Optional: add background color to the circle
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: Image.asset(
-                                  "lib/assets/pictures/user_info_email.png",
-                                  width: 20, // Adjust the image size as needed
-                                  height: 20, // Adjust the image size as needed
-                                  fit: BoxFit
-                                      .cover, // Ensure the image covers the entire container
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 7),
-                          CustomComponents.displayText(
-                              ProjectStrings.user_info_contact,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10),
-                        ],
+                      child: GestureDetector(
+                        onTap: () {
+                          _showContactBottomDialog();
+                        },
+                        child: _bottomPanelItem(
+                            "lib/assets/pictures/user_info_email.png",
+                            Color(int.parse(
+                                ProjectColors.userInfoGreen.substring(2),
+                                radix: 16)),
+                                ProjectStrings.user_info_contact),
                       ),
                     ),
 
                     //  item 3
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10, top: 20, bottom: 20, right: 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            fit: FlexFit
-                                .loose, // Use Flexible with FlexFit.loose
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Color(int.parse(
-                                    ProjectColors.userInfoBlue.substring(2),
-                                    radix:
-                                        16)), // Optional: add background color to the circle
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: Image.asset(
-                                  "lib/assets/pictures/user_info_policy.png",
-                                  width: 20, // Adjust the image size as needed
-                                  height: 20, // Adjust the image size as needed
-                                  fit: BoxFit
-                                      .cover, // Ensure the image covers the entire container
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 7),
-                          CustomComponents.displayText(
-                              ProjectStrings.user_info_policy,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10),
-                        ],
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(
+                            left: 10, top: 20, bottom: 20, right: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            termsAndCondition(context, 2);
+                          },
+                          child: _bottomPanelItem(
+                              "lib/assets/pictures/user_info_policy.png",
+                              Color(int.parse(
+                                  ProjectColors.userInfoBlue.substring(2),
+                                  radix: 16)),
+                                  ProjectStrings.user_info_policy),
+                        )),
 
                     //  item 4
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10, top: 20, bottom: 20, right: 40),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            fit: FlexFit
-                                .loose, // Use Flexible with FlexFit.loose
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Color(int.parse(
-                                    ProjectColors.userInfoLightBlue
-                                        .substring(2),
-                                    radix:
-                                        16)), // Optional: add background color to the circle
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: Image.asset(
-                                  "lib/assets/pictures/user_info_documents.png",
-                                  width: 20, // Adjust the image size as needed
-                                  height: 20, // Adjust the image size as needed
-                                  fit: BoxFit
-                                      .cover, // Ensure the image covers the entire container
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 7),
-                          CustomComponents.displayText(
-                              ProjectStrings.user_info_documents,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10),
-                        ],
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(
+                            left: 10, top: 20, bottom: 20, right: 40),
+                        child: GestureDetector(
+                          onTap: () {
+                            _seeUploadDocumentsDialog();
+                          },
+                          child: _bottomPanelItem(
+                              "lib/assets/pictures/user_info_documents.png",
+                              Color(int.parse(
+                                  ProjectColors.userInfoLightBlue.substring(2),
+                                  radix: 16)),
+                                  ProjectStrings.user_info_documents),
+                        )),
                   ],
                 ),
               ),

@@ -570,6 +570,8 @@ class ProjectStrings {
 
   //  home top options - report
   static const String to_appbar_title = "Report";
+  static const String to_driver = "Driver";
+  static const String to_others = "Others";
   static const String to_toyota_wigo = "Toyota Wigo";
   static const String to_mitsubishi_mirage = "Mitsubishi Mirage";
   static const String to_toyota_avanza = "Toyota Avanza";

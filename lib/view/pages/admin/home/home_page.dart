@@ -29,8 +29,6 @@ class _HomePageState extends State<HomePage> {
 
   // Shows dialog if the previous registration process is successful
   void showSuccessfulRegisterSnackbar() {
-    // Print statement for debugging purposes
-    print("Attempting to show snackbar");
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
@@ -53,7 +51,7 @@ class _HomePageState extends State<HomePage> {
 
     List<Widget> _buildScreens() {
       return [
-        const AdminHome(),
+        AdminHome(controller: _controller),
         const CarList(),
         const Profile(),
         const Profile(),
@@ -64,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     List<PersistentTabConfig> _navBarsItems() {
       return [
         PersistentTabConfig(
-          screen: const AdminHome(),
+          screen: AdminHome(controller: _controller),
           item: ItemConfig(
             icon: const Icon(Icons.home_rounded),
             title: "Home",

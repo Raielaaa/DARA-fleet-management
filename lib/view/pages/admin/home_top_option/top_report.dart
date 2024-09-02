@@ -22,6 +22,8 @@ class _TopOptionReportState extends State<TopOptionReport> {
 
   //  Car name/brands
   List<String> carBrands = [
+    ProjectStrings.to_others,
+    ProjectStrings.to_driver,
     ProjectStrings.to_toyota_wigo,
     ProjectStrings.to_mitsubishi_mirage,
     ProjectStrings.to_toyota_avanza,
@@ -147,7 +149,7 @@ class _TopOptionReportState extends State<TopOptionReport> {
                               GridView.builder(
                                 padding: const EdgeInsets.only(top: 20),
                                 shrinkWrap: true,
-                                itemCount: 10,
+                                itemCount: 12,
                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisSpacing: 10,
                                   mainAxisSpacing: 10,

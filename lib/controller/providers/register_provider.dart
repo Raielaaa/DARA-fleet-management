@@ -22,7 +22,7 @@ class RegisterProvider extends ChangeNotifier {
         isScrollControlled: true,
         context: context,
         builder: (BuildContext context) {
-          return termsAndCondition(context);
+          return termsAndCondition(context, 1);
         }
       );
 

@@ -21,7 +21,7 @@ Widget makeDismissible({
   child: GestureDetector(onTap: () {}, child: child),
 );
 
-Widget termsAndCondition(BuildContext context) => makeDismissible(
+Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
   context: context,
   child: DraggableScrollableSheet(
     minChildSize: 0.45,
@@ -426,7 +426,11 @@ Widget termsAndCondition(BuildContext context) => makeDismissible(
                 CustomComponents.displayElevatedButton(
                   ProjectStrings.terms_and_conditions_accept_button,
                   onPressed: () {
-                    RegisterController().insertCredentialsAndUserDetailesToDB(context: context);
+                    if (code == 1) {
+                      RegisterController().insertCredentialsAndUserDetailesToDB(context: context);
+                    } else if (code == 2) {
+                      Navigator.of(context).pop();
+                    }
                   },
                 )
               ],

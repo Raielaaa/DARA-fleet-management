@@ -36,81 +36,70 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => RegisterProvider(),
-          ),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: true,
-          home: const EntryPage(),
-          routes: {
-            // Info carousel
-            "entry_page_1": (context) => const CarouselPage1(),
-            "entry_page_2": (context) => const CarouselPage2(),
-            "entry_page_3": (context) => const CarouselPage3(),
-            "entry_page_4": (context) => const CarouselPage4(),
-            "entry_page_5": (context) => const CarouselPage5(),
-            "entry_page_6": (context) => const CarouselPage6(),
+      data: MediaQuery.of(context).copyWith(
+        devicePixelRatio: 1.0
+      ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const EntryPage(),
+        routes: {
+          // Info carousel
+          "entry_page_1": (context) => const CarouselPage1(),
+          "entry_page_2": (context) => const CarouselPage2(),
+          "entry_page_3": (context) => const CarouselPage3(),
+          "entry_page_4": (context) => const CarouselPage4(),
+          "entry_page_5": (context) => const CarouselPage5(),
+          "entry_page_6": (context) => const CarouselPage6(),
 
-            // Login register opening page
-            "account_opening_page": (context) => const AccountOpening(),
+          // Login register opening page
+          "account_opening_page": (context) => const AccountOpening(),
 
-            // Register
-            "register_main": (context) => const Register(),
-            "register_name_birthday": (context) => const Register(),
-            "register_email_pass": (context) => const RegisterEmailPass(),
-            "register_phone_number": (context) => const RegisterPhoneNumber(),
-            "register_verify_number": (context) => const RegisterVerifyNumber(),
-            "register_successful": (context) => const RegisterSuccessful(),
+          // Register
+          "register_main": (context) => const Register(),
+          "register_name_birthday": (context) => const Register(),
+          "register_email_pass": (context) => const RegisterEmailPass(),
+          "register_phone_number": (context) => const RegisterPhoneNumber(),
+          "register_verify_number": (context) => const RegisterVerifyNumber(),
+          "register_successful": (context) => const RegisterSuccessful(),
 
-            // Login main
-            "login_main": (context) => const LoginMain(),
+          // Login main
+          "login_main": (context) => const LoginMain(),
 
-            // Home page
-            "home_main": (context) => const HomePage(),
+          // Home page
+          "home_main": (context) => const HomePage(),
 
-            //  Rentals - report page
-            "rentals_report": (context) => const Report(),
+          // Rentals - report page
+          "rentals_report": (context) => const Report(),
 
-            //  Selected item
-            "selected_item": (context) => const UnitPreview(),
+          // Selected item
+          "selected_item": (context) => const UnitPreview(),
 
-            //  admin options - Manage report
-            "manage_report": (context) => const ManageReports(),
+          // Admin options - Manage report
+          "manage_report": (context) => const ManageReports(),
 
-            //  admin option - Manage inquiries
-            "manage_inquiries": (context) => const Inquiries(),
+          // Admin option - Manage inquiries
+          "manage_inquiries": (context) => const Inquiries(),
 
-            //  admin option - Manage Car Status
-            "manage_car_status": (context) => const CarStatus(),
+          // Admin option - Manage Car Status
+          "manage_car_status": (context) => const CarStatus(),
 
-            //  renting process - Booking Details
-            "rp_booking_details": (context) => const RPBookingDetails(),
-            "rp_delivery_mode": (context) => const RPDeliveryMode(),
-            "rp_details_fees": (context) => const RPDetailsFees(),
-            "rp_payment_success": (context) => const PaymentSuccess(),
-            "rp_submit_documents": (context) => const SubmitDocuments(),
-            "rp_verify_booking": (context) => const VerifyBooking(),
+          // Renting process - Booking Details
+          "rp_booking_details": (context) => const RPBookingDetails(),
+          "rp_delivery_mode": (context) => const RPDeliveryMode(),
+          "rp_details_fees": (context) => const RPDetailsFees(),
+          "rp_payment_success": (context) => const PaymentSuccess(),
+          "rp_submit_documents": (context) => const SubmitDocuments(),
+          "rp_verify_booking": (context) => const VerifyBooking(),
 
-            //  top option - report
-            "to_report": (context) => const TopOptionReport()
-          },
-        ),
+          // Top option - report
+          "to_report": (context) => const TopOptionReport(),
+        },
       ),
     );
   }
