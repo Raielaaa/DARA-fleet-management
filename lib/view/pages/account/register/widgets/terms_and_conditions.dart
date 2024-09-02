@@ -55,8 +55,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_main,
               fontWeight: FontWeight.bold,
-              fontSize: 28,
-              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+              fontSize: 14,
             ),
           ),
     
@@ -64,8 +63,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
           const SizedBox(height: 15),
           CustomComponents.displayText(
             ProjectStrings.terms_and_conditions_subheader_main,
-            fontSize: 14,
-            color: Colors.grey,
+            fontSize: 10,
             textAlign: TextAlign.justify
           ),
     
@@ -75,9 +73,8 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_1,
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
             ),
           ),
     
@@ -87,8 +84,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_1_content_1,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -99,8 +95,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_1_content_2,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -111,8 +106,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_hedear_1_content_3,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -123,8 +117,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_1_content_4,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -135,8 +128,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_1_content_5,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -147,9 +139,8 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_2,
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
             ),
           ),
     
@@ -159,8 +150,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_2_content_1,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -171,8 +161,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_2_content_2,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -183,8 +172,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_2_content_3,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -195,8 +183,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_2_content_4,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -207,8 +194,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_2_content_5,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -219,9 +205,8 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_3,
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
             ),
           ),
     
@@ -231,8 +216,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_3_content_1,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -243,9 +227,8 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_4,
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
             ),
           ),
     
@@ -255,8 +238,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_4_content_1,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -267,9 +249,8 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_5,
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
             ),
           ),
     
@@ -279,8 +260,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_5_content_1,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -291,8 +271,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_5_content_2,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -303,9 +282,8 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6,
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
             ),
           ),
     
@@ -315,8 +293,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6_content_1,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -327,8 +304,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6_content_2,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -339,8 +315,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6_content_3,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -351,8 +326,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6_content_4,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -363,8 +337,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6_content_5,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -375,8 +348,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6_content_6,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -387,8 +359,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6_content_7,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),
@@ -399,8 +370,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
             width: double.infinity,
             child: CustomComponents.displayText(
               ProjectStrings.terms_and_conditions_header_6_content_8,
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 10,
               textAlign: TextAlign.justify
             ),
           ),

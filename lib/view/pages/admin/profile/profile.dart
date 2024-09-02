@@ -679,7 +679,11 @@ class _ProfileState extends State<Profile> {
                             left: 10, top: 20, bottom: 20, right: 10),
                         child: GestureDetector(
                           onTap: () {
-                            termsAndCondition(context, 2);
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => termsAndCondition(context, 2)
+                            );
                           },
                           child: _bottomPanelItem(
                               "lib/assets/pictures/user_info_policy.png",
