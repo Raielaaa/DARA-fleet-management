@@ -42,16 +42,15 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
             CustomComponents.displayText(
               ProjectStrings.register_verify_number_header,
               fontWeight: FontWeight.bold,
-              fontSize: 32,
+              fontSize: 22,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
             ),
 
             //  Text subheader
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             CustomComponents.displayText(
               ProjectStrings.register_verify_subheader,
-              fontSize: 14,
-              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
+              fontSize: 10,
             ),
 
             //  Image display
@@ -85,7 +84,7 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
                 text: const TextSpan(
                   text: ProjectStrings.register_verify_resent_otp_1,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 10,
                     color: Color(0xff08080a),
                     fontFamily: ProjectStrings.general_font_family
                   ),
@@ -96,7 +95,7 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
                         color: Color(0xff3FA2BE),
                         fontFamily: ProjectStrings.general_font_family,
                         fontWeight: FontWeight.w600,
-                        fontSize: 14
+                        fontSize: 10
                       )
                     )
                   ]
@@ -109,6 +108,7 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
             SizedBox(
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.register_verify_button,
+                fontSize: 12,
                 onPressed: () {
                   Navigator.pushNamed(context, "register_successful");
                 },

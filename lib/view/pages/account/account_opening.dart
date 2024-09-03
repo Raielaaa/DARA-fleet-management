@@ -37,18 +37,18 @@ class AccountOpening extends StatelessWidget {
               child: CustomComponents.displayText(
                 ProjectStrings.account_opening_header,
                 fontWeight: FontWeight.bold,
-                fontSize: 28,
+                fontSize: 22,
               )
             ),
       
             //  Text subheader
             Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 5),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: CustomComponents.displayText(
                   ProjectStrings.account_opening_body,
-                  fontSize: 14
+                  fontSize: 10
                 )
               ),
             ),
@@ -59,6 +59,7 @@ class AccountOpening extends StatelessWidget {
               width: double.infinity,
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.account_sign_in_button_text,
+                fontSize: 12,
                 onPressed: () {
                   Navigator.pushNamed(context, "login_main");
                 },
@@ -72,6 +73,7 @@ class AccountOpening extends StatelessWidget {
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.account_register_button_text,
                 textColor: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                fontSize: 12,
                 buttonColor: Color(int.parse(ProjectColors.mainColorBackground)),
                 onPressed: () {
                   Navigator.pushNamed(context, "register_main");

@@ -71,16 +71,16 @@ class CarouselPage2 extends StatelessWidget {
             CustomComponents.displayText(
               ProjectStrings.carousel_2_header,
               fontWeight: FontWeight.bold,
-              fontSize: 26
+              fontSize: 22
             ),
 
             //  Body
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: CustomComponents.displayText(
                 ProjectStrings.carousel_2_body,
-                fontSize: 14,
+                fontSize: 10,
                 textAlign: TextAlign.center
               ),
             ),
@@ -112,6 +112,7 @@ class CarouselPage2 extends StatelessWidget {
                         ),
                         child: CustomComponents.displayText(
                           ProjectStrings.general_back_button,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: Colors.white
                         )
@@ -142,6 +143,7 @@ class CarouselPage2 extends StatelessWidget {
                         ),
                         child: CustomComponents.displayText(
                           ProjectStrings.general_next_button,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: Colors.white
                         )

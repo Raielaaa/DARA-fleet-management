@@ -484,10 +484,12 @@ class _ProfileState extends State<Profile> {
                         CustomComponents.displayText(
                           "Hello, Admin",
                           fontWeight: FontWeight.bold,
+                          fontSize: 14
                         ),
                         CustomComponents.displayText(
                           "PH +63 ****** 8475",
                           fontWeight: FontWeight.w600,
+                          fontSize: 10,
                           color: Color(int.parse(
                               ProjectColors.lightGray.substring(2),
                               radix: 16)),

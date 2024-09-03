@@ -75,16 +75,15 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_header,
               fontWeight: FontWeight.bold,
-              fontSize: 32,
+              fontSize: 22,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
             ),
 
             //  Text subheader
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_subheader,
-              fontSize: 14,
-              color: Colors.grey
+              fontSize: 10,
             ),
 
             //  Image display
@@ -98,7 +97,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
             CustomComponents.displayText(
               ProjectStrings.register_phone_number_enter_number,
               fontWeight: FontWeight.bold,
-              fontSize: 14
+              fontSize: 10
             ),
 
             //  Text - phone number textfield
@@ -116,7 +115,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
                     CustomComponents.displayText(
                       ProjectStrings.register_phone_number_63,
                       fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                      fontSize: 10,
                       color: Colors.grey
                     ),
 
@@ -135,7 +134,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextField(
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 10,
                             fontFamily: ProjectStrings.general_font_family,
                             color: Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16))
                           ),
@@ -144,7 +143,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
                             hintText: ProjectStrings.register_phone_number_label_hint,
                             hintStyle: const TextStyle(
                               fontFamily: ProjectStrings.general_font_family,
-                              fontSize: 14,
+                              fontSize: 10,
                               color: Colors.grey
                             )
                           ),
@@ -161,6 +160,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
             CustomComponents.displayText(
               ProjectStrings.register_phone_number_send_verification,
               textAlign: TextAlign.center,
+              fontSize: 10,
               color: Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16))
             ),
             const SizedBox(height: 20),
@@ -170,6 +170,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
             SizedBox(
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.general_next_button,
+                fontSize: 12,
                 onPressed: () {
                   Navigator.pushNamed(context, "register_verify_number");
                 },

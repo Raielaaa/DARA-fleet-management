@@ -737,11 +737,13 @@ class _Rentals extends State<Rentals> {
                         children: [
                           CustomComponents.displayText(
                             "Hello, Admin",
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                           CustomComponents.displayText(
                             "PH +63 ****** 8475",
                             fontWeight: FontWeight.w600,
+                            fontSize: 10,
                             color: Color(int.parse(
                                 ProjectColors.lightGray.substring(2),
                                 radix: 16)),

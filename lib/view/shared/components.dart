@@ -164,7 +164,7 @@ class CustomComponents {
         labelStyle: TextStyle(
           fontWeight: FontWeight.normal,
           color: labelColor,
-          fontSize: 12
+          fontSize: 10
         ),
         floatingLabelStyle: const TextStyle(
           color: Color(0xff3FA2BE),

@@ -41,16 +41,15 @@ class _RegisterSuccessfulState extends State<RegisterSuccessful> {
             CustomComponents.displayText(
               ProjectStrings.register_complete_header,
               fontWeight: FontWeight.bold,
-              fontSize: 32,
+              fontSize: 22,
               color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
             ),
 
             //  Text subheader
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             CustomComponents.displayText(
               ProjectStrings.register_complete_subheader,
-              fontSize: 14,
-              color: Colors.grey
+              fontSize: 10,
             ),
 
             //  Image display
@@ -64,6 +63,7 @@ class _RegisterSuccessfulState extends State<RegisterSuccessful> {
             SizedBox(
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.register_complete_continue_button,
+                fontSize: 12,
                 onPressed: () {},
               ),
             ),

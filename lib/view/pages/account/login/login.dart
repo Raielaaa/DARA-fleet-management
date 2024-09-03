@@ -233,24 +233,23 @@ class _LoginMain extends State<LoginMain> {
               CustomComponents.displayText(
                 ProjectStrings.account_login_main_header,
                 fontWeight: FontWeight.bold,
-                fontSize: 32,
+                fontSize: 22,
                 color: Color(
                     int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
               ),
 
               //  Text subheader
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               CustomComponents.displayText(
                   ProjectStrings.account_login_main_subheader,
-                  fontSize: 14,
-                  color: Color(int.parse(ProjectColors.lightGray.substring(2),
-                      radix: 16))),
+                  fontSize: 10,
+                  ),
 
               //  Email
               const SizedBox(height: 40),
               CustomComponents.displayText(
                   ProjectStrings.account_register_ep_email,
-                  fontSize: 14,
+                  fontSize: 10,
                   fontWeight: FontWeight.w600,
                   color: Color(int.parse(ProjectColors.blackHeader.substring(2),
                       radix: 16))),
@@ -266,7 +265,7 @@ class _LoginMain extends State<LoginMain> {
               //  Password
               CustomComponents.displayText(
                   ProjectStrings.account_register_ep_password,
-                  fontSize: 14,
+                  fontSize: 10,
                   fontWeight: FontWeight.w600,
                   color: Color(int.parse(ProjectColors.blackHeader.substring(2),
                       radix: 16))),
@@ -295,7 +294,7 @@ class _LoginMain extends State<LoginMain> {
                   child: CustomComponents.displayText(
                       "Not a $clickedUserType? Click here",
                       fontWeight: FontWeight.w600,
-                      fontSize: 12,
+                      fontSize: 10,
                       color: Color(int.parse(
                           ProjectColors.mainColorHex.substring(2),
                           radix: 16))),
@@ -308,6 +307,7 @@ class _LoginMain extends State<LoginMain> {
                 width: double.infinity,
                 child: CustomComponents.displayElevatedButton(
                   ProjectStrings.account_login_main_login_button,
+                  fontSize: 12,
                   onPressed: () {
                     LoginController loginController = LoginController();
                     loginController.validateInputs(
@@ -333,6 +333,7 @@ class _LoginMain extends State<LoginMain> {
                   const SizedBox(width: 10),
                   CustomComponents.displayText(
                       ProjectStrings.account_login_main_or,
+                      fontSize: 10,
                       color: Color(int.parse(
                           ProjectColors.darkGray.substring(2),
                           radix: 16)),
@@ -402,7 +403,7 @@ class _LoginMain extends State<LoginMain> {
                       ProjectStrings.account_login_main_login_google,
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
                   )
                 ]),
@@ -415,7 +416,7 @@ class _LoginMain extends State<LoginMain> {
                   text: TextSpan(
                       text: ProjectStrings.account_login_main_no_account_1,
                       style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 10,
                           color: Color(0xff404040),
                           fontFamily: ProjectStrings.general_font_family),
                       children: [
@@ -423,7 +424,7 @@ class _LoginMain extends State<LoginMain> {
                             text:
                                 ProjectStrings.account_login_main_no_account_2,
                             style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: 10,
                                 color: Color(0xff3FA2BE),
                                 fontFamily: ProjectStrings.general_font_family,
                                 fontWeight: FontWeight.w600))

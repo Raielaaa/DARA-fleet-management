@@ -52,23 +52,22 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_header,
               fontWeight: FontWeight.bold,
-              fontSize: 32,
+              fontSize: 22,
               color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
             ),
 
             //  Text subheader
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_subheader,
-              fontSize: 14,
-              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
+              fontSize: 10,
             ),
 
             //  Email
             const SizedBox(height: 40),
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_email,
-              fontSize: 14,
+              fontSize: 10,
               fontWeight: FontWeight.w600,
               color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16))
             ),
@@ -83,7 +82,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             //  Password
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_password,
-              fontSize: 14,
+              fontSize: 10,
               fontWeight: FontWeight.w600,
               color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16))
             ),
@@ -112,7 +111,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             //  Confirm password
             CustomComponents.displayText(
               ProjectStrings.account_register_ep_confirm_password,
-              fontSize: 14,
+              fontSize: 10,
               fontWeight: FontWeight.w600,
               color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16))
             ),
@@ -142,6 +141,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             SizedBox(
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.general_next_button,
+                fontSize: 12,
                 onPressed: () {
                   //  Checks if all fields have entries
                   RegisterController().validateCredentialsInputted(
@@ -162,7 +162,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
                 text: const TextSpan(
                   text: ProjectStrings.account_register_ep_have_an_account_1,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 10,
                     color: Color(0xff08080a),
                     fontFamily: ProjectStrings.general_font_family
                   ),
@@ -173,7 +173,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
                         color: Color(0xff3FA2BE),
                         fontFamily: ProjectStrings.general_font_family,
                         fontWeight: FontWeight.w600,
-                        fontSize: 12
+                        fontSize: 10
                       )
                     )
                   ]

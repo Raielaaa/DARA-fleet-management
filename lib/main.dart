@@ -41,10 +41,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(
-        devicePixelRatio: 1.0
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => RegisterProvider()),
+        // Add other providers here if needed
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: const EntryPage(),
