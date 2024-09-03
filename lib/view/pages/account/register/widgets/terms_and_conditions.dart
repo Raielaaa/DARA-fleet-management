@@ -386,6 +386,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
                   ProjectStrings.terms_and_conditions_decline_button,
                   buttonColor: Colors.white70,
                   textColor: Colors.grey,
+                  fontSize: 10,
                   onPressed: () {
                     Navigator.of(context).pop();
                   }
@@ -395,6 +396,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
                 const SizedBox(width: 40),
                 CustomComponents.displayElevatedButton(
                   ProjectStrings.terms_and_conditions_accept_button,
+                  fontSize: 10,
                   onPressed: () {
                     if (code == 1) {
                       RegisterController().insertCredentialsAndUserDetailesToDB(context: context);

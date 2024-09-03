@@ -682,6 +682,7 @@ class _ProfileState extends State<Profile> {
                             showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
                               builder: (context) => termsAndCondition(context, 2)
                             );
                           },
