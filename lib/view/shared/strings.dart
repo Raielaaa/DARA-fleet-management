@@ -157,8 +157,6 @@ class ProjectStrings {
   static const String admin_home_top_options_report = "Report";
   static const String admin_home_top_options_settings = "Settings";
   static const String admin_home_top_options_manage = "Manage";
-  static const String admin_home_weather_header = "Weather Update";
-  static const String admin_home_weather_date_placeholder = "as of May 16, 2024";
   static const String admin_home_featured_header = "Featured Car Units";
   static const String admin_home_featured_see_all = "see all";
   
@@ -589,4 +587,11 @@ class ProjectStrings {
   static const String to_bottom_message_content = "+63 997 126 3452";
   static const String to_bottom_email_title = "Email";
   static const String to_bottom_email_content = "donalpha.transportservice@gmail.com";
+
+  //  weather
+  static const String admin_home_weather_header = "Weather Update";
+  static const String admin_home_weather_date_placeholder = "as of";
+  static const String admin_home_weather_day_placeholder = "Wed 18";
+  static const String admin_home_weather_temp_placeholder = "°";
+  static const String admin_home_weather_wind_placeholder = " km/h";
 }

@@ -77,10 +77,10 @@ class CarouselPage4 extends StatelessWidget {
             //  Body
             const SizedBox(height: 15),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 35),
               child: CustomComponents.displayText(
                 ProjectStrings.carousel_4_body,
-                fontSize: 10,
+                fontSize: 12,
                 textAlign: TextAlign.center
               ),
             ),

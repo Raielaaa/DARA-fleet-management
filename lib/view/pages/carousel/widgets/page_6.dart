@@ -77,10 +77,10 @@ class CarouselPage6 extends StatelessWidget {
             //  Body
             const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 35),
               child: CustomComponents.displayText(
                 ProjectStrings.carousel_6_body,
-                fontSize: 10,
+                fontSize: 12,
                 textAlign: TextAlign.center
               ),
             ),

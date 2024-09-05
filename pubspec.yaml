@@ -52,6 +52,8 @@ dependencies:
   external_app_launcher: ^4.0.0
   slide_switcher: ^1.1.2
   mobkit_dashed_border: ^0.0.6
+  weather: ^3.1.1
+  geolocator: ^10.0.0
 
 dev_dependencies:
   flutter_test:
@@ -162,6 +164,7 @@ flutter:
     - lib/assets/pictures/bottom_call.png
     - lib/assets/pictures/bottom_chat.png
     - lib/assets/pictures/bottom_email.png
+    - lib/assets/pictures/cloudy.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

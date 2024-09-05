@@ -1,5 +1,8 @@
+import "package:dara_app/controller/home/home_controller.dart";
+import "package:dara_app/services/weather/open_weather.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
@@ -14,9 +17,17 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  late Future<List<List<String>>> weatherFuture;
+
+
   @override
   void initState() {
     super.initState();
+    // Initialize the future directly in initState
+    HomeController homeController = HomeController();
+    weatherFuture = homeController.getWeatherForecast();
+
+    // Optionally, show the opening banner after initializing the future
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showOpeningBanner();
     });
@@ -131,23 +142,28 @@ class _AdminHomeState extends State<AdminHome> {
                   SizedBox(
                     width: double
                         .infinity, // Makes the button take the full width of the parent container
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.transparent,
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.transparent,
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      height: 35,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: CustomComponents.displayText(
-                          "Close",
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
+                        height: 35,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: CustomComponents.displayText(
+                            "Close",
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ),
@@ -461,15 +477,16 @@ class _AdminHomeState extends State<AdminHome> {
                         children: [
                           CustomComponents.displayText(
                             ProjectStrings.admin_home_weather_header,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12
                           ),
                           CustomComponents.displayText(
-                            ProjectStrings.admin_home_weather_date_placeholder,
+                            "${ProjectStrings.admin_home_weather_date_placeholder} ${HomeController().getCurrentDate()}",
                             color: Color(int.parse(
                                 ProjectColors.lightGray.substring(2),
                                 radix: 16)),
                             fontStyle: FontStyle.italic,
-                            fontSize: 12,
+                            fontSize: 10,
                           ),
                         ],
                       ),
@@ -479,13 +496,68 @@ class _AdminHomeState extends State<AdminHome> {
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Container(
                         width: double.infinity,
-                        height: 150,
                         decoration: BoxDecoration(
                           color: Color(int.parse(
                               ProjectColors.mainColorHex.substring(2),
                               radix: 16)),
                           borderRadius: BorderRadius.circular(7),
                         ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: FutureBuilder<List<List<String>>>(
+                            future: weatherFuture,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                // LoadingDialog().show(context: context, content: "Retrieving weather data from the database");
+
+                                return Container();
+                              } else {
+                                // Dismiss the loading dialog when data is ready or error occurs
+                                // LoadingDialog().dismiss();
+
+                                if (snapshot.hasError) {
+                                  return Center(child: Text('Error: ${snapshot.error}'));
+                                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                  return const Center(child: Text('No weather data available'));
+                                } else {
+                                List<List<String>> weatherData = snapshot.data!;
+
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: List.generate(4, (index) {
+                                    return Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        CustomComponents.displayText(
+                                          weatherData[index][0],
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                        Image.network(
+                                          "http://openweathermap.org/img/wn/${weatherData[index][3]}@4x.png",
+                                          width: MediaQuery.of(context).size.width / 4 - 15,
+                                        ),
+                                        CustomComponents.displayText(
+                                          "${weatherData[index][1].split(".")[0]} ${ProjectStrings.admin_home_weather_temp_placeholder}",
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                        CustomComponents.displayText(
+                                          "${weatherData[index][2].split(".")[0]}${ProjectStrings.admin_home_weather_wind_placeholder}",
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                      ],
+                                    );
+                                  })
+                                );
+                              }
+                            }
+                          })
+                        )
                       ),
                     ),
                     //  Featured
@@ -497,7 +569,8 @@ class _AdminHomeState extends State<AdminHome> {
                         children: [
                           CustomComponents.displayText(
                             ProjectStrings.admin_home_featured_header,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12
                           ),
                           CustomComponents.displayText(
                             ProjectStrings.admin_home_featured_see_all,
@@ -506,7 +579,7 @@ class _AdminHomeState extends State<AdminHome> {
                                 radix: 16)),
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.w600,
-                            fontSize: 12,
+                            fontSize: 10,
                           ),
                         ],
                       ),
@@ -549,8 +622,8 @@ class _AdminHomeState extends State<AdminHome> {
                                       CustomComponents.displayText(
                                         ProjectStrings
                                             .admin_home_car_info_placeholder_name_1,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10,
                                       ),
                                       const SizedBox(height: 2),
                                       Row(
@@ -655,8 +728,8 @@ class _AdminHomeState extends State<AdminHome> {
                                       CustomComponents.displayText(
                                         ProjectStrings
                                             .admin_home_car_info_placeholder_name_2,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10,
                                       ),
                                       const SizedBox(height: 2),
                                       Row(
@@ -761,8 +834,8 @@ class _AdminHomeState extends State<AdminHome> {
                                       CustomComponents.displayText(
                                         ProjectStrings
                                             .admin_home_car_info_placeholder_name_3,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10,
                                       ),
                                       const SizedBox(height: 2),
                                       Row(
@@ -856,7 +929,8 @@ class _AdminHomeState extends State<AdminHome> {
                               alignment: Alignment.centerLeft,
                               child: CustomComponents.displayText(
                                 ProjectStrings.admin_home_banner_header,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12
                               ),
                             ),
                           ),

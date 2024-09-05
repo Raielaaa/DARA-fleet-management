@@ -2,6 +2,7 @@ import "package:dara_app/controller/account/login_controller.dart";
 import "package:dara_app/services/google/google.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:google_sign_in/google_sign_in.dart";
@@ -24,6 +25,15 @@ class _LoginMain extends State<LoginMain> {
   late GoogleSignInAccount _userObj;
 
   String clickedUserType = "User";
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      LoadingDialog().show(context: context, content: "Loading dialog - UI test");
+    });
+  }
 
   Future<void> _showUserOptionsDialog() async {
     return showDialog(

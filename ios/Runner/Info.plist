@@ -3,6 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your app needs access to your location when in use to provide certain features.</string>
+
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your app needs access to your location always to provide certain features even in the background.</string>
+
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your app needs access to your location both in the foreground and background to provide certain features.</string>
+
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to show it on the map.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location to show it on the map.</string>
