@@ -38,4 +38,8 @@ class PersistentData {
 
   //  For checking if the registration is successful
   bool isRegistrationSuccessful = false;
+
+
+  //  login page
+  String userType = "User";
 }

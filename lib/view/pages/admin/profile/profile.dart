@@ -1,3 +1,4 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
@@ -461,7 +462,7 @@ class _ProfileState extends State<Profile> {
                       padding: const EdgeInsets.only(
                           top: 10, bottom: 10, right: 30, left: 30),
                       child: CustomComponents.displayText(
-                        "Admin",
+                        PersistentData().userType,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 10,

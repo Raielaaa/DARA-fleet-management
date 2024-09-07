@@ -1,4 +1,5 @@
 import "package:dara_app/controller/home/home_controller.dart";
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/services/weather/open_weather.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
@@ -17,19 +18,19 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
-  late Future<List<List<String>>> weatherFuture;
-
+  // late Future<List<List<String>>> weatherFuture;
 
   @override
   void initState() {
     super.initState();
     // Initialize the future directly in initState
     HomeController homeController = HomeController();
-    weatherFuture = homeController.getWeatherForecast();
+    //// weatherFuture = homeController.getWeatherForecast();
 
     // Optionally, show the opening banner after initializing the future
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showOpeningBanner();
+      debugPrint("User type - ${PersistentData().userType}");
     });
   }
 
@@ -177,6 +178,69 @@ class _AdminHomeState extends State<AdminHome> {
     );
   }
 
+  // Widget weatherWidget() {
+  //   return FutureBuilder<List<List<String>>>(
+  //       future: weatherFuture,
+  //       builder: (context, snapshot) {
+  //         if (snapshot.connectionState == ConnectionState.waiting) {
+  //           // LoadingDialog().show(context: context, content: "Retrieving weather data from the database");
+
+  //           return const Center(
+  //             child: SizedBox(
+  //                 width: 25,
+  //                 height: 25,
+  //                 child: CircularProgressIndicator(
+  //                   color: Colors.white,
+  //                   strokeWidth: 4.0,
+  //                 )),
+  //           );
+  //         } else {
+  //           // Dismiss the loading dialog when data is ready or error occurs
+  //           // LoadingDialog().dismiss();
+
+  //           if (snapshot.hasError) {
+  //             return Center(child: Text('Error: ${snapshot.error}'));
+  //           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+  //             return const Center(child: Text('No weather data available'));
+  //           } else {
+  //             List<List<String>> weatherData = snapshot.data!;
+
+  //             return Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 children: List.generate(4, (index) {
+  //                   return Column(
+  //                     mainAxisAlignment: MainAxisAlignment.center,
+  //                     children: [
+  //                       CustomComponents.displayText(
+  //                         weatherData[index][0],
+  //                         color: Colors.white,
+  //                         fontWeight: FontWeight.bold,
+  //                         fontSize: 10,
+  //                       ),
+  //                       Image.network(
+  //                         "http://openweathermap.org/img/wn/${weatherData[index][3]}@4x.png",
+  //                         width: MediaQuery.of(context).size.width / 4 - 15,
+  //                       ),
+  //                       CustomComponents.displayText(
+  //                         "${weatherData[index][1].split(".")[0]} ${ProjectStrings.admin_home_weather_temp_placeholder}",
+  //                         color: Colors.white,
+  //                         fontWeight: FontWeight.bold,
+  //                         fontSize: 10,
+  //                       ),
+  //                       CustomComponents.displayText(
+  //                         "${weatherData[index][2].split(".")[0]}${ProjectStrings.admin_home_weather_wind_placeholder}",
+  //                         color: Colors.white,
+  //                         fontWeight: FontWeight.bold,
+  //                         fontSize: 10,
+  //                       ),
+  //                     ],
+  //                   );
+  //                 }));
+  //           }
+  //         }
+  //       });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -210,7 +274,7 @@ class _AdminHomeState extends State<AdminHome> {
                         padding: const EdgeInsets.only(
                             top: 10, bottom: 10, right: 30, left: 30),
                         child: CustomComponents.displayText(
-                          "Admin",
+                          PersistentData().userType,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 10,
@@ -231,11 +295,8 @@ class _AdminHomeState extends State<AdminHome> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomComponents.displayText(
-                            "Hello, Admin",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14
-                          ),
+                          CustomComponents.displayText("Hello, Admin",
+                              fontWeight: FontWeight.bold, fontSize: 14),
                           CustomComponents.displayText(
                             "PH +63 ****** 8475",
                             fontWeight: FontWeight.w600,
@@ -476,10 +537,9 @@ class _AdminHomeState extends State<AdminHome> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomComponents.displayText(
-                            ProjectStrings.admin_home_weather_header,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12
-                          ),
+                              ProjectStrings.admin_home_weather_header,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12),
                           CustomComponents.displayText(
                             "${ProjectStrings.admin_home_weather_date_placeholder} ${HomeController().getCurrentDate()}",
                             color: Color(int.parse(
@@ -495,69 +555,18 @@ class _AdminHomeState extends State<AdminHome> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Color(int.parse(
-                              ProjectColors.mainColorHex.substring(2),
-                              radix: 16)),
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: FutureBuilder<List<List<String>>>(
-                            future: weatherFuture,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                // LoadingDialog().show(context: context, content: "Retrieving weather data from the database");
-
-                                return Container();
-                              } else {
-                                // Dismiss the loading dialog when data is ready or error occurs
-                                // LoadingDialog().dismiss();
-
-                                if (snapshot.hasError) {
-                                  return Center(child: Text('Error: ${snapshot.error}'));
-                                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                  return const Center(child: Text('No weather data available'));
-                                } else {
-                                List<List<String>> weatherData = snapshot.data!;
-
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: List.generate(4, (index) {
-                                    return Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        CustomComponents.displayText(
-                                          weatherData[index][0],
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10,
-                                        ),
-                                        Image.network(
-                                          "http://openweathermap.org/img/wn/${weatherData[index][3]}@4x.png",
-                                          width: MediaQuery.of(context).size.width / 4 - 15,
-                                        ),
-                                        CustomComponents.displayText(
-                                          "${weatherData[index][1].split(".")[0]} ${ProjectStrings.admin_home_weather_temp_placeholder}",
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10,
-                                        ),
-                                        CustomComponents.displayText(
-                                          "${weatherData[index][2].split(".")[0]}${ProjectStrings.admin_home_weather_wind_placeholder}",
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10,
-                                        ),
-                                      ],
-                                    );
-                                  })
-                                );
-                              }
-                            }
-                          })
-                        )
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Color(int.parse(
+                                ProjectColors.mainColorHex.substring(2),
+                                radix: 16)),
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              //// child: weatherWidget()
+                              child: const SizedBox()
+                          )
                       ),
                     ),
                     //  Featured
@@ -568,10 +577,9 @@ class _AdminHomeState extends State<AdminHome> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomComponents.displayText(
-                            ProjectStrings.admin_home_featured_header,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12
-                          ),
+                              ProjectStrings.admin_home_featured_header,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12),
                           CustomComponents.displayText(
                             ProjectStrings.admin_home_featured_see_all,
                             color: Color(int.parse(
@@ -928,10 +936,9 @@ class _AdminHomeState extends State<AdminHome> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: CustomComponents.displayText(
-                                ProjectStrings.admin_home_banner_header,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12
-                              ),
+                                  ProjectStrings.admin_home_banner_header,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12),
                             ),
                           ),
                           const SizedBox(height: 10),

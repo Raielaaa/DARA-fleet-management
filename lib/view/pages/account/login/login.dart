@@ -1,4 +1,5 @@
 import "package:dara_app/controller/account/login_controller.dart";
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/services/google/google.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
@@ -98,6 +99,7 @@ class _LoginMain extends State<LoginMain> {
                         Navigator.of(context).pop();
                         setState(() {
                           clickedUserType = "Admin/Manager";
+                          PersistentData().userType = "Admin";
                         });
                       },
                       child: _userType(
@@ -111,6 +113,7 @@ class _LoginMain extends State<LoginMain> {
                         Navigator.of(context).pop();
                         setState(() {
                           clickedUserType = "Accountant";
+                          PersistentData().userType = "Accountant";
                         });
                       },
                       child: _userType(
@@ -129,6 +132,7 @@ class _LoginMain extends State<LoginMain> {
                         Navigator.of(context).pop();
                         setState(() {
                           clickedUserType = "Driver";
+                          PersistentData().userType = "Driver";
                         });
                       },
                       child: _userType(
@@ -142,6 +146,7 @@ class _LoginMain extends State<LoginMain> {
                         Navigator.of(context).pop();
                         setState(() {
                           clickedUserType = "Outsource";
+                          PersistentData().userType = "Outsource";
                         });
                       },
                       child: _userType(
@@ -157,6 +162,7 @@ class _LoginMain extends State<LoginMain> {
                     Navigator.of(context).pop();
                     setState(() {
                       clickedUserType = "User";
+                      PersistentData().userType = "User";
                     });
                   },
                   child: _userType(
