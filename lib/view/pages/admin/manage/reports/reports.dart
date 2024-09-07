@@ -882,7 +882,7 @@ class _ManageReportsState extends State<ManageReports> {
                                     ProjectStrings.manage_reports_reports,
                                     Color(int.parse(ProjectColors.reportMangeSelectedItem))
                                   ),
-                                  const SizedBox(width: 15),
+                                  const SizedBox(width: 10),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).pushNamed("manage_inquiries");
@@ -893,7 +893,7 @@ class _ManageReportsState extends State<ManageReports> {
                                       Colors.white
                                     ),
                                   ),
-                                  const SizedBox(width: 15),
+                                  const SizedBox(width: 10),
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).pushNamed("manage_car_status");
@@ -1056,8 +1056,8 @@ class _ManageReportsState extends State<ManageReports> {
 
   Widget buildAdminOption(String imagePath, String label, Color itemBgColor) {
     return Container(
-      width: 80,
-      height: 100,
+      width: 70,
+      height: 90,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(7),
         color: itemBgColor,
@@ -1068,14 +1068,14 @@ class _ManageReportsState extends State<ManageReports> {
           Positioned(
             top: 10,
             child: Container(
-              width: 60,
-              height: 60,
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
                 color: Color(int.parse(ProjectColors.reportManageItemBackground)),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Center(
-                child: Image.asset(imagePath, width: 30),
+                child: Image.asset(imagePath, width: 20),
               ),
             ),
           ),
@@ -1083,7 +1083,7 @@ class _ManageReportsState extends State<ManageReports> {
             bottom: 10,
             child: CustomComponents.displayText(
               label,
-              fontSize: 10,
+              fontSize: 10
             ),
           ),
         ],

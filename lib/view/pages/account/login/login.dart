@@ -27,15 +27,6 @@ class _LoginMain extends State<LoginMain> {
 
   String clickedUserType = "User";
 
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      LoadingDialog().show(context: context, content: "Loading dialog - UI test");
-    });
-  }
-
   Future<void> _showUserOptionsDialog() async {
     return showDialog(
         context: context,

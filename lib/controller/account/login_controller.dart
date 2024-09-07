@@ -2,6 +2,7 @@ import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/services/firebase/auth.dart';
 import 'package:dara_app/services/google/google.dart';
 import 'package:dara_app/view/shared/components.dart';
+import 'package:dara_app/view/shared/loading.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,28 +30,42 @@ class LoginController {
         },
       );
     } else {
-      CustomComponents.showCupertinoLoadingDialog(
-        2,
-        ProjectStrings.general_dialog_db_process_request,
-        context,
-        [
-          () async {
-            try {
-              await Auth().signInWithEmailAndPassword(
-                email: email,
-                password: password
-              );
+      try {
+        Auth().signInWithEmailAndPassword(email: email, password: password, context: context);
+      } catch (e) {
+        LoadingDialog().dismiss();
+        CustomComponents.showAlertDialog(
+          context: context,
+          title: ProjectStrings.account_register_dialog_warning_1_title,
+          content: "An error occured",
+          numberOfOptions: 1,
+          onPressedPositive: () {
+            Navigator.of(context).pop();
+          },
+        );
+      }
+      // CustomComponents.showCupertinoLoadingDialog(
+      //   2,
+      //   ProjectStrings.general_dialog_db_process_request,
+      //   context,
+      //   [
+      //     () async {
+      //       try {
+      //         await Auth().signInWithEmailAndPassword(
+      //           email: email,
+      //           password: password
+      //         );
 
-              debugPrint("login success");
+      //         debugPrint("login success");
 
-              // if (!context.mounted) return;
-              // Navigator.pushNamed(context, "home_main_admin");
-            } on FirebaseAuthException catch (e) {
-              debugPrint("Auth login error - ${e.message}");
-            }
-          }
-        ]
-      );
+      //         // if (!context.mounted) return;
+      //         // Navigator.pushNamed(context, "home_main_admin");
+      //       } on FirebaseAuthException catch (e) {
+      //         debugPrint("Auth login error - ${e.message}");
+      //       }
+      //     }
+      //   ]
+      // );
     }
   }
 }

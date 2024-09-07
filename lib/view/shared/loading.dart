@@ -16,13 +16,11 @@ class LoadingDialog {
   bool _isShowing = false;
 
   // Method to show the loading dialog
-  void show(
-    {
-      required BuildContext context,
-      required String content,
-      String header = "Please wait..."
-    }
-  ) {
+  void show({
+    required BuildContext context,
+    required String content,
+    String header = "Please wait...",
+  }) {
     if (!_isShowing) {
       _isShowing = true;
       showDialog(
@@ -30,52 +28,60 @@ class LoadingDialog {
         barrierDismissible: false,
         builder: (context) {
           _context = context;
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: Container(
-              width: MediaQuery.of(context).size.width - 100,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomComponents.displayText(
-                      header,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    child: Divider(),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(width: 15),
-                      SizedBox(
-                        width: 25,
-                        height: 25,
-                        child: CircularProgressIndicator(
-                          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                          strokeWidth: 3.5,
-                        )
+          return PopScope(
+            onPopInvoked: (result) async {
+              // Prevent back button from closing the dialog
+              return Future.value();
+            },
+            child: Dialog(
+              backgroundColor: Colors.transparent,
+              child: Container(
+                width: MediaQuery.of(context).size.width - 100,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: CustomComponents.displayText(
+                        header,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
                       ),
-                      const SizedBox(width: 25),
-                      Expanded(
-                        child: CustomComponents.displayText(
-                          content,
-                          fontSize: 10
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Divider(),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(width: 15),
+                        SizedBox(
+                          width: 25,
+                          height: 25,
+                          child: CircularProgressIndicator(
+                            color: Color(int.parse(
+                                ProjectColors.mainColorHex.substring(2),
+                                radix: 16)),
+                            strokeWidth: 3.5,
+                          ),
                         ),
-                      )
-                    ],
-                  )
-                ],
+                        const SizedBox(width: 25),
+                        Expanded(
+                          child: CustomComponents.displayText(
+                            content,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );
