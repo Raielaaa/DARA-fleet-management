@@ -594,4 +594,30 @@ class ProjectStrings {
   static const String admin_home_weather_day_placeholder = "Wed 18";
   static const String admin_home_weather_temp_placeholder = "°";
   static const String admin_home_weather_wind_placeholder = " km/h";
+
+  //  income report - page
+  static const String income_page_appbar_title = "Income";
+  static const String income_page_header = "Detailed Income Report";
+  static const String income_page_subheader = "Shows the summary of income for the month of:";
+  static const String income_page_jan = "January";
+  static const String income_page_feb = "February";
+  static const String income_page_mar = "March";
+  static const String income_page_april = "April";
+  static const String income_page_may = "May";
+  static const String income_page_june = "June";
+  static const String income_page_july = "July";
+  static const String income_page_aug = "August";
+  static const String income_page_sept = "September";
+  static const String income_page_oct = "October";
+  static const String income_page_nov = "November";
+  static const String income_page_dec = "December";
+  static const String income_page_php = "PHP";
+  static const String income_page_amount = "274,039.5843";
+  static const String income_page_breakdown = "Breakdown";
+  static const String income_page_breakdown_subheader = "Income breakdown for the month of January:";
+  static const String income_page_outsource = "Outsource";
+  static const String income_page_owned = "Owned";
+  static const String income_page_item_title = "January 17 - January 21";
+  static const String income_page_item_amount = "PHP 8,483.9384";
+  static const String income_page_item_letter = "SR";
 }
