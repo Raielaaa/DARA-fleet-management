@@ -1,12 +1,11 @@
 import "package:dara_app/controller/home/home_controller.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
-import "package:dara_app/services/weather/open_weather.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
-import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
+import 'package:url_launcher/url_launcher.dart';
 
 class AdminHome extends StatefulWidget {
   final PersistentTabController controller;
@@ -18,14 +17,14 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
-  // late Future<List<List<String>>> weatherFuture;
+  late Future<List<List<String>>> weatherFuture;
 
   @override
   void initState() {
     super.initState();
     // Initialize the future directly in initState
     HomeController homeController = HomeController();
-    //// weatherFuture = homeController.getWeatherForecast();
+    weatherFuture = homeController.getWeatherForecast();
 
     // Optionally, show the opening banner after initializing the future
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -51,25 +50,79 @@ class _AdminHomeState extends State<AdminHome> {
                 CustomComponents.displayText(ProjectStrings.to_bottom_title,
                     fontSize: 12, fontWeight: FontWeight.bold),
                 const SizedBox(height: 20),
-                _bottomSheetContactItems(
-                    "lib/assets/pictures/bottom_email.png",
-                    ProjectStrings.to_bottom_email_title,
-                    ProjectStrings.to_bottom_email_content),
+                GestureDetector(
+                  onTap: () {
+                    showGmailApp();
+                  },
+                  child: _bottomSheetContactItems(
+                      "lib/assets/pictures/bottom_email.png",
+                      ProjectStrings.to_bottom_email_title,
+                      ProjectStrings.to_bottom_email_content),
+                ),
                 const SizedBox(height: 15),
-                _bottomSheetContactItems(
-                    "lib/assets/pictures/bottom_chat.png",
-                    ProjectStrings.to_bottom_message_title,
-                    ProjectStrings.to_bottom_message_content),
+                GestureDetector(
+                  onTap: () {
+                    showMessageApp();
+                  },
+                  child: _bottomSheetContactItems(
+                      "lib/assets/pictures/bottom_chat.png",
+                      ProjectStrings.to_bottom_message_title,
+                      ProjectStrings.to_bottom_message_content),
+                ),
                 const SizedBox(height: 15),
-                _bottomSheetContactItems(
-                    "lib/assets/pictures/bottom_call.png",
-                    ProjectStrings.to_bottom_call_title,
-                    ProjectStrings.to_bottom_call_content),
+                GestureDetector(
+                  onTap: () {
+                    makePhoneCall();
+                  },
+                  child: _bottomSheetContactItems(
+                      "lib/assets/pictures/bottom_call.png",
+                      ProjectStrings.to_bottom_call_title,
+                      ProjectStrings.to_bottom_call_content),
+                ),
                 const SizedBox(height: 60),
               ],
             ),
           );
         });
+  }
+
+  void makePhoneCall() async {
+    var url = Uri.parse("tel:9701900391");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      //  error dialog
+    }
+  }
+
+  void showMessageApp() async {
+    // Android
+    String body = "Please type your inquiry here.";
+    Uri url = Uri.parse("sms:+63 0970 190 0391?body=$body");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      // iOS
+      Uri url = Uri.parse("sms:0039-222-060-888?body=$body");
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        //  error dialog
+      }
+    }
+  }
+
+  void showGmailApp() async {
+    String email = Uri.encodeComponent("rbhonra@ccc.edu.ph");
+    String subject = Uri.encodeComponent("DARA - Support Request");
+    String body = Uri.encodeComponent("Please type your inquiry here.");
+
+    Uri url = Uri.parse("mailto:$email?subject=$subject&body=$body");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+
+    }
   }
 
   Widget _bottomSheetContactItems(
@@ -178,68 +231,68 @@ class _AdminHomeState extends State<AdminHome> {
     );
   }
 
-  // Widget weatherWidget() {
-  //   return FutureBuilder<List<List<String>>>(
-  //       future: weatherFuture,
-  //       builder: (context, snapshot) {
-  //         if (snapshot.connectionState == ConnectionState.waiting) {
-  //           // LoadingDialog().show(context: context, content: "Retrieving weather data from the database");
+  Widget weatherWidget() {
+    return FutureBuilder<List<List<String>>>(
+        future: weatherFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // LoadingDialog().show(context: context, content: "Retrieving weather data from the database");
 
-  //           return const Center(
-  //             child: SizedBox(
-  //                 width: 25,
-  //                 height: 25,
-  //                 child: CircularProgressIndicator(
-  //                   color: Colors.white,
-  //                   strokeWidth: 4.0,
-  //                 )),
-  //           );
-  //         } else {
-  //           // Dismiss the loading dialog when data is ready or error occurs
-  //           // LoadingDialog().dismiss();
+            return const Center(
+              child: SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 4.0,
+                  )),
+            );
+          } else {
+            // Dismiss the loading dialog when data is ready or error occurs
+            // LoadingDialog().dismiss();
 
-  //           if (snapshot.hasError) {
-  //             return Center(child: Text('Error: ${snapshot.error}'));
-  //           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-  //             return const Center(child: Text('No weather data available'));
-  //           } else {
-  //             List<List<String>> weatherData = snapshot.data!;
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('No weather data available'));
+            } else {
+              List<List<String>> weatherData = snapshot.data!;
 
-  //             return Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                 children: List.generate(4, (index) {
-  //                   return Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       CustomComponents.displayText(
-  //                         weatherData[index][0],
-  //                         color: Colors.white,
-  //                         fontWeight: FontWeight.bold,
-  //                         fontSize: 10,
-  //                       ),
-  //                       Image.network(
-  //                         "http://openweathermap.org/img/wn/${weatherData[index][3]}@4x.png",
-  //                         width: MediaQuery.of(context).size.width / 4 - 15,
-  //                       ),
-  //                       CustomComponents.displayText(
-  //                         "${weatherData[index][1].split(".")[0]} ${ProjectStrings.admin_home_weather_temp_placeholder}",
-  //                         color: Colors.white,
-  //                         fontWeight: FontWeight.bold,
-  //                         fontSize: 10,
-  //                       ),
-  //                       CustomComponents.displayText(
-  //                         "${weatherData[index][2].split(".")[0]}${ProjectStrings.admin_home_weather_wind_placeholder}",
-  //                         color: Colors.white,
-  //                         fontWeight: FontWeight.bold,
-  //                         fontSize: 10,
-  //                       ),
-  //                     ],
-  //                   );
-  //                 }));
-  //           }
-  //         }
-  //       });
-  // }
+              return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(4, (index) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomComponents.displayText(
+                          weatherData[index][0],
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
+                        Image.network(
+                          "http://openweathermap.org/img/wn/${weatherData[index][3]}@4x.png",
+                          width: MediaQuery.of(context).size.width / 4 - 15,
+                        ),
+                        CustomComponents.displayText(
+                          "${weatherData[index][1].split(".")[0]} ${ProjectStrings.admin_home_weather_temp_placeholder}",
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
+                        CustomComponents.displayText(
+                          "${weatherData[index][2].split(".")[0]}${ProjectStrings.admin_home_weather_wind_placeholder}",
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
+                      ],
+                    );
+                  }));
+            }
+          }
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -564,8 +617,7 @@ class _AdminHomeState extends State<AdminHome> {
                           ),
                           child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20),
-                              //// child: weatherWidget()
-                              child: const SizedBox()
+                              child: weatherWidget()
                           )
                       ),
                     ),
