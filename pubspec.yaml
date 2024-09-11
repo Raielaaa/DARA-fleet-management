@@ -54,6 +54,7 @@ dependencies:
   mobkit_dashed_border: ^0.0.6
   weather: ^3.1.1
   geolocator: ^10.0.0
+  image_picker: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import "package:dara_app/controller/rent_process/rent_process.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -11,6 +12,8 @@ class RPDetailsFees extends StatefulWidget {
 }
 
 class _RPDetailsFeesState extends State<RPDetailsFees> {
+  RentProcess rentProcess = RentProcess();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +54,44 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                             fontWeight: FontWeight.bold),
                       ),
                     )),
-              )
+              ),
+
+              const SizedBox(height: 15),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    rentProcess.showUploadPhotoBottomDialog(context);
+                  },
+                  child: RichText(
+                      textAlign: TextAlign.center,
+                      text: const TextSpan(
+                          text: ProjectStrings.rp_details_fees_send_screenshot_1,
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Color(0xff404040),
+                              fontFamily: ProjectStrings.general_font_family),
+                          children: [
+                            TextSpan(
+                                text:
+                                    ProjectStrings.rp_details_fees_send_screenshot_2,
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    color: Color(0xff3FA2BE),
+                                    fontFamily: ProjectStrings.general_font_family,
+                                    fontWeight: FontWeight.w600)
+                                ),
+                            TextSpan(
+                              text: ProjectStrings.rp_details_fees_send_screenshot_3,
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Color(0xff404040),
+                                fontFamily: ProjectStrings.general_font_family),
+                              )
+                          ]
+                      )
+                  ),
+                ),
+              ),
             ],
           ),
         ),

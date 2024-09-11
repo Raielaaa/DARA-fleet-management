@@ -9,6 +9,9 @@
     <!-- Optional: Required for background location access (Android 10 and above) -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:label="dara_app"
         android:name="${applicationName}"

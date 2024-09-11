@@ -540,6 +540,16 @@ class ProjectStrings {
   static const String rp_details_fees_agreement = "I Agree to Pay the Reservation Fee";
   static const String rp_details_fees_agreement_entry = "By agreeing, the reservation fee will act as a down payment and be deducted from the total payment. This fee ensures priority in case of schedule conflicts.";
   static const String rp_details_fees_proceed_to_payment = "Proceed to Payment";
+  static const String rp_details_fees_send_screenshot_1 = "Alternatively, you can ";
+  static const String rp_details_fees_send_screenshot_2 = "click here";
+  static const String rp_details_fees_send_screenshot_3 = " to send a screenshot as proof of payment.";
+  static const String rp_details_fees_proof_payment = "Proof of Payment";
+  static const String rp_details_fees_proof_payment_subheader = "Please submit a screenshot of your proof of payment from other vendors. Use the following credentials when sending the payment.";
+  static const String rp_details_fees_proof_payment_image_notice = "Image size must be under 5 MB.";
+  static const String rp_details_fees_proof_payment_continue = "Continue";
+  static const String rp_details_fees_proof_payment_gcash = "GCash";
+  static const String rp_details_fees_proof_payment_gcash_name = "Maybelle H.";
+  static const String rp_details_fees_proof_payment_gcash_number = "0970 190 0391";
 
   //  payment successful (ps)
   static const String ps_title = "Payment Successful";
@@ -596,7 +606,7 @@ class ProjectStrings {
   static const String admin_home_weather_wind_placeholder = " km/h";
 
   //  income report - page
-  static const String income_page_appbar_title = "Income";
+  static const String income_page_appbar_title = "Manage";
   static const String income_page_header = "Detailed Income Report";
   static const String income_page_subheader = "Shows the summary of income for the month of:";
   static const String income_page_jan = "January";

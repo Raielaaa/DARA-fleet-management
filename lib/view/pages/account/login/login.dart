@@ -435,7 +435,9 @@ class _LoginMain extends State<LoginMain> {
                                 color: Color(0xff3FA2BE),
                                 fontFamily: ProjectStrings.general_font_family,
                                 fontWeight: FontWeight.w600))
-                      ]))
+                      ]
+                  )
+              )
             ],
           )),
     );
