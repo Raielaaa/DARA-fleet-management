@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dara_app/services/gcash/gcash_payment.dart';
 import 'package:dara_app/view/shared/colors.dart';
 import 'package:dara_app/view/shared/components.dart';
 import 'package:dara_app/view/shared/strings.dart';
@@ -10,6 +11,10 @@ import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 class RentProcess {
   File? _selectedImage;
   String _imageName = ProjectStrings.rp_details_fees_proof_payment_image_notice;
+
+  void startGcashPayment(BuildContext context) {
+    gcashPayment(context);
+  }
 
   Future<void> _pickImage(BuildContext context) async {
     final ImagePicker _picker = ImagePicker();
@@ -98,7 +103,7 @@ class RentProcess {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)))),
                     onPressed: () {
-                      Navigator.of(context).pushNamed("rp_payment_success");
+                      Navigator.of(context).pushNamed("rp_submit_documents");
                     },
                     child: Center(
                       child: Padding(

@@ -550,6 +550,8 @@ class ProjectStrings {
   static const String rp_details_fees_proof_payment_gcash = "GCash";
   static const String rp_details_fees_proof_payment_gcash_name = "Maybelle H.";
   static const String rp_details_fees_proof_payment_gcash_number = "0970 190 0391";
+  static const String rp_details_fees_deep_link_dialog_content = "The GCash payment was not completed as expected. Please click \"Proceed\" if you wish to continue without paying the reservation fee. Alternatively, you may click \"Cancel\" and submit a screenshot of the payment made through another online payment provider.";
+  static const String rp_details_fees_deep_link_dialog_title = "Incomplete Payment Notice";
 
   //  payment successful (ps)
   static const String ps_title = "Payment Successful";

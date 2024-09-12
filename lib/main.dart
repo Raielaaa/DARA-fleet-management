@@ -29,6 +29,8 @@ import 'package:dara_app/view/pages/admin/home/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uni_links/uni_links.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const EntryPage(),
+        home: const DeepLinkHandler(),
         routes: {
           // Info carousel
           "entry_page_1": (context) => const CarouselPage1(),
@@ -93,7 +95,7 @@ class MyApp extends StatelessWidget {
           // Renting process - Booking Details
           "rp_booking_details": (context) => const RPBookingDetails(),
           "rp_delivery_mode": (context) => const RPDeliveryMode(),
-          "rp_details_fees": (context) => const RPDetailsFees(),
+          "rp_details_fees": (context) => const RPDetailsFees(isDeepLink: false),
           "rp_payment_success": (context) => const PaymentSuccess(),
           "rp_submit_documents": (context) => const SubmitDocuments(),
           "rp_verify_booking": (context) => const VerifyBooking(),
@@ -103,5 +105,58 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class DeepLinkHandler extends StatefulWidget {
+  const DeepLinkHandler({Key? key}) : super(key: key);
+
+  @override
+  _DeepLinkHandlerState createState() => _DeepLinkHandlerState();
+}
+
+class _DeepLinkHandlerState extends State<DeepLinkHandler> {
+  @override
+  void initState() {
+    super.initState();
+    _initLinks();
+  }
+
+  void _initLinks() async {
+    try {
+      // Get the initial link if the app was launched via a deep link
+      final initialLink = await getInitialLink();
+      _handleDeepLink(initialLink);
+
+      // Listen for incoming deep links
+      linkStream.listen((link) {
+        _handleDeepLink(link);
+      });
+    } on PlatformException {
+      debugPrint('Failed to get initial link.');
+    }
+  }
+
+  void _handleDeepLink(String? link) {
+    if (link != null) {
+      if (link.contains('payment-success')) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const PaymentSuccess()),
+        );
+      } else if (link.contains('payment-failed')) {
+        Navigator.pushReplacement(
+          context,
+          // MaterialPageRoute(builder: (context) => const PaymentFailed()),
+          MaterialPageRoute(builder: (context) => const PaymentSuccess()),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Your app's home widget
+    return const EntryPage();
   }
 }

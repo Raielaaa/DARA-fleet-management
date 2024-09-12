@@ -1,11 +1,14 @@
 import "package:dara_app/controller/rent_process/rent_process.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 
 class RPDetailsFees extends StatefulWidget {
-  const RPDetailsFees({super.key});
+  final bool isDeepLink;
+
+  const RPDetailsFees({super.key, required this.isDeepLink});
 
   @override
   State<RPDetailsFees> createState() => _RPDetailsFeesState();
@@ -13,6 +16,20 @@ class RPDetailsFees extends StatefulWidget {
 
 class _RPDetailsFeesState extends State<RPDetailsFees> {
   RentProcess rentProcess = RentProcess();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isDeepLink) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        InfoDialog().showWithCancelProceedButton(
+          context: context,
+          content: ProjectStrings.rp_details_fees_deep_link_dialog_content,
+          header: ProjectStrings.rp_details_fees_deep_link_dialog_title
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +59,8 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)))),
                     onPressed: () {
-                      Navigator.of(context).pushNamed("rp_payment_success");
+                      // Navigator.of(context).pushNamed("rp_payment_success");
+                      rentProcess.startGcashPayment(context);
                     },
                     child: Center(
                       child: Padding(
