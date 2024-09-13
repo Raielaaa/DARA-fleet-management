@@ -340,7 +340,7 @@ class _AdminHomeState extends State<AdminHome> {
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushNamed("manage_report");
+                            homeController.topOptionManageAccessibility(context);
                           },
                           child: Container(
                             decoration: BoxDecoration(

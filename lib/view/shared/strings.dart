@@ -159,6 +159,8 @@ class ProjectStrings {
   static const String admin_home_top_options_manage = "Manage";
   static const String admin_home_featured_header = "Featured Car Units";
   static const String admin_home_featured_see_all = "see all";
+  static const String home_top_option_manage_no_access_content = "You do not have the necessary permissions to use this feature. Please contact support if you believe this is an error.";
+  static const String home_top_option_manage_no_access_title = "Access Denied";
   
   static const String admin_home_car_info_placeholder_name_1 = "Hyundai Accent 2019";
   static const String admin_home_car_info_placeholder_name_2 = "Toyota Innova 2023";

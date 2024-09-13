@@ -1,6 +1,8 @@
+import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/services/weather/open_weather.dart';
 import 'package:dara_app/view/shared/colors.dart';
 import 'package:dara_app/view/shared/components.dart';
+import 'package:dara_app/view/shared/info_dialog.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +16,8 @@ class HomeController {
 
     try {
       // Await the forecast retrieval
-      List<Weather>? retrievedForecast = await openWeather.getWeatherForecastFromAPI();
+      List<Weather>? retrievedForecast =
+          await openWeather.getWeatherForecastFromAPI();
 
       if (retrievedForecast != null) {
         // Loop through each Weather object in the list
@@ -30,18 +33,17 @@ class HomeController {
             formattedDate = DateFormat('E d').format(weatherDate);
           } catch (e) {
             debugPrint("Error formatting date: $e");
-            formattedDate = "Unknown Date";  // Fallback in case of error
+            formattedDate = "Unknown Date"; // Fallback in case of error
           }
 
-          String temperature = weather.temperature?.celsius?.toString() ?? "N/A";
+          String temperature =
+              weather.temperature?.celsius?.toString() ?? "N/A";
           String wind = weather.windSpeed.toString();
           String weatherCode = weather.weatherIcon.toString();
 
           // Store the data in a list and add it to forecastData
           debugPrint("Hello Controller - $formattedDate");
-          forecastData.add(
-            [formattedDate, temperature, wind, weatherCode]
-          );
+          forecastData.add([formattedDate, temperature, wind, weatherCode]);
         }
       }
     } catch (e) {
@@ -85,9 +87,7 @@ class HomeController {
     Uri url = Uri.parse("mailto:$email?subject=$subject&body=$body");
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
-    } else {
-
-    }
+    } else {}
   }
 
   String getCurrentDate() {
@@ -185,6 +185,39 @@ class HomeController {
         );
       },
     );
+  }
+
+  void topOptionManageAccessibility(BuildContext context) {
+    switch (PersistentData().userType) {
+      case "Admin":
+        {
+          Navigator.of(context).pushNamed("manage_report");
+          break;
+        }
+      case "Accountant":
+        {
+          Navigator.of(context).pushNamed("to_manage_accountant");
+          break;
+        }
+      case "Driver":
+        {
+          Navigator.of(context).pushNamed("manage_report");
+          break;
+        }
+      case "Outsource":
+        {
+          Navigator.of(context).pushNamed("manage_report");
+          break;
+        }
+      case "User":
+        {
+          InfoDialog().show(
+            context: context,
+            content: ProjectStrings.home_top_option_manage_no_access_content,
+            header: ProjectStrings.home_top_option_manage_no_access_title
+          );
+        }
+    }
   }
 
   Future<void> showContactBottomDialog(BuildContext context) async {
