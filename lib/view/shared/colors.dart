@@ -29,4 +29,10 @@ class ProjectColors {
   static String reportManageItemBackground = "0xffc5e3ec";
   static String reportItemBackground = "0xffede8fb";
   static String reportPurple = "0xff4915DB";
+
+  //  accountant
+  static String outsourceColorMain = "0xff299D7C";
+  static String outsourceColorBackground = "0xffeaf5f2";
+  static String confirmActionCancelMain = "0xff5BC0EB";
+  static String confirmActionCancelBackground = "0xffeff9fd";
 }

@@ -169,6 +169,8 @@ flutter:
     - lib/assets/pictures/bottom_chat.png
     - lib/assets/pictures/bottom_email.png
     - lib/assets/pictures/cloudy.png
+    - lib/assets/pictures/accountant_income.png
+    - lib/assets/pictures/access_denied.webp
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

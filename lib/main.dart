@@ -7,6 +7,7 @@ import 'package:dara_app/view/pages/account/register/register_phone_number.dart'
 import 'package:dara_app/view/pages/account/register/register_successful.dart';
 import 'package:dara_app/view/pages/account/register/register_verify_phone.dart';
 import 'package:dara_app/view/pages/accountant/accountant_home.dart';
+import 'package:dara_app/view/pages/accountant/income.dart';
 import 'package:dara_app/view/pages/admin/car_list/unit_preview.dart';
 import 'package:dara_app/view/pages/admin/home_top_option/top_report.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
@@ -105,7 +106,8 @@ class MyApp extends StatelessWidget {
           "to_report": (context) => const TopOptionReport(),
 
           // Accountant manage option
-          "to_manage_accountant": (context) => const AccountantOption()
+          "to_manage_accountant": (context) => const AccountantOption(),
+          "to_income_accountant": (context) => const IncomePage()
         },
       ),
     );

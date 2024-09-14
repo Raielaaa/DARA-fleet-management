@@ -1,6 +1,7 @@
 import 'package:dara_app/controller/rent_process/rent_process.dart';
 import 'package:dara_app/view/shared/colors.dart';
 import 'package:dara_app/view/shared/components.dart';
+import 'package:dara_app/view/shared/strings.dart';
 import 'package:flutter/material.dart';
 
 class InfoDialog {
@@ -148,6 +149,112 @@ class InfoDialog {
                       )
                     ],
                   )
+                ],
+              ),
+            ),
+          );
+        },
+      ).then((_) {
+        _isShowing = false;
+        _context = null;
+      });
+    }
+  }
+
+  void showDecoratedTwoOptionsDialog(
+    {
+      required BuildContext context,
+      required String content,
+      String header = "Please wait..."
+    }
+  ) {
+    debugPrint("breakpoint - 1");
+    if (!_isShowing) {
+      debugPrint("breakpoint - 2");
+      _isShowing = true;
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          _context = context;
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              width: MediaQuery.of(context).size.width - 100,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        dismiss();
+                      },
+                      child: Image.asset(
+                        "lib/assets/pictures/exit.png",
+                        width: 20,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  CustomComponents.displayText(
+                    header,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold
+                  ),
+                  const SizedBox(height: 3),
+                  CustomComponents.displayText(
+                    content,
+                    fontSize: 10
+                  ),
+                  const SizedBox(height: 25),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          dismiss();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color(int.parse(ProjectColors.confirmActionCancelBackground.substring(2), radix: 16))
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 40, left: 40),
+                            child: CustomComponents.displayText(
+                              ProjectStrings.income_page_confirm_delete_cancel,
+                              color: Color(int.parse(ProjectColors.confirmActionCancelMain.substring(2), radix: 16)),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 30),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10, right: 40, left: 40),
+                          child: CustomComponents.displayText(
+                            ProjectStrings.income_page_confirm_delete_confirm,
+                            color: Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10)
                 ],
               ),
             ),

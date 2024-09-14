@@ -610,6 +610,14 @@ class ProjectStrings {
   static const String admin_home_weather_wind_placeholder = " km/h";
 
   //  income report - page
+  static const String manage_access_denied_header = "Access Denied";
+  static const String manage_access_denied_content = "The Antrip IoT application is currently available only to admin users.";
+  static const String manage_accountant_greetings = "Hello, Accountant";
+  static const String manage_accountant_date_range = "January 17 - January 21";
+  static const String manage_accountant_amount = "PHP 8,483.9384";
+  static const String manage_accountant_list_title = "Recent Income";
+  static const String manage_accountant_manage_options_title = "Accounting Options";
+  static const String manage_accountant_manage_options_income = "Income";
   static const String income_page_appbar_title = "Manage";
   static const String income_page_header = "Detailed Income Report";
   static const String income_page_subheader = "Shows the summary of income for the month of:";
@@ -634,4 +642,16 @@ class ProjectStrings {
   static const String income_page_item_title = "January 17 - January 21";
   static const String income_page_item_amount = "PHP 8,483.9384";
   static const String income_page_item_letter = "SR";
+  static const String income_page_confirm_delete = "Confirm Action";
+  static const String income_page_confirm_delete_content = "Are you sure you want to delete this information?";
+  static const String income_page_confirm_delete_cancel = "Cancel";
+  static const String income_page_confirm_delete_confirm = "Confirm";
+  static const String income_page_third_panel_title = "Income Report";
+  static const String income_page_third_panel_subheader = "Transaction Number 8375BFJN92756F8F33";
+  static const String income_page_rent_duration_title = "Rent Duration:";
+  static const String income_page_rent_duration_content = "11 days";
+  static const String income_page_reserved_customers_title = "Reserved Customer:";
+  static const String income_page_reserved_customer_content = "Yes";
+  static const String income_page_amount_title = "Amount:";
+  static const String income_page_amount_content = "PHP 7800.00";
 }
