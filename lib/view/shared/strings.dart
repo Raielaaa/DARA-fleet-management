@@ -654,4 +654,14 @@ class ProjectStrings {
   static const String income_page_reserved_customer_content = "Yes";
   static const String income_page_amount_title = "Amount:";
   static const String income_page_amount_content = "PHP 7800.00";
+  static const String income_page_edit_header = "Edit Income Report";
+  static const String income_page_edit_subheader = "Update the details of this income entry below";
+  static const String income_page_edit_start_date = "Start Date";
+  static const String income_page_edit_end_date = "End Date";
+  static const String income_page_edit_select_category = "Select Category";
+  static const String income_page_edit_select_category_owned = "Owned";
+  static const String income_page_edit_select_category_outsourced = "Outsourced";
+  static const String income_page_edit_amount = "Amount";
+  static const String income_page_edit_save_changes = "Save Changes";
+  static const String income_page_edit_cancel = "Cancel";
 }

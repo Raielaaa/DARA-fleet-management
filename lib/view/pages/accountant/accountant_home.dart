@@ -1,4 +1,5 @@
 import "package:dara_app/view/pages/accountant/income_dialog.dart";
+import "package:dara_app/view/pages/accountant/stateful_dialog.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
@@ -189,9 +190,19 @@ class _AccountantOptionState extends State<AccountantOption> {
                   Container(
                     child: Row(
                       children: [
-                        const Icon(
-                          Icons.edit,
-                          size: 20,
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return StatefulDateDialog();
+                              }
+                            );
+                          },
+                          child: const Icon(
+                            Icons.edit,
+                            size: 20,
+                          ),
                         ),
                         const SizedBox(width: 15),
                         GestureDetector(

@@ -1,9 +1,58 @@
+import "package:dara_app/view/pages/admin/rent_process/booking_details.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
+import "package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart";
+import "package:intl/intl.dart";
 
 class ShowDialog {
+  final DatePickerField _startDateField = DatePickerField(
+    label: ProjectStrings.rp_bk_starting_date_label,
+    selectedDate: ProjectStrings.rp_bk_starting_date_label,
+  );
+
+  final DatePickerField _endDateField = DatePickerField(
+    label: ProjectStrings.rp_bk_ending_date_label,
+    selectedDate: ProjectStrings.rp_bk_ending_date_label,
+  );
+
+  Future<void> editIncomeReport(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5)
+          ),
+          backgroundColor: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: Image.asset(
+                  "lib/assets/pictures/exit.png",
+                  width: 20
+                ),
+              ),
+              CustomComponents.displayText(
+                ProjectStrings.income_page_edit_header,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+              CustomComponents.displayText(
+                ProjectStrings.income_page_edit_subheader,
+                fontSize: 10
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        );
+      }
+    );
+  }
+
   Future<void> seeCompleteReportInfo(BuildContext context) async {
     return showDialog(
       context: context,
