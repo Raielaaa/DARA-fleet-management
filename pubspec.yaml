@@ -171,6 +171,9 @@ flutter:
     - lib/assets/pictures/cloudy.png
     - lib/assets/pictures/accountant_income.png
     - lib/assets/pictures/access_denied.webp
+    - lib/assets/pictures/user_list.png
+    - lib/assets/pictures/settings.png
+    - lib/assets/pictures/see_more.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

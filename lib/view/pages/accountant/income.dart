@@ -228,7 +228,6 @@ class _IncomePageState extends State<IncomePage> {
 
         const SizedBox(width: 30),
 
-
         Container(
           width: 20,
           height: 20,

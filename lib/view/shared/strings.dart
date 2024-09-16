@@ -379,6 +379,7 @@ class ProjectStrings {
   static const String manage_reports_reports = "Reports";
   static const String manage_reports_inquiries = "Inquiries";
   static const String manage_reports_car_status = "Car Status";
+  static const String manage_reports_user_list = "User List";
   static const String manage_reports_integrated_apps = "Integrated Apps";
   static const String manage_reports_google_maps = "Google Maps";
   static const String manage_reports_antrip_iot = "Antrip IoT";
@@ -664,4 +665,27 @@ class ProjectStrings {
   static const String income_page_edit_amount = "Amount";
   static const String income_page_edit_save_changes = "Save Changes";
   static const String income_page_edit_cancel = "Cancel";
+
+  //  admin options - user list
+  static const String admin_user_list_appbar_title = "User List";
+  static const String admin_user_list_header = "User Management";
+  static const String admin_user_list_subheader = "Detailed overview of registered accounts";
+  static const String admin_user_list_search = "Search...";
+  static const String admin_user_list_see_more = "See more";
+  static const String admin_user_list_contact_no_title = "Contact no.: ";
+  static const String admin_user_list_contact_no = "0936 457 5935";
+  static const String admin_user_list_email_title = "Email: ";
+  static const String admin_user_list_email_1 = "johnmark@gmail.com";
+  static const String admin_user_list_verified = "Verified";
+  static const String admin_user_list_unverified = "Unverified";
+  static const String admin_user_list_renter = "Renter";
+  static const String admin_user_list_driver = "Driver";
+  static const String admin_user_list_outsource = "Outsource";
+  static const String admin_user_list_email_2 = "tyrobinson@gmail.com";
+  static const String admin_user_list_email_3 = "tylermoore@gmail.com";
+  static const String admin_user_list_email_4 = "emilysmith@gmail.com";
+  static const String admin_user_list_name_1 = "John Mark Reyes";
+  static const String admin_user_list_name_2 = "Tyrone Robinson";
+  static const String admin_user_list_name_3 = "Tyler Moore";
+  static const String admin_user_list_name_4 = "Emily Smith";
 }

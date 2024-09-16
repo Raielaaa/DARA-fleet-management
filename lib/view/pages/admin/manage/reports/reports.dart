@@ -873,16 +873,18 @@ class _ManageReportsState extends State<ManageReports> {
                               color: Color(int.parse(ProjectColors.lineGray)),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 20, left: 20, right: 20),
+                              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  //  reports
                                   buildAdminOption(
                                     "lib/assets/pictures/manage_report_report.png",
                                     ProjectStrings.manage_reports_reports,
-                                    Color(int.parse(ProjectColors.reportMangeSelectedItem))
+                                    Colors.white
                                   ),
                                   const SizedBox(width: 10),
+                                  //  inquiries
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).pushNamed("manage_inquiries");
@@ -894,6 +896,7 @@ class _ManageReportsState extends State<ManageReports> {
                                     ),
                                   ),
                                   const SizedBox(width: 10),
+                                  //  car status
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).pushNamed("manage_car_status");
@@ -903,6 +906,18 @@ class _ManageReportsState extends State<ManageReports> {
                                       ProjectStrings.manage_reports_car_status,
                                       Colors.white
                                     )
+                                  ),
+                                  const SizedBox(width: 10),
+                                  //  user list
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed("manage_user_list");
+                                    },
+                                    child: buildAdminOption(
+                                      "lib/assets/pictures/user_list.png",
+                                      ProjectStrings.manage_reports_user_list,
+                                      Colors.white
+                                    ),
                                   )
                                 ],
                               ),

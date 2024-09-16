@@ -249,7 +249,7 @@ class _LoginMain extends State<LoginMain> {
               const SizedBox(height: 5),
               CustomComponents.displayText(
                   ProjectStrings.account_login_main_subheader,
-                  fontSize: 10,
+                  fontSize: 12,
                   ),
 
               //  Email

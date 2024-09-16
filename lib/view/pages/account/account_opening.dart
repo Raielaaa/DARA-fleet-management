@@ -48,7 +48,7 @@ class AccountOpening extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: CustomComponents.displayText(
                   ProjectStrings.account_opening_body,
-                  fontSize: 10
+                  fontSize: 12
                 )
               ),
             ),

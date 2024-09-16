@@ -248,7 +248,7 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 5),
               CustomComponents.displayText(
                   ProjectStrings.account_register_1_subheader,
-                  fontSize: 10
+                  fontSize: 12
                   ),
 
               //  First name

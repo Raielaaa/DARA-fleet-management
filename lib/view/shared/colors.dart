@@ -35,4 +35,10 @@ class ProjectColors {
   static String outsourceColorBackground = "0xffeaf5f2";
   static String confirmActionCancelMain = "0xff5BC0EB";
   static String confirmActionCancelBackground = "0xffeff9fd";
+
+  //  user list
+  static String userListDriverHex = "0xff9BC53D";
+  static String userListDriverHexBackground = "0xfff5f9ec";
+  static String userListOutsourceHex = "0xffFAC748";
+  static String userListOutsourceHexBackground = "0xfffff9ed";
 }
