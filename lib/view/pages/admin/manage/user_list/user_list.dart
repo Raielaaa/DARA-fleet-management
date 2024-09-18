@@ -1,3 +1,4 @@
+import "package:dara_app/view/pages/admin/manage/user_list/SortFilterDrawer.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -11,9 +12,13 @@ class UserList extends StatefulWidget {
 }
 
 class _UserListState extends State<UserList> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: SortFilterDrawer(),
       body: Container(
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
         child: Padding(
@@ -105,8 +110,13 @@ class _UserListState extends State<UserList> {
             SizedBox(
               width: 20,
               height: 20,
-              child: Image.asset(
-                "lib/assets/pictures/settings.png",
+              child: GestureDetector(
+                onTap: () {
+                  _scaffoldKey.currentState?.openEndDrawer();
+                },
+                child: Image.asset(
+                  "lib/assets/pictures/settings.png",
+                ),
               ),
             ),
           ],
@@ -192,11 +202,12 @@ class _UserListState extends State<UserList> {
                   ),
                   const Spacer(),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Image.asset(
                         "lib/assets/pictures/see_more.png",
-                        width: 30,
+                        width: 20,
                       ),
                       CustomComponents.displayText(
                         ProjectStrings.admin_user_list_see_more,

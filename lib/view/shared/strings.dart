@@ -688,4 +688,24 @@ class ProjectStrings {
   static const String admin_user_list_name_2 = "Tyrone Robinson";
   static const String admin_user_list_name_3 = "Tyler Moore";
   static const String admin_user_list_name_4 = "Emily Smith";
+
+  //  admin options - user list
+  static const String admin_user_nav_drawer_sort_and_filter = "Sort & Filter";
+  static const String admin_user_nav_drawer_clear_all = "Clear All";
+  static const String admin_user_nav_drawer_apply = "Apply";
+  static const String admin_user_nav_drawer_sort_by = "Sort By";
+  static const String admin_user_nav_drawer_alphabetical = "Alphabetical";
+  static const String admin_user_nav_drawer_date_created = "Date Created";
+  static const String admin_user_nav_drawer_filter_by = "Filter By";
+  static const String admin_user_nav_drawer_renter = "Renter";
+  static const String admin_user_nav_drawer_outsource = "Outsource";
+  static const String admin_user_nav_drawer_driver = "Driver";
+  static const String admin_user_nav_drawer_verified_status = "Verified Status";
+  static const String admin_user_nav_drawer_verified = "Verified";
+  static const String admin_user_nav_drawer_unverified = "Unverified";
+  static const String admin_user_nav_drawer_date_joined = "Date Joined";
+  static const String admin_user_nav_drawer_from = "From";
+  static const String admin_user_nav_drawer_to = "To";
+  static const String admin_user_nav_drawer_select_date = "-- select date --";
+  static const String admin_user_nav_drawer_user_type = "User Type";
 }

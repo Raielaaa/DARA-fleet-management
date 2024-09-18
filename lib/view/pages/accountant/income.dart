@@ -304,7 +304,7 @@ class _IncomePageState extends State<IncomePage> {
       ),
       style: const TextStyle(
         fontSize: 12,
-        fontFamily: 'YourFontFamily', // Replace with actual font family if needed
+        fontFamily: ProjectStrings.general_font_family, // Replace with actual font family if needed
         color: Color(0xff404040),
         fontWeight: FontWeight.bold,
       ),
