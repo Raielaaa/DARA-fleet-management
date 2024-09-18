@@ -18,7 +18,7 @@ class _UserListState extends State<UserList> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: SortFilterDrawer(),
+      endDrawer: const SortFilterDrawer(),
       body: Container(
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
         child: Padding(
@@ -201,19 +201,24 @@ class _UserListState extends State<UserList> {
                     ),
                   ),
                   const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        "lib/assets/pictures/see_more.png",
-                        width: 20,
-                      ),
-                      CustomComponents.displayText(
-                        ProjectStrings.admin_user_list_see_more,
-                        fontSize: 10,
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("manage_user_list_info");
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          "lib/assets/pictures/see_more.png",
+                          width: 20,
+                        ),
+                        CustomComponents.displayText(
+                          ProjectStrings.admin_user_list_see_more,
+                          fontSize: 10,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

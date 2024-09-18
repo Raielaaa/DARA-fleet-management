@@ -708,4 +708,22 @@ class ProjectStrings {
   static const String admin_user_nav_drawer_to = "To";
   static const String admin_user_nav_drawer_select_date = "-- select date --";
   static const String admin_user_nav_drawer_user_type = "User Type";
+
+  //  admin options - user info
+  static const String admin_user_info_user_list = "User List";
+  static const String admin_user_info_name = "John Mark Reyes";
+  static const String admin_user_info_user_type = "Renter";
+  static const String admin_user_info_address_title = "Address:";
+  static const String admin_user_info_address = "Pila Laguna";
+  static const String admin_user_info_age_title = "Age:";
+  static const String admin_user_info_age = "35 years old";
+  static const String admin_user_info_gender_title = "Gender:";
+  static const String admin_user_info_gender = "Male";
+  static const String admin_user_info_account_status_title = "Account Status";
+  static const String admin_user_info_account_status = "Verified";
+  static const String admin_user_info_date_registered_title = "Date Registered:";
+  static const String admin_user_info_date_registered = "09/11/2023";
+  static const String admin_user_info_edit = "Edit";
+  static const String admin_user_info_delete = "Delete";
+  static const String admin_user_info_contact = "Contact";
 }

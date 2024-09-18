@@ -13,6 +13,7 @@ import 'package:dara_app/view/pages/admin/home_top_option/top_report.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
 import 'package:dara_app/view/pages/admin/manage/status/status.dart';
+import 'package:dara_app/view/pages/admin/manage/user_list/user_info.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/user_list.dart';
 import 'package:dara_app/view/pages/admin/rent_process/booking_details.dart';
 import 'package:dara_app/view/pages/admin/rent_process/delivery_mode.dart';
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
 
           // Admin option - User List
           "manage_user_list": (context) => const UserList(),
+          "manage_user_list_info": (context) => const UserInfo(),
 
           // Renting process - Booking Details
           "rp_booking_details": (context) => const RPBookingDetails(),
@@ -111,7 +113,7 @@ class MyApp extends StatelessWidget {
 
           // Accountant manage option
           "to_manage_accountant": (context) => const AccountantOption(),
-          "to_income_accountant": (context) => const IncomePage()
+          "to_income_accountant": (context) => const IncomePage(),
         },
       ),
     );
