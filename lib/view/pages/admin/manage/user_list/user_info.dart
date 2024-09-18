@@ -1,5 +1,7 @@
+import "package:dara_app/controller/home/home_controller.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 
@@ -37,6 +39,14 @@ class _UserInfoState extends State<UserInfo> {
           ),
         ),
       ),
+    );
+  }
+
+  void showConfirmDialog() {
+    InfoDialog().showDecoratedTwoOptionsDialog(
+      context: context,
+      content: ProjectStrings.income_page_confirm_delete_content,
+      header: ProjectStrings.income_page_confirm_delete
     );
   }
 
@@ -123,9 +133,16 @@ class _UserInfoState extends State<UserInfo> {
       padding: const EdgeInsets.only(left: 15, top: 10),
       child: Row(
         children: [
-          Image.asset(
-            "lib/assets/pictures/user_info_user.png",
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100)
+            ),
             width: 40,
+            height: 40,
+            child: Image.asset(
+              "lib/assets/pictures/user_info_user.png",
+              fit: BoxFit.fill,
+            ),
           ),
           const SizedBox(width: 20),
           Expanded(
@@ -150,23 +167,6 @@ class _UserInfoState extends State<UserInfo> {
     );
   }
 
-  Widget _circularIndicator() {
-    return Container(
-      width: 30,
-      height: 30,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Color(int.parse(ProjectColors.mainColorBackground.substring(2),
-            radix: 16)),
-        border: Border.all(
-            color: Color(int.parse(ProjectColors.lineGray)), width: 1),
-      ),
-      child: Center(
-          child: CustomComponents.displayText("1",
-              fontSize: 12, fontWeight: FontWeight.bold)),
-    );
-  }
-
   Widget _infoField(String title, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -176,8 +176,7 @@ class _UserInfoState extends State<UserInfo> {
           CustomComponents.displayText(title,
               fontWeight: FontWeight.w500,
               fontSize: 10,
-              color: Color(
-                  int.parse(ProjectColors.lightGray.substring(2), radix: 16))),
+              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))),
           CustomComponents.displayText(value,
               fontWeight: FontWeight.bold, fontSize: 10),
         ],
@@ -233,6 +232,7 @@ class _UserInfoState extends State<UserInfo> {
                     children: [
                       CustomComponents.displayText(document,
                           fontSize: 10, fontWeight: FontWeight.w500),
+                      const SizedBox(height: 3),
                       Row(
                         children: [
                           CustomComponents.displayText(ProjectStrings.ri_size,
@@ -265,6 +265,7 @@ class _UserInfoState extends State<UserInfo> {
     );
   }
 
+  HomeController homeController = HomeController();
   Widget _bottomPanel(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -283,7 +284,7 @@ class _UserInfoState extends State<UserInfo> {
             ProjectColors.userInfoRed,
             ProjectStrings.admin_user_info_delete,
             () {
-              Navigator.of(context).pushNamed("to_report");
+              showConfirmDialog();
             }
           ),
           const SizedBox(width: 18),
@@ -291,7 +292,9 @@ class _UserInfoState extends State<UserInfo> {
             "lib/assets/pictures/user_info_email.png",
             ProjectColors.userInfoGreen,
             ProjectStrings.user_info_contact,
-            () {}
+            () {
+              homeController.showContactBottomDialog(context);
+            }
           ),
         ],
       ),

@@ -710,7 +710,7 @@ class ProjectStrings {
   static const String admin_user_nav_drawer_user_type = "User Type";
 
   //  admin options - user info
-  static const String admin_user_info_user_list = "User List";
+  static const String admin_user_info_user_list = "User Info";
   static const String admin_user_info_name = "John Mark Reyes";
   static const String admin_user_info_user_type = "Renter";
   static const String admin_user_info_address_title = "Address:";
