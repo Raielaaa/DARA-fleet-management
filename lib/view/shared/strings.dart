@@ -731,4 +731,5 @@ class ProjectStrings {
   static const String outsource_report_inquiries = "Inquiries";
   static const String outsource_report_apply = "Apply";
   static const String outsource_action_bar_title = "Report";
+  static const String outsource_send_message_to_admin = "Send Message to Admin";
 }

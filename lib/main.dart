@@ -31,6 +31,7 @@ import 'package:dara_app/view/pages/carousel/widgets/page_6.dart';
 import 'package:dara_app/view/pages/entry/entry_page_video.dart';
 import 'package:dara_app/view/pages/admin/home/home_page.dart';
 import 'package:dara_app/view/pages/outsource/accounting_outsource.dart';
+import 'package:dara_app/view/pages/outsource/inquiries_outsource.dart';
 import 'package:dara_app/view/pages/outsource/manage_outsource.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +120,8 @@ class MyApp extends StatelessWidget {
 
           // Outsource manage option
           "manage_outsource": (context) => const OutsourceManage(),
-          "accounting_outsource": (context) => const OutsourceAccounting()
+          "accounting_outsource": (context) => const OutsourceAccounting(),
+          "inquiries_outsource": (context) => const OutsourceInquiries(),
         },
       ),
     );

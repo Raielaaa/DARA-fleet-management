@@ -178,6 +178,7 @@ flutter:
     - lib/assets/pictures/user_info_delete.png
     - lib/assets/pictures/delete.png
     - lib/assets/pictures/apply.png
+    - lib/assets/pictures/send.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png
