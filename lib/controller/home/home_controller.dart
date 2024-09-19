@@ -206,7 +206,7 @@ class HomeController {
         }
       case "Outsource":
         {
-          Navigator.of(context).pushNamed("manage_report");
+          Navigator.of(context).pushNamed("manage_outsource");
           break;
         }
       case "User":

@@ -726,4 +726,9 @@ class ProjectStrings {
   static const String admin_user_info_edit = "Edit";
   static const String admin_user_info_delete = "Delete";
   static const String admin_user_info_contact = "Contact";
+
+  //  outsource - manage
+  static const String outsource_report_inquiries = "Inquiries";
+  static const String outsource_report_apply = "Apply";
+  static const String outsource_action_bar_title = "Report";
 }

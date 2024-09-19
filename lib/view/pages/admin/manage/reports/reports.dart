@@ -852,7 +852,6 @@ class _ManageReportsState extends State<ManageReports> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(7),
                         ),
-                        height: 200,
                         child: Column(
                           children: [
                             Padding(
@@ -873,7 +872,7 @@ class _ManageReportsState extends State<ManageReports> {
                               color: Color(int.parse(ProjectColors.lineGray)),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                              padding: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

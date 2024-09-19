@@ -6,14 +6,14 @@ import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 
-class AccountantOption extends StatefulWidget {
-  const AccountantOption({super.key});
+class OutsourceManage extends StatefulWidget {
+  const OutsourceManage({super.key});
 
   @override
-  State<AccountantOption> createState() => _AccountantOptionState();
+  State<OutsourceManage> createState() => _OutsourceManageState();
 }
 
-class _AccountantOptionState extends State<AccountantOption> {
+class _OutsourceManageState extends State<OutsourceManage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +35,7 @@ class _AccountantOptionState extends State<AccountantOption> {
                     children: [
                       greetingsHeader(),
                       const SizedBox(height: 20),
-                      accountingOptions(),
+                      outsourceOptions(),
                       const SizedBox(height: 30),
                       integratedApps(),
                       const SizedBox(height: 30),
@@ -72,9 +72,14 @@ class _AccountantOptionState extends State<AccountantOption> {
                   width: double.infinity,
                   child: Align(
                     alignment: Alignment.centerRight,
-                    child: Image.asset(
-                      "lib/assets/pictures/exit.png",
-                      width: 20,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Image.asset(
+                        "lib/assets/pictures/exit.png",
+                        width: 20,
+                      ),
                     ),
                   ),
                 ),
@@ -337,7 +342,7 @@ class _AccountantOptionState extends State<AccountantOption> {
   }
 
   // Accounting Options
-  Widget accountingOptions() {
+  Widget outsourceOptions() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -363,12 +368,14 @@ class _AccountantOptionState extends State<AccountantOption> {
             color: Color(int.parse(ProjectColors.lineGray)),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                //  income
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushNamed("to_income_accountant");
+                    Navigator.of(context).pushNamed("accounting_outsource");
                   },
                   child: buildAdminOption(
                     "lib/assets/pictures/accountant_income.png",
@@ -376,6 +383,19 @@ class _AccountantOptionState extends State<AccountantOption> {
                     Colors.white,
                   ),
                 ),
+                //  inquiries
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed("manage_inquiries");
+                  },
+                  child: buildAdminOption(
+                    "lib/assets/pictures/manage_report_inquiries.png",
+                    ProjectStrings.outsource_report_inquiries,
+                    Colors.white,
+                  ),
+                ),
+                //  car status
                 const SizedBox(width: 10),
                 GestureDetector(
                   onTap: () {
@@ -384,6 +404,18 @@ class _AccountantOptionState extends State<AccountantOption> {
                   child: buildAdminOption(
                     "lib/assets/pictures/manage_report_car_status.png",
                     ProjectStrings.manage_reports_car_status,
+                    Colors.white,
+                  ),
+                ),
+                //  apply
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    // Navigator.of(context).pushNamed("manage_car_status");
+                  },
+                  child: buildAdminOption(
+                    "lib/assets/pictures/apply.png",
+                    ProjectStrings.outsource_report_apply,
                     Colors.white,
                   ),
                 ),
@@ -443,7 +475,7 @@ class _AccountantOptionState extends State<AccountantOption> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomComponents.displayText(
-                ProjectStrings.manage_accountant_greetings,
+                ProjectStrings.manage_reports_greetings,
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),
@@ -481,7 +513,7 @@ class _AccountantOptionState extends State<AccountantOption> {
             child: Image.asset("lib/assets/pictures/left_arrow.png"),
           ),
           CustomComponents.displayText(
-            ProjectStrings.income_page_appbar_title,
+            ProjectStrings.outsource_action_bar_title,
             fontWeight: FontWeight.bold,
           ),
           Padding(
