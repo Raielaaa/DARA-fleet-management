@@ -1,23 +1,23 @@
 # Summary
 
-Date : 2024-09-14 09:44:56
+Date : 2024-09-19 19:06:50
 
 Directory c:\\Users\\Daniel\\Desktop\\Flutter_Practice\\dara\\dara_app\\lib
 
-Total : 58 files,  14438 codes, 497 comments, 712 blanks, all 15647 lines
+Total : 68 files,  18777 codes, 570 comments, 876 blanks, all 20223 lines
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
 ## Languages
 | language | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Dart | 58 | 14,438 | 497 | 712 | 15,647 |
+| Dart | 68 | 18,777 | 570 | 876 | 20,223 |
 
 ## Directories
 | path | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| . | 58 | 14,438 | 497 | 712 | 15,647 |
-| . (Files) | 2 | 179 | 30 | 27 | 236 |
+| . | 68 | 18,777 | 570 | 876 | 20,223 |
+| . (Files) | 2 | 193 | 33 | 30 | 256 |
 | controller | 8 | 690 | 54 | 71 | 815 |
 | controller\\account | 2 | 178 | 27 | 14 | 219 |
 | controller\\home | 1 | 267 | 11 | 20 | 298 |
@@ -33,24 +33,25 @@ Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-
 | services\\gcash | 1 | 57 | 6 | 5 | 68 |
 | services\\google | 1 | 21 | 0 | 5 | 26 |
 | services\\weather | 1 | 39 | 8 | 8 | 55 |
-| view | 41 | 13,343 | 393 | 584 | 14,320 |
-| view\\pages | 36 | 12,259 | 343 | 498 | 13,100 |
+| view | 51 | 17,668 | 463 | 745 | 18,876 |
+| view\\pages | 46 | 16,370 | 405 | 650 | 17,425 |
 | view\\pages\\account | 8 | 1,658 | 118 | 129 | 1,905 |
 | view\\pages\\account (Files) | 1 | 73 | 7 | 8 | 88 |
 | view\\pages\\account\\login | 1 | 400 | 24 | 22 | 446 |
 | view\\pages\\account\\register | 6 | 1,185 | 87 | 99 | 1,371 |
 | view\\pages\\account\\register (Files) | 5 | 839 | 53 | 63 | 955 |
 | view\\pages\\account\\register\\widgets | 1 | 346 | 34 | 36 | 416 |
-| view\\pages\\accountant | 1 | 367 | 6 | 13 | 386 |
-| view\\pages\\admin | 19 | 9,285 | 207 | 313 | 9,805 |
+| view\\pages\\accountant | 4 | 1,850 | 26 | 65 | 1,941 |
+| view\\pages\\admin | 22 | 10,398 | 217 | 356 | 10,971 |
 | view\\pages\\admin\\car_list | 2 | 1,416 | 43 | 42 | 1,501 |
 | view\\pages\\admin\\center_button | 1 | 19 | 0 | 3 | 22 |
 | view\\pages\\admin\\home | 2 | 999 | 21 | 25 | 1,045 |
 | view\\pages\\admin\\home_top_option | 1 | 419 | 8 | 20 | 447 |
-| view\\pages\\admin\\manage | 3 | 2,364 | 56 | 67 | 2,487 |
+| view\\pages\\admin\\manage | 6 | 3,477 | 66 | 110 | 3,653 |
 | view\\pages\\admin\\manage\\inquiries | 1 | 528 | 16 | 23 | 567 |
-| view\\pages\\admin\\manage\\reports | 1 | 1,072 | 29 | 34 | 1,135 |
+| view\\pages\\admin\\manage\\reports | 1 | 1,082 | 33 | 34 | 1,149 |
 | view\\pages\\admin\\manage\\status | 1 | 764 | 11 | 10 | 785 |
+| view\\pages\\admin\\manage\\user_list | 3 | 1,103 | 6 | 43 | 1,152 |
 | view\\pages\\admin\\profile | 1 | 667 | 28 | 30 | 725 |
 | view\\pages\\admin\\rent_process | 7 | 1,648 | 18 | 66 | 1,732 |
 | view\\pages\\admin\\rent_process (Files) | 5 | 1,384 | 16 | 55 | 1,455 |
@@ -60,6 +61,9 @@ Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-
 | view\\pages\\carousel (Files) | 1 | 12 | 0 | 3 | 15 |
 | view\\pages\\carousel\\widgets | 6 | 888 | 12 | 30 | 930 |
 | view\\pages\\entry | 1 | 49 | 0 | 10 | 59 |
-| view\\shared | 5 | 1,084 | 50 | 86 | 1,220 |
+| view\\pages\\outsource | 4 | 1,515 | 32 | 57 | 1,604 |
+| view\\pages\\outsource (Files) | 3 | 1,464 | 31 | 53 | 1,548 |
+| view\\pages\\outsource\\application_process | 1 | 51 | 1 | 4 | 56 |
+| view\\shared | 5 | 1,298 | 58 | 95 | 1,451 |
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

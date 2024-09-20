@@ -18,8 +18,7 @@ class _OutsourceManageState extends State<OutsourceManage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(int.parse(ProjectColors.mainColorBackground.substring(2),
-            radix: 16)),
+        color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
         child: Padding(
           padding: const EdgeInsets.only(top: 38),
           child: Column(
@@ -152,7 +151,7 @@ class _OutsourceManageState extends State<OutsourceManage> {
                             borderRadius: BorderRadius.circular(5),
                             color: Color(
                               int.parse(
-                                ProjectColors.reportMainColorBackground.substring(2),
+                                ProjectColors.userListOutsourceHexBackground.substring(2),
                                 radix: 16,
                               ),
                             ),
@@ -163,7 +162,7 @@ class _OutsourceManageState extends State<OutsourceManage> {
                               "SR",
                               color: Color(
                                 int.parse(
-                                  ProjectColors.mainColorHex.substring(2),
+                                  ProjectColors.userListOutsourceHex.substring(2),
                                   radix: 16,
                                 ),
                               ),
@@ -195,21 +194,6 @@ class _OutsourceManageState extends State<OutsourceManage> {
                   Container(
                     child: Row(
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return StatefulDateDialog();
-                              }
-                            );
-                          },
-                          child: const Icon(
-                            Icons.edit,
-                            size: 20,
-                          ),
-                        ),
-                        const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
                             showConfirmDialog();
@@ -355,7 +339,7 @@ class _OutsourceManageState extends State<OutsourceManage> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: CustomComponents.displayText(
-                ProjectStrings.manage_reports_admin_options,
+                ProjectStrings.outsource_options,
                 fontWeight: FontWeight.bold,
                 fontSize: 10,
               ),
@@ -411,7 +395,7 @@ class _OutsourceManageState extends State<OutsourceManage> {
                 const SizedBox(width: 10),
                 GestureDetector(
                   onTap: () {
-                    // Navigator.of(context).pushNamed("manage_car_status");
+                    _showInformationDialog(context);
                   },
                   child: buildAdminOption(
                     "lib/assets/pictures/apply.png",
@@ -475,14 +459,14 @@ class _OutsourceManageState extends State<OutsourceManage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomComponents.displayText(
-                ProjectStrings.manage_reports_greetings,
+                ProjectStrings.outsource_hello_outsource,
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),
               const SizedBox(height: 3),
               CustomComponents.displayText(
                 ProjectStrings.manage_reports_date,
-                fontSize: 12,
+                fontSize: 10,
                 textAlign: TextAlign.start,
               ),
             ],
@@ -522,6 +506,185 @@ class _OutsourceManageState extends State<OutsourceManage> {
           ),
         ],
       ),
+    );
+  }
+
+  //  information dialog metadata
+  int _informationDialogCurrentIndex = 0;
+  final List<Map<String, String>> guides = [
+    {
+      "title": ProjectStrings.outsource_apply_title_1,
+      "content": ProjectStrings.outsource_apply_content_1
+    },
+    {
+      "title": ProjectStrings.outsource_apply_title_2,
+      "content": ProjectStrings.outsource_apply_content_2
+    },
+    {
+      "title": ProjectStrings.outsource_apply_title_3,
+      "content": ProjectStrings.outsource_apply_content_3
+    },
+    {
+      "title": ProjectStrings.outsource_apply_title_4,
+      "content": ProjectStrings.outsource_apply_content_4
+    },
+    {
+      "title": ProjectStrings.outsource_apply_title_5,
+      "content": ProjectStrings.outsource_apply_content_5
+    },
+  ];
+
+  void _showInformationDialog(BuildContext contextParent) {
+    showDialog(
+      context: contextParent,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          backgroundColor: Color(int.parse(
+              ProjectColors.mainColorBackground.substring(2),
+              radix: 16)),
+          child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        child: Image.asset(
+                          "lib/assets/pictures/exit.png",
+                          width: 30,
+                        ),
+                      ),
+                    ),
+                    //  left arrow - main image - right arrow
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (_informationDialogCurrentIndex > 0) {
+                                _informationDialogCurrentIndex--;
+                              }
+                            });
+                          },
+                          child: Image.asset(
+                            "lib/assets/pictures/id_left_arrow.png",
+                            width: 30,
+                          ),
+                        ),
+                        Expanded(
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder:
+                                (Widget child, Animation<double> animation) {
+                              return FadeTransition(
+                                  opacity: animation, child: child);
+                            },
+                            child: KeyedSubtree(
+                              key:
+                                  ValueKey<int>(_informationDialogCurrentIndex),
+                              child: Image.asset(
+                                  "lib/assets/pictures/information_dialog.png"),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (_informationDialogCurrentIndex <
+                                  guides.length - 1) {
+                                _informationDialogCurrentIndex++;
+                              } else {
+                                Navigator.of(contextParent).pushNamed("ap_vehicle_information");
+                                Navigator.of(context).pop();
+                              }
+                            });
+                          },
+                          child: Image.asset(
+                              "lib/assets/pictures/id_right_arrow.png",
+                              width: 30),
+                        ),
+                      ],
+                    ),
+                    //  indicator dots
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(guides.length, (index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _informationDialogCurrentIndex == index
+                                ? Color(int.parse(
+                                    ProjectColors.mainColorHex.substring(2),
+                                    radix: 16))
+                                : Colors.grey,
+                          ),
+                        );
+                      }),
+                    ),
+                    //  title
+                    const SizedBox(height: 30),
+                    Align(
+                      alignment: Alignment.center,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                              opacity: animation, child: child);
+                        },
+                        child: KeyedSubtree(
+                          key: ValueKey<int>(_informationDialogCurrentIndex),
+                          child: CustomComponents.displayText(
+                            guides[_informationDialogCurrentIndex]["title"]!,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                    //  content
+                    const SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.center,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                              opacity: animation, child: child);
+                        },
+                        child: KeyedSubtree(
+                          key:
+                              ValueKey<int>(_informationDialogCurrentIndex + 1),
+                          child: CustomComponents.displayText(
+                            textAlign: TextAlign.center,
+                            guides[_informationDialogCurrentIndex]["content"]!,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ),
+                    //  spacer
+                    const SizedBox(height: 50),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

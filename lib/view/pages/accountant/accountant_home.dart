@@ -350,7 +350,7 @@ class _AccountantOptionState extends State<AccountantOption> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: CustomComponents.displayText(
-                ProjectStrings.manage_reports_admin_options,
+                ProjectStrings.manage_accountant_options,
                 fontWeight: FontWeight.bold,
                 fontSize: 10,
               ),

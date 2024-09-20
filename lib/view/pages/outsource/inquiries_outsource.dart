@@ -52,7 +52,7 @@ class _OutsourceInquiriesState extends State<OutsourceInquiries> {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: CustomComponents.displayText(ProjectStrings.ri_title,
+                  child: CustomComponents.displayText(ProjectStrings.outsource_inquiries_header,
                       fontWeight: FontWeight.bold, fontSize: 12),
                 ),
               ),
@@ -62,7 +62,7 @@ class _OutsourceInquiriesState extends State<OutsourceInquiries> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: CustomComponents.displayText(
-                      ProjectStrings.ri_subheader,
+                      ProjectStrings.outsource_inquiries_subheader,
                       fontSize: 10),
                 ),
               ),

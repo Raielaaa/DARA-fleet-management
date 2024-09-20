@@ -614,6 +614,7 @@ class ProjectStrings {
   static const String manage_access_denied_header = "Access Denied";
   static const String manage_access_denied_content = "The Antrip IoT application is currently available only to admin users.";
   static const String manage_accountant_greetings = "Hello, Accountant";
+  static const String manage_accountant_options = "Accountant Options";
   static const String manage_accountant_date_range = "January 17 - January 21";
   static const String manage_accountant_amount = "PHP 8,483.9384";
   static const String manage_accountant_list_title = "Recent Income";
@@ -728,8 +729,38 @@ class ProjectStrings {
   static const String admin_user_info_contact = "Contact";
 
   //  outsource - manage
+  static const String outsource_hello_outsource = "Hello, Outsource";
   static const String outsource_report_inquiries = "Inquiries";
   static const String outsource_report_apply = "Apply";
   static const String outsource_action_bar_title = "Report";
   static const String outsource_send_message_to_admin = "Send Message to Admin";
+  static const String outsource_inquiries_header = "Renter Verification Overview";
+  static const String outsource_inquiries_subheader = "Review renter details pending admin approval";
+  static const String outsource_options = "Outsource Options";
+
+  //  outsource - apply
+  static const String outsource_apply_title_1 = "Vehicle Information";
+  static const String outsource_apply_content_1 = "Include the make, model, year, plate number/MV file number of the vehicle you want to outsource.";
+  static const String outsource_apply_title_2 = "Personal Information";
+  static const String outsource_apply_content_2 = "Provide your full name, date of birth, contact information, home address, and other personal information.";
+  static const String outsource_apply_title_3 = "Employment Information";
+  static const String outsource_apply_content_3 = "Detail your job title, employer's name and address, duration of employment, and other employment information.";
+  static const String outsource_apply_title_4 = "Business Information";
+  static const String outsource_apply_content_4 = "Include your business name, type, address, contact information, and other business information.";
+  static const String outsource_apply_title_5 = "Submit Documents";
+  static const String outsource_apply_content_5 = "Submit photocopies or scanned copies of all required documents";
+
+  //  outsource - vehicle information
+  static const String outsource_ap_notice_header = "Important Notice";
+  static const String outsource_ap_notice_subheader = "Please ensure all required information is completed.";
+  static const String outsource_ap_not_specified = "Not Specified";
+  static const String outsource_vehicle_information = "Vehicle Information";
+  static const String outsource_vi_model = "Model";
+  static const String outsource_vi_brand = "Brand";
+  static const String outsource_vi_year = "Year";
+  static const String outsource_vi_plate = "Plate No./MV File No.";
+  static const String outsource_vi_model_content = "Car model";
+  static const String outsource_vi_brand_content = "Car brand";
+  static const String outsource_vi_year_content = "Manufacturing year";
+  static const String outsource_vi_plate_content = "Number";
 }
