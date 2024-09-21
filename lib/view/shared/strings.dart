@@ -763,4 +763,56 @@ class ProjectStrings {
   static const String outsource_vi_brand_content = "Car brand";
   static const String outsource_vi_year_content = "Manufacturing year";
   static const String outsource_vi_plate_content = "Number";
+  static const String outsource_dialog_title = "Missing Required Information";
+  static const String outsource_dialog_content = "All required fields must be completed before you can proceed. Please fill in all the missing information.";
+  static const String outsource_pp_action_bar = "Personal Profile";
+
+
+
+  // Personal Data
+  static const String outsource_pp_personal_data = "Personal Data";
+  static const String outsource_pp_first_name = "First name";
+  static const String outsource_pp_middle_name = "Middle name";
+  static const String outsource_pp_last_name = "Last name";
+  static const String outsource_pp_birthday = "Birthday";
+  static const String outsource_pp_age = "Age";
+  static const String outsource_pp_place_of_birth = "Place of birth";
+  static const String outsource_pp_citizenship = "Citizenship";
+  static const String outsource_pp_civil_status = "Civil status";
+  static const String outsource_pp_mother_info = "Mother's maiden name";
+
+  // Contact Information
+  static const String outsource_pp_contact_information = "Contact Information";
+  static const String outsource_pp_contact_number = "Contact number";
+  static const String outsource_pp_email_address = "Email address";
+
+  // Residence Details
+  static const String outsource_pp_residence_details = "Residence Details";
+  static const String outsource_pp_address = "Address";
+  static const String outsource_pp_years_stayed = "Years stayed";
+  static const String outsource_pp_house_status = "House status";
+
+  // Identification
+  static const String outsource_pp_identification = "Identification";
+  static const String outsource_pp_tin_number = "Tin number";
+
+
+
+  //  Employment information
+  static const String outsource_ei_appbar_title = "Employment Information";
+
+  // Company Details
+  static const String outsource_ei_company_details = "Company Details";
+  static const String outsource_ei_company_name = "Company name";
+  static const String outsource_ei_address = "Address";
+
+  // Contact Information
+  static const String outsource_ei_contact_information = "Contact Information";
+  static const String outsource_ei_tel_no = "Telephone number";
+
+  // Job Details
+  static const String outsource_ei_job_details = "Job Details";
+  static const String outsource_ei_position = "Position";
+  static const String outsource_ei_length_of_stay = "Length of stay";
+  static const String outsource_ei_monthly_salary = "Monthly salary";
 }

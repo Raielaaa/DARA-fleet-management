@@ -31,6 +31,8 @@ import 'package:dara_app/view/pages/carousel/widgets/page_6.dart';
 import 'package:dara_app/view/pages/entry/entry_page_video.dart';
 import 'package:dara_app/view/pages/admin/home/home_page.dart';
 import 'package:dara_app/view/pages/outsource/accounting_outsource.dart';
+import 'package:dara_app/view/pages/outsource/application_process/employment_information.dart';
+import 'package:dara_app/view/pages/outsource/application_process/personal_profile.dart';
 import 'package:dara_app/view/pages/outsource/application_process/vehicle_information.dart';
 import 'package:dara_app/view/pages/outsource/inquiries_outsource.dart';
 import 'package:dara_app/view/pages/outsource/manage_outsource.dart';
@@ -126,6 +128,8 @@ class MyApp extends StatelessWidget {
 
           //  Outsource - apply
           "ap_vehicle_information": (context) => const VehicleInformation(),
+          "ap_personal_profile": (context) => const PersonalProfile(),
+          "ap_employment_information": (context) => const EmploymentInformation(),
         },
       ),
     );

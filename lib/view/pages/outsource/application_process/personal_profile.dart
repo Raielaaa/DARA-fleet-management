@@ -5,20 +5,39 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import 'package:enhance_stepper/enhance_stepper.dart';
 
-class VehicleInformation extends StatefulWidget {
-  const VehicleInformation({super.key});
+class PersonalProfile extends StatefulWidget {
+  const PersonalProfile({super.key});
 
   @override
-  State<VehicleInformation> createState() => _VehicleInformationState();
+  State<PersonalProfile> createState() => _PersonalProfileState();
 }
 
-class _VehicleInformationState extends State<VehicleInformation> {
+class _PersonalProfileState extends State<PersonalProfile> {
   int _currentStep = 0;
   final List<bool> _isActiveList = [true, false, false, false]; // Step active state
-  TextEditingController modelController = TextEditingController();
-  TextEditingController brandController = TextEditingController();
-  TextEditingController yearController = TextEditingController();
-  TextEditingController plateController = TextEditingController();
+
+  //  personal data controllers
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController middleNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController birthdayController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController placeOfBirthController = TextEditingController();
+  TextEditingController citizenshipController = TextEditingController();
+  TextEditingController civilStatusController = TextEditingController();
+  TextEditingController motherInfoController = TextEditingController();
+
+  //  contact information controllers
+  TextEditingController contactNumberController = TextEditingController();
+  TextEditingController emailAddressController = TextEditingController();
+
+  //  residence details controllers
+  TextEditingController addressController = TextEditingController();
+  TextEditingController yearsStayedController = TextEditingController();
+  TextEditingController homeStatusController = TextEditingController();
+
+  //  identification controllers
+  TextEditingController tinNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +83,6 @@ class _VehicleInformationState extends State<VehicleInformation> {
                                   fontSize: 10,
                                 ),
                               ),
-                              // Include the applicationStepper here
                               applicationStepper(),
                             ],
                           ),
@@ -77,31 +95,6 @@ class _VehicleInformationState extends State<VehicleInformation> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // Method to create EnhanceStep
-  EnhanceStep createStep(
-    bool isActive,
-    String title,
-    String contentText,
-    TextEditingController controller
-  ) {
-    return EnhanceStep(
-      isActive: isActive,
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          fontFamily: ProjectStrings.general_font_family,
-        ),
-      ),
-      content: Column(
-        children: [
-          _rowItems(contentText, controller),
-        ],
       ),
     );
   }
@@ -130,10 +123,19 @@ class _VehicleInformationState extends State<VehicleInformation> {
             });
           } else {
             if (
-              modelController.value.text.isEmpty ||
-              brandController.value.text.isEmpty ||
-              yearController.value.text.isEmpty ||
-              plateController.value.text.isEmpty
+              firstNameController.value.text.isEmpty ||
+              middleNameController.value.text.isEmpty ||
+              lastNameController.value.text.isEmpty ||
+              birthdayController.value.text.isEmpty ||
+              ageController.value.text.isEmpty ||
+              placeOfBirthController.value.text.isEmpty ||
+              citizenshipController.value.text.isEmpty ||
+              motherInfoController.value.text.isEmpty ||
+              contactNumberController.value.text.isEmpty ||
+              emailAddressController.value.text.isEmpty ||
+              addressController.value.text.isEmpty ||
+              yearsStayedController.value.text.isEmpty ||
+              homeStatusController.value.text.isEmpty
             ) {
               InfoDialog().show(
                 context: context,
@@ -141,7 +143,7 @@ class _VehicleInformationState extends State<VehicleInformation> {
                 header: ProjectStrings.outsource_dialog_title
               );
             } else {
-              Navigator.of(context).pushNamed("ap_personal_profile");
+              
             }
           }
         },
@@ -198,29 +200,92 @@ class _VehicleInformationState extends State<VehicleInformation> {
         steps: <EnhanceStep>[
           createStep(
             _isActiveList[0],
-            ProjectStrings.outsource_vi_model,
-            ProjectStrings.outsource_vi_model_content,
-            modelController,
+            ProjectStrings.outsource_pp_personal_data,
+            [
+              ProjectStrings.outsource_pp_first_name,
+              ProjectStrings.outsource_pp_middle_name,
+              ProjectStrings.outsource_pp_last_name,
+              ProjectStrings.outsource_pp_birthday,
+              ProjectStrings.outsource_pp_age,
+              ProjectStrings.outsource_pp_place_of_birth,
+              ProjectStrings.outsource_pp_citizenship,
+              ProjectStrings.outsource_pp_civil_status,
+              ProjectStrings.outsource_pp_mother_info
+            ],
+            [
+              firstNameController,
+              middleNameController,
+              lastNameController,
+              birthdayController,
+              ageController,
+              placeOfBirthController,
+              citizenshipController,
+              civilStatusController,
+              motherInfoController
+            ],
           ),
           createStep(
             _isActiveList[1],
-            ProjectStrings.outsource_vi_brand,
-            ProjectStrings.outsource_vi_brand_content,
-            brandController,
+            ProjectStrings.outsource_pp_contact_information,
+            [
+              ProjectStrings.outsource_pp_contact_number,
+              ProjectStrings.outsource_pp_email_address
+            ],
+            [
+              contactNumberController,
+              emailAddressController
+            ]
           ),
           createStep(
             _isActiveList[2],
-            ProjectStrings.outsource_vi_year,
-            ProjectStrings.outsource_vi_year_content,
-            yearController,
+            ProjectStrings.outsource_pp_residence_details,
+            [
+              ProjectStrings.outsource_pp_address,
+              ProjectStrings.outsource_pp_years_stayed,
+              ProjectStrings.outsource_pp_house_status
+            ],
+            [
+              addressController,
+              yearsStayedController,
+              homeStatusController
+            ],
           ),
           createStep(
             _isActiveList[3],
-            ProjectStrings.outsource_vi_plate,
-            ProjectStrings.outsource_vi_plate_content,
-            plateController,
+            ProjectStrings.outsource_pp_identification,
+            [
+              ProjectStrings.outsource_pp_tin_number
+            ],
+            [
+              tinNumberController
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  // Method to create EnhanceStep
+  EnhanceStep createStep(
+    bool isActive,
+    String title,
+    List<String> contentText,
+    List<TextEditingController> controller
+  ) {
+    return EnhanceStep(
+      isActive: isActive,
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          fontFamily: ProjectStrings.general_font_family,
+        ),
+      ),
+      content: Column(
+        children: List.generate(contentText.length, (index) {
+          return _rowItems(contentText[index], controller[index]);
+        })
       ),
     );
   }
@@ -274,7 +339,7 @@ class _VehicleInformationState extends State<VehicleInformation> {
             child: Image.asset("lib/assets/pictures/left_arrow.png"),
           ),
           CustomComponents.displayText(
-            ProjectStrings.outsource_vehicle_information,
+            ProjectStrings.outsource_pp_action_bar,
             fontWeight: FontWeight.bold,
           ),
           Padding(

@@ -5,20 +5,28 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import 'package:enhance_stepper/enhance_stepper.dart';
 
-class VehicleInformation extends StatefulWidget {
-  const VehicleInformation({super.key});
+class EmploymentInformation extends StatefulWidget {
+  const EmploymentInformation({super.key});
 
   @override
-  State<VehicleInformation> createState() => _VehicleInformationState();
+  State<EmploymentInformation> createState() => _EmploymentInformationState();
 }
 
-class _VehicleInformationState extends State<VehicleInformation> {
+class _EmploymentInformationState extends State<EmploymentInformation> {
   int _currentStep = 0;
-  final List<bool> _isActiveList = [true, false, false, false]; // Step active state
-  TextEditingController modelController = TextEditingController();
-  TextEditingController brandController = TextEditingController();
-  TextEditingController yearController = TextEditingController();
-  TextEditingController plateController = TextEditingController();
+  final List<bool> _isActiveList = [true, false, false]; // Step active state
+
+  //  company details controllers
+  TextEditingController companyNameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+
+  //  contact information controllers
+  TextEditingController telephoneNumberController = TextEditingController();
+
+  //  job details controllers
+  TextEditingController positionController = TextEditingController();
+  TextEditingController lengthOfStayController = TextEditingController();
+  TextEditingController monthlySalaryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +72,6 @@ class _VehicleInformationState extends State<VehicleInformation> {
                                   fontSize: 10,
                                 ),
                               ),
-                              // Include the applicationStepper here
                               applicationStepper(),
                             ],
                           ),
@@ -77,31 +84,6 @@ class _VehicleInformationState extends State<VehicleInformation> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // Method to create EnhanceStep
-  EnhanceStep createStep(
-    bool isActive,
-    String title,
-    String contentText,
-    TextEditingController controller
-  ) {
-    return EnhanceStep(
-      isActive: isActive,
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          fontFamily: ProjectStrings.general_font_family,
-        ),
-      ),
-      content: Column(
-        children: [
-          _rowItems(contentText, controller),
-        ],
       ),
     );
   }
@@ -130,10 +112,12 @@ class _VehicleInformationState extends State<VehicleInformation> {
             });
           } else {
             if (
-              modelController.value.text.isEmpty ||
-              brandController.value.text.isEmpty ||
-              yearController.value.text.isEmpty ||
-              plateController.value.text.isEmpty
+              companyNameController.value.text.isEmpty ||
+              addressController.value.text.isEmpty ||
+              telephoneNumberController.value.text.isEmpty ||
+              positionController.value.text.isEmpty ||
+              lengthOfStayController.value.text.isEmpty ||
+              monthlySalaryController.value.text.isEmpty
             ) {
               InfoDialog().show(
                 context: context,
@@ -141,7 +125,7 @@ class _VehicleInformationState extends State<VehicleInformation> {
                 header: ProjectStrings.outsource_dialog_title
               );
             } else {
-              Navigator.of(context).pushNamed("ap_personal_profile");
+              Navigator.of(context).pushNamed("ap_employment_information");
             }
           }
         },
@@ -198,29 +182,66 @@ class _VehicleInformationState extends State<VehicleInformation> {
         steps: <EnhanceStep>[
           createStep(
             _isActiveList[0],
-            ProjectStrings.outsource_vi_model,
-            ProjectStrings.outsource_vi_model_content,
-            modelController,
+            ProjectStrings.outsource_ei_company_details,
+            [
+              ProjectStrings.outsource_ei_company_name,
+              ProjectStrings.outsource_ei_address
+            ],
+            [
+              companyNameController,
+              addressController
+            ],
           ),
           createStep(
             _isActiveList[1],
-            ProjectStrings.outsource_vi_brand,
-            ProjectStrings.outsource_vi_brand_content,
-            brandController,
+            ProjectStrings.outsource_ei_contact_information,
+            [
+              ProjectStrings.outsource_ei_tel_no,
+            ],
+            [
+              telephoneNumberController
+            ]
           ),
           createStep(
             _isActiveList[2],
-            ProjectStrings.outsource_vi_year,
-            ProjectStrings.outsource_vi_year_content,
-            yearController,
-          ),
-          createStep(
-            _isActiveList[3],
-            ProjectStrings.outsource_vi_plate,
-            ProjectStrings.outsource_vi_plate_content,
-            plateController,
+            ProjectStrings.outsource_ei_job_details,
+            [
+              ProjectStrings.outsource_ei_position,
+              ProjectStrings.outsource_ei_length_of_stay,
+              ProjectStrings.outsource_ei_monthly_salary
+            ],
+            [
+              positionController,
+              lengthOfStayController,
+              monthlySalaryController
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  // Method to create EnhanceStep
+  EnhanceStep createStep(
+    bool isActive,
+    String title,
+    List<String> contentText,
+    List<TextEditingController> controller
+  ) {
+    return EnhanceStep(
+      isActive: isActive,
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          fontFamily: ProjectStrings.general_font_family,
+        ),
+      ),
+      content: Column(
+        children: List.generate(contentText.length, (index) {
+          return _rowItems(contentText[index], controller[index]);
+        })
       ),
     );
   }
@@ -274,7 +295,7 @@ class _VehicleInformationState extends State<VehicleInformation> {
             child: Image.asset("lib/assets/pictures/left_arrow.png"),
           ),
           CustomComponents.displayText(
-            ProjectStrings.outsource_vehicle_information,
+            ProjectStrings.outsource_pp_action_bar,
             fontWeight: FontWeight.bold,
           ),
           Padding(
