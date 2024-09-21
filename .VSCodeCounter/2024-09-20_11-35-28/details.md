@@ -1,10 +1,10 @@
 # Details
 
-Date : 2024-09-14 13:34:37
+Date : 2024-09-20 11:35:28
 
 Directory c:\\Users\\Daniel\\Desktop\\Flutter_Practice\\dara\\dara_app\\lib
 
-Total : 60 files,  15635 codes, 518 comments, 755 blanks, all 16908 lines
+Total : 68 files,  18989 codes, 571 comments, 880 blanks, all 20440 lines
 
 [Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
@@ -20,7 +20,7 @@ Total : 60 files,  15635 codes, 518 comments, 755 blanks, all 16908 lines
 | [lib/controller/utils/constants.dart](/lib/controller/utils/constants.dart) | Dart | 5 | 0 | 0 | 5 |
 | [lib/controller/utils/intent_utils.dart](/lib/controller/utils/intent_utils.dart) | Dart | 31 | 2 | 5 | 38 |
 | [lib/firebase_options.dart](/lib/firebase_options.dart) | Dart | 53 | 12 | 4 | 69 |
-| [lib/main.dart](/lib/main.dart) | Dart | 128 | 18 | 23 | 169 |
+| [lib/main.dart](/lib/main.dart) | Dart | 140 | 21 | 26 | 187 |
 | [lib/model/account/register_model.dart](/lib/model/account/register_model.dart) | Dart | 28 | 0 | 2 | 30 |
 | [lib/model/constants/firebase_constants.dart](/lib/model/constants/firebase_constants.dart) | Dart | 3 | 0 | 0 | 3 |
 | [lib/services/firebase/auth.dart](/lib/services/firebase/auth.dart) | Dart | 64 | 6 | 8 | 78 |
@@ -36,9 +36,10 @@ Total : 60 files,  15635 codes, 518 comments, 755 blanks, all 16908 lines
 | [lib/view/pages/account/register/register_successful.dart](/lib/view/pages/account/register/register_successful.dart) | Dart | 63 | 5 | 7 | 75 |
 | [lib/view/pages/account/register/register_verify_phone.dart](/lib/view/pages/account/register/register_verify_phone.dart) | Dart | 105 | 8 | 9 | 122 |
 | [lib/view/pages/account/register/widgets/terms_and_conditions.dart](/lib/view/pages/account/register/widgets/terms_and_conditions.dart) | Dart | 346 | 34 | 36 | 416 |
-| [lib/view/pages/accountant/accountant_home.dart](/lib/view/pages/accountant/accountant_home.dart) | Dart | 465 | 5 | 17 | 487 |
-| [lib/view/pages/accountant/income.dart](/lib/view/pages/accountant/income.dart) | Dart | 330 | 1 | 16 | 347 |
-| [lib/view/pages/accountant/income_dialog.dart](/lib/view/pages/accountant/income_dialog.dart) | Dart | 643 | 20 | 21 | 684 |
+| [lib/view/pages/accountant/accountant_home.dart](/lib/view/pages/accountant/accountant_home.dart) | Dart | 474 | 5 | 17 | 496 |
+| [lib/view/pages/accountant/income.dart](/lib/view/pages/accountant/income.dart) | Dart | 341 | 1 | 15 | 357 |
+| [lib/view/pages/accountant/income_dialog.dart](/lib/view/pages/accountant/income_dialog.dart) | Dart | 689 | 20 | 24 | 733 |
+| [lib/view/pages/accountant/stateful_dialog.dart](/lib/view/pages/accountant/stateful_dialog.dart) | Dart | 346 | 0 | 9 | 355 |
 | [lib/view/pages/admin/car_list/car_list_.dart](/lib/view/pages/admin/car_list/car_list_.dart) | Dart | 720 | 15 | 24 | 759 |
 | [lib/view/pages/admin/car_list/unit_preview.dart](/lib/view/pages/admin/car_list/unit_preview.dart) | Dart | 696 | 28 | 18 | 742 |
 | [lib/view/pages/admin/center_button/google_maps.dart](/lib/view/pages/admin/center_button/google_maps.dart) | Dart | 19 | 0 | 3 | 22 |
@@ -46,8 +47,11 @@ Total : 60 files,  15635 codes, 518 comments, 755 blanks, all 16908 lines
 | [lib/view/pages/admin/home/main_home.dart](/lib/view/pages/admin/home/main_home.dart) | Dart | 839 | 18 | 15 | 872 |
 | [lib/view/pages/admin/home_top_option/top_report.dart](/lib/view/pages/admin/home_top_option/top_report.dart) | Dart | 419 | 8 | 20 | 447 |
 | [lib/view/pages/admin/manage/inquiries/inquiries.dart](/lib/view/pages/admin/manage/inquiries/inquiries.dart) | Dart | 528 | 16 | 23 | 567 |
-| [lib/view/pages/admin/manage/reports/reports.dart](/lib/view/pages/admin/manage/reports/reports.dart) | Dart | 1,072 | 29 | 34 | 1,135 |
+| [lib/view/pages/admin/manage/reports/reports.dart](/lib/view/pages/admin/manage/reports/reports.dart) | Dart | 1,082 | 33 | 34 | 1,149 |
 | [lib/view/pages/admin/manage/status/status.dart](/lib/view/pages/admin/manage/status/status.dart) | Dart | 764 | 11 | 10 | 785 |
+| [lib/view/pages/admin/manage/user_list/SortFilterDrawer.dart](/lib/view/pages/admin/manage/user_list/SortFilterDrawer.dart) | Dart | 424 | 2 | 14 | 440 |
+| [lib/view/pages/admin/manage/user_list/user_info.dart](/lib/view/pages/admin/manage/user_list/user_info.dart) | Dart | 309 | 1 | 16 | 326 |
+| [lib/view/pages/admin/manage/user_list/user_list.dart](/lib/view/pages/admin/manage/user_list/user_list.dart) | Dart | 370 | 3 | 13 | 386 |
 | [lib/view/pages/admin/profile/profile.dart](/lib/view/pages/admin/profile/profile.dart) | Dart | 667 | 28 | 30 | 725 |
 | [lib/view/pages/admin/rent_process/booking_details.dart](/lib/view/pages/admin/rent_process/booking_details.dart) | Dart | 424 | 5 | 21 | 450 |
 | [lib/view/pages/admin/rent_process/delivery_mode.dart](/lib/view/pages/admin/rent_process/delivery_mode.dart) | Dart | 320 | 6 | 9 | 335 |
@@ -66,10 +70,14 @@ Total : 60 files,  15635 codes, 518 comments, 755 blanks, all 16908 lines
 | [lib/view/pages/carousel/widgets/page_5.dart](/lib/view/pages/carousel/widgets/page_5.dart) | Dart | 154 | 2 | 5 | 161 |
 | [lib/view/pages/carousel/widgets/page_6.dart](/lib/view/pages/carousel/widgets/page_6.dart) | Dart | 154 | 2 | 5 | 161 |
 | [lib/view/pages/entry/entry_page_video.dart](/lib/view/pages/entry/entry_page_video.dart) | Dart | 49 | 0 | 10 | 59 |
-| [lib/view/shared/colors.dart](/lib/view/shared/colors.dart) | Dart | 31 | 4 | 3 | 38 |
+| [lib/view/pages/outsource/accounting_outsource.dart](/lib/view/pages/outsource/accounting_outsource.dart) | Dart | 327 | 1 | 13 | 341 |
+| [lib/view/pages/outsource/application_process/vehicle_information.dart](/lib/view/pages/outsource/application_process/vehicle_information.dart) | Dart | 252 | 2 | 8 | 262 |
+| [lib/view/pages/outsource/inquiries_outsource.dart](/lib/view/pages/outsource/inquiries_outsource.dart) | Dart | 480 | 15 | 22 | 517 |
+| [lib/view/pages/outsource/manage_outsource.dart](/lib/view/pages/outsource/manage_outsource.dart) | Dart | 657 | 15 | 18 | 690 |
+| [lib/view/shared/colors.dart](/lib/view/shared/colors.dart) | Dart | 35 | 5 | 4 | 44 |
 | [lib/view/shared/components.dart](/lib/view/shared/components.dart) | Dart | 255 | 4 | 12 | 271 |
 | [lib/view/shared/info_dialog.dart](/lib/view/shared/info_dialog.dart) | Dart | 266 | 3 | 10 | 279 |
 | [lib/view/shared/loading.dart](/lib/view/shared/loading.dart) | Dart | 91 | 4 | 7 | 102 |
-| [lib/view/shared/strings.dart](/lib/view/shared/strings.dart) | Dart | 565 | 36 | 56 | 657 |
+| [lib/view/shared/strings.dart](/lib/view/shared/strings.dart) | Dart | 662 | 42 | 62 | 766 |
 
 [Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
