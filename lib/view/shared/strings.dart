@@ -815,4 +815,26 @@ class ProjectStrings {
   static const String outsource_ei_position = "Position";
   static const String outsource_ei_length_of_stay = "Length of stay";
   static const String outsource_ei_monthly_salary = "Monthly salary";
+
+
+
+  //  Business information
+  static const String outsource_bi_appbar_title = "Business Information";
+
+  //  Business Details
+  static const String outsource_bi_business_details = "Business Details";
+  static const String outsource_bi_business_name = "Business name";
+  static const String outsource_bi_complete_address = "Complete address";
+  static const String outsource_bi_years_of_operation = "Years of operation";
+
+  //  Contact Information
+  static const String outsource_bi_contact_information = "Contact Information";
+  static const String outsource_bi_business_contact_number = "Business contact number";
+  static const String outsource_bi_business_email_address = "Business email address";
+
+  //  Role and Income
+  static const String outsource_bi_role_and_income = "Role and Income";
+  static const String outsource_bi_position = "Position";
+  static const String outsource_monthly_income_gross = "Monthly income (Gross)";
+
 }

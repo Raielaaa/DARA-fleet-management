@@ -5,28 +5,29 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import 'package:enhance_stepper/enhance_stepper.dart';
 
-class EmploymentInformation extends StatefulWidget {
-  const EmploymentInformation({super.key});
+class BusinessInformation extends StatefulWidget {
+  const BusinessInformation({super.key});
 
   @override
-  State<EmploymentInformation> createState() => _EmploymentInformationState();
+  State<BusinessInformation> createState() => _BusinessInformationState();
 }
 
-class _EmploymentInformationState extends State<EmploymentInformation> {
+class _BusinessInformationState extends State<BusinessInformation> {
   int _currentStep = 0;
   final List<bool> _isActiveList = [true, false, false]; // Step active state
 
-  //  company details controllers
-  TextEditingController companyNameController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
+  //  business details controllers
+  TextEditingController businessNameController = TextEditingController();
+  TextEditingController completeAddressController = TextEditingController();
+  TextEditingController yearsOfOperationController = TextEditingController();
 
   //  contact information controllers
-  TextEditingController telephoneNumberController = TextEditingController();
+  TextEditingController businessContactNumberController = TextEditingController();
+  TextEditingController businessEmailAddressController = TextEditingController();
 
-  //  job details controllers
+  //  role and income controllers
   TextEditingController positionController = TextEditingController();
-  TextEditingController lengthOfStayController = TextEditingController();
-  TextEditingController monthlySalaryController = TextEditingController();
+  TextEditingController monthlyIncomeGrossController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -112,12 +113,13 @@ class _EmploymentInformationState extends State<EmploymentInformation> {
             });
           } else {
             if (
-              companyNameController.value.text.isEmpty ||
-              addressController.value.text.isEmpty ||
-              telephoneNumberController.value.text.isEmpty ||
+              businessNameController.value.text.isEmpty ||
+              completeAddressController.value.text.isEmpty ||
+              yearsOfOperationController.value.text.isEmpty ||
+              businessContactNumberController.value.text.isEmpty ||
+              businessEmailAddressController.value.text.isEmpty ||
               positionController.value.text.isEmpty ||
-              lengthOfStayController.value.text.isEmpty ||
-              monthlySalaryController.value.text.isEmpty
+              monthlyIncomeGrossController.value.text.isEmpty
             ) {
               InfoDialog().show(
                 context: context,
@@ -125,7 +127,6 @@ class _EmploymentInformationState extends State<EmploymentInformation> {
                 header: ProjectStrings.outsource_dialog_title
               );
             } else {
-              Navigator.of(context).pushNamed("ap_business_information");
             }
           }
         },
@@ -182,38 +183,40 @@ class _EmploymentInformationState extends State<EmploymentInformation> {
         steps: <EnhanceStep>[
           createStep(
             _isActiveList[0],
-            ProjectStrings.outsource_ei_company_details,
+            ProjectStrings.outsource_bi_business_details,
             [
-              ProjectStrings.outsource_ei_company_name,
-              ProjectStrings.outsource_ei_address
+              ProjectStrings.outsource_bi_business_name,
+              ProjectStrings.outsource_bi_complete_address,
+              ProjectStrings.outsource_bi_years_of_operation
             ],
             [
-              companyNameController,
-              addressController
+              businessNameController,
+              completeAddressController,
+              yearsOfOperationController
             ],
           ),
           createStep(
             _isActiveList[1],
-            ProjectStrings.outsource_ei_contact_information,
+            ProjectStrings.outsource_bi_contact_information,
             [
-              ProjectStrings.outsource_ei_tel_no,
+              ProjectStrings.outsource_bi_business_contact_number,
+              ProjectStrings.outsource_bi_business_email_address
             ],
             [
-              telephoneNumberController
+              businessContactNumberController,
+              businessEmailAddressController
             ]
           ),
           createStep(
             _isActiveList[2],
-            ProjectStrings.outsource_ei_job_details,
+            ProjectStrings.outsource_bi_role_and_income,
             [
-              ProjectStrings.outsource_ei_position,
-              ProjectStrings.outsource_ei_length_of_stay,
-              ProjectStrings.outsource_ei_monthly_salary
+              ProjectStrings.outsource_bi_position,
+              ProjectStrings.outsource_monthly_income_gross,
             ],
             [
               positionController,
-              lengthOfStayController,
-              monthlySalaryController
+              monthlyIncomeGrossController
             ],
           ),
         ],
@@ -295,7 +298,7 @@ class _EmploymentInformationState extends State<EmploymentInformation> {
             child: Image.asset("lib/assets/pictures/left_arrow.png"),
           ),
           CustomComponents.displayText(
-            ProjectStrings.outsource_ei_appbar_title,
+            ProjectStrings.outsource_bi_appbar_title,
             fontWeight: FontWeight.bold,
           ),
           Padding(

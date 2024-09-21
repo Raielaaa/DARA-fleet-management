@@ -135,7 +135,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
               emailAddressController.value.text.isEmpty ||
               addressController.value.text.isEmpty ||
               yearsStayedController.value.text.isEmpty ||
-              homeStatusController.value.text.isEmpty
+              homeStatusController.value.text.isEmpty ||
+              tinNumberController.value.text.isEmpty
             ) {
               InfoDialog().show(
                 context: context,
@@ -143,7 +144,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 header: ProjectStrings.outsource_dialog_title
               );
             } else {
-              
+              Navigator.of(context).pushNamed("ap_employment_information");
             }
           }
         },
