@@ -180,6 +180,16 @@ flutter:
     - lib/assets/pictures/delete.png
     - lib/assets/pictures/apply.png
     - lib/assets/pictures/send.png
+    - lib/assets/pictures/oap_business_not_selected.png
+    - lib/assets/pictures/oap_business_selected.png
+    - lib/assets/pictures/oap_documents_not_selected.png
+    - lib/assets/pictures/oap_documents_selected.png
+    - lib/assets/pictures/oap_employment_not_selected.png
+    - lib/assets/pictures/oap_employment_selected.png
+    - lib/assets/pictures/oap_profile_not_selected.png
+    - lib/assets/pictures/oap_profile_selected.png
+    - lib/assets/pictures/oap_vehicle_not_selected.png
+    - lib/assets/pictures/oap_vehicle_selected.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

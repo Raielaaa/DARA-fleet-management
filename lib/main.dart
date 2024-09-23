@@ -31,10 +31,12 @@ import 'package:dara_app/view/pages/carousel/widgets/page_6.dart';
 import 'package:dara_app/view/pages/entry/entry_page_video.dart';
 import 'package:dara_app/view/pages/admin/home/home_page.dart';
 import 'package:dara_app/view/pages/outsource/accounting_outsource.dart';
-import 'package:dara_app/view/pages/outsource/application_process/business_information.dart';
-import 'package:dara_app/view/pages/outsource/application_process/employment_information.dart';
-import 'package:dara_app/view/pages/outsource/application_process/personal_profile.dart';
-import 'package:dara_app/view/pages/outsource/application_process/vehicle_information.dart';
+import 'package:dara_app/view/pages/outsource/application_process/complete.dart';
+import 'package:dara_app/view/pages/outsource/application_process/input_pages/business_information.dart';
+import 'package:dara_app/view/pages/outsource/application_process/input_pages/document_submission.dart';
+import 'package:dara_app/view/pages/outsource/application_process/input_pages/employment_information.dart';
+import 'package:dara_app/view/pages/outsource/application_process/input_pages/personal_profile.dart';
+import 'package:dara_app/view/pages/outsource/application_process/input_pages/vehicle_information.dart';
 import 'package:dara_app/view/pages/outsource/inquiries_outsource.dart';
 import 'package:dara_app/view/pages/outsource/manage_outsource.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -132,6 +134,8 @@ class MyApp extends StatelessWidget {
           "ap_personal_profile": (context) => const PersonalProfile(),
           "ap_employment_information": (context) => const EmploymentInformation(),
           "ap_business_information": (context) => const BusinessInformation(),
+          "ap_document_submission": (context) => const DocumentSubmission(),
+          "ap_process_complete": (context) => const ProcessComplete(),
         },
       ),
     );

@@ -837,4 +837,35 @@ class ProjectStrings {
   static const String outsource_bi_position = "Position";
   static const String outsource_monthly_income_gross = "Monthly income (Gross)";
 
+
+
+
+  // rental agreement dialog
+  static const String outsource_rental_agreement_dialog_title = "Agreement";
+  static const String outsource_dialog_number = "1";
+  static const String outsource_dialog_title_1 = "Rental Agreement Options";
+  static const String outsource_dialog_subtitle = "Choose the type of agreement that best suits your needs";
+  static const String outsource_dialog_short_term_agreement = "Short-term agreement";
+  static const String outsource_dialog_long_term_agreement = "Long-term agreement";
+  static const String outsource_dialog_willing_to_sell = "Willing to sell (after agreement)";
+  static const String outsource_dialog_for_pull_out_of_unit = "For pull-out of unit (after agreement)";
+  static const String outsource_dialog_proceed = "Proceed";
+
+
+
+
+  //  document submission
+  static const String outsource_ds_appbar_title = "Submit Documents";
+  static const String outsource_ds_certificate_of_employment = "Certificate of Employment";
+  static const String outsource_ds_proof_of_billing = "Proof of Billing";
+  static const String outsource_ds_payslip = "Payslip (no older than 3 months)";
+  static const String outsource_ds_employed = "Employed";
+  static const String outsource_ds_employed_subheader = "Submit your employment documents securely here";
+  static const String outsource_ds_business = "Business (if applicable)";
+  static const String outsource_ds_business_subheader = "Submit your documents securely here";
+  static const String outsource_ds_business_business_permit = "Business Permit";
+  static const String outsource_ds_business_bank_statement = "Bank Statement / Passbook";
+  static const String outsource_ds_proceed_button = "Proceed";
+  static const String outsource_ds_success_page_header = "Congratulations!";
+  static const String outsource_ds_success_page_subheader = "Your application has been successfully submitted. Please wait for confirmation from the administrator.";
 }

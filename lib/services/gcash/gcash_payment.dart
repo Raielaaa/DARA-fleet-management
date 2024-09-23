@@ -18,10 +18,6 @@ Future<void> gcashPayment(BuildContext context) async {
       success: "https://payment-success.com",
       failed: "https://payment-failed.com",
     ),
-    // redirect: Redirect(
-    //   success: "https://example.com/success",
-    //   failed: "https://example.com/failed",
-    // ),
     billing: PayMongoBilling(
       name: "Ralph Daniel Honra",
       phone: "09701900391",
@@ -43,17 +39,24 @@ Future<void> gcashPayment(BuildContext context) async {
     // Use checkout_url if available
     final paymentUrl = result.attributes?.redirect.checkoutUrl ?? result.attributes?.redirect.url;
     if (paymentUrl != null) {
-      if (await canLaunchUrlString(paymentUrl)) {
-        // Navigate to the WebView screen with the payment URL
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PaymentWebView(url: paymentUrl),
-          ),
-        );
-      } else {
-        debugPrint('Could not launch $paymentUrl');
-      }
+      // Navigate to the WebView screen with the payment URL
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PaymentWebView(url: paymentUrl),
+        ),
+      );
+      // if (await canLaunchUrlString(paymentUrl)) {
+      //   // Navigate to the WebView screen with the payment URL
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => PaymentWebView(url: paymentUrl),
+      //     ),
+      //   );
+      // } else {
+      //   debugPrint('Could not launch $paymentUrl');
+      // }
     } else {
       debugPrint('Payment URL is null');
     }
