@@ -11,9 +11,11 @@ import 'package:dara_app/view/pages/accountant/income.dart';
 import 'package:dara_app/view/pages/admin/car_list/unit_preview.dart';
 import 'package:dara_app/view/pages/admin/home/main_home.dart';
 import 'package:dara_app/view/pages/admin/home_top_option/top_report.dart';
+import 'package:dara_app/view/pages/admin/manage/application_list/application_list.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
 import 'package:dara_app/view/pages/admin/manage/status/status.dart';
+import 'package:dara_app/view/pages/admin/manage/user_list/edit_user_info.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/user_info.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/user_list.dart';
 import 'package:dara_app/view/pages/admin/profile/profile.dart';
@@ -118,6 +120,10 @@ class MyApp extends StatelessWidget {
           // Admin option - User List
           "manage_user_list": (context) => const UserList(),
           "manage_user_list_info": (context) => const UserInfo(),
+          "manage_user_info_edit": (context) => const EditUserInfo(),
+
+          //  Admin option - Application List
+          "manage_application_list": (context) => const ApplicationList(),
 
           // Renting process - Booking Details
           "rp_booking_details": (context) => const RPBookingDetails(),

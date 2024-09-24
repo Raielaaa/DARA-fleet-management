@@ -876,11 +876,16 @@ class _ManageReportsState extends State<ManageReports> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  //  reports
-                                  buildAdminOption(
-                                    "lib/assets/pictures/manage_report_report.png",
-                                    ProjectStrings.manage_reports_reports,
-                                    Colors.white
+                                  //  application list
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed("manage_application_list");
+                                    },
+                                    child: buildAdminOption(
+                                      "lib/assets/pictures/application_list.png",
+                                      ProjectStrings.application_list_manage_title,
+                                      Colors.white
+                                    ),
                                   ),
                                   const SizedBox(width: 10),
                                   //  inquiries

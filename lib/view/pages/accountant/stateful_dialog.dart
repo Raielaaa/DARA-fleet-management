@@ -68,7 +68,7 @@ class _StatefulDateDialogState extends State<StatefulDateDialog> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
-      backgroundColor: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+      backgroundColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -76,9 +76,14 @@ class _StatefulDateDialogState extends State<StatefulDateDialog> {
           children: [
             Align(
               alignment: Alignment.centerRight,
-              child: Image.asset(
-                "lib/assets/pictures/exit.png",
-                width: 20
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Image.asset(
+                  "lib/assets/pictures/exit.png",
+                  width: 20
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -147,25 +152,25 @@ class _StatefulDateDialogState extends State<StatefulDateDialog> {
                       child: TextField(
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.white, // Background color
+                          fillColor: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)), // Background color
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5), // Rounded corners
-                            borderSide: const BorderSide(
-                              color: Color(0xff404040), // Stroke line color
+                            borderSide: BorderSide(
+                              color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)), // Stroke line color
                               width: 1, // Stroke line width
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5), // Rounded corners
-                            borderSide: const BorderSide(
-                              color: Color(0xff404040), // Stroke line color
+                            borderSide: BorderSide(
+                              color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)), // Stroke line color
                               width: 1, // Stroke line width
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5), // Rounded corners
-                            borderSide: const BorderSide(
-                              color: Color(0xff404040), // Stroke line color
+                            borderSide: BorderSide(
+                              color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)), // Stroke line color
                               width: 1, // Stroke line width
                             ),
                           ),
@@ -260,13 +265,8 @@ class _StatefulDateDialogState extends State<StatefulDateDialog> {
             width: MediaQuery.of(context).size.width / 2 - 70,
             height: 35,
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Color(
-                    int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
-                width: 1,
-              ),
+              color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+              borderRadius: BorderRadius.circular(5)
             ),
             child: Row(
               children: [
@@ -300,25 +300,25 @@ class _StatefulDateDialogState extends State<StatefulDateDialog> {
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(
-              color: Color(0xff404040),
+            borderSide: BorderSide(
+              color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
               width: 1,
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(
-              color: Color(0xff404040),
+            borderSide: BorderSide(
+              color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
               width: 1,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(
-              color: Color(0xff404040),
+            borderSide: BorderSide(
+              color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
               width: 1,
             ),
           ),

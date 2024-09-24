@@ -22,6 +22,7 @@ class _SortFilterDrawerState extends State<SortFilterDrawer> {
     return Padding(
       padding: const EdgeInsets.only(top: 38),
       child: Drawer(
+        backgroundColor: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
         child: Padding(
           padding:
               const EdgeInsets.only(left: 25, right: 25, top: 35, bottom: 35),
@@ -119,7 +120,7 @@ class _SortFilterDrawerState extends State<SortFilterDrawer> {
               borderRadius: BorderRadius.circular(5),
               border: Border.all(
                 color: Color(
-                    int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                    int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
                 width: 1,
               ),
             ),

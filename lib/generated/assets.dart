@@ -10,6 +10,7 @@ class Assets {
   static const String accountantIncome = 'lib/view/pages/accountant/income.dart';
   static const String accountantIncomeDialog = 'lib/view/pages/accountant/income_dialog.dart';
   static const String accountantStatefulDialog = 'lib/view/pages/accountant/stateful_dialog.dart';
+  static const String applicationListApplicationList = 'lib/view/pages/admin/manage/application_list/application_list.dart';
   static const String applicationProcessAgreementOptionsDialog = 'lib/view/pages/outsource/application_process/agreement_options_dialog.dart';
   static const String applicationProcessComplete = 'lib/view/pages/outsource/application_process/complete.dart';
   static const String applicationProcessEducProfInformation = 'lib/view/pages/driver/application_process/educ_prof_information.dart';
@@ -23,6 +24,7 @@ class Assets {
   static const String assetsPicturesAdminManager = 'lib/assets/pictures/admin_manager.jpg';
   static const String assetsPicturesAppLogoCircle = 'lib/assets/pictures/app_logo_circle.png';
   static const String assetsPicturesAppLogoName = 'lib/assets/pictures/app_logo_name.png';
+  static const String assetsPicturesApplicationList = 'lib/assets/pictures/application_list.png';
   static const String assetsPicturesApply = 'lib/assets/pictures/apply.png';
   static const String assetsPicturesBottomCall = 'lib/assets/pictures/bottom_call.png';
   static const String assetsPicturesBottomChat = 'lib/assets/pictures/bottom_chat.png';
@@ -43,6 +45,10 @@ class Assets {
   static const String assetsPicturesCarouselImage6 = 'lib/assets/pictures/carousel_image_6.png';
   static const String assetsPicturesCloudy = 'lib/assets/pictures/cloudy.png';
   static const String assetsPicturesColorIcon = 'lib/assets/pictures/color_icon.png';
+  static const String assetsPicturesDapBookNotSelected = 'lib/assets/pictures/dap_book_not_selected.png';
+  static const String assetsPicturesDapBookSelected = 'lib/assets/pictures/dap_book_selected.png';
+  static const String assetsPicturesDapEmergencyContactNotSelected = 'lib/assets/pictures/dap_emergency_contact_not_selected.png';
+  static const String assetsPicturesDapEmergencyContactSelected = 'lib/assets/pictures/dap_emergency_contact_selected.png';
   static const String assetsPicturesDelete = 'lib/assets/pictures/delete.png';
   static const String assetsPicturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String assetsPicturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';
@@ -158,6 +164,7 @@ class Assets {
   static const String picturesAdminManager = 'lib/assets/pictures/admin_manager.jpg';
   static const String picturesAppLogoCircle = 'lib/assets/pictures/app_logo_circle.png';
   static const String picturesAppLogoName = 'lib/assets/pictures/app_logo_name.png';
+  static const String picturesApplicationList = 'lib/assets/pictures/application_list.png';
   static const String picturesApply = 'lib/assets/pictures/apply.png';
   static const String picturesBottomCall = 'lib/assets/pictures/bottom_call.png';
   static const String picturesBottomChat = 'lib/assets/pictures/bottom_chat.png';
@@ -283,6 +290,7 @@ class Assets {
   static const String sharedStrings = 'lib/view/shared/strings.dart';
   static const String singletonPersistentData = 'lib/controller/singleton/persistent_data.dart';
   static const String statusStatus = 'lib/view/pages/admin/manage/status/status.dart';
+  static const String userListEditUserInfo = 'lib/view/pages/admin/manage/user_list/edit_user_info.dart';
   static const String userListSortFilterDrawer = 'lib/view/pages/admin/manage/user_list/SortFilterDrawer.dart';
   static const String userListUserInfo = 'lib/view/pages/admin/manage/user_list/user_info.dart';
   static const String userListUserList = 'lib/view/pages/admin/manage/user_list/user_list.dart';

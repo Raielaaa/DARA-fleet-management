@@ -71,8 +71,8 @@ class _UserListState extends State<UserList> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
-          color: Color(int.parse(ProjectColors.lineGray.substring(2), radix: 16)),
-          width: 1.5
+          color: Colors.white,
+          width: 0.0
         )
       ),
       child: Padding(

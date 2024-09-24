@@ -933,4 +933,22 @@ class ProjectStrings {
   static const String driver_sd_recent_id_photo_2 = "2x2 Recent ID Photo 2";
   static const String driver_sd_panel_header = "Required Supporting Documents";
   static const String driver_sd_panel_subheader = "Upload required documents for verification and processing";
+
+
+
+  //  edit user info
+  static const String edit_user_info_appbar_title = "Edit User Info";
+  static const String edit_user_info_header = "Account Overview";
+  static const String edit_user_info_subheader = "View all details and edit information";
+  static const String edit_user_info_cancel = "Cancel";
+  static const String edit_user_info_apply_changes = "Apply";
+  static const String edit_user_info_delete = "delete";
+  static const String edit_user_info_attached_documents = "Attached Documents";
+  static const String edit_user_info_attached_documents_subheader = "Delete or view uploaded documents";
+  static const String edit_user_info_dialog_header = "Important Notice";
+  static const String edit_user_info_dialog_content = "Are you sure you want to apply these changes? This action cannot be undone";
+
+
+  //  manage - application list
+  static const String application_list_manage_title = "Applications";
 }

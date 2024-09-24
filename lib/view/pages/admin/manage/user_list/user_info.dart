@@ -276,7 +276,9 @@ class _UserInfoState extends State<UserInfo> {
             "lib/assets/pictures/user_info_edit.png",
             ProjectColors.userInfoLightBlue,
             ProjectStrings.admin_user_info_edit,
-            () {}
+            () {
+              Navigator.of(context).pushNamed("manage_user_info_edit");
+            }
           ),
           const SizedBox(width: 18),
           _bottomPanelItem(
