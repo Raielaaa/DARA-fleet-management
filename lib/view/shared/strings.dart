@@ -728,6 +728,7 @@ class ProjectStrings {
   static const String admin_user_info_delete = "Delete";
   static const String admin_user_info_contact = "Contact";
 
+  ///////////////////////////////////////////////////////
   //  outsource - manage
   static const String outsource_hello_outsource = "Hello, Outsource";
   static const String outsource_report_inquiries = "Inquiries";
@@ -817,7 +818,6 @@ class ProjectStrings {
   static const String outsource_ei_monthly_salary = "Monthly salary";
 
 
-
   //  Business information
   static const String outsource_bi_appbar_title = "Business Information";
 
@@ -838,8 +838,6 @@ class ProjectStrings {
   static const String outsource_monthly_income_gross = "Monthly income (Gross)";
 
 
-
-
   // rental agreement dialog
   static const String outsource_rental_agreement_dialog_title = "Agreement";
   static const String outsource_dialog_number = "1";
@@ -850,8 +848,6 @@ class ProjectStrings {
   static const String outsource_dialog_willing_to_sell = "Willing to sell (after agreement)";
   static const String outsource_dialog_for_pull_out_of_unit = "For pull-out of unit (after agreement)";
   static const String outsource_dialog_proceed = "Proceed";
-
-
 
 
   //  document submission
@@ -868,4 +864,73 @@ class ProjectStrings {
   static const String outsource_ds_proceed_button = "Proceed";
   static const String outsource_ds_success_page_header = "Congratulations!";
   static const String outsource_ds_success_page_subheader = "Your application has been successfully submitted. Please wait for confirmation from the administrator.";
+
+
+
+
+
+  ///////////////////////////////////////////////////////////////////////////////
+  //  drivers
+  static const String driver_apply = "Apply";
+  static const String driver_information_carousel_personal_info_header = "Personal Information";
+  static const String driver_information_carousel_personal_info_subheader = "Please provide your personal details including full name, date of birth, contact information, and residential address to complete your profile.";
+
+  static const String driver_information_carousel_emergency_contact_header = "Emergency Contact";
+  static const String driver_information_carousel_emergency_contact_subheader = "In case of emergency, please provide the contact details and relationship to the person who should be notified.";
+
+  static const String driver_information_carousel_educ_prof_header = "Educational and Professional Information";
+  static const String driver_information_carousel_educ_prof_subheader = "Fill out your educational background and professional qualifications to verify your credentials.";
+
+  static const String driver_information_carousel_supp_doc_header = "Supporting Documents";
+  static const String driver_information_carousel_supp_doc_subheader = "Please submit copies of the following documents to complete your application.";
+
+  //  personal information
+  static const String driver_pi_personal_details = "Personal Details";
+  static const String driver_pi_contact_information = "Contact Information";
+  static const String driver_pi_parental_information = "Parental Information";
+  static const String driver_pi_physical_attributes = "Physical Attributes";
+  static const String driver_pi_title = "Personal Information";
+  static const String driver_pi_first_name = "First name";
+  static const String driver_pi_middle_name = "Middle name";
+  static const String driver_pi_last_name = "Last name";
+  static const String driver_pi_complete_address = "Complete address";
+  static const String driver_pi_birthday = "Birthday";
+  static const String driver_pi_civil_status = "Civil status";
+  static const String driver_pi_mobile_number = "Mobile number";
+  static const String driver_pi_father_name = "Father's name";
+  static const String driver_pi_father_birth_place = "Father's birth Place";
+  static const String driver_pi_mother_name = "Mother's name";
+  static const String driver_pi_mother_birth_place = "Mother's birth place";
+  static const String driver_pi_email_address = "Email address";
+  static const String driver_pi_religion = "Religion";
+  static const String driver_pi_height = "Height";
+  static const String driver_pi_weight = "Weight";
+
+  //  emergency contact
+  static const String driver_ec_contact_person_details = "Contact Person Details";
+  static const String driver_ec_contact_information = "Contact Information";
+  static const String driver_ec_address_information = "Address Information";
+  static const String driver_ec_title = "Emergency Contact";
+  static const String driver_name_of_contact_person = "Name of contact person";
+  static const String driver_ec_relationship = "Relationship to applicant";
+  static const String driver_ec_contact_number = "Contact number";
+  static const String driver_ec_complete_address = "Complete address";
+
+  //  educational and professional information
+  static const String driver_ep_title = "Educational and Professional Information";
+  static const String driver_ep_educational_attainment = "Educational Attainment";
+  static const String driver_ep_educational_background = "Educational Background";
+  static const String driver_ep_government_identification_number = "Government Identification Number";
+  static const String driver_ep_driver_license = "Driver's license number";
+  static const String driver_ep_sss_number = "SSS number";
+  static const String driver_ep_tin_number = "TIN number";
+
+  //  supporting documents
+  static const String driver_sd_title = "Supporting Documents";
+  static const String driver_sd_photocopy_driver_license = "Driver's License";
+  static const String driver_sd_original_copy_valid_nbi_police_clearance = "Original NBI/Police Clearance";
+  static const String driver_sd_recent_id_photo_1 = "2x2 Recent ID Photo 1";
+  static const String driver_sd_recent_id_photo_2 = "2x2 Recent ID Photo 2";
+  static const String driver_sd_panel_header = "Required Supporting Documents";
+  static const String driver_sd_panel_subheader = "Upload required documents for verification and processing";
 }

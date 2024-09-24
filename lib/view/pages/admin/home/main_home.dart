@@ -97,6 +97,9 @@ class _AdminHomeState extends State<AdminHome> {
 
   @override
   Widget build(BuildContext context) {
+    //  manage name
+    String manageTextIfDriver = PersistentData().userType == "Driver" ? ProjectStrings.driver_apply : ProjectStrings.admin_home_top_options_manage;
+
     return Center(
       child: Container(
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2),
@@ -358,8 +361,7 @@ class _AdminHomeState extends State<AdminHome> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 7),
                                     child: CustomComponents.displayText(
-                                      ProjectStrings
-                                          .admin_home_top_options_manage,
+                                      manageTextIfDriver,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 10,
                                       color: Color(int.parse(

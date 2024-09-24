@@ -18,6 +18,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+
   @override
   void initState() {
     super.initState();
@@ -47,13 +49,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    PersistentTabController _controller = PersistentTabController(initialIndex: 0);
-
     List<Widget> _buildScreens() {
       return [
         AdminHome(controller: _controller),
         const CarList(),
-        const Profile(),
         const Profile(),
         const Rentals()
       ];

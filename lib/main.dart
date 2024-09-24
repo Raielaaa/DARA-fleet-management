@@ -9,12 +9,14 @@ import 'package:dara_app/view/pages/account/register/register_verify_phone.dart'
 import 'package:dara_app/view/pages/accountant/accountant_home.dart';
 import 'package:dara_app/view/pages/accountant/income.dart';
 import 'package:dara_app/view/pages/admin/car_list/unit_preview.dart';
+import 'package:dara_app/view/pages/admin/home/main_home.dart';
 import 'package:dara_app/view/pages/admin/home_top_option/top_report.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
 import 'package:dara_app/view/pages/admin/manage/status/status.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/user_info.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/user_list.dart';
+import 'package:dara_app/view/pages/admin/profile/profile.dart';
 import 'package:dara_app/view/pages/admin/rent_process/booking_details.dart';
 import 'package:dara_app/view/pages/admin/rent_process/delivery_mode.dart';
 import 'package:dara_app/view/pages/admin/rent_process/details_fees.dart';
@@ -28,6 +30,11 @@ import 'package:dara_app/view/pages/carousel/widgets/page_3.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_4.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_5.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_6.dart';
+import 'package:dara_app/view/pages/driver/application_process/educ_prof_information.dart';
+import 'package:dara_app/view/pages/driver/application_process/emergency_contact.dart';
+import 'package:dara_app/view/pages/driver/application_process/personal_information.dart';
+import 'package:dara_app/view/pages/driver/application_process/supporting_documents.dart';
+import 'package:dara_app/view/pages/driver/driver.dart';
 import 'package:dara_app/view/pages/entry/entry_page_video.dart';
 import 'package:dara_app/view/pages/admin/home/home_page.dart';
 import 'package:dara_app/view/pages/outsource/accounting_outsource.dart';
@@ -93,6 +100,9 @@ class MyApp extends StatelessWidget {
           // Rentals - report page
           "rentals_report": (context) => const Report(),
 
+          // Profile
+          "profile": (context) => const Profile(),
+
           // Selected item
           "selected_item": (context) => const UnitPreview(),
 
@@ -136,6 +146,13 @@ class MyApp extends StatelessWidget {
           "ap_business_information": (context) => const BusinessInformation(),
           "ap_document_submission": (context) => const DocumentSubmission(),
           "ap_process_complete": (context) => const ProcessComplete(),
+
+          //  Driver
+          "driver_main": (context) => const Driver(),
+          "driver_ap_supporting_documents": (context) => const DriverSupportingDocuments(),
+          "driver_ap_personal_information": (context) => const DriverPersonalInformation(),
+          "driver_ap_emergency_contact": (context) => const DriverEmergencyContact(),
+          "driver_ap_educ_prof_information": (context) => const DriverEducProfInformation(),
         },
       ),
     );

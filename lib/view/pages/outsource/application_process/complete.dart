@@ -3,6 +3,8 @@ import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 
+import "../../admin/home/home_page.dart";
+
 class ProcessComplete extends StatefulWidget {
   const ProcessComplete({super.key});
 
@@ -22,7 +24,7 @@ class _ProcessCompleteState extends State<ProcessComplete> {
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)))),
         onPressed: () {
-          Navigator.of(context).pushNamed("home_main");
+          Navigator.of(context).pushNamed("profile");
         },
         child: Center(
           child: Padding(

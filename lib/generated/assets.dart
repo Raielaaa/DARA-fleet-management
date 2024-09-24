@@ -12,6 +12,10 @@ class Assets {
   static const String accountantStatefulDialog = 'lib/view/pages/accountant/stateful_dialog.dart';
   static const String applicationProcessAgreementOptionsDialog = 'lib/view/pages/outsource/application_process/agreement_options_dialog.dart';
   static const String applicationProcessComplete = 'lib/view/pages/outsource/application_process/complete.dart';
+  static const String applicationProcessEducProfInformation = 'lib/view/pages/driver/application_process/educ_prof_information.dart';
+  static const String applicationProcessEmergencyContact = 'lib/view/pages/driver/application_process/emergency_contact.dart';
+  static const String applicationProcessPersonalInformation = 'lib/view/pages/driver/application_process/personal_information.dart';
+  static const String applicationProcessSupportingDocuments = 'lib/view/pages/driver/application_process/supporting_documents.dart';
   static const String assetsPicturesAccessDenied = 'lib/assets/pictures/access_denied.webp';
   static const String assetsPicturesAccountIntro = 'lib/assets/pictures/account_intro.png';
   static const String assetsPicturesAccountant = 'lib/assets/pictures/accountant.jpg';
@@ -124,6 +128,7 @@ class Assets {
   static const String constantsFirebaseConstants = 'lib/model/constants/firebase_constants.dart';
   static const String documentsSubmitDocuments = 'lib/view/pages/admin/rent_process/documents/submit_documents.dart';
   static const String documentsVerifyBooking = 'lib/view/pages/admin/rent_process/documents/verify_booking.dart';
+  static const String driverDriver = 'lib/view/pages/driver/driver.dart';
   static const String entryEntryPageVideo = 'lib/view/pages/entry/entry_page_video.dart';
   static const String firebaseAuth = 'lib/services/firebase/auth.dart';
   static const String firebaseFirestore = 'lib/services/firebase/firestore.dart';
@@ -173,6 +178,10 @@ class Assets {
   static const String picturesCarouselImage6 = 'lib/assets/pictures/carousel_image_6.png';
   static const String picturesCloudy = 'lib/assets/pictures/cloudy.png';
   static const String picturesColorIcon = 'lib/assets/pictures/color_icon.png';
+  static const String picturesDapBookNotSelected = 'lib/assets/pictures/dap_book_not_selected.png';
+  static const String picturesDapBookSelected = 'lib/assets/pictures/dap_book_selected.png';
+  static const String picturesDapEmergencyContactNotSelected = 'lib/assets/pictures/dap_emergency_contact_not_selected.png';
+  static const String picturesDapEmergencyContactSelected = 'lib/assets/pictures/dap_emergency_contact_selected.png';
   static const String picturesDelete = 'lib/assets/pictures/delete.png';
   static const String picturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String picturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';

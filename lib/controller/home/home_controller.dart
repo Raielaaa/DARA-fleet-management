@@ -201,7 +201,7 @@ class HomeController {
         }
       case "Driver":
         {
-          Navigator.of(context).pushNamed("manage_report");
+          _showInformationDialog(context);
           break;
         }
       case "Outsource":
@@ -219,6 +219,182 @@ class HomeController {
         }
     }
   }
+
+  /////////////////////////////////////// for drivers /////////////////////////////////////////////////////////////////////////////////////////////
+  int _informationDialogCurrentIndex = 0;
+  final List<Map<String, String>> guides = [
+    {
+      "title": ProjectStrings.driver_information_carousel_personal_info_header,
+      "content": ProjectStrings.driver_information_carousel_personal_info_subheader
+    },
+    {
+      "title": ProjectStrings.driver_information_carousel_emergency_contact_header,
+      "content": ProjectStrings.driver_information_carousel_emergency_contact_subheader
+    },
+    {
+      "title": ProjectStrings.driver_information_carousel_educ_prof_header,
+      "content": ProjectStrings.driver_information_carousel_educ_prof_subheader
+    },
+    {
+      "title": ProjectStrings.driver_information_carousel_supp_doc_header,
+      "content": ProjectStrings.driver_information_carousel_supp_doc_subheader
+    }
+  ];
+
+  void _showInformationDialog(BuildContext contextParent) {
+    showDialog(
+      context: contextParent,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          backgroundColor: Color(int.parse(
+              ProjectColors.mainColorBackground.substring(2),
+              radix: 16)),
+          child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        child: Image.asset(
+                          "lib/assets/pictures/exit.png",
+                          width: 30,
+                        ),
+                      ),
+                    ),
+                    //  left arrow - main image - right arrow
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (_informationDialogCurrentIndex > 0) {
+                                _informationDialogCurrentIndex--;
+                              }
+                            });
+                          },
+                          child: Image.asset(
+                            "lib/assets/pictures/id_left_arrow.png",
+                            width: 30,
+                          ),
+                        ),
+                        Expanded(
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder:
+                                (Widget child, Animation<double> animation) {
+                              return FadeTransition(
+                                  opacity: animation, child: child);
+                            },
+                            child: KeyedSubtree(
+                              key:
+                              ValueKey<int>(_informationDialogCurrentIndex),
+                              child: Image.asset(
+                                  "lib/assets/pictures/information_dialog.png"),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (_informationDialogCurrentIndex <
+                                  guides.length - 1) {
+                                _informationDialogCurrentIndex++;
+                              } else {
+                                Navigator.of(contextParent).pushNamed("driver_ap_personal_information");
+                                Navigator.of(context).pop();
+                              }
+                            });
+                          },
+                          child: Image.asset(
+                              "lib/assets/pictures/id_right_arrow.png",
+                              width: 30),
+                        ),
+                      ],
+                    ),
+                    //  indicator dots
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(guides.length, (index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _informationDialogCurrentIndex == index
+                                ? Color(int.parse(
+                                ProjectColors.mainColorHex.substring(2),
+                                radix: 16))
+                                : Colors.grey,
+                          ),
+                        );
+                      }),
+                    ),
+                    //  title
+                    const SizedBox(height: 30),
+                    Align(
+                      alignment: Alignment.center,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                              opacity: animation, child: child);
+                        },
+                        child: KeyedSubtree(
+                          key: ValueKey<int>(_informationDialogCurrentIndex),
+                          child: CustomComponents.displayText(
+                            guides[_informationDialogCurrentIndex]["title"]!,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                    //  content
+                    const SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.center,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                              opacity: animation, child: child);
+                        },
+                        child: KeyedSubtree(
+                          key:
+                          ValueKey<int>(_informationDialogCurrentIndex + 1),
+                          child: CustomComponents.displayText(
+                            textAlign: TextAlign.center,
+                            guides[_informationDialogCurrentIndex]["content"]!,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ),
+                    //  spacer
+                    const SizedBox(height: 50),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   Future<void> showContactBottomDialog(BuildContext context) async {
     return showModalBottomSheet(
