@@ -167,6 +167,7 @@ class Assets {
   static const String picturesAccountant = 'lib/assets/pictures/accountant.jpg';
   static const String picturesAccountantIncome = 'lib/assets/pictures/accountant_income.png';
   static const String picturesAdminManager = 'lib/assets/pictures/admin_manager.jpg';
+  static const String picturesAppLogo = 'lib/assets/pictures/app_logo.png';
   static const String picturesAppLogoCircle = 'lib/assets/pictures/app_logo_circle.png';
   static const String picturesAppLogoName = 'lib/assets/pictures/app_logo_name.png';
   static const String picturesApplicationList = 'lib/assets/pictures/application_list.png';
@@ -305,6 +306,7 @@ class Assets {
   static const String utilsConstants = 'lib/controller/utils/constants.dart';
   static const String utilsIntentUtils = 'lib/controller/utils/intent_utils.dart';
   static const String videosLightAnimatedLogo = 'lib/assets/videos/light_animated_logo.mp4';
+  static const String viewSplashScreen = 'lib/view/splash_screen.dart';
   static const String weatherOpenWeather = 'lib/services/weather/open_weather.dart';
   static const String widgetsPage1 = 'lib/view/pages/carousel/widgets/page_1.dart';
   static const String widgetsPage2 = 'lib/view/pages/carousel/widgets/page_2.dart';
