@@ -42,4 +42,8 @@ class ProjectColors {
   static String userListDriverHexBackground = "0xfff5f9ec";
   static String userListOutsourceHex = "0xffFAC748";
   static String userListOutsourceHexBackground = "0xfffff9ed";
+
+  //  application list
+  static String applicationListPending = "0xff5BC0EB";
+  static String applicationListPendingBackground = "0xffeff9fd";
 }

@@ -195,6 +195,9 @@ flutter:
     - lib/assets/pictures/dap_emergency_contact_not_selected.png
     - lib/assets/pictures/dap_emergency_contact_selected.png
     - lib/assets/pictures/application_list.png
+    - lib/assets/pictures/backup_restore.png
+    - lib/assets/pictures/application_list_pending.png
+    - lib/assets/pictures/pending_blue.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

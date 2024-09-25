@@ -25,7 +25,9 @@ class Assets {
   static const String assetsPicturesAppLogoCircle = 'lib/assets/pictures/app_logo_circle.png';
   static const String assetsPicturesAppLogoName = 'lib/assets/pictures/app_logo_name.png';
   static const String assetsPicturesApplicationList = 'lib/assets/pictures/application_list.png';
+  static const String assetsPicturesApplicationListPending = 'lib/assets/pictures/application_list_pending.png';
   static const String assetsPicturesApply = 'lib/assets/pictures/apply.png';
+  static const String assetsPicturesBackupRestore = 'lib/assets/pictures/backup_restore.png';
   static const String assetsPicturesBottomCall = 'lib/assets/pictures/bottom_call.png';
   static const String assetsPicturesBottomChat = 'lib/assets/pictures/bottom_chat.png';
   static const String assetsPicturesBottomEmail = 'lib/assets/pictures/bottom_email.png';
@@ -92,6 +94,7 @@ class Assets {
   static const String assetsPicturesOapVehicleNotSelected = 'lib/assets/pictures/oap_vehicle_not_selected.png';
   static const String assetsPicturesOapVehicleSelected = 'lib/assets/pictures/oap_vehicle_selected.png';
   static const String assetsPicturesPaymentSuccessful = 'lib/assets/pictures/payment_successful.png';
+  static const String assetsPicturesPendingBlue = 'lib/assets/pictures/pending_blue.png';
   static const String assetsPicturesPhone1 = 'lib/assets/pictures/phone_1.png';
   static const String assetsPicturesPhone2 = 'lib/assets/pictures/phone_2.png';
   static const String assetsPicturesRegisterSuccessful = 'lib/assets/pictures/register_successful.png';
@@ -134,6 +137,7 @@ class Assets {
   static const String constantsFirebaseConstants = 'lib/model/constants/firebase_constants.dart';
   static const String documentsSubmitDocuments = 'lib/view/pages/admin/rent_process/documents/submit_documents.dart';
   static const String documentsVerifyBooking = 'lib/view/pages/admin/rent_process/documents/verify_booking.dart';
+  static const String driverApplicationDriver = 'lib/view/pages/admin/manage/application_list/driver/application_driver.dart';
   static const String driverDriver = 'lib/view/pages/driver/driver.dart';
   static const String entryEntryPageVideo = 'lib/view/pages/entry/entry_page_video.dart';
   static const String firebaseAuth = 'lib/services/firebase/auth.dart';
@@ -155,6 +159,7 @@ class Assets {
   static const String libMain = 'lib/main.dart';
   static const String loginLogin = 'lib/view/pages/account/login/login.dart';
   static const String outsourceAccountingOutsource = 'lib/view/pages/outsource/accounting_outsource.dart';
+  static const String outsourceApplicationOutsource = 'lib/view/pages/admin/manage/application_list/outsource/application_outsource.dart';
   static const String outsourceInquiriesOutsource = 'lib/view/pages/outsource/inquiries_outsource.dart';
   static const String outsourceManageOutsource = 'lib/view/pages/outsource/manage_outsource.dart';
   static const String picturesAccessDenied = 'lib/assets/pictures/access_denied.webp';
@@ -165,7 +170,9 @@ class Assets {
   static const String picturesAppLogoCircle = 'lib/assets/pictures/app_logo_circle.png';
   static const String picturesAppLogoName = 'lib/assets/pictures/app_logo_name.png';
   static const String picturesApplicationList = 'lib/assets/pictures/application_list.png';
+  static const String picturesApplicationListPending = 'lib/assets/pictures/application_list_pending.png';
   static const String picturesApply = 'lib/assets/pictures/apply.png';
+  static const String picturesBackupRestore = 'lib/assets/pictures/backup_restore.png';
   static const String picturesBottomCall = 'lib/assets/pictures/bottom_call.png';
   static const String picturesBottomChat = 'lib/assets/pictures/bottom_chat.png';
   static const String picturesBottomEmail = 'lib/assets/pictures/bottom_email.png';
@@ -232,6 +239,7 @@ class Assets {
   static const String picturesOapVehicleNotSelected = 'lib/assets/pictures/oap_vehicle_not_selected.png';
   static const String picturesOapVehicleSelected = 'lib/assets/pictures/oap_vehicle_selected.png';
   static const String picturesPaymentSuccessful = 'lib/assets/pictures/payment_successful.png';
+  static const String picturesPendingBlue = 'lib/assets/pictures/pending_blue.png';
   static const String picturesPhone1 = 'lib/assets/pictures/phone_1.png';
   static const String picturesPhone2 = 'lib/assets/pictures/phone_2.png';
   static const String picturesRegisterSuccessful = 'lib/assets/pictures/register_successful.png';

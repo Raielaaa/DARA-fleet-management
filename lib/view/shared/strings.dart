@@ -951,4 +951,137 @@ class ProjectStrings {
 
   //  manage - application list
   static const String application_list_manage_title = "Applications";
+  static const String application_list_header = "Application Request";
+  static const String application_list_subheader = "Status overview of driver and outsource application";
+  static const String application_list_options_pending = "Pending";
+  static const String application_list_options_approved = "Approved";
+  static const String application_list_options_declined = "Declined";
+  static const String application_list_contact_number_title = "Contact number: ";
+  static const String application_list_contact_number = "0997 126 3452";
+  static const String application_list_email_title = "Email: ";
+  static const String application_list_email = "samplemail@gmail.com";
+  static const String application_list_date_registered_title = "Date registered: ";
+  static const String application_list_date_registered = "September 24, 2024";
+  static const String application_list_more_info = "More Info";
+  static const String application_list_driver = "Driver";
+  static const String application_list_outsource = "Outsource";
+  static const String application_list_confirmed = "Confirmed";
+  static const String application_list_pending = "Pending";
+  static const String application_list_declined = "Declined";
+  static const String application_list_driver_outsource_detailed_info_header = "Review Application";
+  static const String application_list_driver_outsource_detailed_info_subheader = "Provides a detailed overview of applicant's info";
+  static const String application_list_driver_outsource_detailed_info_applicant_info = "Applicant Information";
+  static const String application_list_driver_outsource_detailed_info_approve = "Approve";
+  static const String application_list_driver_outsource_detailed_info_decline = "Decline";
+
+  //  application list info placeholder - driver
+  static const String application_list_driver_personal_information_title = "Personal Information";
+  static const String application_list_driver_name_title = "Name: ";
+  static const String application_list_driver_name = "John Mark Reyes";
+  static const String application_list_driver_address_title = "Address: ";
+  static const String application_list_driver_address = "Pila Laguna";
+  static const String application_list_driver_birthday_title = "Birthday: ";
+  static const String application_list_driver_birthday = "06/15/1990";
+  static const String application_list_driver_civil_status_title = "Civil Status: ";
+  static const String application_list_driver_civil_status = "Single";
+  static const String application_list_driver_contact_number_title = "Contact No.: ";
+  static const String application_list_driver_contact_number = "0945 245 9807";
+  static const String application_list_driver_father_name_title = "Father's Name: ";
+  static const String application_list_driver_father_name = "Joselito Reyes";
+  static const String application_list_driver_father_birthplace_title = "Father's Birthplace: ";
+  static const String application_list_driver_father_birthplace = "Pila Laguna";
+  static const String application_list_driver_mother_name_title = "Mother's Name";
+  static const String application_list_driver_mother_name = "Maria Reyes";
+  static const String application_list_driver_mother_birthplace_title = "Mother's Birthplace: ";
+  static const String application_list_driver_mother_birthplace = "Bay Laguna";
+  static const String application_list_driver_educ_attainment_title = "Educational Attainment: ";
+  static const String application_list_driver_educ_attainment = "Bachelor's Degree";
+  static const String application_list_driver_email_add_title = "Email Address: ";
+  static const String application_list_driver_email_add = "johnmark@gmail.com";
+  static const String application_list_driver_religion_title = "Religion: ";
+  static const String application_list_driver_religion = "Roman Catholic";
+  static const String application_list_driver_height_title = "Height: ";
+  static const String application_list_driver_height = "5'10\"";
+  static const String application_list_driver_weight_title = "Weight: ";
+  static const String application_list_driver_weight = "70 kg";
+  static const String application_list_driver_driver_license_title = "Driver's License No.: ";
+  static const String application_list_driver_driver_license = "N01-85-123456";
+  static const String application_list_driver_sss_number_title = "SSS No.: ";
+  static const String application_list_driver_sss_number = "12-3456789-0";
+  static const String application_list_driver_tin_number_title = "TIN No.: ";
+  static const String application_list_driver_tin_number = "123-456-789";
+
+  static const String application_list_driver_emergency_contact_title = "Emergency Contact";
+  static const String application_list_driver_ec_name_title = "Name: ";
+  static const String application_list_driver_ec_name = "Joselito Reyes";
+  static const String application_list_driver_ec_relationship_to_the_applicant_title = "Relationship to the Applicant: ";
+  static const String application_list_driver_ec_relationship_to_the_applicant = "Father";
+  static const String application_list_driver_ec_contact_number_title = "Contact Number: ";
+  static const String application_list_driver_ec_contact_number = "0965 876 9823";
+  static const String application_list_driver_ec_address_title = "Address: ";
+  static const String application_list_driver_ec_address = "Pila Laguna";
+  static const String application_list_dialog_header = "Confirm Action";
+  static const String application_list_dialog_subheader = "Are you sure you want to proceed with this action? This action cannot be undone";
+
+
+  //  application list info placeholder - outsource
+  static const String application_list_outsource_age_title = "Age: ";
+  static const String application_list_outsource_age = "35 years old";
+  static const String application_list_outsource_place_of_birth_title = "Place of Birth: ";
+  static const String application_list_outsource_place_of_birth = "Pila Laguna";
+  static const String application_list_outsource_citizenship_title = "Citizenship: ";
+  static const String application_list_outsource_citizenship = "Filipino";
+  static const String application_list_outsource_civil_status_title = "Civil Status: ";
+  static const String application_list_outsource_civil_status = "Single";
+  static const String application_list_outsource_years_in_residence_title = "Years in Residence: ";
+  static const String application_list_outsource_years_in_residence = "20 years";
+  static const String application_list_outsource_house_status_title = "House Status: ";
+  static const String application_list_outsource_house_status = "Owned";
+
+
+  //  vehicle information
+  static const String application_list_outsource_vi_title = "Vehicle Information";
+  static const String application_list_outsource_vi_model_title = "Model: ";
+  static const String application_list_outsource_vi_model = "Corolla";
+  static const String application_list_outsource_vi_brand_title = "Brand: ";
+  static const String application_list_outsource_vi_brand = "Toyota";
+  static const String application_list_outsource_vi_year_title = "Year: ";
+  static const String application_list_outsource_vi_year = "2020";
+  static const String application_list_outsource_vi_plate_number_title = "Plate ./MV File No.: ";
+  static const String application_list_outsource_vi_plate_number = "ABC 1234";
+
+  //  employment information
+  static const String application_list_outsource_ei_title = "Employment Information";
+  static const String application_list_outsource_ei_company_name_title = "Company Name: ";
+  static const String application_list_outsource_ei_company_name = "Company";
+  static const String application_list_outsource_ei_address_title = "Address: ";
+  static const String application_list_outsource_ei_address = "Bay Laguna";
+  static const String application_list_outsource_ei_telephone_number_title = "Telephone Number: ";
+  static const String application_list_outsource_ei_telephone_number = "0997 126 3452";
+  static const String application_list_outsource_ei_position_title = "Position: ";
+  static const String application_list_outsource_ei_position = "Sales";
+  static const String application_list_outsource_ei_length_of_stay_title = "Length of Stay: ";
+  static const String application_list_outsource_ei_length_of_stay = "6 months";
+  static const String application_list_outsource_ei_monthly_salary_title = "Monthly Salary: ";
+  static const String application_list_outsource_ei_monthly_salary = "21,000 PHP";
+
+  //  business information
+  static const String application_list_outsource_bi_title = "Business Information";
+  static const String application_list_outsource_bi_business_name_title = "Business Name: ";
+  static const String application_list_outsource_bi_business_name = "Business";
+  static const String application_list_outsource_bi_address_title = "Address: ";
+  static const String application_list_outsource_bi_address = "Pila Laguna";
+  static const String application_list_outsource_bi_position_title = "Position: ";
+  static const String application_list_outsource_bi_position = "Owner";
+  static const String application_list_outsource_bi_years_of_operation_title = "Years of Operation: ";
+  static const String application_list_outsource_bi_years_of_operation = "3 years";
+  static const String application_list_outsource_bi_contact_number_title = "Contact Number: ";
+  static const String application_list_outsource_bi_contact_number = "0997 126 3452";
+  static const String application_list_outsource_bi_email_address_title = "Email Address: ";
+  static const String application_list_outsource_bi_email_address = "business@gmail.com";
+  static const String application_list_outsource_bi_monthly_income_title = "Monthly Income (Gross)";
+  static const String application_list_outsource_bi_monthly_income = "120,333 PHP";
+  static const String application_list_name_outsource = "Outsource";
+  static const String application_list_name_driver = "Driver";
+
 }

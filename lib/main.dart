@@ -12,6 +12,8 @@ import 'package:dara_app/view/pages/admin/car_list/unit_preview.dart';
 import 'package:dara_app/view/pages/admin/home/main_home.dart';
 import 'package:dara_app/view/pages/admin/home_top_option/top_report.dart';
 import 'package:dara_app/view/pages/admin/manage/application_list/application_list.dart';
+import 'package:dara_app/view/pages/admin/manage/application_list/driver/application_driver.dart';
+import 'package:dara_app/view/pages/admin/manage/application_list/outsource/application_outsource.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
 import 'package:dara_app/view/pages/admin/manage/status/status.dart';
@@ -124,6 +126,8 @@ class MyApp extends StatelessWidget {
 
           //  Admin option - Application List
           "manage_application_list": (context) => const ApplicationList(),
+          "manage_application_driver": (context) => const ApplicationDriver(),
+          "manage_application_outsource": (context) => const ApplicationOutsource(),
 
           // Renting process - Booking Details
           "rp_booking_details": (context) => const RPBookingDetails(),
