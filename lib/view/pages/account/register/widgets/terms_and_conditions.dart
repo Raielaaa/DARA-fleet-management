@@ -399,7 +399,7 @@ Widget termsAndCondition(BuildContext context, int code) => makeDismissible(
                   fontSize: 10,
                   onPressed: () {
                     if (code == 1) {
-                      RegisterController().insertCredentialsAndUserDetailesToDB(context: context);
+                      RegisterController().insertCredentialsAndUserDetailsToDB(context: context);
                     } else if (code == 2) {
                       Navigator.of(context).pop();
                     }

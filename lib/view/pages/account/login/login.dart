@@ -418,25 +418,30 @@ class _LoginMain extends State<LoginMain> {
 
               //  Text - No account
               const SizedBox(height: 15),
-              RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                      text: ProjectStrings.account_login_main_no_account_1,
-                      style: const TextStyle(
-                          fontSize: 10,
-                          color: Color(0xff404040),
-                          fontFamily: ProjectStrings.general_font_family),
-                      children: [
-                        TextSpan(
-                            text:
-                                ProjectStrings.account_login_main_no_account_2,
-                            style: const TextStyle(
-                                fontSize: 10,
-                                color: Color(0xff3FA2BE),
-                                fontFamily: ProjectStrings.general_font_family,
-                                fontWeight: FontWeight.w600))
-                      ]
-                  )
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed("register_main");
+                },
+                child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        text: ProjectStrings.account_login_main_no_account_1,
+                        style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xff404040),
+                            fontFamily: ProjectStrings.general_font_family),
+                        children: [
+                          TextSpan(
+                              text:
+                                  ProjectStrings.account_login_main_no_account_2,
+                              style: const TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xff3FA2BE),
+                                  fontFamily: ProjectStrings.general_font_family,
+                                  fontWeight: FontWeight.w600))
+                        ]
+                    )
+                ),
               )
             ],
           )),

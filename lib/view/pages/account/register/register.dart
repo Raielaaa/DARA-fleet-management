@@ -1,4 +1,6 @@
 import "package:dara_app/controller/account/register_controller.dart";
+import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -20,6 +22,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _birthdayController = TextEditingController();
 
   DateTime? _selectedDate; // State for storing selected date
+  String? selectedRole;
 
   // user type dialog
   @override
@@ -32,80 +35,102 @@ class _RegisterState extends State<Register> {
 
   Future<void> _showUserOptionsDialog() async {
     return showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            backgroundColor: Color(int.parse(
-              ProjectColors.mainColorBackground.substring(2),
-              radix: 16,
-            )),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Top design
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5),
+          return PopScope(
+            canPop: false,
+            child: Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              backgroundColor: Color(int.parse(
+                ProjectColors.mainColorBackground.substring(2),
+                radix: 16,
+              )),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Top design
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(5),
+                        ),
+                        child: Image.asset(
+                          "lib/assets/pictures/header_background_curves.png",
+                          width: MediaQuery.of(context).size.width - 10,
+                          height: 70, // Adjust height as needed
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      child: Image.asset(
-                        "lib/assets/pictures/header_background_curves.png",
-                        width: MediaQuery.of(context).size.width - 10,
-                        height: 70, // Adjust height as needed
-                        fit: BoxFit.cover,
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(right: 15, left: 15, top: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomComponents.displayText(
+                              ProjectStrings.user_type_dialog_title,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                            Image.asset(
+                              "lib/assets/pictures/app_logo_circle.png",
+                              width: 80.0,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(right: 15, left: 15, top: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomComponents.displayText(
-                            ProjectStrings.user_type_dialog_title,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                          Image.asset(
-                            "lib/assets/pictures/app_logo_circle.png",
-                            width: 80.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
-                //  main body
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _userType(
-                        ProjectStrings.user_type_outsource_title,
-                        ProjectStrings.user_type_outsource_content,
-                        "lib/assets/pictures/user_type_outsource.jpg"),
-                    const SizedBox(width: 10),
-                    _userType(
-                        ProjectStrings.user_type_driver_title,
-                        ProjectStrings.user_type_driver_content,
-                        "lib/assets/pictures/user_type_driver.jpeg"),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                _userType(
-                    ProjectStrings.user_type_user_title,
-                    ProjectStrings.user_type_user_body,
-                    "lib/assets/pictures/user_type_user.jpg"),
+                  //  main body
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          PersistentData().selectedRoleOnRegister = "Outsource";
+                          Navigator.of(context).pop();
+                        },
+                        child: _userType(
+                            ProjectStrings.user_type_outsource_title,
+                            ProjectStrings.user_type_outsource_content,
+                            "lib/assets/pictures/user_type_outsource.jpg"),
+                      ),
+                      const SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () {
+                          PersistentData().selectedRoleOnRegister = "Driver";
+                          Navigator.of(context).pop();
+                        },
+                        child: _userType(
+                            ProjectStrings.user_type_driver_title,
+                            ProjectStrings.user_type_driver_content,
+                            "lib/assets/pictures/user_type_driver.jpeg"),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      PersistentData().selectedRoleOnRegister = "Renter";
+                      Navigator.of(context).pop();
+                    },
+                    child: _userType(
+                        ProjectStrings.user_type_user_title,
+                        ProjectStrings.user_type_user_body,
+                        "lib/assets/pictures/user_type_user.jpg"),
+                  ),
 
-                const SizedBox(height: 30)
-              ],
+                  const SizedBox(height: 30)
+                ],
+              ),
             ),
           );
         });
@@ -302,38 +327,51 @@ class _RegisterState extends State<Register> {
 
               //  Condition
               const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.center,
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: const TextSpan(
-                      text: ProjectStrings.account_register_1_condition_1,
-                      style: TextStyle(
-                          fontSize: 10,
-                          color: Color(0xff08080a),
-                          fontFamily: ProjectStrings.general_font_family),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: ProjectStrings.account_register_1_condition_2,
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Color(0xff3FA2BE),
-                                fontFamily:
-                                    ProjectStrings.general_font_family)),
-                        TextSpan(
-                            text: ProjectStrings.account_register_1_condition_3,
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Color(0xff08080a),
-                                fontFamily:
-                                    ProjectStrings.general_font_family)),
-                        TextSpan(
-                            text: ProjectStrings.account_register_1_condition_4,
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Color(0xff3FA2BE),
-                                fontFamily: ProjectStrings.general_font_family))
-                      ]),
+              GestureDetector(
+                onTap: () {
+                  //  Display Terms and Conditions ModalBottomSheet
+                  showModalBottomSheet<void>(
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return termsAndCondition(context, 2);
+                      }
+                  );
+                },
+                child: Align(
+                  alignment: Alignment.center,
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(
+                        text: ProjectStrings.account_register_1_condition_1,
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: Color(0xff08080a),
+                            fontFamily: ProjectStrings.general_font_family),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: ProjectStrings.account_register_1_condition_2,
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xff3FA2BE),
+                                  fontFamily:
+                                      ProjectStrings.general_font_family)),
+                          TextSpan(
+                              text: ProjectStrings.account_register_1_condition_3,
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xff08080a),
+                                  fontFamily:
+                                      ProjectStrings.general_font_family)),
+                          TextSpan(
+                              text: ProjectStrings.account_register_1_condition_4,
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xff3FA2BE),
+                                  fontFamily: ProjectStrings.general_font_family))
+                        ]),
+                  ),
                 ),
               ),
 
@@ -359,24 +397,29 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 10),
               Align(
                 alignment: Alignment.center,
-                child: RichText(
-                    text: const TextSpan(
-                        text: ProjectStrings
-                            .account_register_ep_have_an_account_1,
-                        style: TextStyle(
-                            fontSize: 10,
-                            color: Color(0xff08080a),
-                            fontFamily: ProjectStrings.general_font_family),
-                        children: <TextSpan>[
-                      TextSpan(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed("login_main");
+                  },
+                  child: RichText(
+                      text: const TextSpan(
                           text: ProjectStrings
-                              .account_register_ep_have_an_account_2,
+                              .account_register_ep_have_an_account_1,
                           style: TextStyle(
-                              fontFamily: ProjectStrings.general_font_family,
-                              color: Color(0xff3FA2BE),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10))
-                    ])),
+                              fontSize: 10,
+                              color: Color(0xff08080a),
+                              fontFamily: ProjectStrings.general_font_family),
+                          children: <TextSpan>[
+                        TextSpan(
+                            text: ProjectStrings
+                                .account_register_ep_have_an_account_2,
+                            style: TextStyle(
+                                fontFamily: ProjectStrings.general_font_family,
+                                color: Color(0xff3FA2BE),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 10))
+                      ])),
+                ),
               )
             ],
           )),

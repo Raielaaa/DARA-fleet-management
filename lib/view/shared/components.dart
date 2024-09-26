@@ -8,9 +8,26 @@ import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:fluttertoast/fluttertoast.dart";
 import "package:simple_loading_dialog/simple_loading_dialog.dart";
 
 class CustomComponents {
+  static void showToastMessage(
+      String message,
+      Color backgroundColor,
+      Color textColor
+      ) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: backgroundColor,
+        textColor: textColor,
+        fontSize: 12.0
+    );
+  }
+
   static void showCupertinoLoadingDialog(
     int eventCode,
     String content,
@@ -31,24 +48,55 @@ class CustomComponents {
 
         return "Task completed";
       },
-      dialogBuilder: (context, _) => AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 15),
-            CupertinoActivityIndicator(
-              radius: 15.0, // Customize the size
-              animating: true, // Control animation
-              color: Color(
-                int.parse(ProjectColors.mainColorHex.substring(2), radix: 16),
-              ), // Customize color
-            ),
-            const SizedBox(height: 25),
-            displayText(
-              content,
-              textAlign: TextAlign.center
-            ),
-          ],
+      dialogBuilder: (context, _) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          width: MediaQuery.of(context).size.width - 100,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: CustomComponents.displayText(
+                  "Please wait...",
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Divider(),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(width: 15),
+                  SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: Color(int.parse(
+                          ProjectColors.mainColorHex.substring(2),
+                          radix: 16)),
+                      strokeWidth: 3.5,
+                    ),
+                  ),
+                  const SizedBox(width: 25),
+                  Expanded(
+                    child: CustomComponents.displayText(
+                      content,
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

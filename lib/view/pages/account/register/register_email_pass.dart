@@ -74,6 +74,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
               ProjectStrings.account_register_ep_email_hint,
+              maxLength: 30,
               isFocused: true,
               controller: _controllerEmail,
               labelColor: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
@@ -88,7 +89,7 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             ),
             const SizedBox(height: 10),
             CustomComponents.displayTextField(
-              ProjectStrings.account_register_ep_email_hint,
+              ProjectStrings.account_register_ep_password_hint,
               isIconPresent: true,
               isFocused: !context.watch<RegisterProvider>().isPasswordMatch,
               isTextHidden: !_isPasswordVisible,
@@ -158,26 +159,31 @@ class _RegisterEmailPassState extends State<RegisterEmailPass> {
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.center,
-              child: RichText(
-                text: const TextSpan(
-                  text: ProjectStrings.account_register_ep_have_an_account_1,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Color(0xff08080a),
-                    fontFamily: ProjectStrings.general_font_family
-                  ),
-                  children: <TextSpan> [
-                    TextSpan(
-                      text: ProjectStrings.account_register_ep_have_an_account_2,
-                      style: TextStyle(
-                        color: Color(0xff3FA2BE),
-                        fontFamily: ProjectStrings.general_font_family,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 10
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed("login_main");
+                },
+                child: RichText(
+                  text: const TextSpan(
+                    text: ProjectStrings.account_register_ep_have_an_account_1,
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Color(0xff08080a),
+                      fontFamily: ProjectStrings.general_font_family
+                    ),
+                    children: <TextSpan> [
+                      TextSpan(
+                        text: ProjectStrings.account_register_ep_have_an_account_2,
+                        style: TextStyle(
+                          color: Color(0xff3FA2BE),
+                          fontFamily: ProjectStrings.general_font_family,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 10
+                        )
                       )
-                    )
-                  ]
-                )
+                    ]
+                  )
+                ),
               ),
             )
           ],

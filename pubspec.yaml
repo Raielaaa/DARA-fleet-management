@@ -59,6 +59,7 @@ dependencies:
   uni_links: ^0.5.1
   webview_flutter: ^3.0.4
   enhance_stepper: ^1.0.1
+  fluttertoast: ^8.2.8
 
 dev_dependencies:
   flutter_test:

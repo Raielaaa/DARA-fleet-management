@@ -42,4 +42,8 @@ class PersistentData {
 
   //  login page
   String userType = "User";
+
+  //  selected role on register
+  String? selectedRoleOnRegister;
+  String? verificationId;
 }

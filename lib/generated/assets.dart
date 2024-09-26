@@ -22,6 +22,7 @@ class Assets {
   static const String assetsPicturesAccountant = 'lib/assets/pictures/accountant.jpg';
   static const String assetsPicturesAccountantIncome = 'lib/assets/pictures/accountant_income.png';
   static const String assetsPicturesAdminManager = 'lib/assets/pictures/admin_manager.jpg';
+  static const String assetsPicturesAppLogo = 'lib/assets/pictures/app_logo.png';
   static const String assetsPicturesAppLogoCircle = 'lib/assets/pictures/app_logo_circle.png';
   static const String assetsPicturesAppLogoName = 'lib/assets/pictures/app_logo_name.png';
   static const String assetsPicturesApplicationList = 'lib/assets/pictures/application_list.png';
@@ -142,6 +143,7 @@ class Assets {
   static const String entryEntryPageVideo = 'lib/view/pages/entry/entry_page_video.dart';
   static const String firebaseAuth = 'lib/services/firebase/auth.dart';
   static const String firebaseFirestore = 'lib/services/firebase/firestore.dart';
+  static const String firebasePhoneAuthService = 'lib/services/firebase/phone_auth_service.dart';
   static const String gcashGcashPayment = 'lib/services/gcash/gcash_payment.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String googleGoogle = 'lib/services/google/google.dart';

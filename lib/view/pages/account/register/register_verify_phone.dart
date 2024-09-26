@@ -1,8 +1,13 @@
+import "package:dara_app/controller/account/register_controller.dart";
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:flutter_otp_text_field/flutter_otp_text_field.dart";
+
+import "../../../shared/info_dialog.dart";
 
 class RegisterVerifyNumber extends StatefulWidget {
   const RegisterVerifyNumber({super.key});
@@ -12,6 +17,9 @@ class RegisterVerifyNumber extends StatefulWidget {
 }
 
 class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
+  final RegisterController _registerController = RegisterController();
+  String _otpCode = "";
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -72,8 +80,11 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
               numberOfFields: 6,
               fillColor: Colors.black.withOpacity(0.04),
               filled: true,
-              onSubmit: (code) {}
-              // onSubmit: (code) => print("OTP is => $code")
+              onSubmit: (code) {
+                setState(() {
+                  _otpCode = code;
+                });
+              }
             ),
 
             //  Text - didn't receive code
@@ -109,8 +120,24 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
               child: CustomComponents.displayElevatedButton(
                 ProjectStrings.register_verify_button,
                 fontSize: 12,
-                onPressed: () {
-                  Navigator.pushNamed(context, "register_successful");
+                onPressed: () async {
+                  try {
+                    LoadingDialog().show(
+                      context: context,
+                      content: "Please wait while we process your OTP",
+                    );
+                    await _registerController.verifyOtp(PersistentData().verificationId.toString(), _otpCode, context);
+                    debugPrint("Verification ID: ${PersistentData().verificationId.toString()}......OTP: $_otpCode");
+                    // Navigator.pushNamed(context, "register_successful");
+                    // LoadingDialog().dismiss();
+                  } catch(e) {
+                    LoadingDialog().dismiss();
+                    InfoDialog().show(
+                      context: context,
+                      content: "Error: ${e.toString()}",
+                      header: "Warning",
+                    );
+                  }
                 },
               ),
             ),

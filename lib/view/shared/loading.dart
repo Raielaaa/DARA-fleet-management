@@ -29,10 +29,7 @@ class LoadingDialog {
         builder: (context) {
           _context = context;
           return PopScope(
-            onPopInvoked: (result) async {
-              // Prevent back button from closing the dialog
-              return Future.value();
-            },
+            canPop: false,
             child: Dialog(
               backgroundColor: Colors.transparent,
               child: Container(

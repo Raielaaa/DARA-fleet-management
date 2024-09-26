@@ -6,6 +6,7 @@ import 'package:dara_app/model/account/register_model.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:dara_app/services/firebase/auth.dart';
 import 'package:dara_app/services/firebase/firestore.dart';
+import 'package:dara_app/services/firebase/phone_auth_service.dart';
 import 'package:dara_app/view/shared/components.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,7 +16,26 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class RegisterController {
-  void insertCredentialsAndUserDetailesToDB({
+  final PhoneAuthService _phoneAuthService = PhoneAuthService();
+
+  void sendOtp(
+    String phoneNumber,
+    Function(String) onCodeSent,
+    BuildContext context,
+    Function(FirebaseException) onVerificationFailed
+  ) async {
+    await _phoneAuthService.sendOtp(phoneNumber, onCodeSent, context, onVerificationFailed);
+  }
+
+  Future<void> verifyOtp(
+    String verificationId,
+    String smsCode,
+    BuildContext context
+  ) async {
+    await _phoneAuthService.verifyOtp(verificationId, smsCode, context);
+  }
+
+  void insertCredentialsAndUserDetailsToDB({
     required BuildContext context,
   }) {
     CustomComponents.showCupertinoLoadingDialog(
@@ -26,7 +46,7 @@ class RegisterController {
         () async {
           PersistentData _persistentData = PersistentData();
           try {
-            //  Craeting user account
+            //  Creating user account
             UserCredential _userCredentials = await Auth().createUserWithEmailAndPassword(
               email: _persistentData.getEmail!,
               password: _persistentData.getPassword!,
