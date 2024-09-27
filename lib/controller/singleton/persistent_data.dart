@@ -46,4 +46,10 @@ class PersistentData {
   //  selected role on register
   String? selectedRoleOnRegister;
   String? verificationId;
+
+  //  phone number insert + otp verification page authenticator for dialog
+  bool isFromOtpPage = false;
+  bool isOtpVerified = false;
+  String? inputtedCellphoneNumber;
+  int? forceResendingToken;
 }

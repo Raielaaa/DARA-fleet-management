@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+import '../../view/shared/loading.dart';
+
 class RegisterController {
   final PhoneAuthService _phoneAuthService = PhoneAuthService();
 
@@ -24,15 +26,23 @@ class RegisterController {
     BuildContext context,
     Function(FirebaseException) onVerificationFailed
   ) async {
+    debugPrint("send otp checkpoint - controller");
     await _phoneAuthService.sendOtp(phoneNumber, onCodeSent, context, onVerificationFailed);
   }
 
   Future<void> verifyOtp(
-    String verificationId,
-    String smsCode,
-    BuildContext context
-  ) async {
-    await _phoneAuthService.verifyOtp(verificationId, smsCode, context);
+      String verificationId,
+      String smsCode,
+      BuildContext context
+      ) async {
+    try {
+      await _phoneAuthService.verifyOtp(verificationId, smsCode, context);
+      // Dismiss loading dialog after successful verification
+    } catch (e) {
+      // Dismiss loading dialog if there's an error
+      // Re-throw the error so it can be caught in the UI layer
+      rethrow;
+    }
   }
 
   void insertCredentialsAndUserDetailsToDB({

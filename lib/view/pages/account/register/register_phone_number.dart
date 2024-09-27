@@ -10,8 +10,6 @@ import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import 'package:fluttertoast/fluttertoast.dart';
-
 import "../../../../controller/account/register_controller.dart";
 
 class RegisterPhoneNumber extends StatefulWidget {
@@ -31,9 +29,13 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //  Calls showDialog method right after screen display
-      showDialog();
+      if (!PersistentData().isFromOtpPage) {
+        showDialog();
+        PersistentData().isFromOtpPage = false;
+      }
     });
   }
+
   //  Shows dialog if the previous registration process is successful
   void showDialog() {
     CustomComponents.showAlertDialog(
@@ -172,7 +174,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
                       CustomComponents.displayText(
                         ProjectStrings.register_phone_number_63,
                         fontWeight: FontWeight.bold,
-                        fontSize: 10,
+                        fontSize: 12,
                         color: Colors.grey
                       ),
 
@@ -192,7 +194,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
                           child: TextField(
                             controller: _inputtedPhoneNumberController,
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               fontFamily: ProjectStrings.general_font_family,
                               color: Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16))
                             ),
@@ -201,7 +203,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
                               hintText: ProjectStrings.register_phone_number_label_hint,
                               hintStyle: const TextStyle(
                                 fontFamily: ProjectStrings.general_font_family,
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: Colors.grey
                               )
                             ),
@@ -236,6 +238,8 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
                         content: "Please wait while we process your OTP",
                       );
 
+                      PersistentData().inputtedCellphoneNumber = "+63${_inputtedPhoneNumberController.value.text}";
+                      debugPrint("register-phone-number: ${PersistentData().inputtedCellphoneNumber}");
                       // Await the OTP sending process
                       await _sendOtp("+63${_inputtedPhoneNumberController.value.text}");
                     } catch (e) {
