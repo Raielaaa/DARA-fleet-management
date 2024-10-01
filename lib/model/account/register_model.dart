@@ -5,6 +5,13 @@ class RegisterModel {
   String birthday;
   String email;
   String number;
+  String role;
+  String status;
+  String dateCreated;
+  String totalAmountSpent;
+  String longestRentalDate;
+  String favorite;
+  String rentalCount;
 
   RegisterModel(
     {
@@ -13,7 +20,14 @@ class RegisterModel {
       required this.lastName,
       required this.birthday,
       required this.email,
-      required this.number
+      required this.number,
+      required this.role,
+      required this.status,
+      required this.dateCreated,
+      required this.totalAmountSpent,
+      required this.longestRentalDate,
+      required this.favorite,
+      required this.rentalCount
     }
   );
 
@@ -24,7 +38,14 @@ class RegisterModel {
       "user_lastname" : lastName,
       "user_birthday" : birthday,
       "user_email" : email,
-      "user_number" : number
+      "user_number" : number,
+      "user_role" : role,
+      "user_status" : status,
+      "user_date_created": dateCreated,
+      "user_total_amount_spent": totalAmountSpent,
+      "user_longest_rental_date": longestRentalDate,
+      "user_favorite": favorite,
+      "user_rental_count": rentalCount
     };
   }
 }

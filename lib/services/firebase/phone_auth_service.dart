@@ -1,4 +1,5 @@
 import 'package:dara_app/controller/singleton/persistent_data.dart';
+import 'package:dara_app/services/firebase/firestore.dart';
 import 'package:dara_app/view/shared/components.dart';
 import 'package:dara_app/view/shared/info_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,6 +59,7 @@ class PhoneAuthService {
       );
 
       await _auth.signInWithCredential(credential);
+      insertPhoneNumberToDB();
 
       InfoDialog().show(
           context: context,
@@ -77,6 +79,19 @@ class PhoneAuthService {
       // CustomComponents.showToastMessage("Failed to verify OTP: ${e.toString()}", Colors.red, Colors.white);
       debugPrint("DebugPrint - Failed to verify OTP: $e");
       rethrow;  // Propagate error to higher layers
+    }
+  }
+
+  Future<void> insertPhoneNumberToDB() async {
+    try {
+      await Firestore().updateUserDataRegister(
+          PersistentData().userUId,
+          PersistentData().selectedRoleOnRegister == "Renter" ? "verified" : "unverified",
+          PersistentData().inputtedCellphoneNumber.toString()
+      );
+      debugPrint("number successfully added to DB");
+    } catch(e) {
+      debugPrint("An error occured: $e");
     }
   }
 }

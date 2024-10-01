@@ -52,4 +52,7 @@ class PersistentData {
   bool isOtpVerified = false;
   String? inputtedCellphoneNumber;
   int? forceResendingToken;
+
+  //  for updating the user info (user number)
+  String userUId = "";
 }

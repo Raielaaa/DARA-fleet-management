@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../view/shared/loading.dart';
@@ -56,44 +57,14 @@ class RegisterController {
         () async {
           PersistentData _persistentData = PersistentData();
           try {
-            //  Creating user account
-            UserCredential _userCredentials = await Auth().createUserWithEmailAndPassword(
+            //  Creating user account + Get the user ID (UID) after successful user creation
+            await Auth().createUserWithEmailAndPassword(
               email: _persistentData.getEmail!,
               password: _persistentData.getPassword!,
+              context: context
             );
-
-            //  Get the user ID (UID) after successful user creation
-            String _userID = _userCredentials.user!.uid;
-
-            //  Add user id, first name, last name, birthday, and email to firestore
-            RegisterModel _userData = RegisterModel(
-              id: _userID,
-              firstName: _persistentData.getFirstName.toString(),
-              lastName: _persistentData.getLastName.toString(),
-              birthday: _persistentData.getBirthday.toString(),
-              email: _persistentData.getEmail.toString(),
-              number: ""
-            );
-
-            try {
-              await Firestore().addUserInfo(
-                collectionName: FirebaseConstants.registerCollection,
-                documentName: _userID,
-                data: _userData.getModelData()
-              );
-            } on FirebaseException catch (exception) {
-              CustomComponents.showAlertDialog(
-                context: context,
-                title: ProjectStrings.general_dialog_db_error_header,
-                content: "${ProjectStrings.general_dialog_db_error_body}${exception.message}",
-                numberOfOptions: 1,
-                onPressedPositive: () {
-                  Navigator.of(context).pop();
-                },
-              );
-            }
-
           } on FirebaseAuthException catch (exception) {
+            debugPrint("breakpoint-login-credentials-creation-exeption-2: $exception");
             CustomComponents.showAlertDialog(
               context: context,
               title: ProjectStrings.general_dialog_db_error_header,
