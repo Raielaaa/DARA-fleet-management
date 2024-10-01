@@ -58,9 +58,12 @@ class InfoDialog {
                     padding: EdgeInsets.symmetric(vertical: 5),
                     child: Divider(),
                   ),
-                  CustomComponents.displayText(
-                    content,
-                    fontSize: 10
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: CustomComponents.displayText(
+                      content,
+                      fontSize: 10
+                    ),
                   ),
                 ],
               ),

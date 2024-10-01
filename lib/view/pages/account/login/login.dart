@@ -1,10 +1,13 @@
 import "package:dara_app/controller/account/login_controller.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/services/firebase/auth.dart";
 import "package:dara_app/services/google/google.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:google_sign_in/google_sign_in.dart";
 
@@ -19,6 +22,7 @@ class _LoginMain extends State<LoginMain> {
   bool _isPasswordVisible = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordResetController = TextEditingController();
 
   //  Google sign-in
   final GoogleLogin _googleLogin = GoogleLogin();
@@ -26,6 +30,63 @@ class _LoginMain extends State<LoginMain> {
   late GoogleSignInAccount _userObj;
 
   String clickedUserType = "User";
+
+
+  Widget inputEmailBottomDialog() {
+    return DraggableScrollableSheet(
+        builder: (_, controller) => Container(
+            padding: const EdgeInsets.all(25),
+            decoration: BoxDecoration(
+                color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+                borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20)
+                )
+            ),
+            child: ListView(
+                controller: controller,
+                children: [
+                  CustomComponents.displayText(
+                      "Please enter the email address you used to register with us:",
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12
+                  ),
+                  const SizedBox(height: 20),
+                  CustomComponents.displayTextField(
+                      "Enter your email here",
+                    controller: _passwordResetController
+                  ),
+                  //  Login button
+                  const SizedBox(height: 50),
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomComponents.displayElevatedButton(
+                      "Proceed",
+                      fontSize: 12,
+                      onPressed: () async {
+                        InfoDialog _infoDialog = InfoDialog();
+                        LoadingDialog _loadingDialog = LoadingDialog();
+
+                        try {
+                          _loadingDialog.show(context: context, content: "Please wait while we are sending you the email.");
+                          await FirebaseAuth.instance.sendPasswordResetEmail(email: _passwordResetController.text.trim());
+                          _loadingDialog.dismiss();
+                          _infoDialog.show(context: context, content: "Password reset email sent successfully.", header: "Success");
+                        } on FirebaseAuthException catch (err) {
+                          debugPrint("Password reset error: ${err.message}");
+                          _infoDialog.show(context: context, content: "Error: ${err.message}", header: "Warning");
+                        } catch (err) {
+                          debugPrint("Password reset error: ${err.toString()}");
+                          _infoDialog.show(context: context, content: "Fatal error: ${err.toString()}", header: "Warning");
+                        }
+
+                      },
+                    ),
+                  ),
+                ]
+            )
+        )
+    );
+  }
 
   Future<void> _showUserOptionsDialog() async {
     return showDialog(
@@ -292,20 +353,46 @@ class _LoginMain extends State<LoginMain> {
 
               //  Text - Change user type
               const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  _showUserOptionsDialog();
-                },
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: CustomComponents.displayText(
-                      "Not a $clickedUserType? Click here",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 10,
-                      color: Color(int.parse(
-                          ProjectColors.mainColorHex.substring(2),
-                          radix: 16))),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return inputEmailBottomDialog();
+                          }
+                      );
+                    },
+                    child: CustomComponents.displayText(
+                        "Forgot password?",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 10,
+                        color: Color(int.parse(
+                            ProjectColors.mainColorHex.substring(2),
+                            radix: 16)
+                        )
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _showUserOptionsDialog();
+                    },
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: CustomComponents.displayText(
+                          "Not a $clickedUserType? Click here",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 10,
+                          color: Color(int.parse(
+                              ProjectColors.mainColorHex.substring(2),
+                              radix: 16))),
+                    ),
+                  ),
+                ],
               ),
 
               //  Login button
