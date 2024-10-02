@@ -187,15 +187,19 @@ class _AdminHomeState extends State<AdminHome> {
     // Initialize the future directly in initState
     weatherFuture = homeController.getWeatherForecast();
 
-    //  chatgpt
-    openAI = OpenAI.instance.build(
-      token: Constants.CHAT_GPT_S_KEY, // Replace with your OpenAI API
-      baseOption: HttpSetup(
-        receiveTimeout: Duration(seconds: 20),
-        connectTimeout: Duration(seconds: 20),
-      ),
-      enableLog: true,
-    );
+    try {
+      //  chatgpt
+      openAI = OpenAI.instance.build(
+        token: "", // Replace with your OpenAI API
+        baseOption: HttpSetup(
+          receiveTimeout: Duration(seconds: 20),
+          connectTimeout: Duration(seconds: 20),
+        ),
+        enableLog: true,
+      );
+    } catch(e) {
+
+    }
 
     // Optionally, show the opening banner after initializing the future
     WidgetsBinding.instance.addPostFrameCallback((_) {
