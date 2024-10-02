@@ -189,7 +189,7 @@ class _AdminHomeState extends State<AdminHome> {
 
     //  chatgpt
     openAI = OpenAI.instance.build(
-      token: Constants.CHAT_GPT_SECRET_KEY, // Replace with your OpenAI API key
+      token: Constants.CHAT_GPT_S_KEY, // Replace with your OpenAI API key
       baseOption: HttpSetup(
         receiveTimeout: Duration(seconds: 20),
         connectTimeout: Duration(seconds: 20),
