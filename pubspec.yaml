@@ -61,6 +61,7 @@ dependencies:
   enhance_stepper: ^1.0.1
   fluttertoast: ^8.2.8
   chat_gpt_sdk: ^3.1.2
+  googleapis: ^13.1.0
 
 dev_dependencies:
   flutter_test:

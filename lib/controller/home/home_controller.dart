@@ -120,32 +120,42 @@ class HomeController {
                 mainAxisSize:
                     MainAxisSize.min, // Adjust the height based on content
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(7),
-                    child: Image.asset(
-                      "lib/assets/pictures/home_opening_banner.png",
-                      fit: BoxFit.fitWidth,
+                  GestureDetector(
+                    onTap: () {
+                      _launchFacebookURL(context);
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(7),
+                      child: Image.asset(
+                        "lib/assets/pictures/home_opening_banner.png",
+                        fit: BoxFit.fitWidth,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 15),
                   SizedBox(
                     width: double
                         .infinity, // Makes the button take the full width of the parent container
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Color(int.parse(
-                            ProjectColors.mainColorHex.substring(2),
-                            radix: 16)),
-                      ),
-                      height: 35,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: CustomComponents.displayText(
-                          "Check more offers",
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
+                    child: GestureDetector(
+                      onTap: () {
+                        _launchFacebookURL(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(int.parse(
+                              ProjectColors.mainColorHex.substring(2),
+                              radix: 16)),
+                        ),
+                        height: 35,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: CustomComponents.displayText(
+                            "Check more offers",
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ),
@@ -187,6 +197,18 @@ class HomeController {
         );
       },
     );
+  }
+
+  void _launchFacebookURL(BuildContext context) async {
+    const url = "https://www.facebook.com/profile.php?id=61565665724728";
+    await launchUrl(Uri.parse(url));
+    // if (await canLaunchUrl(Uri.parse(url))) {
+    //   await launchUrl(Uri.parse(url));
+    // } else {
+    //   InfoDialog().show(context: context, content: "Could not launch $url", header: "Warning");
+    //
+    //   throw 'Could not launch $url';
+    // }
   }
 
   void topOptionManageAccessibility(BuildContext context) {

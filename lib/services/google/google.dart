@@ -6,13 +6,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/people/v1.dart';
 
 class GoogleLogin {
   final GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: [
       "email",
       'https://www.googleapis.com/auth/userinfo.profile',
-      'https://www.googleapis.com/auth/user.birthday.read', // Request birthday scope
+      'https://www.googleapis.com/auth/user.birthday.read',
+      PeopleServiceApi.userBirthdayReadScope
     ]
   );
 
@@ -44,26 +46,24 @@ class GoogleLogin {
 
       final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-      // Fetch birthday using People API
-      final response = await http.get(
-        Uri.parse('https://people.googleapis.com/v1/people/me?personFields=birthdays'),
-        headers: await googleSignInAccount.authHeaders,
+      final GoogleAuthClient httpClient = GoogleAuthClient({'Authorization': 'Bearer $accessToken'});
+      PeopleServiceApi peopleApi = PeopleServiceApi(httpClient);
+
+      final Person person = await peopleApi.people.get(
+        'people/me',
+        personFields:
+        'birthdays,genders', // add more fields with comma separated and no space
       );
 
-      if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        var birthdays = data['birthdays'];
-
-        if (birthdays != null && birthdays.isNotEmpty) {
-          debugPrint('Birthday: ${birthdays}');
-          PersistentData().birthdayFromGoogleSignIn = birthdays;
-        } else {
-          debugPrint('Birthday is not available');
-          PersistentData().birthdayFromGoogleSignIn = ""; // Handle null case
-        }
-      } else {
-        debugPrint('Failed to fetch birthday data. Status code: ${response.statusCode}');
-      }
+      /// Birthdate
+      final date = person.birthdays![0].date!;
+      PersistentData().birthdayFromGoogleSignIn = date.toString();
+    debugPrint("google.dart-birthday: $date");
+      final DateTime birthdayDateTime = DateTime(
+        date.year ?? 0,
+        date.month ?? 0,
+        date.day ?? 0,
+      );
 
       return userCredential.user;
     } catch (e) {
@@ -71,5 +71,17 @@ class GoogleLogin {
       debugPrint("Google sign-in error: ${e.toString()}");
       return null;
     }
+  }
+}
+
+class GoogleAuthClient extends http.BaseClient {
+  final Map<String, String> _headers;
+  final http.Client _client = http.Client();
+
+  GoogleAuthClient(this._headers);
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    return _client.send(request..headers.addAll(_headers));
   }
 }
