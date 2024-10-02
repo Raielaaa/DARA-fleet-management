@@ -447,19 +447,29 @@ class _LoginMain extends State<LoginMain> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  // Call signInWithGoogle function when the button is pressed
-                  final user = await _googleLogin.signInWithGoogle(context);
-                  if (user != null) {
-                    // User is logged in successfully, you can now access user details
-                    final String? name = user.displayName;
-                    final String? email = user.email;
-                    final String? birthday = '';
-
-                    debugPrint("name: $name");
-                    debugPrint("email: $email");
-                    debugPrint("uid: ${user.uid}");
-                    debugPrint("phone: ${user.phoneNumber}");
-                    // Do something with the user details
+                  if (PersistentData().userType != "Admin" && PersistentData().userType != "Accountant") {
+                    // Call signInWithGoogle function when the button is pressed
+                    final User? user = await _googleLogin.signInWithGoogle(context);
+                    if (user != null) {
+                      //  insert items to db
+                      List<String>? subdividedName = user.displayName?.split(" ");
+                      LoginController _loginController = LoginController();
+                      _loginController.insertGoogleCredentialsToDB(
+                          userUID: user.uid,
+                          firstName: subdividedName!.first,
+                          lastName: subdividedName.last,
+                          birthday: PersistentData().birthdayFromGoogleSignIn,
+                          email: user.email!,
+                          role: PersistentData().userType,
+                          context: context
+                      );
+                    }
+                  } else {
+                    InfoDialog().show(
+                        context: context,
+                        content: "Google sign-in can be made only with either as driver, outsource, or renter. Accountant and Admin is not allowed",
+                        header: "Warning"
+                    );
                   }
                 },
                 style: ButtonStyle(

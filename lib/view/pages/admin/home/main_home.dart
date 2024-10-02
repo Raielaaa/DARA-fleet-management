@@ -1,10 +1,12 @@
 import "package:dara_app/controller/home/home_controller.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/controller/utils/constants.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
+import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 
 class AdminHome extends StatefulWidget {
   final PersistentTabController controller;
@@ -18,12 +20,182 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   late Future<List<List<String>>> weatherFuture;
   HomeController homeController = HomeController();
+  late OpenAI openAI;
+  final _controller = TextEditingController();
+  List<Map<String, String>> _messages = [];
+
+  // Function to send a message
+  void _sendMessage() async {
+    if (_controller.text.isNotEmpty) {
+      String userMessage = _controller.text;
+      setState(() {
+        _messages.add({'user': userMessage, 'response': 'Thinking...'});
+      });
+
+      // Create the request
+      final request = ChatCompleteText(
+        messages: [
+          Messages(role: Role.user, content: userMessage).toJson(),
+        ],
+        maxToken: 200,
+        model: Gpt4oMini2024ChatModel(),
+      );
+
+      // Get the response
+      ChatCTResponse? response = await openAI.onChatCompletion(request: request);
+      String botResponse = response?.choices.first.message?.content ?? 'No response';
+      debugPrint("AI response: $botResponse");
+
+      // Update the message with the response
+      setState(() {
+        _messages.last['response'] = botResponse;
+      });
+
+      _controller.clear(); // Clear the text field
+    }
+  }
+
+  Widget displayBottomSheetChatBot(BuildContext context, StateSetter updateModalState) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.75, // Adjust height as needed
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              reverse: true, // Start from the bottom
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final message = _messages[_messages.length - 1 - index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // User message (right aligned)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Flexible(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                color: Colors.blueAccent,
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Text(
+                                message['user']!,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.0),
+                      // Bot response (left aligned)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Text(
+                                message['response']!,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          // Input field at the bottom of the screen
+          Padding(
+            padding: MediaQuery.of(context).viewInsets, // Prevents keyboard overlap
+            child: _buildInputField(updateModalState),
+          ),
+          const SizedBox(height: 150)
+        ],
+      ),
+    );
+  }
+
+  // Input field for sending messages
+  Widget _buildInputField(StateSetter updateModalState) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                hintText: 'Enter your prompt...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+              onSubmitted: (_) => _sendMessage(), // Trigger message send on submission
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.send),
+            onPressed: () => _sendMessage(), // Trigger message send on button press
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   @override
   void initState() {
     super.initState();
     // Initialize the future directly in initState
     weatherFuture = homeController.getWeatherForecast();
+
+    //  chatgpt
+    openAI = OpenAI.instance.build(
+      token: Constants.CHAT_GPT_SECRET_KEY, // Replace with your OpenAI API key
+      baseOption: HttpSetup(
+        receiveTimeout: Duration(seconds: 20),
+        connectTimeout: Duration(seconds: 20),
+      ),
+      enableLog: true,
+    );
 
     // Optionally, show the opening banner after initializing the future
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -304,36 +476,52 @@ class _AdminHomeState extends State<AdminHome> {
                           ),
                         ),
                       ),
-                      //  settings
+                      //  AI chatbot
                       Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              color: Colors.white38,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    "lib/assets/pictures/home_top_settings.png",
-                                    fit: BoxFit.contain,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 7),
-                                    child: CustomComponents.displayText(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      ProjectStrings
-                                          .admin_home_top_options_settings,
-                                      color: Color(int.parse(
-                                          ProjectColors.darkGray.substring(2),
-                                          radix: 16)),
+                        child: GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                                backgroundColor: Colors.white,
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return StatefulBuilder(
+                                    builder: (BuildContext context, StateSetter setModalState) {
+                                      return displayBottomSheetChatBot(context, setModalState);
+                                    },
+                                  );
+                                }
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                color: Colors.white38,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      "lib/assets/pictures/home_top_settings.png",
+                                      fit: BoxFit.contain,
                                     ),
-                                  )
-                                ],
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 7),
+                                      child: CustomComponents.displayText(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 10,
+                                        ProjectStrings
+                                            .admin_home_top_options_settings,
+                                        color: Color(int.parse(
+                                            ProjectColors.darkGray.substring(2),
+                                            radix: 16)),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

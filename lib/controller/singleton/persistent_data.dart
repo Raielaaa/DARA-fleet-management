@@ -55,4 +55,6 @@ class PersistentData {
 
   //  for updating the user info (user number)
   String userUId = "";
+
+  String birthdayFromGoogleSignIn = "";
 }

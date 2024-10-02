@@ -11,7 +11,7 @@ Future<void> gcashPayment(BuildContext context) async {
   const data = SourceAttributes(
     type: "gcash",
     // Update amount to cents (e.g., 1000 PHP = 100000 cents)
-    amount: 100000,
+    amount: 10000,
     currency: "PHP",
     redirect: Redirect(
       success: "https://payment-success.com",

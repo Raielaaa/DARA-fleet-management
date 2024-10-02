@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:weather/weather.dart';
 
+import '../utils/constants.dart';
+
 class HomeController {
   Future<List<List<String>>> getWeatherForecast() async {
     OpenWeather openWeather = OpenWeather();
