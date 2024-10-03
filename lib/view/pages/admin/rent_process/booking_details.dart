@@ -1,3 +1,4 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 import "package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart";
@@ -27,6 +28,13 @@ class RPBookingDetails extends StatefulWidget {
 }
 
 class _RPBookingDetailsState extends State<RPBookingDetails> {
+  String selectedAddress = ProjectStrings.rp_bk_address_label;
+  String selectedDateStartOrEnd = "";
+  String selectedTimeStartOrEnd = "";
+  final PersistentData _persistentData = PersistentData();
+  bool rentWithDriver = false;
+
+
   final DatePickerField _startDateField = DatePickerField(
     label: ProjectStrings.rp_bk_starting_date_label,
     selectedDate: ProjectStrings.rp_bk_starting_date_label,
@@ -87,6 +95,12 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
       setState(() {
         datePickerField.selectedDate =
             DateFormat("MMMM dd, yyyy").format(picked);
+
+        if (selectedDateStartOrEnd == "start_date") {
+          _persistentData.bookingDetailsStartingDate = datePickerField.selectedDate;
+        } else if (selectedDateStartOrEnd == "end_date") {
+          _persistentData.bookingDetailsEndingDate = datePickerField.selectedDate;
+        }
       });
     }
   }
@@ -115,6 +129,12 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
         final pickedTime =
             DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
         timePickerField.selectedTime = DateFormat("hh:mm a").format(pickedTime);
+
+        if (selectedTimeStartOrEnd == "start_time") {
+          _persistentData.bookingDetailsStartingTime = timePickerField.selectedTime;
+        } else if (selectedTimeStartOrEnd == "end_time") {
+          _persistentData.bookingDetailsEndingTime = timePickerField.selectedTime;
+        }
       });
     }
   }
@@ -150,9 +170,13 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                             _buildDateTimePickerColumn(
                                 _startDateField,
                                 _selectDate,
-                                ProjectStrings.rp_bk_starting_date),
+                                ProjectStrings.rp_bk_starting_date,
+                              "start_date"
+                            ),
                             _buildDateTimePickerColumn(_endDateField,
-                                _selectDate, ProjectStrings.rp_bk_ending_date),
+                                _selectDate, ProjectStrings.rp_bk_ending_date,
+                              "end_date"
+                            ),
                           ],
                         ),
                         const SizedBox(height: 30),
@@ -161,8 +185,8 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             _buildTimePickerColumn(
-                                _startTimeField, _selectTime),
-                            _buildTimePickerColumn(_endTimeField, _selectTime),
+                                _startTimeField, _selectTime, "start_time"),
+                            _buildTimePickerColumn(_endTimeField, _selectTime, "end_time"),
                           ],
                         ),
 
@@ -178,61 +202,59 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                               fontWeight: FontWeight.bold,
                             ),
                             const SizedBox(height: 7),
-                            Container(
-                              width: double.infinity,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: Color(int.parse(
-                                      ProjectColors.darkGray.substring(2),
-                                      radix: 16)),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, top: 4, bottom: 4),
-                                    child: Icon(
-                                      Icons.location_pin,
-                                      color: Color(int.parse(
-                                          ProjectColors.darkGray.substring(2),
-                                          radix: 16)),
-                                      size: 22,
-                                    ),
+                            GestureDetector(
+                              onTap: () async {
+                                // Assuming the map screen returns the address as a result
+                                final selectedLocation = await Navigator.of(context).pushNamed("map_screen");
+
+                                if (selectedLocation != null) {
+                                  setState(() {
+                                    selectedAddress = selectedLocation as String;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                    color: Color(int.parse(
+                                        ProjectColors.darkGray.substring(2),
+                                        radix: 16)),
+                                    width: 1,
                                   ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 15),
-                                      child: TextField(
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            color: Color(int.parse(
-                                                ProjectColors.darkGray
-                                                    .substring(2),
-                                                radix: 16))),
-                                        decoration: InputDecoration(
-                                          hintText: ProjectStrings
-                                              .rp_bk_address_label, // Placeholder text
-                                          hintStyle: TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.grey.shade600,
-                                              fontWeight: FontWeight.normal,
-                                              fontFamily: ProjectStrings
-                                                  .general_font_family),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide.none,
-                                            borderRadius:
-                                                BorderRadius.circular(7),
-                                          ),
-                                        ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, top: 4, bottom: 4),
+                                      child: Icon(
+                                        Icons.location_pin,
+                                        color: Color(int.parse(
+                                            ProjectColors.darkGray.substring(2),
+                                            radix: 16)),
+                                        size: 22,
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          selectedAddress,
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey.shade600,
+                                            fontFamily: ProjectStrings.general_font_family
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -277,7 +299,12 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                                     ),
                                   ],
                                 ),
-                                Switch(value: true, onChanged: (result) {})
+                                Switch(value: rentWithDriver, onChanged: (result) {
+                                  setState(() {
+                                    rentWithDriver = !rentWithDriver;
+                                    _persistentData.bookingDetailsRentWithDriver = rentWithDriver;
+                                  });
+                                })
                               ],
                             ),
                           ),
@@ -298,6 +325,14 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                                         borderRadius:
                                             BorderRadius.circular(5)))),
                             onPressed: () {
+                              //  check inputted data
+                              debugPrint("Starting date: ${_persistentData.bookingDetailsStartingDate}");
+                              debugPrint("Ending date: ${_persistentData.bookingDetailsEndingDate}");
+                              debugPrint("Starting time: ${_persistentData.bookingDetailsStartingTime}");
+                              debugPrint("Ending time: ${_persistentData.bookingDetailsEndingTime}");
+                              debugPrint("Address: ${_persistentData.bookingDetailsMapsLocationFromLongitudeLatitude}");
+                              debugPrint("Rent with a driver: ${_persistentData.bookingDetailsRentWithDriver}");
+
                               Navigator.of(context).pushNamed("rp_delivery_mode");
                             },
                             child: Center(
@@ -346,7 +381,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
   }
 
   Widget _buildDateTimePickerColumn(DatePickerField datePickerField,
-      Function(BuildContext, DatePickerField) selectDate, String headerName) {
+      Function(BuildContext, DatePickerField) selectDate, String headerName, String startOrEndDate) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -357,8 +392,12 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
         ),
         const SizedBox(height: 7),
         GestureDetector(
-          onTap: () =>
-              selectDate(context, datePickerField), // Show date picker on tap
+          onTap: () {
+            selectDate(context, datePickerField);
+            setState(() {
+              selectedDateStartOrEnd = startOrEndDate;
+            });
+          },
           child: Container(
             width: 155,
             height: 35,
@@ -397,7 +436,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
   }
 
   Widget _buildTimePickerColumn(TimePickerField timePickerField,
-      Function(BuildContext, TimePickerField) selectTime) {
+      Function(BuildContext, TimePickerField) selectTime, String startOrEndTime) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -408,8 +447,12 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
         ),
         const SizedBox(height: 7),
         GestureDetector(
-          onTap: () =>
-              selectTime(context, timePickerField), // Show time picker on tap
+          onTap: () {
+            selectTime(context, timePickerField); // Show time picker on tap
+            setState(() {
+              selectedTimeStartOrEnd = startOrEndTime;
+            });
+          },
           child: Container(
             width: 155,
             height: 35,

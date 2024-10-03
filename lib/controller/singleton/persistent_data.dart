@@ -1,4 +1,6 @@
 // ignore_for_file: unnecessary_getters_setters
+import 'package:geocoding/geocoding.dart';
+
 
 class PersistentData {
   //  Private constructors
@@ -57,4 +59,16 @@ class PersistentData {
   String userUId = "";
 
   String birthdayFromGoogleSignIn = "";
+
+  //  maps
+  String mapsLatitude = "";
+  String mapsLongitude = "";
+
+  // booking details info to be inserted to the database
+  String bookingDetailsMapsLocationFromLongitudeLatitude = "";
+  String bookingDetailsStartingDate = "";
+  String bookingDetailsEndingDate = "";
+  String bookingDetailsStartingTime = "";
+  String bookingDetailsEndingTime = "";
+  bool bookingDetailsRentWithDriver = false;
 }

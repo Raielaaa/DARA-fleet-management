@@ -29,6 +29,11 @@
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyANm28tCwij2AaUN3eF43g98PVE5IWBKJE"
+                />
+
+            <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
@@ -52,9 +57,14 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyANm28tCwij2AaUN3eF43g98PVE5IWBKJE"
+            />
+
         <!-- Ensure that the app can use location services -->
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBdOBiE5grXG_Xyt5qL4s19qBt-JK_2rTo"/>
+<!--        <meta-data android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="AIzaSyBdOBiE5grXG_Xyt5qL4s19qBt-JK_2rTo"/>-->
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and

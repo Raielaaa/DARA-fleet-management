@@ -11,9 +11,6 @@ import 'package:googleapis/people/v1.dart';
 class GoogleLogin {
   final GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: [
-      "email",
-      'https://www.googleapis.com/auth/userinfo.profile',
-      'https://www.googleapis.com/auth/user.birthday.read',
       PeopleServiceApi.userBirthdayReadScope
     ]
   );
@@ -21,18 +18,19 @@ class GoogleLogin {
   Future<User?> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-
+      debugPrint("checkpoint-1");
       if (googleSignInAccount == null) {
         // Handle case where sign-in was canceled
         InfoDialog().show(context: context, content: "Google sign-in was canceled", header: "Warning");
         return null;
       }
-
+      debugPrint("checkpoint-2");
       final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
 
       final String? accessToken = googleSignInAuthentication.accessToken;
+      debugPrint("Access-token: $accessToken");
       final String? idToken = googleSignInAuthentication.idToken;
-
+      debugPrint("checkpoint-3");
       if (accessToken == null || idToken == null) {
         // Handle case where tokens are null
         InfoDialog().show(context: context, content: "Failed to retrieve authentication tokens", header: "Warning");
@@ -43,27 +41,22 @@ class GoogleLogin {
         accessToken: accessToken,
         idToken: idToken,
       );
-
+      debugPrint("checkpoint-4");
       final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-
+      debugPrint("checkpoint-5");
       final GoogleAuthClient httpClient = GoogleAuthClient({'Authorization': 'Bearer $accessToken'});
       PeopleServiceApi peopleApi = PeopleServiceApi(httpClient);
-
+      debugPrint("checkpoint-6");
       final Person person = await peopleApi.people.get(
         'people/me',
-        personFields:
-        'birthdays,genders', // add more fields with comma separated and no space
+        personFields: 'birthdays'
       );
 
+      debugPrint("checkpoint-7");
       /// Birthdate
       final date = person.birthdays![0].date!;
       PersistentData().birthdayFromGoogleSignIn = date.toString();
-    debugPrint("google.dart-birthday: $date");
-      final DateTime birthdayDateTime = DateTime(
-        date.year ?? 0,
-        date.month ?? 0,
-        date.day ?? 0,
-      );
+      debugPrint("google.dart-birthday: $date");
 
       return userCredential.user;
     } catch (e) {
