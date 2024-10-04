@@ -28,9 +28,14 @@ class _CarListState extends State<CarList> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Image.asset("lib/assets/pictures/left_arrow.png"),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Image.asset("lib/assets/pictures/left_arrow.png"),
+                      ),
                     ),
                     CustomComponents.displayText(
                       "Car Lists",

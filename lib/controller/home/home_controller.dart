@@ -1,4 +1,5 @@
 import 'package:dara_app/controller/singleton/persistent_data.dart';
+import 'package:dara_app/services/firebase/firestore.dart';
 import 'package:dara_app/services/weather/open_weather.dart';
 import 'package:dara_app/view/shared/colors.dart';
 import 'package:dara_app/view/shared/components.dart';
@@ -9,9 +10,16 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:weather/weather.dart';
 
+import '../../model/home/featured_car_info.dart';
 import '../utils/constants.dart';
 
 class HomeController {
+  final Firestore _firestore = Firestore();
+
+  Future<List<FeaturedCarInfo>> fetchCars() {
+    return _firestore.getCars();
+  }
+
   Future<List<List<String>>> getWeatherForecast() async {
     OpenWeather openWeather = OpenWeather();
     List<List<String>> forecastData = [];
@@ -26,7 +34,7 @@ class HomeController {
         for (Weather weather in retrievedForecast) {
           String formattedDate;
 
-          if (!weather.date.toString().contains("14:00:00")) {
+          if (!weather.date.toString().contains("08:00:00")) {
             continue;
           }
           try {
@@ -38,13 +46,11 @@ class HomeController {
             formattedDate = "Unknown Date"; // Fallback in case of error
           }
 
-          String temperature =
-              weather.temperature?.celsius?.toString() ?? "N/A";
+          String temperature = weather.temperature?.celsius?.toString() ?? "N/A";
           String wind = weather.windSpeed.toString();
           String weatherCode = weather.weatherIcon.toString();
 
           // Store the data in a list and add it to forecastData
-          debugPrint("Hello Controller - $formattedDate");
           forecastData.add([formattedDate, temperature, wind, weatherCode]);
         }
       }

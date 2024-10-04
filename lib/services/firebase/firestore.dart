@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
+import 'package:dara_app/model/home/featured_car_info.dart';
 import 'package:flutter/material.dart';
 
 class Firestore {
@@ -29,5 +30,12 @@ class Firestore {
     } catch(e) {
       debugPrint('Error updating user data: $e');
     }
+  }
+
+  Future<List<FeaturedCarInfo>> getCars() async {
+    QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.carInfoCollection).get();
+    return querySnapshot.docs
+        .map((doc) => FeaturedCarInfo.fromFirestore(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 }

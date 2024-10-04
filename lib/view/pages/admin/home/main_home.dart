@@ -1,12 +1,16 @@
 import "package:dara_app/controller/home/home_controller.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/controller/utils/constants.dart";
+import "package:dara_app/model/constants/firebase_constants.dart";
+import "package:dara_app/model/home/featured_car_info.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'package:http/http.dart' as http;
+
 
 class AdminHome extends StatefulWidget {
   final PersistentTabController controller;
@@ -646,328 +650,39 @@ class _AdminHomeState extends State<AdminHome> {
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         child: SizedBox(
                           height: 190.0, // Set a specific height
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              //  First static item
-                              Padding(
-                                padding: const EdgeInsets.only(right: 15),
-                                child: Container(
-                                  width:
-                                      250, // Set a specific width to your container
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(
-                                              "lib/assets/pictures/car_list_placeholder_accent.png",
-                                              fit: BoxFit
-                                                  .contain, // Ensure the image fits within its container
-                                            ),
-                                          ),
-                                        ),
-                                        CustomComponents.displayText(
-                                          ProjectStrings
-                                              .admin_home_car_info_placeholder_name_1,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10,
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            CustomComponents.displayText(
-                                              ProjectStrings
-                                                  .admin_home_car_info_placeholder_1,
-                                              fontSize: 10,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              child: Container(
-                                                width: 1,
-                                                height: 10,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            CustomComponents.displayText(
-                                              ProjectStrings
-                                                  .admin_home_car_info_placeholder_2,
-                                              fontSize: 10,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              child: Container(
-                                                width: 1,
-                                                height: 10,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            CustomComponents.displayText(
-                                              ProjectStrings
-                                                  .admin_home_car_info_placeholder_3,
-                                              fontSize: 10,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              CustomComponents.displayText(
-                                                ProjectStrings
-                                                    .admin_home_car_info_placeholder_price,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(int.parse(
-                                                    ProjectColors.mainColorHex
-                                                        .substring(2),
-                                                    radix: 16)),
-                                                fontSize: 12,
-                                              ),
-                                              Icon(
-                                                Icons.list,
-                                                color: Color(int.parse(
-                                                    ProjectColors.lightGray
-                                                        .substring(2),
-                                                    radix: 16)),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              //  Second static item
-                              Padding(
-                                padding: const EdgeInsets.only(right: 15),
-                                child: Container(
-                                  width:
-                                      250, // Set a specific width to your container
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(
-                                              "lib/assets/pictures/car_list_placeholder_innova.png",
-                                              fit: BoxFit
-                                                  .contain, // Ensure the image fits within its container
-                                            ),
-                                          ),
-                                        ),
-                                        CustomComponents.displayText(
-                                          ProjectStrings
-                                              .admin_home_car_info_placeholder_name_2,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10,
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            CustomComponents.displayText(
-                                              ProjectStrings
-                                                  .admin_home_car_info_placeholder_1,
-                                              fontSize: 10,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              child: Container(
-                                                width: 1,
-                                                height: 10,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            CustomComponents.displayText(
-                                              ProjectStrings
-                                                  .admin_home_car_info_placeholder_2,
-                                              fontSize: 10,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              child: Container(
-                                                width: 1,
-                                                height: 10,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            CustomComponents.displayText(
-                                              ProjectStrings
-                                                  .admin_home_car_info_placeholder_3,
-                                              fontSize: 10,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              CustomComponents.displayText(
-                                                ProjectStrings
-                                                    .admin_home_car_info_placeholder_price,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(int.parse(
-                                                    ProjectColors.mainColorHex
-                                                        .substring(2),
-                                                    radix: 16)),
-                                                fontSize: 12,
-                                              ),
-                                              Icon(
-                                                Icons.list,
-                                                color: Color(int.parse(
-                                                    ProjectColors.lightGray
-                                                        .substring(2),
-                                                    radix: 16)),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              //  Third static item
-                              Padding(
-                                padding: const EdgeInsets.only(right: 15),
-                                child: Container(
-                                  width:
-                                      250, // Set a specific width to your container
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(
-                                              "lib/assets/pictures/car_list_placeholder_mirrage.png",
-                                              fit: BoxFit
-                                                  .contain, // Ensure the image fits within its container
-                                            ),
-                                          ),
-                                        ),
-                                        CustomComponents.displayText(
-                                          ProjectStrings
-                                              .admin_home_car_info_placeholder_name_3,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10,
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            CustomComponents.displayText(
-                                              ProjectStrings
-                                                  .admin_home_car_info_placeholder_1,
-                                              fontSize: 10,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              child: Container(
-                                                width: 1,
-                                                height: 10,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            CustomComponents.displayText(
-                                              ProjectStrings
-                                                  .admin_home_car_info_placeholder_2,
-                                              fontSize: 10,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              child: Container(
-                                                width: 1,
-                                                height: 10,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            CustomComponents.displayText(
-                                              ProjectStrings
-                                                  .admin_home_car_info_placeholder_3,
-                                              fontSize: 10,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              CustomComponents.displayText(
-                                                ProjectStrings
-                                                    .admin_home_car_info_placeholder_price,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(int.parse(
-                                                    ProjectColors.mainColorHex
-                                                        .substring(2),
-                                                    radix: 16)),
-                                                fontSize: 12,
-                                              ),
-                                              Icon(
-                                                Icons.list,
-                                                color: Color(int.parse(
-                                                    ProjectColors.lightGray
-                                                        .substring(2),
-                                                    radix: 16)),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          child: FutureBuilder<List<FeaturedCarInfo>>(
+                            future: homeController.fetchCars(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator()); // Loading indicator
+                              } else if (snapshot.hasError) {
+                                return const Center(child: Text('Error loading cars')); // Error handling
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return const Center(child: Text('No cars available')); // No data handling
+                              }
+
+                              List<FeaturedCarInfo> cars = snapshot.data!;
+                              //  sort the list by car_rent_count in descending order
+                              cars.sort((a, b) => b.rentCount.compareTo(a.rentCount));
+                              List<FeaturedCarInfo> topThreeCars = cars.take(3).toList();
+
+                              return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: topThreeCars.length,
+                                itemBuilder: (context, index) {
+                                  FeaturedCarInfo car = topThreeCars[index];
+
+                                  return featuredItemUI(
+                                      imageUrl: car.imageUrl,
+                                      carName: car.carName,
+                                      transmission: car.transmission,
+                                      mileage: car.mileage,
+                                      price: car.price,
+                                      capacity: car.carCapacity
+                                  );
+                                },
+                              );
+                            }
                           ),
                         ),
                       ),
@@ -1060,6 +775,119 @@ class _AdminHomeState extends State<AdminHome> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget featuredItemUI({
+    required String imageUrl,
+    required String carName,
+    required String transmission,
+    required String mileage,
+    required String price,
+    required String capacity
+  }) {
+    String fullUrl = 'https://firebasestorage.googleapis.com/v0/b/dara-renting-app.appspot.com/o/${Uri.encodeComponent(imageUrl)}?alt=media';
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 15),
+      child: Container(
+        width:
+        250, // Set a specific width to your container
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(7),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 10),
+          child: Column(
+            crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.network(
+                      fullUrl,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(child: Text('Image not found'));
+                      })
+                ),
+              ),
+              CustomComponents.displayText(
+                carName,
+                fontWeight: FontWeight.bold,
+                fontSize: 10,
+              ),
+              const SizedBox(height: 2),
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomComponents.displayText(
+                    "$capacity seaters",
+                    fontSize: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10),
+                    child: Container(
+                      width: 1,
+                      height: 10,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  CustomComponents.displayText(
+                    mileage,
+                    fontSize: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10),
+                    child: Container(
+                      width: 1,
+                      height: 10,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  CustomComponents.displayText(
+                    transmission,
+                    fontSize: 10,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding:
+                const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomComponents.displayText(
+                      "$price PHP",
+                      fontWeight: FontWeight.w600,
+                      color: Color(int.parse(
+                          ProjectColors.mainColorHex
+                              .substring(2),
+                          radix: 16)),
+                      fontSize: 12,
+                    ),
+                    Icon(
+                      Icons.list,
+                      color: Color(int.parse(
+                          ProjectColors.lightGray
+                              .substring(2),
+                          radix: 16)),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

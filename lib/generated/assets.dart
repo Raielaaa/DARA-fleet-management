@@ -147,6 +147,7 @@ class Assets {
   static const String gcashGcashPayment = 'lib/services/gcash/gcash_payment.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String googleGoogle = 'lib/services/google/google.dart';
+  static const String homeCarInfo = 'lib/model/home/featured_car_info.dart';
   static const String homeHomeController = 'lib/controller/home/home_controller.dart';
   static const String homeHomePage = 'lib/view/pages/admin/home/home_page.dart';
   static const String homeMainHome = 'lib/view/pages/admin/home/main_home.dart';

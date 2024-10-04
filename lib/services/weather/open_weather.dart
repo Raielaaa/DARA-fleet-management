@@ -44,7 +44,6 @@ class OpenWeather {
       //  retrieve forecast date
       WeatherFactory wf = WeatherFactory(Constants.OPEN_WEATHER_API_KEY);
       List<Weather> forecast = await wf.fiveDayForecastByLocation(position.latitude, position.longitude);
-      debugPrint(forecast.toString());
 
       return forecast;
     } catch (e) {
