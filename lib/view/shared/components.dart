@@ -28,6 +28,10 @@ class CustomComponents {
     );
   }
 
+  static String capitalizeFirstLetter(String string) {
+    return string[0].toUpperCase() + string.substring(1).toLowerCase();
+  }
+
   static void showCupertinoLoadingDialog(
     int eventCode,
     String content,
@@ -113,6 +117,7 @@ class CustomComponents {
   static DefaultTextStyle displayText(
     String text,
     {
+      int maxLines = 1,
       Color color = const Color(0xff404040),
       String fontFamily = ProjectStrings.general_font_family,
       double fontSize = 14,
@@ -130,7 +135,11 @@ class CustomComponents {
         fontSize: fontSize,
         fontWeight: fontWeight
       ),
-      child: Text(text)
+      child: Text(
+          text,
+        overflow: TextOverflow.ellipsis,
+        maxLines: maxLines,
+      )
     );
   }
 

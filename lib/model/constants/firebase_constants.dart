@@ -4,4 +4,8 @@ class FirebaseConstants {
   static String URlforCarImages(String imagePath) {
     return "https://firebasestorage.googleapis.com/v0/b/dara-renting-app.appspot.com/o/car_images%2$imagePath}?alt=media";
   }
+
+  static String retrieveImage(String imageUrl) {
+    return 'https://firebasestorage.googleapis.com/v0/b/dara-renting-app.appspot.com/o/${Uri.encodeComponent(imageUrl)}?alt=media';
+  }
 }

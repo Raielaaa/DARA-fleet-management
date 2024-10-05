@@ -132,6 +132,8 @@ class Assets {
   static const String assetsPicturesUserTypeUser = 'lib/assets/pictures/user_type_user.jpg';
   static const String assetsPicturesVerifyDocuments = 'lib/assets/pictures/verify_documents.png';
   static const String carListCarList = 'lib/view/pages/admin/car_list/car_list_.dart';
+  static const String carListCarListController = 'lib/controller/car_list/car_list_controller.dart';
+  static const String carListCompleteCarList = 'lib/model/car_list/complete_car_list.dart';
   static const String carListUnitPreview = 'lib/view/pages/admin/car_list/unit_preview.dart';
   static const String carouselCarouselPage = 'lib/view/pages/carousel/carousel_page.dart';
   static const String centerButtonGoogleMaps = 'lib/view/pages/admin/center_button/google_maps.dart';
@@ -147,7 +149,7 @@ class Assets {
   static const String gcashGcashPayment = 'lib/services/gcash/gcash_payment.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String googleGoogle = 'lib/services/google/google.dart';
-  static const String homeCarInfo = 'lib/model/home/featured_car_info.dart';
+  static const String homeFeaturedCarInfo = 'lib/model/home/featured_car_info.dart';
   static const String homeHomeController = 'lib/controller/home/home_controller.dart';
   static const String homeHomePage = 'lib/view/pages/admin/home/home_page.dart';
   static const String homeMainHome = 'lib/view/pages/admin/home/main_home.dart';
