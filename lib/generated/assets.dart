@@ -6,6 +6,7 @@ class Assets {
   static const String accountLoginController = 'lib/controller/account/login_controller.dart';
   static const String accountRegisterController = 'lib/controller/account/register_controller.dart';
   static const String accountRegisterModel = 'lib/model/account/register_model.dart';
+  static const String accountUserRole = 'lib/model/account/user_role.dart';
   static const String accountantAccountantHome = 'lib/view/pages/accountant/accountant_home.dart';
   static const String accountantIncome = 'lib/view/pages/accountant/income.dart';
   static const String accountantIncomeDialog = 'lib/view/pages/accountant/income_dialog.dart';
@@ -163,6 +164,7 @@ class Assets {
   static const String libFirebaseOptions = 'lib/firebase_options.dart';
   static const String libMain = 'lib/main.dart';
   static const String loginLogin = 'lib/view/pages/account/login/login.dart';
+  static const String mapsDistanceCalculator = 'lib/services/maps/distance_calculator.dart';
   static const String mapsMapScreen = 'lib/services/maps/map_screen.dart';
   static const String outsourceAccountingOutsource = 'lib/view/pages/outsource/accounting_outsource.dart';
   static const String outsourceApplicationOutsource = 'lib/view/pages/admin/manage/application_list/outsource/application_outsource.dart';

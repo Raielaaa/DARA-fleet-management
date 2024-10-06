@@ -509,6 +509,7 @@ class ProjectStrings {
   static const String rp_bk_proceed = "Proceed";
 
   //  renting process - mode of delivery
+  static const String rp_mode_address_label = "Specify Your Desired Destination for Car pickup/delivery";
   static const String rp_mode_appbar_title = "Delivery Mode";
   static const String rp_mode_choose_method = "Choose Method";
   static const String rp_mode_pick_up = "Pick Up";
@@ -522,7 +523,7 @@ class ProjectStrings {
   //  renting process - details and fees
   static const String rp_details_fees_appbar_title = "Rental Details & Fees";
   static const String rp_details_fees_car_name = "Mitsubishi Mirage G4 - 2024";
-  static const String rp_details_fees_amount_symbol = "₱";
+  static const String rp_details_fees_amount_symbol = "PHP";
   static const String rp_details_fees_amount = "2,000";
   static const String rp_details_fees_per_day = "per Day";
   static const String rp_details_fees_starting_date_time = "Start Date & Time";
@@ -537,11 +538,12 @@ class ProjectStrings {
   static const String rp_details_fees_mileage_fee = "Mileage Fee";
   static const String rp_details_fees_mileage_fee_entry = "₱ 500";
   static const String rp_details_fees_total_amount = "Total Amount";
+  static const String rp_details_fees_with_driver = "With Driver";
   static const String rp_details_fees_total_amount_entry = "₱ 4,500";
   static const String rp_details_fees_reservation_fee = "Reservation Fee Agreement";
   static const String rp_details_fees_reservation_fees_entry = "₱ 500";
   static const String rp_details_fees_agreement = "I Agree to Pay the Reservation Fee";
-  static const String rp_details_fees_agreement_entry = "By agreeing, the reservation fee will act as a down payment and be deducted from the total payment. This fee ensures priority in case of schedule conflicts.";
+  static const String rp_details_fees_agreement_entry = "By agreeing, the reservation fee will act as a down payment and be deducted from the total payment. This fee ensures priority in case of schedule conflicts. Please note that the reservation fee is not refundable.";
   static const String rp_details_fees_proceed_to_payment = "Proceed to Payment";
   static const String rp_details_fees_send_screenshot_1 = "Alternatively, you can ";
   static const String rp_details_fees_send_screenshot_2 = "click here";

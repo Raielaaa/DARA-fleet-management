@@ -1,3 +1,4 @@
+import "package:dara_app/model/account/user_role.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/loading.dart";
@@ -5,6 +6,7 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:googleapis/dfareporting/v4.dart";
 import "package:intl/intl.dart";
 
 import "../../controller/singleton/persistent_data.dart";
@@ -103,6 +105,15 @@ class Auth {
           favorite: "",
           rentalCount: ""
       );
+
+      //  insert user role db
+      UserRoleLocal _userRole = UserRoleLocal(
+          userID: userUID,
+          firstName: _persistentData.getFirstName.toString(),
+          lastName: _persistentData.getLastName.toString(),
+          chosenRole: _persistentData.selectedRoleOnRegister.toString(),
+          email: _persistentData.getEmail.toString(),
+      );
       debugPrint("register checkpoint 2");
       try {
         await Firestore().addUserInfo(
@@ -114,6 +125,29 @@ class Auth {
 
       } on FirebaseException catch (exception) {
         debugPrint("breakpoint-login-credentials-creation-exeption-1: $exception");
+        CustomComponents.showAlertDialog(
+          context: context,
+          title: ProjectStrings.general_dialog_db_error_header,
+          content: "${ProjectStrings.general_dialog_db_error_body}${exception.message}",
+          numberOfOptions: 1,
+          onPressedPositive: () {
+            Navigator.of(context).pop();
+          },
+        );
+      } catch(e) {
+        debugPrint("fatal error: $e");
+      }
+      // insert user role to db
+      try {
+        await Firestore().addUserInfo(
+            collectionName: FirebaseConstants.registerRoleCollection,
+            documentName: userUID ?? "empty document name",
+            data: _userRole.getModelData()
+        );
+        debugPrint("breakpoint-user-role");
+
+      } on FirebaseException catch (exception) {
+        debugPrint("breakpoint-user-role-creation-exeption-1: $exception");
         CustomComponents.showAlertDialog(
           context: context,
           title: ProjectStrings.general_dialog_db_error_header,

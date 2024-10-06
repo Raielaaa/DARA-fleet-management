@@ -54,6 +54,7 @@ class GoogleLogin {
 
       debugPrint("checkpoint-7");
       /// Birthdate
+      debugPrint("Date: ${person.birthdays}");
       final date = person.birthdays![0].date!;
       PersistentData().birthdayFromGoogleSignIn = date.toString();
       debugPrint("google.dart-birthday: $date");

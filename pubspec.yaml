@@ -66,6 +66,7 @@ dependencies:
   geocoding: ^3.0.0
   http: ^0.13.6
   toggle_switch: ^2.0.0
+  google_maps_webservice: ^0.0.19-nullsafety.5
 
 dev_dependencies:
   flutter_test:

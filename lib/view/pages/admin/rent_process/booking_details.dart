@@ -1,4 +1,5 @@
 import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/view/shared/info_dialog.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 import "package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart";
@@ -325,15 +326,44 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                                         borderRadius:
                                             BorderRadius.circular(5)))),
                             onPressed: () {
-                              //  check inputted data
-                              debugPrint("Starting date: ${_persistentData.bookingDetailsStartingDate}");
-                              debugPrint("Ending date: ${_persistentData.bookingDetailsEndingDate}");
-                              debugPrint("Starting time: ${_persistentData.bookingDetailsStartingTime}");
-                              debugPrint("Ending time: ${_persistentData.bookingDetailsEndingTime}");
-                              debugPrint("Address: ${_persistentData.bookingDetailsMapsLocationFromLongitudeLatitude}");
-                              debugPrint("Rent with a driver: ${_persistentData.bookingDetailsRentWithDriver}");
+                              PersistentData _persistentData = PersistentData();
 
-                              Navigator.of(context).pushNamed("rp_delivery_mode");
+                              if (
+                                _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude == "" ||
+                                _persistentData.bookingDetailsStartingDate == "" ||
+                                _persistentData.bookingDetailsEndingDate == "" ||
+                                _persistentData.bookingDetailsStartingTime == "" ||
+                                _persistentData.bookingDetailsEndingTime == ""
+                              ) {
+                                InfoDialog().show(context: context, content: "Please ensure all required fields are filled out before proceeding. Missing information may prevent successful submission.", header: "Warning");
+                              } else {
+                                _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude_forrent_location = _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude;
+
+                                //  check rent time date difference
+                                String startTime = _persistentData.bookingDetailsStartingTime;
+                                String startDate = _persistentData.bookingDetailsStartingDate;
+                                String endTime = _persistentData.bookingDetailsEndingTime;
+                                String endDate = _persistentData.bookingDetailsEndingDate;
+                                debugPrint("Selected time difference: ${calculateStartEndDateTimeDifference("${startDate} | ${startTime}", "${endDate} | ${endTime}")}");
+
+                                if (calculateStartEndDateTimeDifference("${startDate} | ${startTime}", "${endDate} | ${endTime}") < 720) {
+                                  InfoDialog().show(
+                                      context: context,
+                                      content: "The rental duration must be at least 12 hours. Please review the time range you've entered.",
+                                      header: "Warning"
+                                  );
+
+                                } else {
+                                  _persistentData.rentalDurationInMinutes = calculateStartEndDateTimeDifference("${startDate} | ${startTime}", "${endDate} | ${endTime}");
+                                  _persistentData.endMapsLatitude = double.parse(_persistentData.mapsLatitude);
+                                  _persistentData.endMapsLongitude = double.parse(_persistentData.mapsLongitude);
+
+                                  debugPrint("End maps latitude: ${_persistentData.mapsLatitude}");
+                                  debugPrint("End maps latitude: ${_persistentData.mapsLongitude}");
+
+                                  Navigator.of(context).pushNamed("rp_delivery_mode");
+                                }
+                              }
                             },
                             child: Center(
                               child: Padding(
@@ -356,6 +386,16 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
         ),
       ),
     );
+  }
+
+  int calculateStartEndDateTimeDifference(String startDateTimeString, String endDateTimeString) {
+    DateFormat format = DateFormat("MMMM dd, yyyy | hh:mm a");
+    DateTime startDateTime = format.parse(startDateTimeString);
+    DateTime endDateTime = format.parse(endDateTimeString);
+
+    Duration difference = endDateTime.difference(startDateTime);
+
+    return difference.inMinutes;
   }
 
   Widget _buildAppBar() {

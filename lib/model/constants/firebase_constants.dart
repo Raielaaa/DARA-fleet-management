@@ -1,4 +1,5 @@
 class FirebaseConstants {
+  static const String registerRoleCollection = "dara-user-role";
   static const String registerCollection = "dara-registered-user-data";
   static const String carInfoCollection = "dara-car-info";
   static String URlforCarImages(String imagePath) {

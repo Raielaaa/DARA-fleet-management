@@ -3,6 +3,7 @@ import "package:dara_app/model/car_list/complete_car_list.dart";
 import "package:dara_app/model/constants/firebase_constants.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 
@@ -709,7 +710,11 @@ class _UnitPreviewState extends State<UnitPreview> {
                     child: CustomComponents.displayElevatedButton(
                         ProjectStrings.si_proceed_tp_renting_process,
                         onPressed: () {
-                      _showInformationDialog();
+                          if (selectedCarItem.availability != "available") {
+                            InfoDialog().show(context: context, content: "The selected car unit is currently unavailable. Please check back later. Thank you for your understanding.", header: "Warning");
+                          } else {
+                            _showInformationDialog();
+                          }
                     }),
                   )
                 ],

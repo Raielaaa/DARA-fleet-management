@@ -63,6 +63,7 @@ class _MapScreenState extends State<MapScreen> {
           // Debug print the detailed location
           debugPrint("Detailed Location: $detailedLocation");
 
+          //  for distance calculation
           _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude = detailedLocation;
           debugPrint("Brief selected location - ${_persistentData.bookingDetailsMapsLocationFromLongitudeLatitude}");
 

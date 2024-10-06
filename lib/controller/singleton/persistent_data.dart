@@ -66,15 +66,30 @@ class PersistentData {
   //  maps
   String mapsLatitude = "";
   String mapsLongitude = "";
+  double startMapsLatitude = 0.0;
+  double startMapsLongitude = 0.0;
 
+  double endMapsLatitude = 0.0;
+  double endMapsLongitude = 0.0;
+
+  //////////////////////////////////////////////////////////  RENTING PROCESS ////////////////////////////////////////////
   // booking details info to be inserted to the database
+  String distanceFromGarageToDeliveryLocation = "";
+  String drivingDistance = "";
+  String drivingTimeDuration = "";
+  int rentalDurationInMinutes = 0;
   String bookingDetailsMapsLocationFromLongitudeLatitude = "";
+  String bookingDetailsMapsLocationFromLongitudeLatitude_forrent_location = "";
   String bookingDetailsStartingDate = "";
   String bookingDetailsEndingDate = "";
   String bookingDetailsStartingTime = "";
   String bookingDetailsEndingTime = "";
   bool bookingDetailsRentWithDriver = false;
+  //  delivery mode
+  String deliveryModePickUpOrDelivery = "";
+  String deliveryModeLocation = "";
 
+  /////////////////////////////////////////////////////////   RENTING PROCESS   //////////////////////////////////////////////////
   //  selected item to be displayed - car list info
   CompleteCarInfo? selectedCarItem;
   FeaturedCarInfo? selectedFeaturedCarItem;
