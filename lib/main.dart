@@ -9,6 +9,7 @@ import 'package:dara_app/view/pages/account/register/register_successful.dart';
 import 'package:dara_app/view/pages/account/register/register_verify_phone.dart';
 import 'package:dara_app/view/pages/accountant/accountant_home.dart';
 import 'package:dara_app/view/pages/accountant/income.dart';
+import 'package:dara_app/view/pages/admin/car_list/car_list_.dart';
 import 'package:dara_app/view/pages/admin/car_list/unit_preview.dart';
 import 'package:dara_app/view/pages/admin/home/main_home.dart';
 import 'package:dara_app/view/pages/admin/home_top_option/top_report.dart';
@@ -101,6 +102,9 @@ class MyApp extends StatelessWidget {
 
           // Home page
           "home_main": (context) => const HomePage(),
+
+          //  Car list
+          "car_list": (context) => const CarList(),
 
           // Rentals - report page
           "rentals_report": (context) => const Report(),

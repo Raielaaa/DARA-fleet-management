@@ -1,5 +1,8 @@
 // ignore_for_file: unnecessary_getters_setters
+import 'package:dara_app/model/home/featured_car_info.dart';
 import 'package:geocoding/geocoding.dart';
+
+import '../../model/car_list/complete_car_list.dart';
 
 
 class PersistentData {
@@ -71,4 +74,8 @@ class PersistentData {
   String bookingDetailsStartingTime = "";
   String bookingDetailsEndingTime = "";
   bool bookingDetailsRentWithDriver = false;
+
+  //  selected item to be displayed - car list info
+  CompleteCarInfo? selectedCarItem;
+  FeaturedCarInfo? selectedFeaturedCarItem;
 }

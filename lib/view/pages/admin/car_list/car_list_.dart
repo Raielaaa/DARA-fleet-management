@@ -1,5 +1,6 @@
 import 'package:dara_app/controller/car_list/car_list_controller.dart';
 import 'package:dara_app/controller/home/home_controller.dart';
+import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:dara_app/view/shared/colors.dart';
 import 'package:dara_app/view/shared/components.dart';
@@ -30,7 +31,12 @@ class _CarListState extends State<CarList> {
     fetchCars();
   }
 
-  void fetchCars() async {
+  Future<void> _refreshPage() async {
+    fetchCars();
+    CustomComponents.showToastMessage("Page refreshed", Colors.black54, Colors.white);
+  }
+
+  Future<void> fetchCars() async {
     List<CompleteCarInfo> cars = await _carListController.fetchCars();
     setState(() {
       // Sort and categorize cars here
@@ -40,6 +46,7 @@ class _CarListState extends State<CarList> {
       suvs = cars.where((car) => car.carType.toLowerCase() == 'suv').toList();
       itemsToBeDisplayed = sedans; // Set initial display to sedans
     });
+    debugPrint("refreshed");
   }
 
 
@@ -54,158 +61,167 @@ class _CarListState extends State<CarList> {
             children: [
               appBar(),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
-                  child: itemsToBeDisplayed.isEmpty // Checking if data is loaded
-                      ? const Center(child: CircularProgressIndicator())
-                      : ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      CustomComponents.displayText(
-                        ProjectStrings.car_list_top_deal_header,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                      CustomComponents.displayText(
-                        ProjectStrings.car_list_top_deal_subheader,
-                        fontSize: 12,
-                      ),
-                      //  most popular item
-                      const SizedBox(height: 15),
-                      topItem(mostFavoriteCar: mostFavoriteCar),
-
-                      // Vehicle Type
-                      const SizedBox(height: 25),
-                      CustomComponents.displayText(
-                        ProjectStrings.car_list_vehicle_type_header,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                      CustomComponents.displayText(
-                        ProjectStrings.car_list_vehicle_type_subheader,
-                        fontSize: 12,
-                      ),
-
-                      // Switch option
-                      const SizedBox(height: 15),
-                      switcher(sedans, suvs),
-                      const SizedBox(height: 15),
-                      ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: itemsToBeDisplayed.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(7)),
-                              width: double.infinity,
-                              child: Row(
-                                children: [
-                                  Stack(
+                child: RefreshIndicator(
+                  onRefresh: _refreshPage,
+                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
+                    child: itemsToBeDisplayed.isEmpty // Checking if data is loaded
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView(
+                      padding: EdgeInsets.zero,
+                      children: [
+                        CustomComponents.displayText(
+                          ProjectStrings.car_list_top_deal_header,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        CustomComponents.displayText(
+                          ProjectStrings.car_list_top_deal_subheader,
+                          fontSize: 12,
+                        ),
+                        //  most popular item
+                        const SizedBox(height: 15),
+                        topItem(mostFavoriteCar: mostFavoriteCar),
+                  
+                        // Vehicle Type
+                        const SizedBox(height: 25),
+                        CustomComponents.displayText(
+                          ProjectStrings.car_list_vehicle_type_header,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        CustomComponents.displayText(
+                          ProjectStrings.car_list_vehicle_type_subheader,
+                          fontSize: 12,
+                        ),
+                  
+                        // Switch option
+                        const SizedBox(height: 15),
+                        switcher(sedans, suvs),
+                        const SizedBox(height: 15),
+                        ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: itemsToBeDisplayed.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                PersistentData().selectedCarItem = itemsToBeDisplayed[index];
+                                Navigator.of(context).pushNamed("selected_item");
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 15),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(7)),
+                                  width: double.infinity,
+                                  child: Row(
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(7),
-                                          bottomLeft: Radius.circular(7),
+                                      Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.circular(7),
+                                              bottomLeft: Radius.circular(7),
+                                            ),
+                                            child: Image.network(
+                                              FirebaseConstants.retrieveImage(itemsToBeDisplayed[index].pic1Url),
+                                              width: 100,
+                                              height: 90,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            CustomComponents.displayText(
+                                              itemsToBeDisplayed[index].name,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12,
+                                            ),
+                                            CustomComponents.displayText(
+                                              itemsToBeDisplayed[index].carType,
+                                              fontSize: 10,
+                                              color: Color(int.parse(ProjectColors.lightGray)),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            CustomComponents.displayText(
+                                              "PHP ${itemsToBeDisplayed[index].price}.00",
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12,
+                                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                            ),
+                                            CustomComponents.displayText(
+                                              ProjectStrings.car_list_vehicle_type_price_desc,
+                                              fontSize: 10,
+                                              color: Color(int.parse(ProjectColors.lightGray)),
+                                            ),
+                                          ],
                                         ),
-                                        child: Image.network(
-                                          FirebaseConstants.retrieveImage(itemsToBeDisplayed[index].pic1Url),
-                                          width: 100,
-                                          height: 90,
-                                          fit: BoxFit.cover,
+                                      ),
+                                      SizedBox(
+                                        height: 90,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 7, right: 7),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: itemsToBeDisplayed[index].availability == "available"
+                                                      ? Color(int.parse(ProjectColors.greenButtonBackground.substring(2), radix: 16))
+                                                      : Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)),
+                                                  borderRadius: BorderRadius.circular(5),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(top: 7, bottom: 7, right: 20, left: 20),
+                                                  child: CustomComponents.displayText(
+                                                    CustomComponents.capitalizeFirstLetter(itemsToBeDisplayed[index].availability),
+                                                    color: itemsToBeDisplayed[index].availability == "available"
+                                                        ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16))
+                                                        : Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(7)),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(top: 7, bottom: 7, right: 30, left: 30),
+                                                child: CustomComponents.displayText(
+                                                  ProjectStrings.car_list_vehicle_type_visit,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       )
                                     ],
                                   ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        CustomComponents.displayText(
-                                          itemsToBeDisplayed[index].name,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12,
-                                          maxLines: 4,
-                                        ),
-                                        CustomComponents.displayText(
-                                          itemsToBeDisplayed[index].carType,
-                                          fontSize: 10,
-                                          color: Color(int.parse(ProjectColors.lightGray)),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        CustomComponents.displayText(
-                                          "PHP ${itemsToBeDisplayed[index].price}.00",
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12,
-                                          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                                        ),
-                                        CustomComponents.displayText(
-                                          ProjectStrings.car_list_vehicle_type_price_desc,
-                                          fontSize: 10,
-                                          color: Color(int.parse(ProjectColors.lightGray)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 90,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 7, right: 7),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: itemsToBeDisplayed[index].availability == "available"
-                                                  ? Color(int.parse(ProjectColors.greenButtonBackground.substring(2), radix: 16))
-                                                  : Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)),
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(top: 7, bottom: 7, right: 20, left: 20),
-                                              child: CustomComponents.displayText(
-                                                CustomComponents.capitalizeFirstLetter(itemsToBeDisplayed[index].availability),
-                                                color: itemsToBeDisplayed[index].availability == "available"
-                                                    ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16))
-                                                    : Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                                            borderRadius: const BorderRadius.only(bottomRight: Radius.circular(7)),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(top: 7, bottom: 7, right: 30, left: 30),
-                                            child: CustomComponents.displayText(
-                                              ProjectStrings.car_list_vehicle_type_visit,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 70),
-                    ],
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 70),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -251,6 +267,7 @@ class _CarListState extends State<CarList> {
   }) {
     return GestureDetector(
       onTap: () {
+        PersistentData().selectedCarItem = mostFavoriteCar;
         Navigator.pushNamed(context, "selected_item");
       },
       child: Container(

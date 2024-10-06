@@ -1,3 +1,6 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/model/car_list/complete_car_list.dart";
+import "package:dara_app/model/constants/firebase_constants.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -12,6 +15,8 @@ class UnitPreview extends StatefulWidget {
 
 class _UnitPreviewState extends State<UnitPreview> {
   //  information dialog metadata
+  CompleteCarInfo selectedCarItem = PersistentData().selectedCarItem!;
+
   int _informationDialogCurrentIndex = 0;
   final List<Map<String, String>> guides = [
     {
@@ -223,29 +228,7 @@ class _UnitPreviewState extends State<UnitPreview> {
           padding: const EdgeInsets.only(top: 38),
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                height: 65,
-                color: Colors.white,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Image.asset("lib/assets/pictures/left_arrow.png"),
-                    ),
-                    CustomComponents.displayText(
-                      "Unit Preview",
-                      fontWeight: FontWeight.bold,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Image.asset(
-                          "lib/assets/pictures/three_vertical_dots.png"),
-                    ),
-                  ],
-                ),
-              ),
+              appBar(),
 
               //  top image
               Stack(
@@ -253,9 +236,9 @@ class _UnitPreviewState extends State<UnitPreview> {
                   SizedBox(
                       width: double.infinity,
                       height: 220,
-                      child: Image.asset(
-                        "lib/assets/pictures/unit_preview_main_image.jpg",
-                        fit: BoxFit.fitHeight,
+                      child: Image.network(
+                        FirebaseConstants.retrieveImage(selectedCarItem.pic1Url),
+                        fit: BoxFit.cover,
                       )),
 
                   //  expand button
@@ -308,8 +291,8 @@ class _UnitPreviewState extends State<UnitPreview> {
                                     left: 3, top: 3, bottom: 3),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(7),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/unit_preview_main_image.jpg",
+                                  child: Image.network(
+                                    FirebaseConstants.retrieveImage(selectedCarItem.pic1Url),
                                     width: 42,
                                     height: 42,
                                     fit: BoxFit.fitHeight,
@@ -322,8 +305,8 @@ class _UnitPreviewState extends State<UnitPreview> {
                                     left: 3, top: 3, bottom: 3),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(7),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/unit_preview_main_image.jpg",
+                                  child: Image.network(
+                                    FirebaseConstants.retrieveImage(selectedCarItem.pic2Url),
                                     width: 42,
                                     height: 42,
                                     fit: BoxFit.fitHeight,
@@ -336,8 +319,8 @@ class _UnitPreviewState extends State<UnitPreview> {
                                     left: 3, top: 3, bottom: 3),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(7),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/unit_preview_main_image.jpg",
+                                  child: Image.network(
+                                    FirebaseConstants.retrieveImage(selectedCarItem.pic3Url),
                                     width: 42,
                                     height: 42,
                                     fit: BoxFit.fitHeight,
@@ -350,8 +333,8 @@ class _UnitPreviewState extends State<UnitPreview> {
                                     left: 3, top: 3, bottom: 3),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(7),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/unit_preview_main_image.jpg",
+                                  child: Image.network(
+                                    FirebaseConstants.retrieveImage(selectedCarItem.pic4Url),
                                     width: 42,
                                     height: 42,
                                     fit: BoxFit.fitHeight,
@@ -364,8 +347,8 @@ class _UnitPreviewState extends State<UnitPreview> {
                                     left: 3, top: 3, bottom: 3),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(7),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/unit_preview_main_image.jpg",
+                                  child: Image.network(
+                                    FirebaseConstants.retrieveImage(selectedCarItem.pic5Url),
                                     width: 42,
                                     height: 42,
                                     fit: BoxFit.fitHeight,
@@ -381,7 +364,7 @@ class _UnitPreviewState extends State<UnitPreview> {
 
               //  car information panel
               Expanded(
-                  child: ListView(
+                child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
                   Padding(
@@ -441,9 +424,13 @@ class _UnitPreviewState extends State<UnitPreview> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          color: Color(int.parse(
+                                          color: selectedCarItem.availability == "available" ? Color(int.parse(
                                               ProjectColors
                                                   .greenButtonBackground
+                                                  .substring(2),
+                                              radix: 16)) : Color(int.parse(
+                                              ProjectColors
+                                                  .redButtonBackground
                                                   .substring(2),
                                               radix: 16)),
                                         ),
@@ -454,9 +441,14 @@ class _UnitPreviewState extends State<UnitPreview> {
                                               right: 25,
                                               left: 25),
                                           child: CustomComponents.displayText(
-                                            ProjectStrings.si_available,
-                                            color: Color(int.parse(
-                                                ProjectColors.greenButtonMain
+                                            CustomComponents.capitalizeFirstLetter(selectedCarItem.availability),
+                                            color: selectedCarItem.availability == "available" ? Color(int.parse(
+                                                ProjectColors
+                                                    .greenButtonMain
+                                                    .substring(2),
+                                                radix: 16)) : Color(int.parse(
+                                                ProjectColors
+                                                    .redButtonMain
                                                     .substring(2),
                                                 radix: 16)),
                                             fontWeight: FontWeight.bold,
@@ -467,35 +459,24 @@ class _UnitPreviewState extends State<UnitPreview> {
                                     ),
                                   ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 0),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                          "lib/assets/pictures/star.png",
-                                          width: 20),
-                                      const SizedBox(width: 10),
-                                      CustomComponents.displayText(
-                                          ProjectStrings.report_reviews,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500)
-                                    ],
-                                  ),
-                                )
                               ],
                             ),
                             const SizedBox(height: 20),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: CustomComponents.displayText(
-                                ProjectStrings.si_unit_name,
+                                selectedCarItem.name,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(height: 3),
-                            CustomComponents.displayText(
-                                ProjectStrings.si_unit_description,
-                                fontSize: 10),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: CustomComponents.displayText(
+                                  selectedCarItem.shortDescription,
+                                  fontSize: 10
+                              ),
+                            ),
                             Expanded(
                               // This is the main change
                               child: DefaultTabController(
@@ -566,7 +547,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                                                           FontWeight.bold,
                                                       fontSize: 10),
                                                   CustomComponents.displayText(
-                                                      ProjectStrings.si_color,
+                                                      selectedCarItem.color,
                                                       fontSize: 10),
                                                 ],
                                               ),
@@ -587,8 +568,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                                                           FontWeight.bold,
                                                       fontSize: 10),
                                                   CustomComponents.displayText(
-                                                      ProjectStrings
-                                                          .si_transmission,
+                                                      selectedCarItem.transmission,
                                                       fontSize: 10),
                                                 ],
                                               ),
@@ -609,7 +589,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                                                           FontWeight.bold,
                                                       fontSize: 10),
                                                   CustomComponents.displayText(
-                                                      ProjectStrings.si_fuel,
+                                                      selectedCarItem.fuelVariant,
                                                       fontSize: 10),
                                                 ],
                                               ),
@@ -638,8 +618,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                                                           FontWeight.bold,
                                                       fontSize: 10),
                                                   CustomComponents.displayText(
-                                                      ProjectStrings
-                                                          .si_horsepower,
+                                                      selectedCarItem.horsePower,
                                                       fontSize: 10),
                                                 ],
                                               ),
@@ -660,7 +639,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                                                           FontWeight.bold,
                                                       fontSize: 10),
                                                   CustomComponents.displayText(
-                                                      ProjectStrings.si_seats,
+                                                      "${selectedCarItem.capacity} seats",
                                                       fontSize: 10),
                                                 ],
                                               ),
@@ -681,7 +660,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                                                           FontWeight.bold,
                                                       fontSize: 10),
                                                   CustomComponents.displayText(
-                                                      ProjectStrings.si_engine,
+                                                      selectedCarItem.engine,
                                                       fontSize: 10),
                                                 ],
                                               ),
@@ -698,17 +677,20 @@ class _UnitPreviewState extends State<UnitPreview> {
                                           padding: const EdgeInsets.only(
                                               left: 15, right: 15, top: 15),
                                           child: CustomComponents.displayText(
-                                              ProjectStrings.si_about_title,
+                                              selectedCarItem.shortDescription,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         const SizedBox(height: 10),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               left: 15, right: 15),
-                                          child: CustomComponents.displayText(
-                                              ProjectStrings.si_about_body,
-                                              textAlign: TextAlign.justify,
-                                              fontSize: 10),
+                                          child: Expanded(
+                                            child: CustomComponents.displayText(
+                                                selectedCarItem.longDescription,
+                                                textAlign: TextAlign.justify,
+                                                fontSize: 10
+                                            ),
+                                          ),
                                         )
                                       ]))
                                     ]),
@@ -735,6 +717,32 @@ class _UnitPreviewState extends State<UnitPreview> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget appBar() {
+    return Container(
+      width: double.infinity,
+      height: 65,
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Image.asset("lib/assets/pictures/left_arrow.png"),
+          ),
+          CustomComponents.displayText(
+            "Unit Preview",
+            fontWeight: FontWeight.bold,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Image.asset(
+                "lib/assets/pictures/three_vertical_dots.png"),
+          ),
+        ],
       ),
     );
   }
