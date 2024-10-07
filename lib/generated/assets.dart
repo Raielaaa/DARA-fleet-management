@@ -299,6 +299,7 @@ class Assets {
   static const String rentProcessRentProcess = 'lib/controller/rent_process/rent_process.dart';
   static const String rentalsRentals = 'lib/view/pages/admin/rentals/rentals.dart';
   static const String rentalsReport = 'lib/view/pages/admin/rentals/report.dart';
+  static const String rentingProccessRentingProcess = 'lib/model/renting_proccess/renting_process.dart';
   static const String reportsReports = 'lib/view/pages/admin/manage/reports/reports.dart';
   static const String sharedColors = 'lib/view/shared/colors.dart';
   static const String sharedComponents = 'lib/view/shared/components.dart';

@@ -58,9 +58,13 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
 
   Future<void> _selectDate(
       BuildContext context, DatePickerField datePickerField) async {
+
+    final DateTime currentDate = DateTime.now();
+    final DateTime initialDate = DateTime(currentDate.year, currentDate.month, currentDate.day);  // Set time to 00:00:00
+
     final DateTime? picked = await showRoundedDatePicker(
       context: context,
-      height: 400,
+      height: 300,
       theme: ThemeData(
         primaryColor: Color(
             int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
@@ -76,8 +80,8 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
           background: Colors.white,
           onBackground: Colors.white,
           surface: Colors.white,
-          onSurface:
-              Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16)),
+          onSurface: Color(
+              int.parse(ProjectColors.blackBody.substring(2), radix: 16)),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
@@ -86,10 +90,10 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
           ),
         ),
       ),
-      initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year - 100),
-      lastDate: DateTime.now(),
-      borderRadius: 16,
+      initialDate: initialDate,  // Ensure the same date is used
+      firstDate: initialDate,    // Restrict to today onwards
+      lastDate: DateTime(currentDate.year + 100),  // Allow future dates
+      borderRadius: 5,
     );
 
     if (picked != null) {

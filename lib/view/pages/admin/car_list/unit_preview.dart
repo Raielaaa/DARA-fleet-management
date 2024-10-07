@@ -203,7 +203,7 @@ class _UnitPreviewState extends State<UnitPreview> {
     );
   }
 
-  Future<void> _showSelectedImageDialog() async {
+  Future<void> _showSelectedImageDialog(String imageUrl) async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -214,7 +214,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                 ProjectColors.mainColorBackground.substring(2),
                 radix: 16)),
             child:
-                Image.asset("lib/assets/pictures/unit_preview_main_image.jpg"),
+                Image.network(FirebaseConstants.retrieveImage(imageUrl)),
           );
         });
   }
@@ -245,7 +245,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                   //  expand button
                   GestureDetector(
                     onTap: () {
-                      _showSelectedImageDialog();
+                      _showSelectedImageDialog(selectedCarItem.pic1Url);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 20, right: 15),
@@ -287,74 +287,99 @@ class _UnitPreviewState extends State<UnitPreview> {
                         child: Row(
                           children: [
                             //  first image preview
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 3, top: 3, bottom: 3),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(7),
-                                  child: Image.network(
-                                    FirebaseConstants.retrieveImage(selectedCarItem.pic1Url),
-                                    width: 42,
-                                    height: 42,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                )),
+                            GestureDetector(
+                              onTap: () {
+                                _showSelectedImageDialog(selectedCarItem.pic1Url);
+                              },
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 3, top: 3, bottom: 3),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(7),
+                                    child: Image.network(
+                                      FirebaseConstants.retrieveImage(selectedCarItem.pic1Url),
+                                      width: 42,
+                                      height: 42,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  )),
+                            ),
 
                             //  second image preview
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 3, top: 3, bottom: 3),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(7),
-                                  child: Image.network(
-                                    FirebaseConstants.retrieveImage(selectedCarItem.pic2Url),
-                                    width: 42,
-                                    height: 42,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                )),
+                            GestureDetector(
+                              onTap: () {
+                                _showSelectedImageDialog(selectedCarItem.pic2Url);
+                              },
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 3, top: 3, bottom: 3),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(7),
+                                    child: Image.network(
+                                      FirebaseConstants.retrieveImage(selectedCarItem.pic2Url),
+                                      width: 42,
+                                      height: 42,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  )),
+                            ),
 
                             //  third image preview
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 3, top: 3, bottom: 3),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(7),
-                                  child: Image.network(
-                                    FirebaseConstants.retrieveImage(selectedCarItem.pic3Url),
-                                    width: 42,
-                                    height: 42,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                )),
+                            GestureDetector(
+                              onTap: () {
+                                _showSelectedImageDialog(selectedCarItem.pic3Url);
+                              },
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 3, top: 3, bottom: 3),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(7),
+                                    child: Image.network(
+                                      FirebaseConstants.retrieveImage(selectedCarItem.pic3Url),
+                                      width: 42,
+                                      height: 42,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  )),
+                            ),
 
                             //  fourth image preview
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 3, top: 3, bottom: 3),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(7),
-                                  child: Image.network(
-                                    FirebaseConstants.retrieveImage(selectedCarItem.pic4Url),
-                                    width: 42,
-                                    height: 42,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                )),
+                            GestureDetector(
+                              onTap: () {
+                                _showSelectedImageDialog(selectedCarItem.pic4Url);
+                              },
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 3, top: 3, bottom: 3),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(7),
+                                    child: Image.network(
+                                      FirebaseConstants.retrieveImage(selectedCarItem.pic4Url),
+                                      width: 42,
+                                      height: 42,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  )),
+                            ),
 
                             //  fifth image preview
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 3, top: 3, bottom: 3),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(7),
-                                  child: Image.network(
-                                    FirebaseConstants.retrieveImage(selectedCarItem.pic5Url),
-                                    width: 42,
-                                    height: 42,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                )),
+                            GestureDetector(
+                              onTap: () {
+                                _showSelectedImageDialog(selectedCarItem.pic5Url);
+                              },
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 3, top: 3, bottom: 3),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(7),
+                                    child: Image.network(
+                                      FirebaseConstants.retrieveImage(selectedCarItem.pic5Url),
+                                      width: 42,
+                                      height: 42,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  )),
+                            ),
                           ],
                         ),
                       ),

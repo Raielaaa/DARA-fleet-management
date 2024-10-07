@@ -1,9 +1,13 @@
+import "package:dara_app/controller/car_list/car_list_controller.dart";
 import "package:dara_app/controller/rent_process/rent_process.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/model/constants/firebase_constants.dart";
+import "package:dara_app/model/renting_proccess/renting_process.dart";
+import "package:dara_app/services/firebase/auth.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 
@@ -25,6 +29,9 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
   String drivingDuration = "";
   String drivingDistanceDriver = "";
   String drivingDurationDriver = "";
+  bool payReservationFee = true;
+  String driverFee = "0.0";
+  String deliveryFee = "0.0";
 
   @override
   void initState() {
@@ -66,18 +73,18 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
   Future<void> calculateDeliveryLocationGarageIfWithDriver() async {
     DistanceCalculator distanceCalculator = DistanceCalculator();
 
-    if (_persistentData.bookingDetailsRentWithDriver) {
-      await distanceCalculator.calculateDistance(14.1954, 121.1641, _persistentData.startMapsLatitude, _persistentData.startMapsLongitude);
+    await distanceCalculator.calculateDistance(14.1954, 121.1641, _persistentData.startMapsLatitude, _persistentData.startMapsLongitude);
 
-      setState(() {
-        drivingDistanceDriver = _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? distanceCalculator.getDrivingDistance() : "NA";
-        drivingDurationDriver = _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? distanceCalculator.getDrivingTimeDuration() : "NA";
-      });
-    }
+    setState(() {
+      drivingDistanceDriver = _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? distanceCalculator.getDrivingDistance() : "NA";
+      drivingDurationDriver = _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? distanceCalculator.getDrivingTimeDuration() : "NA";
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    CarListController _carListController = CarListController();
+
     return Scaffold(
       body: Container(
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2),
@@ -110,15 +117,71 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                               shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5)))),
-                          onPressed: () {
-                            // Navigator.of(context).pushNamed("rp_payment_success");
-                            rentProcess.startGcashPayment(context);
+                          onPressed: () async {
+                            Auth _auth = Auth();
+
+                            RentInformation _rentInformation = RentInformation(
+                                renterUID: _auth.currentUser?.uid ?? "null",
+                                renterEmail: _auth.currentUser?.email ?? "null",
+                                carName: _persistentData.selectedCarItem?.name ?? "",
+                                startDateTime: "${_persistentData.bookingDetailsStartingDate} | ${_persistentData.bookingDetailsStartingTime}",
+                                endDateTime: "${_persistentData.bookingDetailsEndingDate} | ${_persistentData.bookingDetailsEndingTime}",
+                                rentLocation: _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude_forrent_location,
+                                deliveryLocation: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? _persistentData.deliveryModeLocation : _persistentData.deliveryModeLocation,
+                                estimatedDrivingDistance: drivingDistance,
+                                estimatedDrivingDuration: drivingDuration,
+                                pickupOrDelivery: _persistentData.deliveryModePickUpOrDelivery,
+                                deliveryDistance: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? drivingDistanceDriver : "NA",
+                                deliveryDuration: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? drivingDurationDriver : "NA",
+                                withDriver: _persistentData.bookingDetailsRentWithDriver ? "yes" : "no",
+                                driverAmount: _persistentData.bookingDetailsRentWithDriver ? "PHP 0.0" : "NA",
+                                rentalFee: "rentalFee",
+                                mileageFee: "mileageFee",
+                                deliveryFee: deliveryFee,
+                                driverFee: _persistentData.bookingDetailsRentWithDriver ? "PHP $driverFee" : "NA",
+                                reservationFee: payReservationFee ? "500" : "0",
+                                totalAmount: "totalAmount"
+                            );
+                            // debugPrint(_rentInformation.renterUID);
+                            // debugPrint(_rentInformation.renterEmail);
+                            // debugPrint(_rentInformation.carName);
+                            // debugPrint(_rentInformation.startDateTime);
+                            // debugPrint(_rentInformation.endDateTime);
+                            // debugPrint(_rentInformation.rentLocation);
+                            // debugPrint(_rentInformation.deliveryLocation);
+                            // debugPrint(_rentInformation.estimatedDrivingDistance);
+                            // debugPrint(_rentInformation.estimatedDrivingDuration);
+                            // debugPrint(_rentInformation.pickupOrDelivery);
+                            // debugPrint(_rentInformation.deliveryDistance);
+                            // debugPrint(_rentInformation.deliveryDuration);
+                            // debugPrint(_rentInformation.withDriver);
+                            // debugPrint(_rentInformation.driverAmount);
+                            // debugPrint(_rentInformation.rentalFee);
+                            // debugPrint(_rentInformation.mileageFee);
+                            // debugPrint(_rentInformation.deliveryFee);
+                            // debugPrint(_rentInformation.driverFee);
+                            // debugPrint(_rentInformation.reservationFee);
+                            // debugPrint(_rentInformation.totalAmount);
+
+                            LoadingDialog().show(context: context, content: "Please wait while we process your rent application.");
+                            await _carListController.submitRentRecords(
+                                collectionName: FirebaseConstants.rentRecordsCollection,
+                                documentName: _auth.currentUser!.uid,
+                                data: _rentInformation.getModelData()
+                            );
+                            LoadingDialog().dismiss();
+
+                            if (payReservationFee) {
+                              rentProcess.startGcashPayment(context);
+                            } else {
+                              Navigator.of(context).pushNamed("rp_submit_documents");
+                            }
                           },
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.only(top: 15, bottom: 15),
                               child: CustomComponents.displayText(
-                                  ProjectStrings.rp_details_fees_proceed_to_payment,
+                                  payReservationFee ? ProjectStrings.rp_details_fees_proceed_to_payment : "Proceed with Document Submission",
                                   color: Colors.white,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold),
@@ -211,8 +274,8 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
             ),
             const Divider(),
             _buildDetailsRow(
-                "Delivery Fee",
-                _persistentData.bookingDetailsRentWithDriver ? "PHP 0.0" : "NA",
+                "Driver Fee",
+                _persistentData.bookingDetailsRentWithDriver ? "PHP $driverFee" : "NA",
                 true
             ),
             const SizedBox(height: 10),
@@ -266,7 +329,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
             const Divider(),
             _buildDetailsRow(
                 "Delivery Fee",
-                _persistentData.bookingDetailsRentWithDriver ? "PHP 0.0" : "NA",
+                _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? "PHP $deliveryFee" : "NA",
               true
             ),
             const SizedBox(height: 10),
@@ -468,9 +531,19 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
               false
             ),
             _buildDetailsRow(
-              ProjectStrings.rp_details_fees_with_driver,
-              _persistentData.bookingDetailsRentWithDriver ? "Yes" : "No",
+              "Delivery Fee",
+              _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? "PHP $deliveryFee" : "NA",
               false
+            ),
+            _buildDetailsRow(
+                "Driver Fee",
+                _persistentData.bookingDetailsRentWithDriver ? "PHP $driverFee" : "NA",
+                false
+            ),
+            _buildDetailsRow(
+                "Reservation Fee",
+                payReservationFee ? "PHP 500" : "NA",
+                false
             ),
             const Divider(),
             _buildDetailsRow(ProjectStrings.rp_details_fees_total_amount,
@@ -525,9 +598,11 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                     scale:
                         0.8, // Adjust the scale to change the size of the checkbox
                     child: Checkbox(
-                      value: true,
+                      value: payReservationFee,
                       onChanged: (bool? value) {
-                        // Handle checkbox change
+                        setState(() {
+                          payReservationFee = !payReservationFee;
+                        });
                       },
                       activeColor: Color(int.parse(
                           ProjectColors.mainColorHex.substring(2),

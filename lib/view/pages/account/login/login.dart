@@ -218,7 +218,7 @@ class _LoginMain extends State<LoginMain> {
                     });
                   },
                   child: _userType(
-                      ProjectStrings.account_login_main_user,
+                      "Renter",
                       "lib/assets/pictures/user_type_user.jpg"),
                 ),
                 const SizedBox(height: 30)
@@ -269,6 +269,8 @@ class _LoginMain extends State<LoginMain> {
 
   @override
   Widget build(BuildContext context) {
+    InfoDialog().dismissBoolean();
+
     return Material(
       child: Container(
           padding:

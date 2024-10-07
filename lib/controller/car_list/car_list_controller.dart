@@ -7,4 +7,12 @@ class CarListController {
   Future<List<CompleteCarInfo>> fetchCars() {
     return _firestore.getCompleteCars();
   }
+
+  Future<void> submitRentRecords({
+    required String collectionName,
+    required String documentName,
+    required Map<String, String> data
+  }) async {
+    await _firestore.addRentRecords(collectionName: collectionName, documentName: documentName, data: data);
+  }
 }

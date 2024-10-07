@@ -278,4 +278,11 @@ class InfoDialog {
       _context = null;
     }
   }
+
+  void dismissBoolean() {
+    if (_isShowing && _context != null) {
+      _isShowing = false;
+      _context = null;
+    }
+  }
 }

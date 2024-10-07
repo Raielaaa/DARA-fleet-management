@@ -46,7 +46,7 @@ class PersistentData {
 
 
   //  login page
-  String userType = "User";
+  String userType = "Renter";
 
   //  selected role on register
   String? selectedRoleOnRegister;

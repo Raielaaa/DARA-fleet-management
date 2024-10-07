@@ -6,6 +6,8 @@ import "package:dara_app/model/constants/firebase_constants.dart";
 import "package:dara_app/model/home/featured_car_info.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/info_dialog.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
@@ -286,6 +288,7 @@ class _AdminHomeState extends State<AdminHome> {
   Widget build(BuildContext context) {
     //  manage name
     String manageTextIfDriver = PersistentData().userType == "Driver" ? ProjectStrings.driver_apply : ProjectStrings.admin_home_top_options_manage;
+    InfoDialog().dismissBoolean();
 
     return PopScope(
       canPop: false,

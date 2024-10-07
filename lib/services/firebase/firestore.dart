@@ -20,6 +20,17 @@ class Firestore {
     .set(data);
   }
 
+  Future<void> addRentRecords({
+    required String collectionName,
+    required String documentName,
+    required Map<String, String> data
+  }) async {
+    await _firestore
+        .collection(collectionName)
+        .doc(documentName)
+        .set(data);
+  }
+
   Future<void> updateUserDataRegister(String userId, String newStatus, String newNumber) async {
     DocumentReference userDoc = _firestore.collection(FirebaseConstants.registerCollection)
         .doc(userId);
