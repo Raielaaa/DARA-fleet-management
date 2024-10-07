@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dara_app/model/account/user_role.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
 import 'package:flutter/material.dart';
@@ -46,5 +47,11 @@ class Firestore {
     return querySnapshot.docs
         .map((doc) => CompleteCarInfo.fromFirestore(doc.data() as Map<String, dynamic>))
         .toList();
+  }
+
+  Future<List<UserRoleLocal>> getUserRoleInfo() async {
+    QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.registerRoleCollection).get();
+    return querySnapshot.docs
+        .map((doc) => UserRoleLocal.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
   }
 }

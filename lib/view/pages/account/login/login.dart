@@ -213,8 +213,8 @@ class _LoginMain extends State<LoginMain> {
                   onTap: () {
                     Navigator.of(context).pop();
                     setState(() {
-                      clickedUserType = "User";
-                      PersistentData().userType = "User";
+                      clickedUserType = "Renter";
+                      PersistentData().userType = "Renter";
                     });
                   },
                   child: _userType(

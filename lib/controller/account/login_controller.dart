@@ -2,6 +2,7 @@ import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/services/firebase/auth.dart';
 import 'package:dara_app/services/google/google.dart';
 import 'package:dara_app/view/shared/components.dart';
+import 'package:dara_app/view/shared/info_dialog.dart';
 import 'package:dara_app/view/shared/loading.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/account/register_model.dart';
+import '../../model/account/user_role.dart';
 import '../../model/constants/firebase_constants.dart';
 import '../../services/firebase/firestore.dart';
 
@@ -92,7 +94,7 @@ class LoginController {
       );
     } else {
       try {
-        Auth().signInWithEmailAndPassword(email: email, password: password, context: context);
+        validateSelectedRole(email: email, password: password, context: context);
       } catch (e) {
         LoadingDialog().dismiss();
         CustomComponents.showAlertDialog(
@@ -128,5 +130,34 @@ class LoginController {
       //   ]
       // );
     }
+  }
+
+  Future<void> validateSelectedRole({
+    required String email,
+    required String password,
+    required BuildContext context
+  }) async {
+    LoadingDialog _loadingDialog = LoadingDialog();
+    _loadingDialog.show(context: context, content: "Please wait while we verify your account credentials.");
+
+    List<UserRoleLocal> _userRoleLocal = await Firestore().getUserRoleInfo();
+
+    for (int i = 0; i <= _userRoleLocal.length - 1; i++) {
+      debugPrint("Chosen role: ${_userRoleLocal[i].chosenRole}");
+      debugPrint("User type: ${PersistentData().userType}");
+
+      if (_userRoleLocal[i].email == email && _userRoleLocal[i].chosenRole == PersistentData().userType) {
+        await Auth().signInWithEmailAndPassword(email: email, password: password, context: context);
+        _loadingDialog.dismiss();
+      } else {
+        _loadingDialog.dismiss();
+        InfoDialog().show(
+            context: context,
+            content: "An account with the selected role does not exist. Please ensure you selected the correct role during registration.",
+            header: "Warning"
+        );
+      }
+    }
+    _loadingDialog.dismiss();
   }
 }

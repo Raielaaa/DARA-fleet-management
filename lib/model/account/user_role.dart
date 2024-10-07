@@ -22,4 +22,14 @@ class UserRoleLocal {
       "user_email": email
     };
   }
+
+  factory UserRoleLocal.fromFirestore(Map<String, dynamic> data) {
+    return UserRoleLocal(
+        userID: data["user_id"] ?? "",
+        firstName: data["user_firstname"] ?? "",
+        lastName: data["user_lastname"] ?? "",
+        chosenRole: data["user_role"] ?? "",
+        email: data["user_email"] ?? ""
+    );
+  }
 }
