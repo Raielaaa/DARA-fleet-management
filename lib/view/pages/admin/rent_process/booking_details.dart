@@ -6,6 +6,7 @@ import "package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
+import 'package:day_night_time_picker/day_night_time_picker.dart';
 
 class DatePickerField {
   String label;
@@ -112,37 +113,33 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
 
   Future<void> _selectTime(
       BuildContext context, TimePickerField timePickerField) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Color(int.parse(ProjectColors.mainColorHex.substring(2),
-                  radix: 16)),
-            ),
-          ),
-          child: child!,
-        );
-      },
+    Time _time = Time(hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute);
+
+    Navigator.of(context).push(
+      showPicker(
+        context: context,
+        value: _time,
+        onChange: (newTime) {
+          setState(() {
+            final now = DateTime.now();
+            final pickedTime = DateTime(now.year, now.month, now.day, newTime.hour, newTime.minute);
+            timePickerField.selectedTime = DateFormat("hh:mm a").format(pickedTime);
+
+            if (selectedTimeStartOrEnd == "start_time") {
+              _persistentData.bookingDetailsStartingTime = timePickerField.selectedTime;
+            } else if (selectedTimeStartOrEnd == "end_time") {
+              _persistentData.bookingDetailsEndingTime = timePickerField.selectedTime;
+            }
+          });
+        },
+        sunrise: TimeOfDay(hour: 6, minute: 0), // optional
+        sunset: TimeOfDay(hour: 18, minute: 0), // optional
+        minuteInterval: TimePickerInterval.FIVE, // optional
+        iosStylePicker: true, // Enable iOS-style picker
+      ),
     );
-
-    if (picked != null) {
-      setState(() {
-        final now = DateTime.now();
-        final pickedTime =
-            DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
-        timePickerField.selectedTime = DateFormat("hh:mm a").format(pickedTime);
-
-        if (selectedTimeStartOrEnd == "start_time") {
-          _persistentData.bookingDetailsStartingTime = timePickerField.selectedTime;
-        } else if (selectedTimeStartOrEnd == "end_time") {
-          _persistentData.bookingDetailsEndingTime = timePickerField.selectedTime;
-        }
-      });
-    }
   }
+
 
   @override
   Widget build(BuildContext context) {

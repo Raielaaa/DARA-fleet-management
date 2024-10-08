@@ -31,6 +31,15 @@ class _LoginMain extends State<LoginMain> {
 
   String clickedUserType = "User";
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showUserOptionsDialog();
+    });
+  }
 
   Widget inputEmailBottomDialog() {
     return DraggableScrollableSheet(

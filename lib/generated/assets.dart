@@ -208,6 +208,7 @@ class Assets {
   static const String picturesDelete = 'lib/assets/pictures/delete.png';
   static const String picturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String picturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';
+  static const String picturesDocx = 'lib/assets/pictures/docx.png';
   static const String picturesExit = 'lib/assets/pictures/exit.png';
   static const String picturesExpand = 'lib/assets/pictures/expand.png';
   static const String picturesFuelIcon = 'lib/assets/pictures/fuel_icon.png';
@@ -232,6 +233,8 @@ class Assets {
   static const String picturesIdRightArrow = 'lib/assets/pictures/id_right_arrow.png';
   static const String picturesIncon = 'lib/assets/pictures/incon.png';
   static const String picturesInformationDialog = 'lib/assets/pictures/information_dialog.png';
+  static const String picturesJpeg = 'lib/assets/pictures/jpeg.png';
+  static const String picturesJpg = 'lib/assets/pictures/jpg.png';
   static const String picturesLeftArrow = 'lib/assets/pictures/left_arrow.png';
   static const String picturesManageReportCarStatus = 'lib/assets/pictures/manage_report_car_status.png';
   static const String picturesManageReportInquiries = 'lib/assets/pictures/manage_report_inquiries.png';
@@ -248,9 +251,11 @@ class Assets {
   static const String picturesOapVehicleNotSelected = 'lib/assets/pictures/oap_vehicle_not_selected.png';
   static const String picturesOapVehicleSelected = 'lib/assets/pictures/oap_vehicle_selected.png';
   static const String picturesPaymentSuccessful = 'lib/assets/pictures/payment_successful.png';
+  static const String picturesPdf = 'lib/assets/pictures/pdf.png';
   static const String picturesPendingBlue = 'lib/assets/pictures/pending_blue.png';
   static const String picturesPhone1 = 'lib/assets/pictures/phone_1.png';
   static const String picturesPhone2 = 'lib/assets/pictures/phone_2.png';
+  static const String picturesPng = 'lib/assets/pictures/png.png';
   static const String picturesRegisterSuccessful = 'lib/assets/pictures/register_successful.png';
   static const String picturesRentalCarPlaceholder = 'lib/assets/pictures/rental_car_placeholder.png';
   static const String picturesRentalsDenied = 'lib/assets/pictures/rentals_denied.png';
