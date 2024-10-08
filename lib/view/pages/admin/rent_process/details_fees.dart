@@ -153,6 +153,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                             Auth _auth = Auth();
 
                             RentInformation _rentInformation = RentInformation(
+                              rent_car_UID: _persistentData.selectedCarItem?.carUID ?? "null",
                               adminNotes: "NONE",
                               rentStatus: "pending",
                                 carType: _persistentData.selectedCarItem?.carType ?? "null",

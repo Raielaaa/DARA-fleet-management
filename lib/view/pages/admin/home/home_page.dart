@@ -9,6 +9,8 @@ import 'package:dara_app/view/shared/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:flutter_side_menu/flutter_side_menu.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +21,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+  final SideMenuController _sideMenuController = SideMenuController();
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -47,17 +51,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  List<Widget> _buildScreens() {
+    return [
+      AdminHome(controller: _controller),
+      const CarList(),
+      const Profile(),
+      const Rentals()
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Widget> _buildScreens() {
-      return [
-        AdminHome(controller: _controller),
-        const CarList(),
-        const Profile(),
-        const Rentals()
-      ];
-    }
-
     List<PersistentTabConfig> _navBarsItems() {
       return [
         PersistentTabConfig(

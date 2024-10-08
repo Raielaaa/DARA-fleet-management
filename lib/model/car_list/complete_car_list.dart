@@ -21,8 +21,10 @@ class CompleteCarInfo {
   final String totalEarnings;
   final String transmission;
   final String carType;
+  final String carUID;
 
   CompleteCarInfo({
+    required this.carUID,
     required this.carType,
     required this.transmission,
     required this.totalEarnings,
@@ -49,6 +51,7 @@ class CompleteCarInfo {
 
   factory CompleteCarInfo.fromFirestore(Map<String, dynamic> data) {
     return CompleteCarInfo(
+      carUID: data["car_UID"],
       name: data["car_name"] ?? "",
       carType: data["car_type"] ?? "",
       transmission: data["car_transmission"] ?? "",

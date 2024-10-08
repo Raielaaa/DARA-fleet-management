@@ -46,6 +46,7 @@ class _AdminHomeState extends State<AdminHome> {
     setState(() {
       // Set the fetched data
       _currentUserInfo = _currentUserInfo;
+      PersistentData().userInfo = _currentUserInfo;
     });
   }
 
@@ -923,6 +924,7 @@ class _AdminHomeState extends State<AdminHome> {
                     GestureDetector(
                       onTap: () {
                         PersistentData().selectedCarItem = CompleteCarInfo(
+                          carUID: carInfo.carUID,
                             carType: carInfo.carType,
                             transmission: carInfo.transmission,
                             totalEarnings: carInfo.totalEarnings,

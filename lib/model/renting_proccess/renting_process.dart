@@ -21,8 +21,10 @@ class RentInformation {
   String carType;
   String rentStatus;
   String adminNotes;
+  String rent_car_UID;
 
   RentInformation({
+    required this.rent_car_UID,
     required this.renterUID,
     required this.renterEmail,
     required this.carName,
@@ -49,6 +51,7 @@ class RentInformation {
 
   Map<String, String> getModelData() {
     return {
+      "rent_car_UID" : rent_car_UID,
       "rent_carType" : carType,
       "rent_renterUID" : renterUID,
       "rent_renterEmail" : renterEmail,
@@ -72,5 +75,33 @@ class RentInformation {
       "rent_status" : rentStatus,
       "rent_notes" : adminNotes
     };
+  }
+
+  factory RentInformation.fromFirestore(Map<String, dynamic> data) {
+    return RentInformation(
+        carType: data["rent_carType"] ?? "",
+        rent_car_UID: data["rent_car_UID"] ?? "",
+        renterUID: data["rent_renterUID"] ?? "",
+        renterEmail: data["rent_renterEmail"] ?? "",
+        carName: data["rent_carName"] ?? "",
+        startDateTime: data["rent_startDateTime"] ?? "",
+        endDateTime: data["rent_endDateTime"] ?? "",
+        rentLocation: data["rent_rentLocation"] ?? "",
+        deliveryLocation: data["rent_deliveryLocation"] ?? "",
+        estimatedDrivingDistance: data["rent_estimatedDrivingDistance"] ?? "",
+        estimatedDrivingDuration: data["rent_estimatedDrivingDuration"] ?? "",
+        pickupOrDelivery: data["rent_pickupOrDelivery"] ?? "",
+        deliveryDistance: data["rent_deliveryDistance"] ?? "",
+        deliveryDuration: data["rent_deliveryDuration"] ?? "",
+        withDriver: data["rent_withDriver"] ?? "",
+        rentalFee: data["rent_rentalFee"] ?? "",
+        mileageFee: data["rent_mileageFee"] ?? "",
+        deliveryFee: data["rent_deliveryFee"] ?? "",
+        reservationFee: data["rent_reservationFee"] ?? "",
+        totalAmount: data["rent_totalAmount"] ?? "",
+        rentStatus: data["rent_status"] ?? "",
+        adminNotes:  data["rent_notes"] ?? "",
+        driverFee: "rent_driverFee"
+    );
   }
 }

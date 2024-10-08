@@ -1,4 +1,5 @@
 // ignore_for_file: unnecessary_getters_setters
+import 'package:dara_app/model/account/register_model.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -93,4 +94,6 @@ class PersistentData {
   //  selected item to be displayed - car list info
   CompleteCarInfo? selectedCarItem;
   FeaturedCarInfo? selectedFeaturedCarItem;
+
+  RegisterModel? userInfo;
 }

@@ -3,6 +3,7 @@ import 'package:dara_app/model/account/register_model.dart';
 import 'package:dara_app/model/account/user_role.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
+import 'package:dara_app/model/renting_proccess/renting_process.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/car_list/complete_car_list.dart';
@@ -82,5 +83,32 @@ class Firestore {
 
     // Return null if no data is found or user is not logged in
     return null;
+  }
+
+  Future<List<RentInformation>> getRentRecordsInfo(String currentUserUID) async {
+    // Fetch all documents from the collection
+    QuerySnapshot querySnapshot = await _firestore
+        .collection(FirebaseConstants.rentRecordsCollection)
+        .get();
+
+    // Filter documents where the document ID starts with the currentUserUID
+    List<QueryDocumentSnapshot> filteredDocs = querySnapshot.docs.where((doc) {
+      // Check if the document ID starts with the current user's UID followed by a space and a hyphen
+      return doc.id.startsWith('$currentUserUID');
+    }).toList();
+
+    debugPrint("Firestore checkpoint");
+    debugPrint("UserUID: $currentUserUID");
+    filteredDocs.forEach((doc) {
+      // Assuming 'le' is a field in your document
+      // Access document data using doc.data() method and cast it to a map
+      final data = doc.data() as Map<String, dynamic>; // Cast to Map if necessary
+      debugPrint("Value: ${data['le']}");
+    });
+
+    // Convert filtered documents into RentInformation objects
+    return filteredDocs.map((doc) {
+      return RentInformation.fromFirestore(doc.data() as Map<String, dynamic>);
+    }).toList();
   }
 }
