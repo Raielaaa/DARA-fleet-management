@@ -335,7 +335,6 @@ class _LoginMain extends State<LoginMain> {
               const SizedBox(height: 10),
               CustomComponents.displayTextField(
                   ProjectStrings.account_register_ep_email_hint,
-                  isFocused: true,
                   controller: _emailController,
                   labelColor: Color(int.parse(
                       ProjectColors.lightGray.substring(2),

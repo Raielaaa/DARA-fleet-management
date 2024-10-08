@@ -40,35 +40,38 @@ class _VerifyBookingState extends State<VerifyBooking> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 25, left: 25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "lib/assets/pictures/verify_documents.png",
-                  // width: MediaQuery.of(context).size.width - 200
-                ),
-                const SizedBox(height: 40),
-                CustomComponents.displayText(
-                  ProjectStrings.vb_title,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14
-                ),
-                const SizedBox(height: 10),
-                CustomComponents.displayText(
-                  ProjectStrings.vb_content,
-                  fontSize: 10,
-                  textAlign: TextAlign.center
-                ),
-                _proceedButton()
-              ]
-            ),
-          )
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Container(
+          color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 25, left: 25),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "lib/assets/pictures/verify_documents.png",
+                    // width: MediaQuery.of(context).size.width - 200
+                  ),
+                  const SizedBox(height: 40),
+                  CustomComponents.displayText(
+                    ProjectStrings.vb_title,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14
+                  ),
+                  const SizedBox(height: 10),
+                  CustomComponents.displayText(
+                    ProjectStrings.vb_content,
+                    fontSize: 10,
+                    textAlign: TextAlign.center
+                  ),
+                  _proceedButton()
+                ]
+              ),
+            )
+          ),
         ),
       ),
     );

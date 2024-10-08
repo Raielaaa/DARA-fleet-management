@@ -239,7 +239,7 @@ class HomeController {
           Navigator.of(context).pushNamed("manage_outsource");
           break;
         }
-      case "User":
+      case "Renter":
         {
           InfoDialog().show(
             context: context,

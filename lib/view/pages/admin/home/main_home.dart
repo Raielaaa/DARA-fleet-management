@@ -9,10 +9,14 @@ import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:http/http.dart' as http;
+
+import "../../../../model/account/register_model.dart";
+import "../../../../services/firebase/firestore.dart";
 
 
 class AdminHome extends StatefulWidget {
@@ -30,6 +34,20 @@ class _AdminHomeState extends State<AdminHome> {
   late OpenAI openAI;
   final _controller = TextEditingController();
   List<Map<String, String>> _messages = [];
+  RegisterModel? _currentUserInfo;
+
+
+
+  Future<void> _fetchUserInfo() async {
+    // Fetch the user information asynchronously
+    _currentUserInfo = await Firestore().getUserInfo(FirebaseAuth.instance.currentUser!.uid);
+
+    // Update the UI after data is fetched
+    setState(() {
+      // Set the fetched data
+      _currentUserInfo = _currentUserInfo;
+    });
+  }
 
   // Function to send a message
   void _sendMessage() async {
@@ -205,7 +223,7 @@ class _AdminHomeState extends State<AdminHome> {
         enableLog: true,
       );
     } catch(e) {
-
+      debugPrint("ChatGPT error: ${e.toString()}");
     }
 
     // Optionally, show the opening banner after initializing the future
@@ -213,6 +231,12 @@ class _AdminHomeState extends State<AdminHome> {
       homeController.showOpeningBanner(context);
       debugPrint("User type - ${PersistentData().userType}");
     });
+
+    try {
+      _fetchUserInfo();
+    } catch(e) {
+      debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
+    }
   }
 
   Widget weatherWidget() {
@@ -347,15 +371,13 @@ class _AdminHomeState extends State<AdminHome> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomComponents.displayText("Hello, Admin",
+                              CustomComponents.displayText("Hello, ${_currentUserInfo?.role}",
                                   fontWeight: FontWeight.bold, fontSize: 14),
                               CustomComponents.displayText(
-                                "PH +63 ****** 8475",
+                                "PH ${_currentUserInfo?.number}",
                                 fontWeight: FontWeight.w600,
                                 fontSize: 10,
-                                color: Color(int.parse(
-                                    ProjectColors.lightGray.substring(2),
-                                    radix: 16)),
+                                color: Colors.grey
                               ),
                             ],
                           ),

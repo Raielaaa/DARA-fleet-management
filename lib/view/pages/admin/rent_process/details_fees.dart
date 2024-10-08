@@ -1,4 +1,5 @@
 import "package:dara_app/controller/car_list/car_list_controller.dart";
+import "package:dara_app/controller/rent_process/rent_fee_calculator.dart";
 import "package:dara_app/controller/rent_process/rent_process.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/model/constants/firebase_constants.dart";
@@ -30,12 +31,17 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
   String drivingDistanceDriver = "";
   String drivingDurationDriver = "";
   bool payReservationFee = true;
-  String driverFee = "0.0";
-  String deliveryFee = "0.0";
+  double driverFee = 0.0;
+  double deliveryFee = 0.0;
+  double mileageFee = 0.0;
+  double rentalFee = 0.0;
+  double totalFee = 0.0;
 
   @override
   void initState() {
     super.initState();
+
+    debugPrint("Rental duration in munutes: ${PersistentData().rentalDurationInMinutes}");
     if (widget.isDeepLink) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         InfoDialog().showWithCancelProceedButton(
@@ -65,6 +71,12 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
     setState(() {
       drivingDistance = distanceCalculator.getDrivingDistance();
       drivingDuration = distanceCalculator.getDrivingTimeDuration();
+
+      mileageFee = RentFeeCalculator.calculateMileageFee(double.parse(drivingDistance.split(" ")[0]));
+      rentalFee = RentFeeCalculator.calculateRentalFee(_persistentData.selectedCarItem!.carType, _persistentData.rentalDurationInMinutes);
+      driverFee = _persistentData.bookingDetailsRentWithDriver ? RentFeeCalculator.calculateDriverFee(_persistentData.rentalDurationInMinutes) : 0.0;
+
+      totalFee = deliveryFee + mileageFee + rentalFee + driverFee;
     });
 
     calculateDeliveryLocationGarageIfWithDriver();
@@ -78,7 +90,27 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
     setState(() {
       drivingDistanceDriver = _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? distanceCalculator.getDrivingDistance() : "NA";
       drivingDurationDriver = _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? distanceCalculator.getDrivingTimeDuration() : "NA";
+
+      deliveryFee = _persistentData.deliveryModePickUpOrDelivery.toLowerCase() == "delivery" ? RentFeeCalculator.calculateDeliveryFee(double.parse(drivingDistanceDriver.split(" ")[0])) : 0.0;
+      mileageFee = RentFeeCalculator.calculateMileageFee(double.parse(drivingDistance.split(" ")[0]));
+      rentalFee = RentFeeCalculator.calculateRentalFee(_persistentData.selectedCarItem!.carType, _persistentData.rentalDurationInMinutes);
+      driverFee = _persistentData.bookingDetailsRentWithDriver ? RentFeeCalculator.calculateDriverFee(_persistentData.rentalDurationInMinutes) : 0.0;
+
+      totalFee = deliveryFee + mileageFee + rentalFee + driverFee;
     });
+  }
+
+  int getCurrentTimeOfTheDayInSeconds() {
+    // Get the current time
+    DateTime now = DateTime.now();
+
+    // Extract hours, minutes, and seconds
+    int hoursInSeconds = now.hour * 3600;  // 1 hour = 3600 seconds
+    int minutesInSeconds = now.minute * 60; // 1 minute = 60 seconds
+    int seconds = now.second;
+
+    // Calculate the total time in seconds
+    return hoursInSeconds + minutesInSeconds + seconds;
   }
 
   @override
@@ -121,6 +153,9 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                             Auth _auth = Auth();
 
                             RentInformation _rentInformation = RentInformation(
+                              adminNotes: "NONE",
+                              rentStatus: "pending",
+                                carType: _persistentData.selectedCarItem?.carType ?? "null",
                                 renterUID: _auth.currentUser?.uid ?? "null",
                                 renterEmail: _auth.currentUser?.email ?? "null",
                                 carName: _persistentData.selectedCarItem?.name ?? "",
@@ -134,39 +169,18 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                                 deliveryDistance: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? drivingDistanceDriver : "NA",
                                 deliveryDuration: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? drivingDurationDriver : "NA",
                                 withDriver: _persistentData.bookingDetailsRentWithDriver ? "yes" : "no",
-                                driverAmount: _persistentData.bookingDetailsRentWithDriver ? "PHP 0.0" : "NA",
-                                rentalFee: "rentalFee",
-                                mileageFee: "mileageFee",
-                                deliveryFee: deliveryFee,
-                                driverFee: _persistentData.bookingDetailsRentWithDriver ? "PHP $driverFee" : "NA",
+                                rentalFee: rentalFee.toString(),
+                                mileageFee: mileageFee.toString(),
+                                deliveryFee: deliveryFee.toString(),
+                                driverFee: _persistentData.bookingDetailsRentWithDriver ? driverFee.toString() : "PHP 0.0",
                                 reservationFee: payReservationFee ? "500" : "0",
-                                totalAmount: "totalAmount"
+                                totalAmount: totalFee.toString()
                             );
-                            // debugPrint(_rentInformation.renterUID);
-                            // debugPrint(_rentInformation.renterEmail);
-                            // debugPrint(_rentInformation.carName);
-                            // debugPrint(_rentInformation.startDateTime);
-                            // debugPrint(_rentInformation.endDateTime);
-                            // debugPrint(_rentInformation.rentLocation);
-                            // debugPrint(_rentInformation.deliveryLocation);
-                            // debugPrint(_rentInformation.estimatedDrivingDistance);
-                            // debugPrint(_rentInformation.estimatedDrivingDuration);
-                            // debugPrint(_rentInformation.pickupOrDelivery);
-                            // debugPrint(_rentInformation.deliveryDistance);
-                            // debugPrint(_rentInformation.deliveryDuration);
-                            // debugPrint(_rentInformation.withDriver);
-                            // debugPrint(_rentInformation.driverAmount);
-                            // debugPrint(_rentInformation.rentalFee);
-                            // debugPrint(_rentInformation.mileageFee);
-                            // debugPrint(_rentInformation.deliveryFee);
-                            // debugPrint(_rentInformation.driverFee);
-                            // debugPrint(_rentInformation.reservationFee);
-                            // debugPrint(_rentInformation.totalAmount);
 
                             LoadingDialog().show(context: context, content: "Please wait while we process your rent application.");
                             await _carListController.submitRentRecords(
                                 collectionName: FirebaseConstants.rentRecordsCollection,
-                                documentName: _auth.currentUser!.uid,
+                                documentName: "${_auth.currentUser!.uid} - ${getCurrentTimeOfTheDayInSeconds()}",
                                 data: _rentInformation.getModelData()
                             );
                             LoadingDialog().dismiss();
@@ -181,7 +195,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 15, bottom: 15),
                               child: CustomComponents.displayText(
-                                  payReservationFee ? ProjectStrings.rp_details_fees_proceed_to_payment : "Proceed with Document Submission",
+                                  payReservationFee ? "Proceed to GCash Payment" : "Proceed with Document Submission",
                                   color: Colors.white,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold),
@@ -269,13 +283,13 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
             ),
             _buildDetailsRow(
                 "Amount",
-                _persistentData.bookingDetailsRentWithDriver ? "PHP 0.0" : "NA",
+                _persistentData.bookingDetailsRentWithDriver ? "PHP $driverFee" : "PHP 0.0",
                 false
             ),
             const Divider(),
             _buildDetailsRow(
-                "Driver Fee",
-                _persistentData.bookingDetailsRentWithDriver ? "PHP $driverFee" : "NA",
+                "Subtotal",
+                _persistentData.bookingDetailsRentWithDriver ? "PHP $driverFee" : "PHP 0.0",
                 true
             ),
             const SizedBox(height: 10),
@@ -328,8 +342,8 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
             ),
             const Divider(),
             _buildDetailsRow(
-                "Delivery Fee",
-                _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? "PHP $deliveryFee" : "NA",
+                "Subtotal",
+                _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? "PHP $deliveryFee" : "PHP 0.0",
               true
             ),
             const SizedBox(height: 10),
@@ -522,32 +536,32 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
             const Divider(),
             _buildDetailsRow(
               ProjectStrings.rp_details_fees_rent_fee,
-              ProjectStrings.rp_details_fees_rent_fee_entry,
+              "PHP $rentalFee",
               false
             ),
             _buildDetailsRow(
               ProjectStrings.rp_details_fees_mileage_fee,
-              ProjectStrings.rp_details_fees_mileage_fee_entry,
+              "PHP $mileageFee",
               false
             ),
             _buildDetailsRow(
               "Delivery Fee",
-              _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? "PHP $deliveryFee" : "NA",
+              _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? "PHP $deliveryFee" : "PHP 0.0",
               false
             ),
             _buildDetailsRow(
                 "Driver Fee",
-                _persistentData.bookingDetailsRentWithDriver ? "PHP $driverFee" : "NA",
+                _persistentData.bookingDetailsRentWithDriver ? "PHP $driverFee" : "PHP 0.0",
                 false
             ),
             _buildDetailsRow(
                 "Reservation Fee",
-                payReservationFee ? "PHP 500" : "NA",
+                payReservationFee ? "PHP 500 (Excluded from the calculation)" : "PHP 0.0",
                 false
             ),
             const Divider(),
             _buildDetailsRow(ProjectStrings.rp_details_fees_total_amount,
-                ProjectStrings.rp_details_fees_total_amount_entry, true),
+                "PHP $totalFee", true),
             const SizedBox(height: 10),
           ],
         ),
@@ -639,7 +653,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
           ),
           CustomComponents.displayText(
             entry,
-            fontSize: 10,
+            fontSize: decorateEntry ? 14 : 10,
             color: decorateEntry ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
             fontWeight: decorateEntry ? FontWeight.bold : FontWeight.normal
           ),

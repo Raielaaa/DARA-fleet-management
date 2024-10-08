@@ -303,20 +303,6 @@ class _CarListState extends State<CarList> {
                           color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 3, right: 15, left: 15, bottom: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: CustomComponents.displayText(
-                          mostFavoriteCar.shortDescription,
-                          fontSize: 10,
-                        ),
-                      ),
                       Container(
                         decoration: BoxDecoration(
                           color: mostFavoriteCar.availability == "available" ? Color(int.parse(ProjectColors.greenButtonBackground)) : Color(int.parse(ProjectColors.redButtonBackground)),
@@ -333,6 +319,19 @@ class _CarListState extends State<CarList> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 0, right: 15, left: 15, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child:
+                      Flexible(
+                        child: CustomComponents.displayText(
+                          mostFavoriteCar.shortDescription,
+                          fontSize: 10,
+                        ),
+                      ),
                   ),
                 ),
                 const SizedBox(height: 10),

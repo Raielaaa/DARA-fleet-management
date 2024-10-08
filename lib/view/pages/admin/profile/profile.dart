@@ -1,10 +1,21 @@
+import "dart:io";
+
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/model/constants/firebase_constants.dart";
+import "package:dara_app/services/firebase/firestore.dart";
 import "package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:firebase_auth/firebase_auth.dart";
+import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
+import "package:image_picker/image_picker.dart";
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
+
+import "../../../../model/account/register_model.dart";
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -14,6 +25,82 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  RegisterModel? _currentUserInfo;
+  File? _image; // Store the selected image
+  final ImagePicker _picker = ImagePicker(); // Initialize the picker
+  String? _imageUrl; // Store the URL for displaying the profile picture
+
+  // Function to pick an image from the gallery
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path); // Convert the picked file to a File object
+      });
+      await _uploadImage(); // After selecting, upload the image
+    }
+  }
+
+  // Function to upload the image to Firebase Storage
+  Future<void> _uploadImage() async {
+    if (_image == null) return;
+
+    LoadingDialog().show(context: context, content: "Fetching data, please wait.");
+    // Get the current user's ID
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    // Create a reference to Firebase Storage
+    Reference storageRef = FirebaseStorage.instance.ref().child('user_images/$userId');
+
+    // Upload the file to Firebase Storage
+    UploadTask uploadTask = storageRef.putFile(_image!);
+    TaskSnapshot taskSnapshot = await uploadTask;
+
+    // Get the download URL after the upload is complete
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+    // Save the download URL to Firestore under the user's document
+    await FirebaseFirestore.instance.collection(FirebaseConstants.registerCollection).doc(userId).update({
+      'user_profile': downloadUrl,
+    });
+
+    // Update the state with the new image URL
+    setState(() {
+      _imageUrl = downloadUrl;
+    });
+    LoadingDialog().dismiss();
+  }
+
+  // Function to load the profile image URL from Firestore
+  Future<void> _loadProfileImage() async {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection(FirebaseConstants.registerCollection).doc(userId).get();
+
+    setState(() {
+      _imageUrl = userDoc["user_profile"]; // Retrieve the URL from Firestore
+    });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    _fetchUserInfo();
+    _loadProfileImage(); // Load the profile image on initialization
+  }
+
+  Future<void> _fetchUserInfo() async {
+    // Fetch the user information asynchronously
+    _currentUserInfo = await Firestore().getUserInfo(FirebaseAuth.instance.currentUser!.uid);
+
+    // Update the UI after data is fetched
+    setState(() {
+      // Set the fetched data
+      _currentUserInfo = _currentUserInfo;
+    });
+  }
+
   Future<void> _showContactBottomDialog() async {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -409,12 +496,12 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+      body: Container(
       color: Color(
           int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
       child: Padding(
         padding: const EdgeInsets.only(top: 38),
-        child: Column(
+        child: _currentUserInfo == null ? const Center(child: CircularProgressIndicator()) : Column(
           children: [
             //  ActionBar
             Container(
@@ -483,17 +570,15 @@ class _ProfileState extends State<Profile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomComponents.displayText(
-                          "Hello, Admin",
+                          "Hello, ${_currentUserInfo?.role}",
                           fontWeight: FontWeight.bold,
                           fontSize: 14
                         ),
                         CustomComponents.displayText(
-                          "PH +63 ****** 8475",
+                          "PH ${_currentUserInfo?.number}",
                           fontWeight: FontWeight.w600,
                           fontSize: 10,
-                          color: Color(int.parse(
-                              ProjectColors.lightGray.substring(2),
-                              radix: 16)),
+                          color: Colors.grey,
                         ),
                         const SizedBox(height: 10),
                         Container(
@@ -554,16 +639,26 @@ class _ProfileState extends State<Profile> {
                 child: Column(
                   children: [
                     //  profile image
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 10),
-                      child: Image.asset(
-                        "lib/assets/pictures/user_info_user.png",
-                        width: 80,
-                        height: 80,
+                    GestureDetector(
+                      onTap: () {
+                        _pickImage();
+                        debugPrint("Image URL: $_imageUrl");
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 10),
+                        child: _imageUrl != null
+                            ? CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(_imageUrl!), // Display image from URL
+                        )
+                            : const CircleAvatar(
+                          radius: 40,
+                          backgroundImage: AssetImage('lib/assets/pictures/user_info_user.png'), // Default image
+                        ),
                       ),
                     ),
                     //  name
-                    CustomComponents.displayText(ProjectStrings.user_info_name,
+                    CustomComponents.displayText("${_currentUserInfo?.firstName} ${_currentUserInfo?.lastName}",
                         fontWeight: FontWeight.bold, fontSize: 14),
                     //  gray line
                     const SizedBox(height: 20),
@@ -578,29 +673,29 @@ class _ProfileState extends State<Profile> {
 
                     //  full name
                     _mainPanelItem(ProjectStrings.user_info_full_name_title,
-                        ProjectStrings.user_info_full_name),
+                        "${_currentUserInfo?.firstName} ${_currentUserInfo?.lastName}"),
 
                     //  registered number
                     _mainPanelItem(
                         ProjectStrings.user_info_registered_number_title,
-                        ProjectStrings.user_info_registered_number),
+                        _currentUserInfo!.number.toString()),
 
-                    //  email adddress
+                    //  email address
                     _mainPanelItem(ProjectStrings.user_info_email_address_title,
-                        ProjectStrings.user_info_email_address),
+                        _currentUserInfo!.email),
 
                     //  rental count
                     _mainPanelItem(ProjectStrings.user_info_rental_count_title,
-                        ProjectStrings.user_info_rental_count),
+                        _currentUserInfo!.rentalCount.isEmpty ? "NA" : _currentUserInfo!.rentalCount),
 
                     //  favorite
                     _mainPanelItem(ProjectStrings.user_info_favorite_title,
-                        ProjectStrings.user_info_favorite),
+                        _currentUserInfo!.favorite.isEmpty ? "NA" : _currentUserInfo!.favorite),
 
                     //  longest rental period
                     _mainPanelItem(
                         ProjectStrings.user_info_longest_rental_period_title,
-                        ProjectStrings.user_info_longest_rental_period),
+                        _currentUserInfo!.longestRentalDate.isEmpty ? "NA" : _currentUserInfo!.longestRentalDate),
 
                     //  total amount spent
                     Padding(
@@ -617,7 +712,7 @@ class _ProfileState extends State<Profile> {
                                   ProjectColors.lightGray.substring(2),
                                   radix: 16))),
                           CustomComponents.displayText(
-                              ProjectStrings.user_info_total_amount_spent,
+                              _currentUserInfo!.totalAmountSpent.isEmpty ? "NA" : _currentUserInfo!.totalAmountSpent,
                               fontWeight: FontWeight.bold,
                               fontSize: 10,
                               color: Color(int.parse(

@@ -56,6 +56,7 @@ class Assets {
   static const String assetsPicturesDelete = 'lib/assets/pictures/delete.png';
   static const String assetsPicturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String assetsPicturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';
+  static const String assetsPicturesDocx = 'lib/assets/pictures/docx.png';
   static const String assetsPicturesExit = 'lib/assets/pictures/exit.png';
   static const String assetsPicturesExpand = 'lib/assets/pictures/expand.png';
   static const String assetsPicturesFuelIcon = 'lib/assets/pictures/fuel_icon.png';
@@ -80,6 +81,8 @@ class Assets {
   static const String assetsPicturesIdRightArrow = 'lib/assets/pictures/id_right_arrow.png';
   static const String assetsPicturesIncon = 'lib/assets/pictures/incon.png';
   static const String assetsPicturesInformationDialog = 'lib/assets/pictures/information_dialog.png';
+  static const String assetsPicturesJpeg = 'lib/assets/pictures/jpeg.png';
+  static const String assetsPicturesJpg = 'lib/assets/pictures/jpg.png';
   static const String assetsPicturesLeftArrow = 'lib/assets/pictures/left_arrow.png';
   static const String assetsPicturesManageReportCarStatus = 'lib/assets/pictures/manage_report_car_status.png';
   static const String assetsPicturesManageReportInquiries = 'lib/assets/pictures/manage_report_inquiries.png';
@@ -96,9 +99,11 @@ class Assets {
   static const String assetsPicturesOapVehicleNotSelected = 'lib/assets/pictures/oap_vehicle_not_selected.png';
   static const String assetsPicturesOapVehicleSelected = 'lib/assets/pictures/oap_vehicle_selected.png';
   static const String assetsPicturesPaymentSuccessful = 'lib/assets/pictures/payment_successful.png';
+  static const String assetsPicturesPdf = 'lib/assets/pictures/pdf.png';
   static const String assetsPicturesPendingBlue = 'lib/assets/pictures/pending_blue.png';
   static const String assetsPicturesPhone1 = 'lib/assets/pictures/phone_1.png';
   static const String assetsPicturesPhone2 = 'lib/assets/pictures/phone_2.png';
+  static const String assetsPicturesPng = 'lib/assets/pictures/png.png';
   static const String assetsPicturesRegisterSuccessful = 'lib/assets/pictures/register_successful.png';
   static const String assetsPicturesRentalCarPlaceholder = 'lib/assets/pictures/rental_car_placeholder.png';
   static const String assetsPicturesRentalsDenied = 'lib/assets/pictures/rentals_denied.png';
@@ -301,6 +306,7 @@ class Assets {
   static const String rentProcessDetailsFees = 'lib/view/pages/admin/rent_process/details_fees.dart';
   static const String rentProcessGcashWebview = 'lib/view/pages/admin/rent_process/gcash_webview.dart';
   static const String rentProcessPaymentSuccess = 'lib/view/pages/admin/rent_process/payment_success.dart';
+  static const String rentProcessRentFeeCalculator = 'lib/controller/rent_process/rent_fee_calculator.dart';
   static const String rentProcessRentProcess = 'lib/controller/rent_process/rent_process.dart';
   static const String rentalsRentals = 'lib/view/pages/admin/rentals/rentals.dart';
   static const String rentalsReport = 'lib/view/pages/admin/rentals/report.dart';

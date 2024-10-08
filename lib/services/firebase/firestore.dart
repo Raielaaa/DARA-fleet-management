@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dara_app/model/account/register_model.dart';
 import 'package:dara_app/model/account/user_role.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
@@ -64,5 +65,22 @@ class Firestore {
     QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.registerRoleCollection).get();
     return querySnapshot.docs
         .map((doc) => UserRoleLocal.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
+  }
+
+  Future<RegisterModel?> getUserInfo(String currentUserUID) async {
+    // Fetch the specific document using the UID as the document ID
+    DocumentSnapshot docSnapshot = await _firestore
+        .collection(FirebaseConstants.registerCollection)
+        .doc(currentUserUID) // Use UID to get the document
+        .get();
+
+    // Check if the document exists
+    if (docSnapshot.exists) {
+      // Parse the data and return a RegisterModel
+      return RegisterModel.fromFirestore(docSnapshot.data() as Map<String, dynamic>);
+    }
+
+    // Return null if no data is found or user is not logged in
+    return null;
   }
 }

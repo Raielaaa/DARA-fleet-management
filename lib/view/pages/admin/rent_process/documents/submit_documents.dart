@@ -108,9 +108,6 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
     for (int i = 0; i < _filePaths.length; i++) {
       if (_filePaths[i] == null) {
         allFilesSelected = false;
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(content: Text("Please select file for document ${i + 1}")),
-        // );
       }
     }
 

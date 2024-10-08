@@ -48,4 +48,22 @@ class RegisterModel {
       "user_rental_count": rentalCount
     };
   }
+
+  factory RegisterModel.fromFirestore(Map<String, dynamic> data) {
+    return RegisterModel(
+      id: data["user_id"] ?? "",
+      firstName: data["user_firstname"] ?? "",
+      lastName: data["user_lastname"] ?? "",
+      birthday: data["user_birthday"] ?? "",
+      email: data["user_email"] ?? "",
+      number: data["user_number"] ?? "",
+      role: data["user_role"] ?? "",
+      status: data["user_status"] ?? "",
+      dateCreated: data["user_date_created"] ?? "",
+      totalAmountSpent: data["user_total_amount_spent"] ?? "",
+      longestRentalDate: data["user_longest_rental_date"] ?? "",
+      favorite: data["user_favorite"] ?? "",
+      rentalCount: data["user_rental_count"] ?? ""
+    );
+  }
 }

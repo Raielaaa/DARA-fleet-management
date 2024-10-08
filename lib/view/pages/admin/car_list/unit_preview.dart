@@ -397,7 +397,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                     padding: const EdgeInsets.only(right: 15, left: 15),
                     child: Container(
                       width: double.infinity,
-                      height: 420,
+                      height: 350,
                       decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
@@ -407,50 +407,24 @@ class _UnitPreviewState extends State<UnitPreview> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Column(
                           children: [
-                            const SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                            const SizedBox(height: 10),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Color(int.parse(
-                                              ProjectColors
-                                                  .reportMainColorBackground
-                                                  .substring(2),
-                                              radix: 16)),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10,
-                                              bottom: 10,
-                                              right: 25,
-                                              left: 25),
-                                          child: CustomComponents.displayText(
-                                            ProjectStrings.report_car_rent,
-                                            color: Color(int.parse(
-                                                ProjectColors.mainColorHex
-                                                    .substring(2),
-                                                radix: 16)),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10,
-                                          ),
-                                        ),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: CustomComponents.displayText(
+                                        selectedCarItem.name,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          color: selectedCarItem.availability == "available" ? Color(int.parse(
+                                          color: selectedCarItem.availability.toLowerCase() == "available" ? Color(int.parse(
                                               ProjectColors
                                                   .greenButtonBackground
                                                   .substring(2),
@@ -468,7 +442,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                                               left: 25),
                                           child: CustomComponents.displayText(
                                             CustomComponents.capitalizeFirstLetter(selectedCarItem.availability),
-                                            color: selectedCarItem.availability == "available" ? Color(int.parse(
+                                            color: selectedCarItem.availability.toLowerCase() == "available" ? Color(int.parse(
                                                 ProjectColors
                                                     .greenButtonMain
                                                     .substring(2),
@@ -485,17 +459,6 @@ class _UnitPreviewState extends State<UnitPreview> {
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: CustomComponents.displayText(
-                                selectedCarItem.name,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 3),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: CustomComponents.displayText(
@@ -504,7 +467,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                               ),
                             ),
                             Expanded(
-                              // This is the main change
+                              // main info
                               child: DefaultTabController(
                                   length: 2,
                                   child: Scaffold(
