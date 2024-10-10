@@ -36,20 +36,6 @@ class _AdminHomeState extends State<AdminHome> {
   List<Map<String, String>> _messages = [];
   RegisterModel? _currentUserInfo;
 
-
-
-  Future<void> _fetchUserInfo() async {
-    // Fetch the user information asynchronously
-    _currentUserInfo = await Firestore().getUserInfo(FirebaseAuth.instance.currentUser!.uid);
-
-    // Update the UI after data is fetched
-    setState(() {
-      // Set the fetched data
-      _currentUserInfo = _currentUserInfo;
-      PersistentData().userInfo = _currentUserInfo;
-    });
-  }
-
   // Function to send a message
   void _sendMessage() async {
     if (_controller.text.isNotEmpty) {
@@ -180,33 +166,6 @@ class _AdminHomeState extends State<AdminHome> {
     );
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   @override
   void initState() {
     super.initState();
@@ -236,6 +195,18 @@ class _AdminHomeState extends State<AdminHome> {
       } catch(e) {
         debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
       }
+    });
+  }
+
+  Future<void> _fetchUserInfo() async {
+    // Fetch the user information asynchronously
+    _currentUserInfo = await Firestore().getUserInfo(FirebaseAuth.instance.currentUser?.uid ?? "");
+
+    // Update the UI after data is fetched
+    setState(() {
+      // Set the fetched data
+      _currentUserInfo = _currentUserInfo;
+      PersistentData().userInfo = _currentUserInfo;
     });
   }
 
@@ -374,7 +345,7 @@ class _AdminHomeState extends State<AdminHome> {
                               CustomComponents.displayText("Hello, ${_currentUserInfo?.role}",
                                   fontWeight: FontWeight.bold, fontSize: 14),
                               CustomComponents.displayText(
-                                "PH ${_currentUserInfo!.number.isNotEmpty ? _currentUserInfo?.number : "- click here to verify"}",
+                                "PH ${_currentUserInfo?.number.isNotEmpty == true ? _currentUserInfo?.number : "- click here to verify"}",
                                 fontWeight: FontWeight.w600,
                                 fontSize: 10,
                                 color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
@@ -383,7 +354,7 @@ class _AdminHomeState extends State<AdminHome> {
                               Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: _currentUserInfo!.number.isNotEmpty ? Color(int.parse(
+                                    color: _currentUserInfo?.number.isNotEmpty == true ? Color(int.parse(
                                         ProjectColors.lightGreen.substring(2),
                                         radix: 16)) : Color(int.parse(
                                         ProjectColors.redButtonBackground.substring(2),
@@ -395,7 +366,7 @@ class _AdminHomeState extends State<AdminHome> {
                                       Padding(
                                         padding: const EdgeInsets.only(left: 20),
                                         child: Image.asset(
-                                          _currentUserInfo!.number.isNotEmpty ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
+                                          _currentUserInfo?.number.isNotEmpty == true ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
                                           width: 20,
                                           height: 20,
                                         ),
@@ -404,9 +375,9 @@ class _AdminHomeState extends State<AdminHome> {
                                         padding: const EdgeInsets.only(
                                             top: 10, bottom: 10, right: 25, left: 5),
                                         child: CustomComponents.displayText(
-                                          _currentUserInfo!.number.isNotEmpty ? ProjectStrings
+                                          _currentUserInfo?.number.isNotEmpty == true ? ProjectStrings
                                               .rentals_header_verified_button : "Unverified",
-                                          color: _currentUserInfo!.number.isNotEmpty ? Color(int.parse(
+                                          color: _currentUserInfo?.number.isNotEmpty == true ? Color(int.parse(
                                               ProjectColors.greenButtonMain.substring(2),
                                               radix: 16)) : Color(int.parse(
                                               ProjectColors.redButtonMain.substring(2),

@@ -365,7 +365,7 @@ class _ProfileState extends State<Profile> {
                               "PH ${_currentUserInfo!.number.isNotEmpty ? _currentUserInfo?.number : "- click here to verify"}",
                               fontWeight: FontWeight.w600,
                               fontSize: 10,
-                              color: Colors.grey,
+                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
                             ),
                             const SizedBox(height: 10),
                             Container(
@@ -392,11 +392,12 @@ class _ProfileState extends State<Profile> {
                                       padding: const EdgeInsets.only(
                                           top: 10, bottom: 10, right: 25, left: 5),
                                       child: CustomComponents.displayText(
-                                        ProjectStrings
-                                            .rentals_header_verified_button,
-                                        color: Color(int.parse(
-                                            ProjectColors.greenButtonMain
-                                                .substring(2),
+                                        _currentUserInfo?.number.isNotEmpty == true ? ProjectStrings
+                                            .rentals_header_verified_button : "Unverified",
+                                        color: _currentUserInfo!.number.isNotEmpty ? Color(int.parse(
+                                            ProjectColors.greenButtonMain.substring(2),
+                                            radix: 16)) : Color(int.parse(
+                                            ProjectColors.redButtonMain.substring(2),
                                             radix: 16)),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 10,
@@ -469,7 +470,7 @@ class _ProfileState extends State<Profile> {
                         //  registered number
                         _mainPanelItem(
                             ProjectStrings.user_info_registered_number_title,
-                            _currentUserInfo!.number.toString()),
+                            _currentUserInfo!.number.toString().isNotEmpty ? _currentUserInfo!.number.toString() : "NA"),
 
                         //  email address
                         _mainPanelItem(ProjectStrings.user_info_email_address_title,
