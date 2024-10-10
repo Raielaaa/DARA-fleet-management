@@ -296,6 +296,7 @@ class Assets {
   static const String picturesUserTypeUser = 'lib/assets/pictures/user_type_user.jpg';
   static const String picturesVerifyDocuments = 'lib/assets/pictures/verify_documents.png';
   static const String profileProfile = 'lib/view/pages/admin/profile/profile.dart';
+  static const String profileUploadDocuments = 'lib/view/pages/admin/profile/upload_documents.dart';
   static const String providersRegisterProvider = 'lib/controller/providers/register_provider.dart';
   static const String registerRegister = 'lib/view/pages/account/register/register.dart';
   static const String registerRegisterEmailPass = 'lib/view/pages/account/register/register_email_pass.dart';
