@@ -1,7 +1,10 @@
+import "package:dara_app/controller/rentals/rent_log.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/model/car_list/complete_car_list.dart";
 import "package:dara_app/model/constants/firebase_constants.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
@@ -49,18 +52,28 @@ class _Rentals extends State<Rentals> {
     return Padding(
       padding: EdgeInsets.only(right: 15, left: 15, top: topPadding),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomComponents.displayText(
-            title,
-            fontWeight: FontWeight.w500,
-            fontSize: 10,
-            color: Color(int.parse(titleColor.substring(2), radix: 16)),
+          // Title text
+          Expanded(
+            flex: 1,
+            child: CustomComponents.displayText(
+              title,
+              fontWeight: FontWeight.w500,
+              fontSize: 10,
+              color: Color(int.parse(titleColor.substring(2), radix: 16)),
+            ),
           ),
-          CustomComponents.displayText(
-            value,
-            fontWeight: FontWeight.bold,
-            fontSize: 10,
+          // Value text, allowing flexibility and wrapping if needed
+          Expanded(
+            flex: 3,
+            child: CustomComponents.displayText(
+              value,
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
+              textAlign: TextAlign.end, // Align the text to the right
+            ),
           ),
         ],
       ),
@@ -91,7 +104,9 @@ class _Rentals extends State<Rentals> {
   }
 
 
-  Future<void> _seeCompleteBookingInfo() async {
+  Future<void> _seeCompleteBookingInfo(RentInformation rentInformation, CompleteCarInfo carInformation) async {
+    // LoadingDialog().show(context: context, content: "Please wait while we retrieve your rent information.");
+
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -217,37 +232,37 @@ class _Rentals extends State<Rentals> {
                           //  car model
                           buildInfoRow(
                             ProjectStrings.dialog_car_model_title,
-                            ProjectStrings.dialog_car_model,
+                            carInformation.name,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRow(
                             ProjectStrings.dialog_transmission_title,
-                            ProjectStrings.dialog_transmission,
+                            carInformation.transmission,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRow(
                             ProjectStrings.dialog_capacity_title,
-                            ProjectStrings.dialog_capacity,
+                            carInformation.capacity,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRow(
                             ProjectStrings.dialog_fuel_title,
-                            ProjectStrings.dialog_fuel,
+                            carInformation.fuelVariant,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRow(
                             ProjectStrings.dialog_fuel_capacity_title,
-                            ProjectStrings.dialog_fuel_capacity,
+                            carInformation.fuel,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRow(
                             ProjectStrings.dialog_unit_color_title,
-                            ProjectStrings.dialog__unit_color,
+                            carInformation.color,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRow(
                             ProjectStrings.dialog_engine_title,
-                            ProjectStrings.dialog_engine,
+                            carInformation.engine,
                             ProjectColors.lightGray,
                           ),
 
@@ -327,38 +342,38 @@ class _Rentals extends State<Rentals> {
                           //  rent start date
                           buildInfoRowSecondPanel(
                             ProjectStrings.dialog_rent_start_title,
-                            ProjectStrings.dialog_rent_start,
+                            rentInformation.startDateTime,
                             ProjectColors.lightGray,
                             topPadding: 15,
                           ),
                           buildInfoRowSecondPanel(
                             ProjectStrings.dialog_rent_end_title,
-                            ProjectStrings.dialog__rent_end,
+                            rentInformation.endDateTime,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRowSecondPanel(
-                            ProjectStrings.dialog_delivery_mode_title,
-                            ProjectStrings.dialog_delivery_mode,
+                            "Pickup or Delivery:",
+                            rentInformation.pickupOrDelivery,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRowSecondPanel(
-                            ProjectStrings.dialog_delivery_location_title,
-                            ProjectStrings.dialog_delivery_location,
+                            "Delivery Location:",
+                            rentInformation.deliveryLocation,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRowSecondPanel(
                             ProjectStrings.dialog_location_title,
-                            ProjectStrings.dialog_location,
+                            rentInformation.rentLocation,
                             ProjectColors.lightGray,
                           ),
                           buildInfoRowSecondPanel(
                             ProjectStrings.dialog_reserved_title,
-                            ProjectStrings.dialog_reserved,
+                            rentInformation.reservationFee.contains("500") ? "Yes" : "No",
                             ProjectColors.lightGray,
                           ),
                           buildInfoRowSecondPanel(
                             ProjectStrings.dialog_admin_notes_title,
-                            ProjectStrings.dialog_admin_notes,
+                            rentInformation.adminNotes,
                             ProjectColors.lightGray,
                           ),
 
@@ -414,16 +429,18 @@ class _Rentals extends State<Rentals> {
                         Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color(int.parse(
-                                  ProjectColors.lightGreen.substring(2),
-                                  radix: 16)),
+                              color: rentInformation.rentStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16)) :
+                                     rentInformation.rentStatus.toLowerCase() == "pending" ? Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)) :
+                                     rentInformation.rentStatus.toLowerCase() == "denied" ? Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)) : Colors.white
                             ),
                             child: Row(
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(left: 20),
                                   child: Image.asset(
-                                    "lib/assets/pictures/rentals_verified.png",
+                                    rentInformation.rentStatus.toLowerCase() == "approved" ? "lib/assets/pictures/rentals_verified.png" :
+                                    rentInformation.rentStatus.toLowerCase() == "pending" ? "lib/assets/pictures/rentals_pending.png" :
+                                    rentInformation.rentStatus.toLowerCase() == "denied" ? "lib/assets/pictures/rentals_denied.png" : "lib/assets/pictures/rentals_denied.png",
                                     width: 20,
                                     height: 20,
                                   ),
@@ -432,12 +449,10 @@ class _Rentals extends State<Rentals> {
                                   padding: const EdgeInsets.only(
                                       top: 10, bottom: 10, right: 25, left: 5),
                                   child: CustomComponents.displayText(
-                                    ProjectStrings
-                                        .dialog_approved_button,
-                                    color: Color(int.parse(
-                                        ProjectColors.greenButtonMain
-                                            .substring(2),
-                                        radix: 16)),
+                                    CustomComponents.capitalizeFirstLetter(rentInformation.rentStatus),
+                                    color: rentInformation.rentStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16)) :
+                                    rentInformation.rentStatus.toLowerCase() == "pending" ? Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)) :
+                                    rentInformation.rentStatus.toLowerCase() == "denied" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)) : Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10,
                                   ),
@@ -446,29 +461,6 @@ class _Rentals extends State<Rentals> {
                             )
                           ),
                       ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 15),
-                  UnconstrainedBox(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Row(
-                        children: [
-                          CustomComponents.displayText(
-                            ProjectStrings.dialog_transaction_number_title,
-                            fontSize: 10,
-                            color: Color(int.parse(ProjectColors.lightGray)),
-                            fontStyle: FontStyle.italic
-                          ),
-                          CustomComponents.displayText(
-                            ProjectStrings.dialog_transaction,
-                            fontSize: 10,
-                            color: Color(int.parse(ProjectColors.lightGray)),
-                            fontStyle: FontStyle.italic
-                          )
-                        ],
-                      ),
                     ),
                   ),
 
@@ -487,6 +479,8 @@ class _Rentals extends State<Rentals> {
     required String carName,
     required String carRentLocation,
     required String carStartEndDate,
+    required String startDate,
+    required String endDate,
     required String totalAmount,
     required String rentStatus
   }) {
@@ -528,56 +522,72 @@ class _Rentals extends State<Rentals> {
                     ),
                   ),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomComponents.displayText(
-                          carName,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
-                      const SizedBox(height: 10),
-                      CustomComponents.displayText(
-                          "Location: ",
-                          fontSize: 10, fontWeight: FontWeight.bold),
-                      CustomComponents.displayText(
-                        carRentLocation,
-                        color: Colors.grey,
-                        fontSize: 10,
-                      ),
-                      const SizedBox(height: 5),
-                      CustomComponents.displayText(
-                          "Date: ",
-                          fontSize: 10, fontWeight: FontWeight.bold),
-                      CustomComponents.displayText(
-                          carStartEndDate,
-                          color: Colors.grey,
-                          fontSize: 10),
-                      const SizedBox(height: 15),
-                      GestureDetector(
-                        onTap: () {
-                          _seeCompleteBookingInfo();
-                        },
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(width: 40),
-                                CustomComponents.displayText(
-                                  ProjectStrings.rentals_see_booking_info,
-                                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10,
-                                ),
-                                const SizedBox(width: 5),
-                                Image.asset("lib/assets/pictures/right_arrow.png", width: 10),
-                              ],
-                            ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomComponents.displayText(
+                            carName,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                        const SizedBox(height: 10),
+                        CustomComponents.displayText(
+                            "Location: ",
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                        Text(
+                          carRentLocation,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                            fontFamily: ProjectStrings.general_font_family,
                           ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 5),
+                        CustomComponents.displayText(
+                            "Date: ",
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                        Text(
+                          carStartEndDate,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                            fontFamily: ProjectStrings.general_font_family,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 15),
+                        GestureDetector(
+                          onTap: () async {
+                            LoadingDialog().show(context: context, content: "Please wait while retrieve your rent information");
+                            final List<RentInformation> retrievedRentingData = await RentLog().getSelectedRentRecords(startDate: startDate, endDate: endDate, location: carRentLocation);
+                            final CompleteCarInfo selectedCarCompleteInfo = await RentLog().getSelectedCarCompleteInfo(carName: carName);
+                            LoadingDialog().dismiss();
+
+                            _seeCompleteBookingInfo(retrievedRentingData[0], selectedCarCompleteInfo);
+                          },
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const SizedBox(width: 40),
+                                  CustomComponents.displayText(
+                                    ProjectStrings.rentals_see_booking_info,
+                                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Image.asset("lib/assets/pictures/right_arrow.png", width: 10),
+                                ],
+                              ),
+                            ),
+                          )
                         )
-                      )
-                    ],
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -601,18 +611,18 @@ class _Rentals extends State<Rentals> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: rentStatus == "approved" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16)) :
-                          rentStatus == "pending" ? Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)) :
-                          rentStatus == "denied" ? Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)) : Colors.white
+                      color: rentStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16)) :
+                          rentStatus.toLowerCase() == "pending" ? Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)) :
+                          rentStatus.toLowerCase() == "denied" ? Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)) : Colors.white
                     ),
                     child: Row(
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
-                            rentStatus == "approved" ? "lib/assets/pictures/rentals_verified.png" :
-                            rentStatus == "pending" ? "lib/assets/pictures/rentals_pending.png" :
-                            rentStatus == "denied" ? "lib/assets/pictures/rentals_denied.png" : "lib/assets/pictures/rentals_denied.png",
+                            rentStatus.toLowerCase() == "approved" ? "lib/assets/pictures/rentals_verified.png" :
+                            rentStatus.toLowerCase() == "pending" ? "lib/assets/pictures/rentals_pending.png" :
+                            rentStatus.toLowerCase() == "denied" ? "lib/assets/pictures/rentals_denied.png" : "lib/assets/pictures/rentals_denied.png",
                             width: 20,
                             height: 20,
                           ),
@@ -622,9 +632,9 @@ class _Rentals extends State<Rentals> {
                           child: CustomComponents.displayText(
                             CustomComponents.capitalizeFirstLetter(rentStatus),
 
-                            color: rentStatus == "approved" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16)) :
-                              rentStatus == "pending" ? Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)) :
-                              rentStatus == "denied" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)) : Colors.white,
+                            color: rentStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16)) :
+                              rentStatus.toLowerCase() == "pending" ? Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)) :
+                              rentStatus.toLowerCase() == "denied" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)) : Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 10,
                           ),
@@ -832,6 +842,8 @@ class _Rentals extends State<Rentals> {
                       carName: rentInfo.carName,
                       carRentLocation: rentInfo.rentLocation,
                       carStartEndDate: "${rentInfo.startDateTime} - ${rentInfo.endDateTime}",
+                      startDate: rentInfo.startDateTime,
+                      endDate: rentInfo.endDateTime,
                       totalAmount: "PHP ${rentInfo.totalAmount} / total",
                       rentStatus: rentInfo.rentStatus.toLowerCase()
                     );

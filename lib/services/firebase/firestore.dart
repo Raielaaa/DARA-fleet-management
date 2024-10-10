@@ -62,6 +62,16 @@ class Firestore {
         .toList();
   }
 
+  Future<CompleteCarInfo> getSelectedCarInformation({
+    required String carName
+  }) async {
+    QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.carInfoCollection).where("car_name", isEqualTo: carName).get();
+    return querySnapshot.docs
+        .map((doc) => CompleteCarInfo.fromFirestore(doc.data() as Map<String, dynamic>))
+        .toList()
+        .first;
+  }
+
   Future<List<UserRoleLocal>> getUserRoleInfo() async {
     QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.registerRoleCollection).get();
     return querySnapshot.docs
@@ -85,6 +95,7 @@ class Firestore {
     return null;
   }
 
+
   Future<List<RentInformation>> getRentRecordsInfo(String currentUserUID) async {
     // Fetch all documents from the collection
     QuerySnapshot querySnapshot = await _firestore
@@ -97,14 +108,29 @@ class Firestore {
       return doc.id.startsWith('$currentUserUID');
     }).toList();
 
-    debugPrint("Firestore checkpoint");
-    debugPrint("UserUID: $currentUserUID");
-    filteredDocs.forEach((doc) {
-      // Assuming 'le' is a field in your document
-      // Access document data using doc.data() method and cast it to a map
-      final data = doc.data() as Map<String, dynamic>; // Cast to Map if necessary
-      debugPrint("Value: ${data['le']}");
-    });
+    // Convert filtered documents into RentInformation objects
+    return filteredDocs.map((doc) {
+      return RentInformation.fromFirestore(doc.data() as Map<String, dynamic>);
+    }).toList();
+  }
+
+  Future<List<RentInformation>> getSelectedRecordsInfo(String startDate, String endDate, String location) async {
+    // Fetch all documents from the collection with location filtering
+    QuerySnapshot querySnapshot = await _firestore
+        .collection(FirebaseConstants.rentRecordsCollection)
+        .where("rent_rentLocation", isEqualTo: location)
+        .get();
+
+    // Filter documents locally based on startDateTime and endDateTime
+    List<QueryDocumentSnapshot> filteredDocs = querySnapshot.docs.where((doc) {
+      var data = doc.data() as Map<String, dynamic>;
+
+      // Compare startDateTime and endDateTime (currently stored as strings)
+      String docStartDate = data["rent_startDateTime"];
+      String docEndDate = data["rent_endDateTime"];
+
+      return docStartDate == startDate && docEndDate == endDate;
+    }).toList();
 
     // Convert filtered documents into RentInformation objects
     return filteredDocs.map((doc) {

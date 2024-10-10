@@ -152,6 +152,7 @@ class Assets {
   static const String firebaseAuth = 'lib/services/firebase/auth.dart';
   static const String firebaseFirestore = 'lib/services/firebase/firestore.dart';
   static const String firebasePhoneAuthService = 'lib/services/firebase/phone_auth_service.dart';
+  static const String firebaseStorage = 'lib/services/firebase/storage.dart';
   static const String gcashGcashPayment = 'lib/services/gcash/gcash_payment.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String googleGoogle = 'lib/services/google/google.dart';
@@ -308,6 +309,7 @@ class Assets {
   static const String rentProcessPaymentSuccess = 'lib/view/pages/admin/rent_process/payment_success.dart';
   static const String rentProcessRentFeeCalculator = 'lib/controller/rent_process/rent_fee_calculator.dart';
   static const String rentProcessRentProcess = 'lib/controller/rent_process/rent_process.dart';
+  static const String rentalsRentLog = 'lib/controller/rentals/rent_log.dart';
   static const String rentalsRentals = 'lib/view/pages/admin/rentals/rentals.dart';
   static const String rentalsReport = 'lib/view/pages/admin/rentals/report.dart';
   static const String rentingProccessRentingProcess = 'lib/model/renting_proccess/renting_process.dart';

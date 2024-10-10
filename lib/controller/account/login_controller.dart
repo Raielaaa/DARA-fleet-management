@@ -143,9 +143,6 @@ class LoginController {
     List<UserRoleLocal> _userRoleLocal = await Firestore().getUserRoleInfo();
 
     for (int i = 0; i <= _userRoleLocal.length - 1; i++) {
-      debugPrint("Chosen role: ${_userRoleLocal[i].chosenRole}");
-      debugPrint("User type: ${PersistentData().userType}");
-
       if (_userRoleLocal[i].email == email && _userRoleLocal[i].chosenRole == PersistentData().userType) {
         await Auth().signInWithEmailAndPassword(email: email, password: password, context: context);
         _loadingDialog.dismiss();

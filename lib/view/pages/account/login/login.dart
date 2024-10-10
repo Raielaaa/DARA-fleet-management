@@ -29,7 +29,7 @@ class _LoginMain extends State<LoginMain> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   late GoogleSignInAccount _userObj;
 
-  String clickedUserType = "User";
+  String clickedUserType = "Renter";
 
   @override
   void initState() {

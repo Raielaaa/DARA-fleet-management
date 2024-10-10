@@ -63,7 +63,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
       case 'png':
         return 'lib/assets/pictures/png.png';
       default:
-        return 'lib/assets/pictures/default_file.png'; // Default icon for unsupported types
+        return 'lib/assets/pictures/user_info_upload.png'; // Default icon for unsupported types
     }
   }
 
