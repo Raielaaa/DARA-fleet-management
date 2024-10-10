@@ -10,6 +10,16 @@ import '../../model/car_list/complete_car_list.dart';
 
 class Firestore {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
+  Future<void> addReport({
+    required String documentName,
+    required Map<String, String> data
+  }) async {
+    await _firestore
+    .collection(FirebaseConstants.userReportCollection)
+    .doc(documentName)
+    .set(data);
+  }
 
   Future<void> addUserInfo({
     required String collectionName,

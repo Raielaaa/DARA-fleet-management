@@ -1,8 +1,19 @@
+import "dart:io";
+
+import "package:dara_app/model/constants/firebase_constants.dart";
+import "package:dara_app/model/report/report.dart";
+import "package:dara_app/services/firebase/firestore.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/info_dialog.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:firebase_auth/firebase_auth.dart";
+import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:image_picker/image_picker.dart";
+import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 
 class TopOptionReport extends StatefulWidget {
   const TopOptionReport({super.key});
@@ -16,6 +27,28 @@ class _TopOptionReportState extends State<TopOptionReport> {
   bool transmissionIsChecked = false;
   bool brakeIsChecked = false;
   bool otherIsChecked = false;
+
+  // Problem Labels
+  final engineProblemLabel = ProjectStrings.report_engine_problems;
+  final transmissionLabel = ProjectStrings.report_transmission_issues;
+  final brakeLabel = ProjectStrings.report_brake_malfunction;
+  final otherLabel = ProjectStrings.report_other;
+
+  // Function to update the selected problems list
+  void updateSelectedProblems(String problem, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        selectedProblems.add(problem);
+      } else {
+        selectedProblems.remove(problem);
+      }
+    });
+  }
+
+  // list of information to be sent to DB
+  List<String> selectedProblems = [];
+  final TextEditingController _reportLocationController = TextEditingController();
+  final TextEditingController _commentsController = TextEditingController();
 
   //  Set an int with value -1 since no item has been selected
   int selectedCard = 0;
@@ -39,59 +72,168 @@ class _TopOptionReportState extends State<TopOptionReport> {
   Future<void> _showInconvenienceDialog() async {
     return showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          backgroundColor: Colors.white,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Image.asset(
-                      "lib/assets/pictures/exit.png",
-                      width: 20,
+        return PopScope(
+          canPop: false,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed("home_main");
+            },
+            child: Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              backgroundColor: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Image.asset(
+                          "lib/assets/pictures/exit.png",
+                          width: 20,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 50),
-                child: Image.asset(
-                  "lib/assets/pictures/incon.png",
-                  width: double.infinity,
-                ),
-              ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15, top: 50),
+                    child: Image.asset(
+                      "lib/assets/pictures/incon.png",
+                      width: double.infinity,
+                    ),
+                  ),
 
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: CustomComponents.displayText(
-                  ProjectStrings.report_dialog_title,
-                  fontWeight: FontWeight.bold
-                ),
+                  const SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: CustomComponents.displayText(
+                      ProjectStrings.report_dialog_title,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: CustomComponents.displayText(
+                      ProjectStrings.report_dialog_subheader,
+                      fontSize: 10,
+                      textAlign: TextAlign.center
+                    ),
+                  ),
+                  const SizedBox(height: 100)
+                ],
               ),
-              const SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: CustomComponents.displayText(
-                  ProjectStrings.report_dialog_subheader,
-                  fontSize: 10,
-                  textAlign: TextAlign.center
-                ),
-              ),
-              const SizedBox(height: 100)
-            ],
+            ),
           ),
         );
       }
+    );
+  }
+
+  String? _uploadedImageUrl;
+
+  File? _selectedImage;  // Holds the selected image
+  XFile? pickedFile;     // Holds the picked image file data
+
+  Future<void> _pickImage() async {
+    try {
+      pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile!.path);
+          debugPrint('Image selected: ${_selectedImage?.path}');  // Debugging to check the file path
+        });
+      } else {
+        debugPrint('No image selected');
+      }
+    } catch (e) {
+      debugPrint("Error picking image: $e");
+    }
+  }
+
+  Future<void> uploadImage(String documentName) async {
+    if (_selectedImage == null) {
+      // Handle the case where no image is selected
+      debugPrint("No image selected for upload.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please select an image before uploading."),
+        ),
+      );
+      return;
+    }
+
+    try {
+      // Show a loading dialog
+      LoadingDialog().show(context: context, content: "Please wait while we process file upload.");
+
+      // Create reference to Firebase Storage
+      final storageRef = FirebaseStorage.instance.ref().child(
+          "${FirebaseConstants.reportImages}/$documentName-${DateTime.now().toIso8601String()}/${pickedFile?.name}"
+      );
+
+      // Upload the file
+      await storageRef.putFile(_selectedImage!);
+      LoadingDialog().dismiss();
+
+      // Get the download URL of the uploaded file
+      final downloadUrl = await storageRef.getDownloadURL();
+      setState(() {
+        _uploadedImageUrl = downloadUrl;  // Save the download URL
+      });
+
+      // Notify the user of success
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Image uploaded successfully!"),
+        ),
+      );
+
+    } catch (e) {
+      LoadingDialog().dismiss();
+      debugPrint("Error uploading image: $e");
+
+      // Notify the user of failure
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Error uploading image. Please try again."),
+        ),
+      );
+    }
+  }
+
+  Widget _buildCheckboxRow({
+    required bool value,
+    required String label,
+    required Function(bool?) onChanged,
+  }) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 40,
+          height: 30,
+          child: Checkbox(
+            activeColor: Color(int.parse(
+                ProjectColors.mainColorHex.substring(2), radix: 16)),
+            value: value,
+            onChanged: onChanged,
+            visualDensity: VisualDensity.compact,
+          ),
+        ),
+        const SizedBox(width: 5),
+        CustomComponents.displayText(
+          label,
+          fontSize: 10,
+        ),
+      ],
     );
   }
 
@@ -192,46 +334,68 @@ class _TopOptionReportState extends State<TopOptionReport> {
                                   padding: const EdgeInsets.only(top: 30),
                                   child: CustomComponents.displayText(
                                       ProjectStrings.report_location_title,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                    fontSize: 12
+                                  ),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 5),
                                 child: CustomComponents.displayTextField(
                                   ProjectStrings.report_location,
+                                  controller: _reportLocationController
                                 ),
                               ),
-                
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5)),
+
+                              //  add a photo
+                              GestureDetector(
+                                onTap: () {
+                                  _pickImage();
+                                },
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    width: 100,
+                                    height: 100,  // Ensure the container has a defined height
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5)),
                                       color: Colors.transparent,
                                       border: Border.all(
-                                          color: Color(
-                                              int.parse(ProjectColors.blackBody)),
-                                          width: 1.0)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.add,
-                                          size: 15,
+                                        color: Color(int.parse(ProjectColors.blackBody)),
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    child: _selectedImage == null
+                                        ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.add,
+                                            size: 15,
+                                          ),
+                                          const SizedBox(width: 5),
+                                          CustomComponents.displayText(ProjectStrings.report_add_photo,
+                                              fontSize: 10),
+                                        ],
+                                      ),
+                                    )
+                                        : Container(
+                                      width: 100,
+                                      height: 100,  // Ensure image container has height
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        image: DecorationImage(
+                                          image: FileImage(_selectedImage!),  // Show the selected image
+                                          fit: BoxFit.cover,
                                         ),
-                                        const SizedBox(width: 5),
-                                        CustomComponents.displayText(
-                                            ProjectStrings.report_add_photo,
-                                            fontSize: 10)
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
+
                               Padding(
                                 padding: const EdgeInsets.only(top: 5),
                                 child: Align(
@@ -252,6 +416,7 @@ class _TopOptionReportState extends State<TopOptionReport> {
                                 child: CustomComponents.displayText(
                                   ProjectStrings.report_check_all_that_applies,
                                   fontWeight: FontWeight.bold,
+                                  fontSize: 12
                                 ),
                               ),
                 
@@ -264,111 +429,55 @@ class _TopOptionReportState extends State<TopOptionReport> {
                               ),
                 
                               const SizedBox(height: 15),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 40,
-                                    height: 30,
-                                    child: Checkbox(
-                                      activeColor: Color(int.parse(
-                                          ProjectColors.mainColorHex.substring(2),
-                                          radix: 16)),
-                                      value: engineProblemsIsChecked,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          engineProblemsIsChecked = value!;
-                                        });
-                                      },
-                                      visualDensity: VisualDensity.compact,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  CustomComponents.displayText(
-                                      ProjectStrings.report_engine_problems,
-                                      fontSize: 10)
-                                ],
+                              _buildCheckboxRow(
+                                value: engineProblemsIsChecked,
+                                label: engineProblemLabel,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    engineProblemsIsChecked = value!;
+                                    updateSelectedProblems(engineProblemLabel, engineProblemsIsChecked);
+                                  });
+                                },
                               ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 40,
-                                    height: 30,
-                                    child: Checkbox(
-                                      activeColor: Color(int.parse(
-                                          ProjectColors.mainColorHex.substring(2),
-                                          radix: 16)),
-                                      value: transmissionIsChecked,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          transmissionIsChecked = value!;
-                                        });
-                                      },
-                                      visualDensity: VisualDensity.compact,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  CustomComponents.displayText(
-                                      ProjectStrings.report_transmission_issues,
-                                      fontSize: 10)
-                                ],
+                              _buildCheckboxRow(
+                                value: transmissionIsChecked,
+                                label: transmissionLabel,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    transmissionIsChecked = value!;
+                                    updateSelectedProblems(transmissionLabel, transmissionIsChecked);
+                                  });
+                                },
                               ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 40,
-                                    height: 30,
-                                    child: Checkbox(
-                                      activeColor: Color(int.parse(
-                                          ProjectColors.mainColorHex.substring(2),
-                                          radix: 16)),
-                                      value: brakeIsChecked,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          brakeIsChecked = value!;
-                                        });
-                                      },
-                                      visualDensity: VisualDensity.compact,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  CustomComponents.displayText(
-                                      ProjectStrings.report_brake_malfunction,
-                                      fontSize: 10)
-                                ],
+                              _buildCheckboxRow(
+                                value: brakeIsChecked,
+                                label: brakeLabel,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    brakeIsChecked = value!;
+                                    updateSelectedProblems(brakeLabel, brakeIsChecked);
+                                  });
+                                },
                               ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 40,
-                                    height: 30,
-                                    child: Checkbox(
-                                      activeColor: Color(int.parse(
-                                          ProjectColors.mainColorHex.substring(2),
-                                          radix: 16)),
-                                      value: otherIsChecked,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          otherIsChecked = value!;
-                                        });
-                                      },
-                                      visualDensity: VisualDensity.compact,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  CustomComponents.displayText(
-                                      ProjectStrings.report_other,
-                                      fontSize: 10)
-                                ],
+                              _buildCheckboxRow(
+                                value: otherIsChecked,
+                                label: otherLabel,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    otherIsChecked = value!;
+                                    updateSelectedProblems(otherLabel, otherIsChecked);
+                                  });
+                                },
                               ),
                 
                               //  comments
-                              //  problem checkboxes
                               const SizedBox(height: 30),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: CustomComponents.displayText(
                                   ProjectStrings.report_comments,
                                   fontWeight: FontWeight.bold,
+                                  fontSize: 12
                                 ),
                               ),
                 
@@ -382,6 +491,7 @@ class _TopOptionReportState extends State<TopOptionReport> {
                 
                               const SizedBox(height: 10),
                               TextField(
+                                controller: _commentsController,
                                 cursorColor: Color(int.parse(
                                     ProjectColors.mainColorHex.substring(2),
                                     radix: 16)),
@@ -390,6 +500,7 @@ class _TopOptionReportState extends State<TopOptionReport> {
                                 keyboardType: TextInputType
                                     .multiline, // Sets the keyboard type to multiline
                                 style: const TextStyle(
+                                  fontFamily: ProjectStrings.general_font_family,
                                     fontSize: 10, color: Color(0xff404040)),
                                 decoration: InputDecoration(
                                   labelStyle: const TextStyle(
@@ -416,8 +527,38 @@ class _TopOptionReportState extends State<TopOptionReport> {
                 
                               const SizedBox(height: 50),
                               GestureDetector(
-                                onTap: () {
-                                  _showInconvenienceDialog();
+                                onTap: () async {
+                                  try {
+                                    String compiledSelectedProblems = "";
+                                    for (var value in selectedProblems) {
+                                      compiledSelectedProblems += "$value.";
+                                    }
+                                    debugPrint("Comments: ${_commentsController.value.text}");
+
+                                    LoadingDialog().show(context: context, content: "Please wait while we submit your report information");
+
+                                    String documentNameAndProblemUID = "${FirebaseAuth.instance.currentUser!.uid}-${DateTime.now().hour * 3600 + DateTime.now().minute * 60 + DateTime.now().second}";
+
+                                    await Firestore().addReport(
+                                        documentName: documentNameAndProblemUID,
+                                        data: ReportModel(
+                                            problemSource: carBrands[selectedCard],
+                                            location: _reportLocationController.value.text,
+                                            selectedProblems: compiledSelectedProblems,
+                                            comments: _commentsController.value.text,
+                                            problemUID: documentNameAndProblemUID
+                                        ).getModelData()
+                                    );
+                                    await uploadImage(documentNameAndProblemUID);
+
+                                    LoadingDialog().dismiss();
+
+                                    _showInconvenienceDialog();
+                                  } catch(e) {
+                                    LoadingDialog().dismiss();
+                                    InfoDialog().show(context: context, content: "Something went wrong. Please try again later.");
+                                    debugPrint("Uploading report data failed: $e");
+                                  }
                                 },
                                 child: SizedBox(
                                   width: double.infinity,

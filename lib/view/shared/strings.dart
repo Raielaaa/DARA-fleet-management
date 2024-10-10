@@ -327,7 +327,7 @@ class ProjectStrings {
   static const String report_enter_your_comment = "Enter your comment here";
 
   static const String report_dialog_title = "Sorry for the Inconvenience";
-  static const String report_dialog_subheader = "We apologize for any disruption this may have cause. Please wait as we contact you by phone";
+  static const String report_dialog_subheader = "We sincerely apologize for any inconvenience this may have caused. Our team will reach out to you shortly via phone or email. To dismiss this message, kindly tap anywhere within the dialog.";
 
   //  selected item (si)
   static const String si_car_rent = "Car Rent";
