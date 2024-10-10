@@ -16,6 +16,7 @@ import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
 import "package:image_picker/image_picker.dart";
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
+import "package:url_launcher/url_launcher.dart";
 
 import "../../../../model/account/register_model.dart";
 import "../../../../services/firebase/storage.dart";
@@ -104,6 +105,43 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  void makePhoneCall() async {
+    var url = Uri.parse("tel:09701900391");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      //  error dialog
+    }
+  }
+
+  void showMessageApp() async {
+    // Android
+    String body = "Please type your inquiry here.";
+    Uri url = Uri.parse("sms:+63 0970 190 0391?body=$body");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      // iOS
+      Uri url = Uri.parse("sms:0039-222-060-888?body=$body");
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        //  error dialog
+      }
+    }
+  }
+
+  void showGmailApp() async {
+    String email = Uri.encodeComponent("rbhonra@ccc.edu.ph");
+    String subject = Uri.encodeComponent("DARA - Support Request");
+    String body = Uri.encodeComponent("Please type your inquiry here.");
+
+    Uri url = Uri.parse("mailto:$email?subject=$subject&body=$body");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {}
+  }
+
   Future<void> _showContactBottomDialog() async {
     return showModalBottomSheet(
         isScrollControlled: true,
@@ -121,20 +159,35 @@ class _ProfileState extends State<Profile> {
                 CustomComponents.displayText(ProjectStrings.to_bottom_title,
                     fontSize: 12, fontWeight: FontWeight.bold),
                 const SizedBox(height: 20),
-                _bottomSheetContactItems(
-                    "lib/assets/pictures/bottom_email.png",
-                    ProjectStrings.to_bottom_email_title,
-                    ProjectStrings.to_bottom_email_content),
+                GestureDetector(
+                  onTap: () {
+                    showGmailApp();
+                  },
+                  child: _bottomSheetContactItems(
+                      "lib/assets/pictures/bottom_email.png",
+                      ProjectStrings.to_bottom_email_title,
+                      ProjectStrings.to_bottom_email_content),
+                ),
                 const SizedBox(height: 15),
-                _bottomSheetContactItems(
-                    "lib/assets/pictures/bottom_chat.png",
-                    ProjectStrings.to_bottom_message_title,
-                    ProjectStrings.to_bottom_message_content),
+                GestureDetector(
+                  onTap: () {
+                    showMessageApp();
+                  },
+                  child: _bottomSheetContactItems(
+                      "lib/assets/pictures/bottom_chat.png",
+                      ProjectStrings.to_bottom_message_title,
+                      ProjectStrings.to_bottom_message_content),
+                ),
                 const SizedBox(height: 15),
-                _bottomSheetContactItems(
-                    "lib/assets/pictures/bottom_call.png",
-                    ProjectStrings.to_bottom_call_title,
-                    ProjectStrings.to_bottom_call_content),
+                GestureDetector(
+                  onTap: () {
+                    makePhoneCall();
+                  },
+                  child: _bottomSheetContactItems(
+                      "lib/assets/pictures/bottom_call.png",
+                      ProjectStrings.to_bottom_call_title,
+                      ProjectStrings.to_bottom_call_content),
+                ),
                 const SizedBox(height: 60),
               ],
             ),
@@ -309,7 +362,7 @@ class _ProfileState extends State<Profile> {
                                 fontSize: 14
                             ),
                             CustomComponents.displayText(
-                              "PH ${_currentUserInfo?.number}",
+                              "PH ${_currentUserInfo!.number.isNotEmpty ? _currentUserInfo?.number : "- click here to verify"}",
                               fontWeight: FontWeight.w600,
                               fontSize: 10,
                               color: Colors.grey,
@@ -318,16 +371,19 @@ class _ProfileState extends State<Profile> {
                             Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: Color(int.parse(
+                                  color: _currentUserInfo!.number.isNotEmpty ? Color(int.parse(
                                       ProjectColors.lightGreen.substring(2),
-                                      radix: 16)),
+                                      radix: 16)) : Color(int.parse(
+                                      ProjectColors.redButtonBackground.substring(2),
+                                      radix: 16)
+                                  ),
                                 ),
                                 child: Row(
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(left: 20),
                                       child: Image.asset(
-                                        "lib/assets/pictures/rentals_verified.png",
+                                        _currentUserInfo!.number.isNotEmpty ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
                                         width: 20,
                                         height: 20,
                                       ),
@@ -347,7 +403,8 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                   ],
-                                ))
+                                )
+                            )
                           ],
                         ),
                       ),

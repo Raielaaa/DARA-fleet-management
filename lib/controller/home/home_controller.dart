@@ -62,7 +62,7 @@ class HomeController {
   }
 
   void makePhoneCall() async {
-    var url = Uri.parse("tel:9701900391");
+    var url = Uri.parse("tel:09701900391");
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {

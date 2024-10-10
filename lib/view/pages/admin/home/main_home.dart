@@ -227,17 +227,16 @@ class _AdminHomeState extends State<AdminHome> {
       debugPrint("ChatGPT error: ${e.toString()}");
     }
 
-    // Optionally, show the opening banner after initializing the future
     WidgetsBinding.instance.addPostFrameCallback((_) {
       homeController.showOpeningBanner(context);
       debugPrint("User type - ${PersistentData().userType}");
-    });
 
-    try {
-      _fetchUserInfo();
-    } catch(e) {
-      debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
-    }
+      try {
+        _fetchUserInfo();
+      } catch(e) {
+        debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
+      }
+    });
   }
 
   Widget weatherWidget() {
@@ -375,11 +374,51 @@ class _AdminHomeState extends State<AdminHome> {
                               CustomComponents.displayText("Hello, ${_currentUserInfo?.role}",
                                   fontWeight: FontWeight.bold, fontSize: 14),
                               CustomComponents.displayText(
-                                "PH ${_currentUserInfo?.number}",
+                                "PH ${_currentUserInfo!.number.isNotEmpty ? _currentUserInfo?.number : "- click here to verify"}",
                                 fontWeight: FontWeight.w600,
                                 fontSize: 10,
-                                color: Colors.grey
+                                color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
                               ),
+                              const SizedBox(height: 10),
+                              Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: _currentUserInfo!.number.isNotEmpty ? Color(int.parse(
+                                        ProjectColors.lightGreen.substring(2),
+                                        radix: 16)) : Color(int.parse(
+                                        ProjectColors.redButtonBackground.substring(2),
+                                        radix: 16)
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 20),
+                                        child: Image.asset(
+                                          _currentUserInfo!.number.isNotEmpty ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
+                                          width: 20,
+                                          height: 20,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 10, right: 25, left: 5),
+                                        child: CustomComponents.displayText(
+                                          _currentUserInfo!.number.isNotEmpty ? ProjectStrings
+                                              .rentals_header_verified_button : "Unverified",
+                                          color: _currentUserInfo!.number.isNotEmpty ? Color(int.parse(
+                                              ProjectColors.greenButtonMain.substring(2),
+                                              radix: 16)) : Color(int.parse(
+                                              ProjectColors.redButtonMain.substring(2),
+                                              radix: 16)
+                                          ),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                              )
                             ],
                           ),
                         ),
