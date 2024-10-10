@@ -216,6 +216,11 @@ flutter:
     - lib/assets/pictures/jpeg.png
     - lib/assets/pictures/jpg.png
     - lib/assets/pictures/png.png
+    - lib/assets/pictures/si_rent_count.png
+    - lib/assets/pictures/si_mileage.png
+    - lib/assets/pictures/si_fuel_capacity.png
+    - lib/assets/pictures/data_not_found.jpg
+    - lib/assets/pictures/home_top_image_2.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

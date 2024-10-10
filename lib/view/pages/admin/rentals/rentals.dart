@@ -737,27 +737,28 @@ class _Rentals extends State<Rentals> {
                             fontWeight: FontWeight.bold,
                           ),
                           CustomComponents.displayText(
-                            "PH ${PersistentData().userInfo!.number}",
+                            "PH ${PersistentData().userInfo!.number.isNotEmpty ? PersistentData().userInfo?.number : "- click here to verify"}",
                             fontWeight: FontWeight.w600,
                             fontSize: 10,
-                            color: Color(int.parse(
-                                ProjectColors.lightGray.substring(2),
-                                radix: 16)),
+                            color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
                           ),
                           const SizedBox(height: 10),
                           Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Color(int.parse(
+                                color: PersistentData().userInfo!.number.isNotEmpty ? Color(int.parse(
                                     ProjectColors.lightGreen.substring(2),
-                                    radix: 16)),
+                                    radix: 16)) : Color(int.parse(
+                                    ProjectColors.redButtonBackground.substring(2),
+                                    radix: 16)
+                                ),
                               ),
                               child: Row(
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Image.asset(
-                                      "lib/assets/pictures/rentals_verified.png",
+                                      PersistentData().userInfo!.number.isNotEmpty ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
                                       width: 20,
                                       height: 20,
                                     ),
@@ -769,11 +770,12 @@ class _Rentals extends State<Rentals> {
                                         right: 25,
                                         left: 5),
                                     child: CustomComponents.displayText(
-                                      ProjectStrings
-                                          .rentals_header_verified_button,
-                                      color: Color(int.parse(
-                                          ProjectColors.greenButtonMain
-                                              .substring(2),
+                                      PersistentData().userInfo?.number.isNotEmpty == true ? ProjectStrings
+                                          .rentals_header_verified_button : "Unverified",
+                                      color: PersistentData().userInfo!.number.isNotEmpty ? Color(int.parse(
+                                          ProjectColors.greenButtonMain.substring(2),
+                                          radix: 16)) : Color(int.parse(
+                                          ProjectColors.redButtonMain.substring(2),
                                           radix: 16)),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10,
@@ -786,7 +788,7 @@ class _Rentals extends State<Rentals> {
                     ),
                     Expanded(
                       child: Image.asset(
-                        "lib/assets/pictures/home_top_image.png",
+                        "lib/assets/pictures/home_top_image_2.png",
                         fit: BoxFit
                             .contain, // Ensure the image fits within its container
                       ),
@@ -796,7 +798,7 @@ class _Rentals extends State<Rentals> {
               ),
 
               // Switch option
-              const SizedBox(height: 15),
+              const SizedBox(height: 0),
               SlideSwitcher(
                 indents: 3,
                 containerColor: Colors.white,
@@ -827,8 +829,37 @@ class _Rentals extends State<Rentals> {
 
 
               //////////////////  list items  ////////////////////////
-              const SizedBox(height: 15),
-              _rentRecords.isEmpty ? const Center(child: CircularProgressIndicator()) :
+              const SizedBox(height: 5),
+              _rentRecords.isEmpty ? Padding(
+                padding: const EdgeInsets.only(left: 25.0, right: 25),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      child: Column(
+                        children: [
+                          Image.asset(
+                              "lib/assets/pictures/data_not_found.jpg",
+                            width: MediaQuery.of(context).size.width - 200,
+                          ),
+                          const SizedBox(height: 20),
+                          CustomComponents.displayText(
+                            "No records found at the moment. Please try again later.",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10
+                          ),
+                          const SizedBox(height: 10)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ) :
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.only(top: 0, bottom: 100),

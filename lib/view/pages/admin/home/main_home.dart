@@ -395,7 +395,7 @@ class _AdminHomeState extends State<AdminHome> {
                         ),
                         Expanded(
                           child: Image.asset(
-                            "lib/assets/pictures/home_top_image.png",
+                            "lib/assets/pictures/home_top_image_2.png",
                             fit: BoxFit
                                 .contain, // Ensure the image fits within its container
                           ),
@@ -405,7 +405,7 @@ class _AdminHomeState extends State<AdminHome> {
                   ),
 
                   //  Top options
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Row(

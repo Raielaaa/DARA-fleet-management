@@ -411,7 +411,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       Expanded(
                         child: Image.asset(
-                          "lib/assets/pictures/home_top_image.png",
+                          "lib/assets/pictures/home_top_image_2.png",
                           fit: BoxFit
                               .contain, // Ensure the image fits within its container
                         ),
@@ -422,7 +422,7 @@ class _ProfileState extends State<Profile> {
 
                 //  main profile section
                 Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 25),
+                  padding: const EdgeInsets.only(left: 25, right: 25, top: 0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -444,6 +444,7 @@ class _ProfileState extends State<Profile> {
                               backgroundImage: NetworkImage(_imageUrl!), // Display image from URL
                             )
                                 : const CircleAvatar(
+                              backgroundColor: Colors.white,
                               radius: 40,
                               backgroundImage: AssetImage('lib/assets/pictures/user_info_user.png'), // Default image
                             ),

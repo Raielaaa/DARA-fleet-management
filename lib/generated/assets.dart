@@ -53,6 +53,7 @@ class Assets {
   static const String assetsPicturesDapBookSelected = 'lib/assets/pictures/dap_book_selected.png';
   static const String assetsPicturesDapEmergencyContactNotSelected = 'lib/assets/pictures/dap_emergency_contact_not_selected.png';
   static const String assetsPicturesDapEmergencyContactSelected = 'lib/assets/pictures/dap_emergency_contact_selected.png';
+  static const String assetsPicturesDataNotFound = 'lib/assets/pictures/data_not_found.jpg';
   static const String assetsPicturesDelete = 'lib/assets/pictures/delete.png';
   static const String assetsPicturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String assetsPicturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';
@@ -116,7 +117,10 @@ class Assets {
   static const String assetsPicturesSiColor = 'lib/assets/pictures/si_color.png';
   static const String assetsPicturesSiEngine = 'lib/assets/pictures/si_engine.png';
   static const String assetsPicturesSiFuel = 'lib/assets/pictures/si_fuel.png';
+  static const String assetsPicturesSiFuelCapacity = 'lib/assets/pictures/si_fuel_capacity.png';
   static const String assetsPicturesSiHorsepower = 'lib/assets/pictures/si_horsepower.png';
+  static const String assetsPicturesSiMileage = 'lib/assets/pictures/si_mileage.png';
+  static const String assetsPicturesSiRentCount = 'lib/assets/pictures/si_rent_count.png';
   static const String assetsPicturesSiSeats = 'lib/assets/pictures/si_seats.png';
   static const String assetsPicturesSiTransmission = 'lib/assets/pictures/si_transmission.png';
   static const String assetsPicturesStar = 'lib/assets/pictures/star.png';
@@ -211,6 +215,7 @@ class Assets {
   static const String picturesDapBookSelected = 'lib/assets/pictures/dap_book_selected.png';
   static const String picturesDapEmergencyContactNotSelected = 'lib/assets/pictures/dap_emergency_contact_not_selected.png';
   static const String picturesDapEmergencyContactSelected = 'lib/assets/pictures/dap_emergency_contact_selected.png';
+  static const String picturesDataNotFound = 'lib/assets/pictures/data_not_found.jpg';
   static const String picturesDelete = 'lib/assets/pictures/delete.png';
   static const String picturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String picturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';
@@ -230,6 +235,7 @@ class Assets {
   static const String picturesHomeOpeningBanner = 'lib/assets/pictures/home_opening_banner.png';
   static const String picturesHomeTopContact = 'lib/assets/pictures/home_top_contact.png';
   static const String picturesHomeTopImage = 'lib/assets/pictures/home_top_image.png';
+  static const String picturesHomeTopImage2 = 'lib/assets/pictures/home_top_image_2.png';
   static const String picturesHomeTopManage = 'lib/assets/pictures/home_top_manage.png';
   static const String picturesHomeTopReport = 'lib/assets/pictures/home_top_report.png';
   static const String picturesHomeTopSettings = 'lib/assets/pictures/home_top_settings.png';
@@ -274,7 +280,10 @@ class Assets {
   static const String picturesSiColor = 'lib/assets/pictures/si_color.png';
   static const String picturesSiEngine = 'lib/assets/pictures/si_engine.png';
   static const String picturesSiFuel = 'lib/assets/pictures/si_fuel.png';
+  static const String picturesSiFuelCapacity = 'lib/assets/pictures/si_fuel_capacity.png';
   static const String picturesSiHorsepower = 'lib/assets/pictures/si_horsepower.png';
+  static const String picturesSiMileage = 'lib/assets/pictures/si_mileage.png';
+  static const String picturesSiRentCount = 'lib/assets/pictures/si_rent_count.png';
   static const String picturesSiSeats = 'lib/assets/pictures/si_seats.png';
   static const String picturesSiTransmission = 'lib/assets/pictures/si_transmission.png';
   static const String picturesStar = 'lib/assets/pictures/star.png';

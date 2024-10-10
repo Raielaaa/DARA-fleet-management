@@ -397,7 +397,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                     padding: const EdgeInsets.only(right: 15, left: 15),
                     child: Container(
                       width: double.infinity,
-                      height: 350,
+                      height: 440,
                       decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
@@ -656,6 +656,73 @@ class _UnitPreviewState extends State<UnitPreview> {
                                             ],
                                           ),
 
+                                          const SizedBox(height: 30),
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: [
+                                              //  fuel capacity
+                                              Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                      "lib/assets/pictures/si_fuel_capacity.png",
+                                                      width: 30),
+                                                  const SizedBox(height: 10),
+                                                  CustomComponents.displayText(
+                                                      "Fuel Capacity",
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      fontSize: 10),
+                                                  CustomComponents.displayText(
+                                                      selectedCarItem.fuel,
+                                                      fontSize: 10),
+                                                ],
+                                              ),
+                                              //  mileage
+                                              const SizedBox(width: 60),
+                                              Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                      "lib/assets/pictures/si_mileage.png",
+                                                      width: 30),
+                                                  const SizedBox(height: 10),
+                                                  CustomComponents.displayText(
+                                                      "Mileage",
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      fontSize: 10),
+                                                  CustomComponents.displayText(
+                                                      selectedCarItem.mileage,
+                                                      fontSize: 10),
+                                                ],
+                                              ),
+                                              const SizedBox(width: 60),
+                                              //  rent count
+                                              Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                      "lib/assets/pictures/si_rent_count.png",
+                                                      width: 30),
+                                                  const SizedBox(height: 10),
+                                                  CustomComponents.displayText(
+                                                      "Rent Count",
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      fontSize: 10),
+                                                  CustomComponents.displayText(
+                                                      selectedCarItem.rentCount,
+                                                      fontSize: 10),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+
                                           const SizedBox(height: 20)
                                         ],
                                       ),
@@ -704,7 +771,9 @@ class _UnitPreviewState extends State<UnitPreview> {
                             _showInformationDialog();
                           }
                     }),
-                  )
+                  ),
+
+                  const SizedBox(height: 100)
                 ],
               ))
             ],

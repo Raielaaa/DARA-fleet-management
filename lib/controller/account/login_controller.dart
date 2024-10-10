@@ -144,8 +144,14 @@ class LoginController {
 
     for (int i = 0; i <= _userRoleLocal.length - 1; i++) {
       if (_userRoleLocal[i].email == email && _userRoleLocal[i].chosenRole == PersistentData().userType) {
+        debugPrint("Renter debug - email1: ${_userRoleLocal[i].email}");
+        debugPrint("Renter debug - email2: $email");
+        debugPrint("Renter debug - chosenRole1: ${_userRoleLocal[i].chosenRole}");
+        debugPrint("Renter debug - chosenRole2: ${PersistentData().userType}");
+
         await Auth().signInWithEmailAndPassword(email: email, password: password, context: context);
         _loadingDialog.dismiss();
+        break;
       } else {
         _loadingDialog.dismiss();
         InfoDialog().show(
@@ -153,6 +159,7 @@ class LoginController {
             content: "An account with the selected role does not exist. Please ensure you selected the correct role during registration.",
             header: "Warning"
         );
+        debugPrint("role error count");
       }
     }
     _loadingDialog.dismiss();
