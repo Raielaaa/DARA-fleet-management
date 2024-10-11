@@ -89,6 +89,7 @@ class Assets {
   static const String assetsPicturesManageReportCarStatus = 'lib/assets/pictures/manage_report_car_status.png';
   static const String assetsPicturesManageReportInquiries = 'lib/assets/pictures/manage_report_inquiries.png';
   static const String assetsPicturesManageReportReport = 'lib/assets/pictures/manage_report_report.png';
+  static const String assetsPicturesMenu = 'lib/assets/pictures/menu.png';
   static const String assetsPicturesMileageIcon = 'lib/assets/pictures/mileage_icon.png';
   static const String assetsPicturesOapBusinessNotSelected = 'lib/assets/pictures/oap_business_not_selected.png';
   static const String assetsPicturesOapBusinessSelected = 'lib/assets/pictures/oap_business_selected.png';
@@ -221,6 +222,10 @@ class Assets {
   static const String picturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String picturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';
   static const String picturesDocx = 'lib/assets/pictures/docx.png';
+  static const String picturesDrawerDashboards = 'lib/assets/pictures/drawer_dashboards.png';
+  static const String picturesDrawerExplore = 'lib/assets/pictures/drawer_explore.png';
+  static const String picturesDrawerProfile = 'lib/assets/pictures/drawer_profile.png';
+  static const String picturesDrawerRental = 'lib/assets/pictures/drawer_rental.png';
   static const String picturesExit = 'lib/assets/pictures/exit.png';
   static const String picturesExpand = 'lib/assets/pictures/expand.png';
   static const String picturesFuelIcon = 'lib/assets/pictures/fuel_icon.png';
@@ -252,6 +257,7 @@ class Assets {
   static const String picturesManageReportCarStatus = 'lib/assets/pictures/manage_report_car_status.png';
   static const String picturesManageReportInquiries = 'lib/assets/pictures/manage_report_inquiries.png';
   static const String picturesManageReportReport = 'lib/assets/pictures/manage_report_report.png';
+  static const String picturesMenu = 'lib/assets/pictures/menu.png';
   static const String picturesMileageIcon = 'lib/assets/pictures/mileage_icon.png';
   static const String picturesOapBusinessNotSelected = 'lib/assets/pictures/oap_business_not_selected.png';
   static const String picturesOapBusinessSelected = 'lib/assets/pictures/oap_business_selected.png';

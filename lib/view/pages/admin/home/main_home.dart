@@ -279,6 +279,7 @@ class _AdminHomeState extends State<AdminHome> {
     CustomComponents.showToastMessage("Page refreshed", Colors.black54, Colors.white);
   }
 
+
   @override
   Widget build(BuildContext context) {
     //  manage name
@@ -306,9 +307,14 @@ class _AdminHomeState extends State<AdminHome> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset(
-                          "lib/assets/pictures/app_logo_circle.png",
-                          width: 120.0,
+                        GestureDetector(
+                          onTap: () {
+
+                          },
+                          child: Image.asset(
+                            "lib/assets/pictures/app_logo_circle.png",
+                            width: 120.0,
+                          ),
                         ),
                         Container(
                           decoration: BoxDecoration(

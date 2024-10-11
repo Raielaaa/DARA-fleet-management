@@ -1,6 +1,8 @@
 // ignore_for_file: unnecessary_getters_setters
 import 'package:dara_app/model/account/register_model.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 
 import '../../model/car_list/complete_car_list.dart';
@@ -96,4 +98,13 @@ class PersistentData {
   FeaturedCarInfo? selectedFeaturedCarItem;
 
   RegisterModel? userInfo;
+
+
+  ////////////  drawer//////////
+  GlobalKey<ScaffoldState>? scaffoldKey;
+  void openDrawer() {
+    if (scaffoldKey != null && scaffoldKey!.currentState != null) {
+      scaffoldKey!.currentState!.openDrawer();
+    }
+  }
 }

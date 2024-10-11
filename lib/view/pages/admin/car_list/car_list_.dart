@@ -242,11 +242,11 @@ class _CarListState extends State<CarList> {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              PersistentData().openDrawer();
             },
             child: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Image.asset("lib/assets/pictures/left_arrow.png"),
+              child: Image.asset("lib/assets/pictures/menu.png"),
             ),
           ),
           CustomComponents.displayText(
