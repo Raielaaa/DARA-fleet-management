@@ -58,6 +58,10 @@ class Assets {
   static const String assetsPicturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String assetsPicturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';
   static const String assetsPicturesDocx = 'lib/assets/pictures/docx.png';
+  static const String assetsPicturesDrawerDashboards = 'lib/assets/pictures/drawer_dashboards.png';
+  static const String assetsPicturesDrawerExplore = 'lib/assets/pictures/drawer_explore.png';
+  static const String assetsPicturesDrawerProfile = 'lib/assets/pictures/drawer_profile.png';
+  static const String assetsPicturesDrawerRental = 'lib/assets/pictures/drawer_rental.png';
   static const String assetsPicturesExit = 'lib/assets/pictures/exit.png';
   static const String assetsPicturesExpand = 'lib/assets/pictures/expand.png';
   static const String assetsPicturesFuelIcon = 'lib/assets/pictures/fuel_icon.png';
@@ -222,10 +226,12 @@ class Assets {
   static const String picturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String picturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';
   static const String picturesDocx = 'lib/assets/pictures/docx.png';
+  static const String picturesDrawerAbout = 'lib/assets/pictures/drawer_about.png';
   static const String picturesDrawerDashboards = 'lib/assets/pictures/drawer_dashboards.png';
   static const String picturesDrawerExplore = 'lib/assets/pictures/drawer_explore.png';
   static const String picturesDrawerProfile = 'lib/assets/pictures/drawer_profile.png';
   static const String picturesDrawerRental = 'lib/assets/pictures/drawer_rental.png';
+  static const String picturesDrawerTerms = 'lib/assets/pictures/drawer_terms.png';
   static const String picturesExit = 'lib/assets/pictures/exit.png';
   static const String picturesExpand = 'lib/assets/pictures/expand.png';
   static const String picturesFuelIcon = 'lib/assets/pictures/fuel_icon.png';

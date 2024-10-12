@@ -6,6 +6,7 @@ import 'package:dara_app/view/pages/admin/car_list/car_list_.dart';
 import 'package:dara_app/view/pages/admin/home/main_home.dart';
 import 'package:dara_app/view/pages/admin/profile/profile.dart';
 import 'package:dara_app/view/pages/admin/rentals/rentals.dart';
+import 'package:dara_app/view/shared/colors.dart';
 import 'package:dara_app/view/shared/components.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import 'package:flutter/cupertino.dart';
@@ -180,9 +181,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget drawerUI() {
+    int selectedIndex = PersistentData().selectedDrawerIndex;
+
     return Drawer(
       // Give the drawer a margin and apply a shape for rounded corners
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(20.0),
           bottomRight: Radius.circular(20.0),
@@ -191,7 +194,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       child: Container(
-        decoration: BoxDecoration(
+        height: double.infinity,
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(20.0),
@@ -260,12 +264,210 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              // Add more items if needed below
+              // navigation items
+              //  home
+              const SizedBox(height: 30),
+              GestureDetector(
+                onTap: () {
+
+                },
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        "lib/assets/pictures/drawer_dashboards.png",
+                        width: 15,
+                        color: selectedIndex == 0 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff7a7b7e),
+                      ),
+                      const SizedBox(width: 18),
+                      CustomComponents.displayText(
+                          "Home",
+                          fontSize: 12,
+                        color: selectedIndex == 0 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
+                        fontWeight: selectedIndex == 0 ? FontWeight.bold : FontWeight.normal
+                      )
+                    ]
+                ),
+              ),
+              //  explore
+              const SizedBox(height: 30),
+              GestureDetector(
+                onTap: () {
+
+                },
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        "lib/assets/pictures/drawer_explore.png",
+                        width: 16,
+                        color: selectedIndex == 1 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff7a7b7e),
+                      ),
+                      const SizedBox(width: 17),
+                      CustomComponents.displayText(
+                          "Explore",
+                          fontSize: 12,
+                          color: selectedIndex == 1 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
+                          fontWeight: selectedIndex == 1 ? FontWeight.bold : FontWeight.normal
+                      )
+                    ]
+                ),
+              ),
+              //  rentals
+              const SizedBox(height: 30),
+              GestureDetector(
+                onTap: () {
+
+                },
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        "lib/assets/pictures/drawer_profile.png",
+                        width: 20,
+                        color: selectedIndex == 2 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff7a7b7e),
+                      ),
+                      const SizedBox(width: 13),
+                      CustomComponents.displayText(
+                          "Rentals",
+                          fontSize: 12,
+                          color: selectedIndex == 2 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
+                          fontWeight: selectedIndex == 2 ? FontWeight.bold : FontWeight.normal
+                      )
+                    ]
+                ),
+              ),
+              //  profile
+              const SizedBox(height: 30),
+              GestureDetector(
+                onTap: () {
+
+                },
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        "lib/assets/pictures/drawer_rental.png",
+                        width: 18,
+                        color: selectedIndex == 3 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff7a7b7e),
+                      ),
+                      const SizedBox(width: 15),
+                      CustomComponents.displayText(
+                          "Profile",
+                          fontSize: 12,
+                          color: selectedIndex == 3 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
+                          fontWeight: selectedIndex == 3 ? FontWeight.bold : FontWeight.normal
+                      )
+                    ]
+                ),
+              ),
+
+              const SizedBox(height: 20),
+              const Divider(),
+              const SizedBox(height: 20),
+
+              CustomComponents.displayText(
+                  "App Details",
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12
+              ),
+
+              //  terms
+              const SizedBox(height: 30),
+              GestureDetector(
+                onTap: () {
+
+                },
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        "lib/assets/pictures/drawer_terms.png",
+                        width: 16,
+                        color: selectedIndex == 4 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff7a7b7e),
+                      ),
+                      const SizedBox(width: 15),
+                      CustomComponents.displayText(
+                          "Terms",
+                          fontSize: 12,
+                          color: selectedIndex == 4 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
+                          fontWeight: selectedIndex == 4 ? FontWeight.bold : FontWeight.normal
+                      )
+                    ]
+                ),
+              ),
+              //  about
+              const SizedBox(height: 30),
+              GestureDetector(
+                onTap: () {
+
+                },
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        "lib/assets/pictures/drawer_about.png",
+                        width: 17,
+                        color: selectedIndex == 5 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff7a7b7e),
+                      ),
+                      const SizedBox(width: 15),
+                      CustomComponents.displayText(
+                          "About",
+                          fontSize: 12,
+                          color: selectedIndex == 5 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
+                          fontWeight: selectedIndex == 5 ? FontWeight.bold : FontWeight.normal
+                      )
+                    ]
+                ),
+              ),
+
+              const SizedBox(height:30),
+              Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Color(int.parse(ProjectColors.lineGray.substring(2), radix: 16)))
+                  ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 20,
+                        backgroundImage: AssetImage('lib/assets/pictures/user_info_user.png'), // Default image
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomComponents.displayText(
+                            PersistentData().userInfo?.firstName == null ? "John Mark Reyes" : "${PersistentData().userInfo?.firstName} ${PersistentData().userInfo?.lastName}",
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold
+                          ),
+                          const SizedBox(height: 3),
+                          CustomComponents.displayText(
+                              PersistentData().userInfo?.email == null ? "johnmarkreyes@gmail.com" : "${PersistentData().userInfo?.email}",
+                            fontSize: 10,
+                            color: Colors.grey
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      const Icon(
+                        Icons.more_horiz,
+                        color: Color(0xff404040)
+                      )
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
       ),
     );
   }
-
 }

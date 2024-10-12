@@ -227,6 +227,8 @@ flutter:
     - lib/assets/pictures/drawer_explore.png
     - lib/assets/pictures/drawer_profile.png
     - lib/assets/pictures/drawer_rental.png
+    - lib/assets/pictures/drawer_terms.png
+    - lib/assets/pictures/drawer_about.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

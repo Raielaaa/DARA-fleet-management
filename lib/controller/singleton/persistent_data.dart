@@ -102,7 +102,10 @@ class PersistentData {
 
   ////////////  drawer//////////
   GlobalKey<ScaffoldState>? scaffoldKey;
-  void openDrawer() {
+  int selectedDrawerIndex = 0; // Store the selected index
+
+  void openDrawer({int index = 0}) {
+    selectedDrawerIndex = index; // Set the index
     if (scaffoldKey != null && scaffoldKey!.currentState != null) {
       scaffoldKey!.currentState!.openDrawer();
     }
