@@ -1,8 +1,10 @@
 import "dart:io";
 
 import "package:cloud_firestore/cloud_firestore.dart";
+import "package:dara_app/controller/profile/profile_controller.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/model/constants/firebase_constants.dart";
+import "package:dara_app/model/renting_proccess/renting_process.dart";
 import "package:dara_app/services/firebase/firestore.dart";
 import "package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart";
 import "package:dara_app/view/pages/admin/profile/upload_documents.dart";
@@ -14,6 +16,7 @@ import "package:file_picker/file_picker.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
+import "package:flutter/scheduler.dart";
 import "package:image_picker/image_picker.dart";
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import "package:url_launcher/url_launcher.dart";
@@ -33,6 +36,13 @@ class _ProfileState extends State<Profile> {
   File? _image; // Store the selected image
   final ImagePicker _picker = ImagePicker(); // Initialize the picker
   String? _imageUrl; // Store the URL for displaying the profile picture
+  final ProfileController _profileController = ProfileController();
+  List<RentInformation> filteredRentInformation = [];
+  int rentCount = 0;
+  String favoriteCarUnit = "";
+  String longestRentalPeriod = "";
+  double totalAmountSpent = 0.0;
+
 
   // Function to pick an image from the gallery
   Future<void> _pickImage() async {
@@ -92,6 +102,38 @@ class _ProfileState extends State<Profile> {
 
     _fetchUserInfo();
     _loadProfileImage(); // Load the profile image on initialization
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _fetchRentInfo(); // Fetch rent info here instead
+    });
+  }
+
+  Future<void> _fetchRentInfo() async {
+    LoadingDialog().show(context: context, content: "Please wait while we retrieve your profile information.");
+    List<RentInformation> rentInformation = await _profileController.retrieveRentInformationForProfile(FirebaseAuth.instance.currentUser!.uid);
+    PersistentData().rentInformationForProfile = rentInformation;
+    LoadingDialog().dismiss();
+
+    debugPrint("Fetch rent info");
+    for (RentInformation listItems in rentInformation) {
+      if (listItems.rentStatus.toLowerCase() == "pending") {
+        filteredRentInformation.add(listItems);
+
+        debugPrint("pending count");
+      }  
+    }
+
+    rentCount = filteredRentInformation.length;
+    for (RentInformation filteredListItems in filteredRentInformation) {
+      totalAmountSpent += double.parse(filteredListItems.totalAmount);
+    }
+
+    setState(() {
+      filteredRentInformation = filteredRentInformation;
+      totalAmountSpent = totalAmountSpent;
+    });
+
+    debugPrint("Finished");
   }
 
   Future<void> _fetchUserInfo() async {
@@ -195,8 +237,7 @@ class _ProfileState extends State<Profile> {
         });
   }
 
-  Widget _bottomSheetContactItems(
-      String imagePath, String contactTitle, String contactContent) {
+  Widget _bottomSheetContactItems(String imagePath, String contactTitle, String contactContent) {
     return Row(
       children: [
         Image.asset(
@@ -483,8 +524,7 @@ class _ProfileState extends State<Profile> {
                             _currentUserInfo!.email),
 
                         //  rental count
-                        _mainPanelItem(ProjectStrings.user_info_rental_count_title,
-                            _currentUserInfo!.rentalCount.isEmpty ? "NA" : _currentUserInfo!.rentalCount),
+                        _mainPanelItem(ProjectStrings.user_info_rental_count_title, rentCount.toString()),
 
                         //  favorite
                         _mainPanelItem(ProjectStrings.user_info_favorite_title,
@@ -510,7 +550,7 @@ class _ProfileState extends State<Profile> {
                                       ProjectColors.lightGray.substring(2),
                                       radix: 16))),
                               CustomComponents.displayText(
-                                  _currentUserInfo!.totalAmountSpent.isEmpty ? "NA" : _currentUserInfo!.totalAmountSpent,
+                                  "PHP ${totalAmountSpent.toString()}",
                                   fontWeight: FontWeight.bold,
                                   fontSize: 10,
                                   color: Color(int.parse(

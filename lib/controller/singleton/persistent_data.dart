@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 
 import '../../model/car_list/complete_car_list.dart';
+import '../../model/renting_proccess/renting_process.dart';
 
 
 class PersistentData {
@@ -123,4 +124,7 @@ class PersistentData {
 // if (scaffoldKey != null && scaffoldKey!.currentState != null) {
 //   scaffoldKey!.currentState!.openDrawer();
 // }
+
+  //  rent information for profile
+  List<RentInformation> rentInformationForProfile = [];
 }

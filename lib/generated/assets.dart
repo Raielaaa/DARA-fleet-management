@@ -58,10 +58,12 @@ class Assets {
   static const String assetsPicturesDeliveryModeDelivery = 'lib/assets/pictures/delivery_mode_delivery.png';
   static const String assetsPicturesDeliveryModePickUp = 'lib/assets/pictures/delivery_mode_pick_up.png';
   static const String assetsPicturesDocx = 'lib/assets/pictures/docx.png';
+  static const String assetsPicturesDrawerAbout = 'lib/assets/pictures/drawer_about.png';
   static const String assetsPicturesDrawerDashboards = 'lib/assets/pictures/drawer_dashboards.png';
   static const String assetsPicturesDrawerExplore = 'lib/assets/pictures/drawer_explore.png';
   static const String assetsPicturesDrawerProfile = 'lib/assets/pictures/drawer_profile.png';
   static const String assetsPicturesDrawerRental = 'lib/assets/pictures/drawer_rental.png';
+  static const String assetsPicturesDrawerTerms = 'lib/assets/pictures/drawer_terms.png';
   static const String assetsPicturesExit = 'lib/assets/pictures/exit.png';
   static const String assetsPicturesExpand = 'lib/assets/pictures/expand.png';
   static const String assetsPicturesFuelIcon = 'lib/assets/pictures/fuel_icon.png';
@@ -318,6 +320,7 @@ class Assets {
   static const String picturesUserTypeUser = 'lib/assets/pictures/user_type_user.jpg';
   static const String picturesVerifyDocuments = 'lib/assets/pictures/verify_documents.png';
   static const String profileProfile = 'lib/view/pages/admin/profile/profile.dart';
+  static const String profileProfileController = 'lib/controller/profile/profile_controller.dart';
   static const String profileUploadDocuments = 'lib/view/pages/admin/profile/upload_documents.dart';
   static const String providersRegisterProvider = 'lib/controller/providers/register_provider.dart';
   static const String registerRegister = 'lib/view/pages/account/register/register.dart';
