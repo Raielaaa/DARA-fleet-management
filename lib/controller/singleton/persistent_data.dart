@@ -127,4 +127,8 @@ class PersistentData {
 
   //  rent information for profile
   List<RentInformation> rentInformationForProfile = [];
+
+  double weatherMapsLongitude = 0.0;
+  double weatherMapsLatitude = 0.0;
+  String weatherShortLocation = "Current location";
 }

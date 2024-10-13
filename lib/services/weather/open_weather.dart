@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 
 class OpenWeather {
+  // Function to get the user's current position
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -20,30 +21,37 @@ class OpenWeather {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, request denied.
+        // Permissions are denied.
         return Future.error('Location permissions are denied.');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are permanently denied, request cannot be made.
+      // Permissions are permanently denied.
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
-    // Get current location.
+    // Get the current location.
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
   }
 
-  Future<List<Weather>?> getWeatherForecastFromAPI() async {
+  // Function to retrieve weather forecast (with optional latitude/longitude parameters)
+  Future<List<Weather>?> getWeatherForecastFromAPI(double? longitude, double? latitude) async {
     try {
-      //  retrieve longitute and latitude
-      Position position = await _determinePosition();
+      // Use provided latitude/longitude, or determine current location if not provided
+      if (latitude == null || longitude == null) {
+        Position position = await _determinePosition();
+        latitude = position.latitude;
+        longitude = position.longitude;
+      }
 
-      //  retrieve forecast date
+      debugPrint("Longitude: $longitude");
+      debugPrint("Latitude: $latitude");
+      // Retrieve forecast data using the latitude and longitude
       WeatherFactory wf = WeatherFactory(Constants.OPEN_WEATHER_API_KEY);
-      List<Weather> forecast = await wf.fiveDayForecastByLocation(position.latitude, position.longitude);
+      List<Weather> forecast = await wf.fiveDayForecastByLocation(latitude, longitude);
 
       return forecast;
     } catch (e) {

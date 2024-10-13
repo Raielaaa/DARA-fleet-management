@@ -184,6 +184,7 @@ class Assets {
   static const String loginLogin = 'lib/view/pages/account/login/login.dart';
   static const String mapsDistanceCalculator = 'lib/services/maps/distance_calculator.dart';
   static const String mapsMapScreen = 'lib/services/maps/map_screen.dart';
+  static const String mapsMapScreenWeather = 'lib/services/maps/map_screen_weather.dart';
   static const String outsourceAccountingOutsource = 'lib/view/pages/outsource/accounting_outsource.dart';
   static const String outsourceApplicationOutsource = 'lib/view/pages/admin/manage/application_list/outsource/application_outsource.dart';
   static const String outsourceInquiriesOutsource = 'lib/view/pages/outsource/inquiries_outsource.dart';

@@ -20,14 +20,14 @@ class HomeController {
     return _firestore.getCars();
   }
 
-  Future<List<List<String>>> getWeatherForecast() async {
+  Future<List<List<String>>> getWeatherForecast(double? selectedLongitude, double? selectedLatitude) async {
     OpenWeather openWeather = OpenWeather();
     List<List<String>> forecastData = [];
 
     try {
       // Await the forecast retrieval
       List<Weather>? retrievedForecast =
-          await openWeather.getWeatherForecastFromAPI();
+          await openWeather.getWeatherForecastFromAPI(selectedLongitude, selectedLatitude);
 
       if (retrievedForecast != null) {
         // Loop through each Weather object in the list

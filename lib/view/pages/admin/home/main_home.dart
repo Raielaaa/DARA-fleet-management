@@ -34,6 +34,7 @@ class _AdminHomeState extends State<AdminHome> {
   late OpenAI openAI;
   final _controller = TextEditingController();
   List<Map<String, String>> _messages = [];
+  String weatherForecastSelectedAddress = "Current Location";
   RegisterModel? _currentUserInfo;
 
   // Function to send a message
@@ -170,7 +171,7 @@ class _AdminHomeState extends State<AdminHome> {
   void initState() {
     super.initState();
     // Initialize the future directly in initState
-    weatherFuture = homeController.getWeatherForecast();
+    weatherFuture = homeController.getWeatherForecast(null, null);
 
     try {
       //  chatgpt
@@ -646,14 +647,43 @@ class _AdminHomeState extends State<AdminHome> {
                                   ProjectStrings.admin_home_weather_header,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12),
-                              CustomComponents.displayText(
-                                "${ProjectStrings.admin_home_weather_date_placeholder} ${HomeController().getCurrentDate()}",
-                                color: Color(int.parse(
-                                    ProjectColors.lightGray.substring(2),
-                                    radix: 16)),
-                                fontStyle: FontStyle.italic,
-                                fontSize: 10,
-                              ),
+                              // CustomComponents.displayText(
+                              //   "${ProjectStrings.admin_home_weather_date_placeholder} ${HomeController().getCurrentDate()}",
+                              //   color: Color(int.parse(
+                              //       ProjectColors.lightGray.substring(2),
+                              //       radix: 16)),
+                              //   fontStyle: FontStyle.italic,
+                              //   fontSize: 10,
+                              // ),
+                              Container(
+                                child: Row(
+                                  children: [
+                                    CustomComponents.displayText(
+                                        weatherForecastSelectedAddress,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final selectedLocation = await Navigator.of(context).pushNamed("map_screen_weather");
+
+                                        if (selectedLocation != null) {
+                                          setState(() {
+                                            weatherForecastSelectedAddress = selectedLocation as String;
+                                            weatherFuture = homeController.getWeatherForecast(PersistentData().weatherMapsLongitude, PersistentData().weatherMapsLatitude);
+                                          });
+                                        }
+                                      },
+                                      child: CustomComponents.displayText(
+                                        " : Change Location",
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
                             ],
                           ),
                         ),
