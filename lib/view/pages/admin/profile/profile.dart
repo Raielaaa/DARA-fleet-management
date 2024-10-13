@@ -39,8 +39,9 @@ class _ProfileState extends State<Profile> {
   final ProfileController _profileController = ProfileController();
   List<RentInformation> filteredRentInformation = [];
   int rentCount = 0;
-  String favoriteCarUnit = "";
-  String longestRentalPeriod = "";
+  String mostFavoriteCar = "";
+  int longestRentalPeriodInt = 0;
+  String longestRentalPeriodString = "0 Days 0 Hours 0 Minutes";
   double totalAmountSpent = 0.0;
 
 
@@ -114,26 +115,46 @@ class _ProfileState extends State<Profile> {
     PersistentData().rentInformationForProfile = rentInformation;
     LoadingDialog().dismiss();
 
-    debugPrint("Fetch rent info");
     for (RentInformation listItems in rentInformation) {
       if (listItems.rentStatus.toLowerCase() == "pending") {
         filteredRentInformation.add(listItems);
-
-        debugPrint("pending count");
-      }  
+      }
     }
 
     rentCount = filteredRentInformation.length;
     for (RentInformation filteredListItems in filteredRentInformation) {
       totalAmountSpent += double.parse(filteredListItems.totalAmount);
+
+      String startDateTime = filteredListItems.startDateTime;
+      String endDateTime = filteredListItems.endDateTime;
+
+      if (_profileController.calculateDateDifference(startDateTime, endDateTime) > longestRentalPeriodInt) {
+        longestRentalPeriodInt = _profileController.calculateDateDifference(startDateTime, endDateTime);
+        setState(() {
+          longestRentalPeriodString = _profileController.convertMinutesToString(longestRentalPeriodInt);
+        });
+      }
     }
 
+    // Find the most rented car
+    Map<String, int> carRentalCount = {};
+    for (RentInformation rentInfo in rentInformation) {
+      if (carRentalCount.containsKey(rentInfo.carName)) {
+        carRentalCount[rentInfo.carName] = carRentalCount[rentInfo.carName]! + 1;
+      } else {
+        carRentalCount[rentInfo.carName] = 1;
+      }
+    }
+
+    // Get the car with the highest rental count
+    String mostRentedCar = carRentalCount.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+
+    // Update the state with the most rented car
     setState(() {
       filteredRentInformation = filteredRentInformation;
       totalAmountSpent = totalAmountSpent;
+      mostFavoriteCar = mostRentedCar; // Assuming you have a variable to store the most favorite car
     });
-
-    debugPrint("Finished");
   }
 
   Future<void> _fetchUserInfo() async {
@@ -527,13 +548,13 @@ class _ProfileState extends State<Profile> {
                         _mainPanelItem(ProjectStrings.user_info_rental_count_title, rentCount.toString()),
 
                         //  favorite
-                        _mainPanelItem(ProjectStrings.user_info_favorite_title,
-                            _currentUserInfo!.favorite.isEmpty ? "NA" : _currentUserInfo!.favorite),
+                        _mainPanelItem(ProjectStrings.user_info_favorite_title, mostFavoriteCar),
 
                         //  longest rental period
                         _mainPanelItem(
                             ProjectStrings.user_info_longest_rental_period_title,
-                            _currentUserInfo!.longestRentalDate.isEmpty ? "NA" : _currentUserInfo!.longestRentalDate),
+                            longestRentalPeriodString
+                        ),
 
                         //  total amount spent
                         Padding(
@@ -571,8 +592,9 @@ class _ProfileState extends State<Profile> {
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white),
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.white
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
