@@ -309,7 +309,7 @@ class _AdminHomeState extends State<AdminHome> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            PersistentData().openDrawer();
+                            PersistentData().openDrawer(0);
                           },
                           child: Image.asset(
                             "lib/assets/pictures/app_logo_circle.png",

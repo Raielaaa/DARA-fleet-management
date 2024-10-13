@@ -300,7 +300,7 @@ class _ProfileState extends State<Profile> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          PersistentData().openDrawer();
+                          PersistentData().openDrawer(3);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),

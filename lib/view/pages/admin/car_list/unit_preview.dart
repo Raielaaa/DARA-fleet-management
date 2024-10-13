@@ -793,7 +793,7 @@ class _UnitPreviewState extends State<UnitPreview> {
         children: [
           GestureDetector(
             onTap: () {
-              PersistentData().openDrawer();
+              PersistentData().openDrawer(1);
             },
             child: Padding(
               padding: const EdgeInsets.all(20.0),

@@ -29,6 +29,7 @@ import 'package:dara_app/view/pages/admin/rent_process/details_fees.dart';
 import 'package:dara_app/view/pages/admin/rent_process/documents/submit_documents.dart';
 import 'package:dara_app/view/pages/admin/rent_process/documents/verify_booking.dart';
 import 'package:dara_app/view/pages/admin/rent_process/payment_success.dart';
+import 'package:dara_app/view/pages/admin/rentals/rentals.dart';
 import 'package:dara_app/view/pages/admin/rentals/report.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_1.dart';
 import 'package:dara_app/view/pages/carousel/widgets/page_2.dart';
@@ -108,6 +109,8 @@ class MyApp extends StatelessWidget {
 
           // Rentals - report page
           "rentals_report": (context) => const Report(),
+
+          "rentals": (context) => const Rentals(),
 
           // Profile
           "profile": (context) => const Profile(),

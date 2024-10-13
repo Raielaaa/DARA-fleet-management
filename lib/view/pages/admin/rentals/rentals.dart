@@ -661,7 +661,7 @@ class _Rentals extends State<Rentals> {
         children: [
           GestureDetector(
             onTap: () {
-              PersistentData().openDrawer();
+              PersistentData().openDrawer(2);
             },
             child: Padding(
               padding: const EdgeInsets.all(20.0),

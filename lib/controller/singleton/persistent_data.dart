@@ -101,13 +101,26 @@ class PersistentData {
 
 
   ////////////  drawer//////////
+
   GlobalKey<ScaffoldState>? scaffoldKey;
   int selectedDrawerIndex = 0; // Store the selected index
+  Function(int)? onDrawerIndexChanged;
 
-  void openDrawer({int index = 0}) {
-    selectedDrawerIndex = index; // Set the index
-    if (scaffoldKey != null && scaffoldKey!.currentState != null) {
-      scaffoldKey!.currentState!.openDrawer();
+  void openDrawer(int index) {
+    debugPrint("Opening drawer with index: $index");
+    selectedDrawerIndex = index;
+    scaffoldKey!.currentState!.closeDrawer();
+    scaffoldKey!.currentState!.openDrawer();
+    debugPrint("Drawer opened");
+
+    // Notify the UI about the change
+    if (onDrawerIndexChanged != null) {
+      onDrawerIndexChanged!(selectedDrawerIndex);
     }
   }
+
+
+// if (scaffoldKey != null && scaffoldKey!.currentState != null) {
+//   scaffoldKey!.currentState!.openDrawer();
+// }
 }

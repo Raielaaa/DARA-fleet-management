@@ -23,17 +23,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  int selectedDrawerIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    PersistentData().scaffoldKey = _key;
+    PersistentData().scaffoldKey = scaffoldKey;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Calls showDialog method right after screen display
       showSuccessfulRegisterSnackbar();
     });
+
+    // Set the callback to update local state
+    PersistentData().onDrawerIndexChanged = (index) {
+      setState(() {
+        selectedDrawerIndex = index;
+      });
+    };
+
+    PersistentData().scaffoldKey = scaffoldKey; // Set the scaffold key in the singleton
   }
 
   // Shows dialog if the previous registration process is successful
@@ -141,7 +151,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-      key: _key,
+      key: scaffoldKey,
       drawer: Padding(
         padding: const EdgeInsets.only(top: 50, left: 13, bottom: 15),
         child: drawerUI()
@@ -177,6 +187,7 @@ class _HomePageState extends State<HomePage> {
             navBarConfig: navBarConfig,
           ),
         ),
+      drawerEnableOpenDragGesture: false,
       );
   }
 
@@ -269,7 +280,9 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 30),
               GestureDetector(
                 onTap: () {
-
+                  PersistentData().openDrawer(0);
+                  _controller.jumpToTab(0);
+                  Navigator.of(context).pop();
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -293,7 +306,9 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 30),
               GestureDetector(
                 onTap: () {
-
+                  PersistentData().openDrawer(1);
+                  _controller.jumpToTab(1);
+                  Navigator.of(context).pop();
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -317,13 +332,15 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 30),
               GestureDetector(
                 onTap: () {
-
+                  PersistentData().openDrawer(2);
+                  _controller.jumpToTab(3);
+                  Navigator.of(context).pop();
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Image.asset(
-                        "lib/assets/pictures/drawer_profile.png",
+                        "lib/assets/pictures/drawer_rental.png",
                         width: 20,
                         color: selectedIndex == 2 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff7a7b7e),
                       ),
@@ -341,13 +358,15 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 30),
               GestureDetector(
                 onTap: () {
-
+                  PersistentData().openDrawer(3);
+                  _controller.jumpToTab(4);
+                  Navigator.of(context).pop();
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Image.asset(
-                        "lib/assets/pictures/drawer_rental.png",
+                        "lib/assets/pictures/drawer_profile.png",
                         width: 18,
                         color: selectedIndex == 3 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff7a7b7e),
                       ),
@@ -376,7 +395,8 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 30),
               GestureDetector(
                 onTap: () {
-
+                  PersistentData().selectedDrawerIndex = 4;
+                  // Navigator.of(context).pushNamed("rentals");
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -400,7 +420,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 30),
               GestureDetector(
                 onTap: () {
-
+                  PersistentData().selectedDrawerIndex = 5;
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
