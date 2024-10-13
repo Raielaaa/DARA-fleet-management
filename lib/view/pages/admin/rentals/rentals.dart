@@ -22,25 +22,38 @@ class Rentals extends StatefulWidget {
 
 class _Rentals extends State<Rentals> {
   List<RentInformation> _rentRecords = [];
+  List<RentInformation> itemsToBeDisplayed = [];
+  List<RentInformation> _rentRecordsHistory = [];
+  List<RentInformation> _rentRecordsOnGoing = [];
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // _seeCompleteBookingInfo();
+      try {
+        _fetchRentRecords();
+      } catch(e) {
+        debugPrint("Fetch rent records error-rentals.dart: $e}");
+      }
     });
-
-    try {
-      _fetchRentRecords();
-    } catch(e) {
-      debugPrint("Fetch rent records error-rentals.dart: $e}");
-    }
   }
 
   Future<void> _fetchRentRecords() async {
     // Fetch the rent records information asynchronously
     _rentRecords = await Firestore().getRentRecordsInfo(FirebaseAuth.instance.currentUser!.uid);
 
+    for (RentInformation listItem in _rentRecords) {
+      if (RentLog().calculateDateDifference(listItem.endDateTime, RentLog().getCurrentFormattedDateTime()) > 0) {
+        setState(() {
+          _rentRecordsHistory.add(listItem);
+        });
+      } else {
+        setState(() {
+          _rentRecordsOnGoing.add(listItem);
+        });
+      }
+    }
     // Update the UI after data is fetched
     setState(() {
       // Set the fetched data
@@ -804,38 +817,12 @@ class _Rentals extends State<Rentals> {
 
               // Switch option
               const SizedBox(height: 0),
-              SlideSwitcher(
-                indents: 3,
-                containerColor: Colors.white,
-                containerBorderRadius: 7,
-                slidersColors: [
-                  Color(int.parse(
-                      ProjectColors.mainColorHexBackground.substring(2),
-                      radix: 16))
-                ],
-                containerHeight: 50,
-                containerWight: MediaQuery.of(context).size.width - 50,
-                onSelect: (index) {},
-                children: [
-                  CustomComponents.displayText(
-                    ProjectStrings.rentals_options_ongoing,
-                    color: Color(int.parse(ProjectColors.mainColorHex)),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  CustomComponents.displayText(
-                    ProjectStrings.rentals_options_history,
-                    color: Color(int.parse(ProjectColors.mainColorHex)),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ],
-              ),
+              switcher(_rentRecordsOnGoing, _rentRecordsHistory),
 
 
               //////////////////  list items  ////////////////////////
               const SizedBox(height: 5),
-              _rentRecords.isEmpty ? Padding(
+              itemsToBeDisplayed.isEmpty ? Padding(
                 padding: const EdgeInsets.only(left: 25.0, right: 25),
                 child: Container(
                   width: double.infinity,
@@ -868,10 +855,10 @@ class _Rentals extends State<Rentals> {
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.only(top: 0, bottom: 100),
-                  itemCount: _rentRecords.length, // Replace with your actual data length
+                  itemCount: itemsToBeDisplayed.length, // Replace with your actual data length
                   itemBuilder: (context, index) {
                     // Fetch data for each car item from your database here
-                    final rentInfo = _rentRecords[index]; // Assume carData is a list of car objects
+                    final rentInfo = itemsToBeDisplayed[index]; // Assume carData is a list of car objects
 
                     return buildCarListItem(
                       imagePath: rentInfo.rent_car_UID,
@@ -890,6 +877,38 @@ class _Rentals extends State<Rentals> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget switcher(List<RentInformation> ongoing, List<RentInformation> history) {
+    return SlideSwitcher(
+      indents: 3,
+      containerColor: Colors.white,
+      containerBorderRadius: 7,
+      slidersColors: [
+        Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
+      ],
+      containerHeight: 50,
+      containerWight: MediaQuery.of(context).size.width - 50,
+      onSelect: (index) {
+        setState(() {
+          itemsToBeDisplayed = index == 0 ? ongoing : history;
+        });
+      },
+      children: [
+        CustomComponents.displayText(
+          ProjectStrings.rentals_options_ongoing,
+          color: Color(int.parse(ProjectColors.mainColorHex)),
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+        CustomComponents.displayText(
+          ProjectStrings.rentals_options_history,
+          color: Color(int.parse(ProjectColors.mainColorHex)),
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        )
+      ],
     );
   }
 }
