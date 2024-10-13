@@ -51,13 +51,17 @@ class _UploadDocumentsState extends State<UploadDocuments> {
     _originalFilePaths.clear();
 
     // Fill the _originalFilePaths with retrieved files
-    files.asMap().forEach((index, value) {
-      _originalFilePaths.add(value);
-      debugPrint("value: $value");
+    try {
+      files.asMap().forEach((index, value) {
+        _originalFilePaths.add(value);
+        debugPrint("value: $value");
 
-      _fileIcons[index] = value.split(".").last;
-      _fileNames[index] = value.split("/")[5];
-    });
+        _fileIcons[index] = value.split(".").last;
+        _fileNames[index] = value.split("/")[5];
+      });
+    } catch(e) {
+      debugPrint("Error on getting file icons and names at upload_documents.dart: $e");
+    }
 
     // Ensure _originalFilePaths has exactly 5 items by filling with empty strings if necessary
     while (_originalFilePaths.length < 5) {

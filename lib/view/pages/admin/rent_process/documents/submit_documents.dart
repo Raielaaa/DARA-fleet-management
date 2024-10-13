@@ -7,8 +7,9 @@ import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:mobkit_dashed_border/mobkit_dashed_border.dart";
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:io';
+
+import "../../../../../services/firebase/storage.dart";
+
 
 class SubmitDocuments extends StatefulWidget {
   const SubmitDocuments({super.key});
@@ -18,37 +19,99 @@ class SubmitDocuments extends StatefulWidget {
 }
 
 class _SubmitDocumentsState extends State<SubmitDocuments> {
-  List<String?> _filePaths = List<String?>.filled(5, null); // For 5 documents
-  List<String> _uploadedUrls = List<String>.filled(5, '');
+  List<int> selectedIndex = [];
+  Map<int, String> indexStringMap = {
+    0: '',
+    1: '',
+    2: '',
+    3: '',
+    4: '',
+  };
+
+  List<String> itemsToBeDeletedToDB = [];
+  List<String> _originalFilePaths = [];
+  List<String> _newListTobeAddedToDB = [];
   List<String> _fileNames = List<String>.filled(5, "No file selected"); // Display file names
-  List<String> _fileIcons = List<String>.filled(5, "lib/assets/pictures/user_info_upload.png"); // Display file icons
-  String userUID = "";
-  // Function to pick file
-  // Function to pick multiple files
-  Future<void> _pickFile(int index) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'],
-    );
+  List<String> _fileIcons = List<String>.filled(5, 'lib/assets/pictures/user_info_upload.png'); // Display file icons
+  bool _isLoading = true; // A
 
-    if (result != null && result.files.isNotEmpty) {
-      setState(() {
-        // Replace the file at the current index with the newly selected file
-        _filePaths[index] = result.files.first.path;
-        String fileName = result.files.first.name; // Extract file name
-        String fileExtension = fileName.split('.').last; // Extract file extension
+  @override
+  void initState() {
+    super.initState();
 
-        // Update the display based on file type
-        _fileIcons[index] = _getFileIcon(fileExtension); // Update image icon
-        _fileNames[index] = fileName; // Update the file name display
+    // Defer the retrieval until the frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      retrieveItems();
+    });
+  }
 
-        debugPrint("File path: ${result.files.first.path}");
+  Future<void> retrieveItems() async {
+    BuildContext? currentContext = context;
+
+    LoadingDialog().show(context: currentContext, content: "Please wait while we retrieve your documents.");
+    List<String> files = await Storage().getUserFiles();
+    _originalFilePaths.clear();
+
+    // Fill the _originalFilePaths with retrieved files
+    try {
+      files.asMap().forEach((index, value) {
+        _originalFilePaths.add(value);
+        debugPrint("value: $value");
+
+        _fileIcons[index] = value.split(".").last;
+        _fileNames[index] = value.split("/")[5];
       });
+    } catch(e) {
+      debugPrint("Error on getting file icons and names at upload_documents.dart: $e");
+    }
+
+    // Ensure _originalFilePaths has exactly 5 items by filling with empty strings if necessary
+    while (_originalFilePaths.length < 5) {
+      _originalFilePaths.add("");
+    }
+
+    if (mounted) {
+      LoadingDialog().dismiss();
+    }
+
+    setState(() {
+      _isLoading = false; // Set loading state to false after fetching
+    });
+  }
+
+  List<int> removeDuplicates(List<int> originalList) {
+    return originalList.toSet().toList();
+  }
+
+  List<String> removeDuplicatesString(List<String> originalList) {
+    return originalList.toSet().toList();
+  }
+
+  String getDocumentTitle(int index) {
+    switch (index) {
+      case 0:
+        return ProjectStrings.user_info_government1;
+      case 1:
+        return ProjectStrings.user_info_government2;
+      case 2:
+        return ProjectStrings.user_info_driver_license;
+      case 3:
+        return ProjectStrings.user_info_proof_of_billing;
+      case 4:
+        return ProjectStrings.user_info_ltms_portal;
+      default:
+        return "Unknown Document";
     }
   }
 
+  void inputString(int index, String newString) {
+    if (indexStringMap.containsKey(index)) {
+      indexStringMap[index] = newString; // Overwrite the string at the index
+    } else {
+      debugPrint('Index $index is out of range.');
+    }
+  }
 
-// Helper function to determine which icon to display
   String _getFileIcon(String extension) {
     switch (extension.toLowerCase()) {
       case 'pdf':
@@ -67,60 +130,42 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
     }
   }
 
+  Future<void> _pickFile(int index, BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'],
+    );
 
-  // Function to upload the selected file to Firebase Storage
-  Future<void> _uploadFile(int index) async {
-    if (_filePaths[index] != null) {
-      File file = File(_filePaths[index]!);
-      try {
-        String fileName = file.uri.pathSegments.last;
-        Reference storageReference = FirebaseStorage.instance
-            .ref()
-            .child("rent_documents_upload/$userUID/$fileName");
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        selectedIndex.add(index);
+        itemsToBeDeletedToDB.add(_originalFilePaths[index]);
+        _newListTobeAddedToDB.add(result.files.first.path!);
+        inputString(index, result.files.first.path!);
 
-        UploadTask uploadTask = storageReference.putFile(file);
-        TaskSnapshot taskSnapshot = await uploadTask;
+        // Replace the file at the current index with the newly selected file
+        _originalFilePaths[index] = result.files.first.path!;
+        String fileName = result.files.first.name; // Extract file name
+        String fileExtension = fileName.split('.').last; // Extract file extension
 
-        String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-
-        setState(() {
-          _uploadedUrls[index] = downloadUrl;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("File uploaded: $fileName")),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error uploading file: $e")),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("No file selected for document ${index + 1}")),
-      );
+        // Update the display based on file type
+        _fileIcons[index] = fileExtension; // Update image icon
+        _fileNames[index] = fileName; // Update the file name display
+      });
     }
   }
 
-  // Function to upload all files when the 'Proceed' button is clicked
-  Future<void> _uploadAllFiles() async {
-    bool allFilesSelected = true;
-    for (int i = 0; i < _filePaths.length; i++) {
-      if (_filePaths[i] == null) {
-        allFilesSelected = false;
-      }
+  Future<void> updateDB() async {
+    Storage _storage = Storage();
+
+    // Handling deletion
+    for (var value in removeDuplicatesString(itemsToBeDeletedToDB)) {
+      await _storage.deleteFile(value);
     }
 
-    if (allFilesSelected) {
-      LoadingDialog().show(context: context, content: "Please wait while we upload your documents.");
-      for (int i = 0; i < _filePaths.length; i++) {
-        await _uploadFile(i);
-      }
-      LoadingDialog().dismiss();
-      InfoDialog().show(context: context, content: "All files uploaded successfully!", header: "Success");
-      Navigator.of(context).pushNamed("rp_verify_booking");
-    } else {
-      InfoDialog().show(context: context, content: "Kindly select a file. Please ensure that all required fields are completed.", header: "Warning");
+    // Handling upload
+    for (var entry in indexStringMap.entries) {
+      await _storage.uploadSelectedFile(entry.value, context);
     }
   }
 
@@ -176,7 +221,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
                   bottom: 10,
                 ),
                 child: Image.asset(
-                  _fileIcons[index], // Dynamically change the image based on file type
+                  _getFileIcon(_fileIcons[index]),
                   height: 60,
                 ),
               ),
@@ -191,19 +236,23 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
-                    CustomComponents.displayText(
-                      _fileNames[index], // Dynamically change the displayed file name
-                      color: Color(int.parse(
-                        ProjectColors.lightGray.substring(2),
-                        radix: 16,
-                      )),
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(
+                        _fileNames[index],
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: Colors.grey,
+                            fontFamily: ProjectStrings.general_font_family,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
                     const SizedBox(height: 5),
                     TextButton(
                       onPressed: () {
-                        _pickFile(index);
+                        _pickFile(index, context);
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll<Color>(
@@ -258,7 +307,17 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
                 )
             )
         ),
-        onPressed: _uploadAllFiles, // Call to upload all files
+        onPressed: () async {
+          try {
+            LoadingDialog().show(context: context, content: "Please wait while we process your documents.");
+            await updateDB();
+            LoadingDialog().dismiss();
+            Navigator.of(context).pushNamed("rp_verify_booking");
+          } catch(e) {
+            LoadingDialog().dismiss();
+            InfoDialog().show(context: context, content: "Something wen wrong. ${e.toString()}.", header: "Warning");
+          }
+        }, // Call to upload all files
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 15),
@@ -276,8 +335,6 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
 
   @override
   Widget build(BuildContext context) {
-    userUID = FirebaseAuth.instance.currentUser?.uid ?? "";
-
     return Scaffold(
       body: Container(
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
