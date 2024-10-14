@@ -4,6 +4,7 @@ import "package:dara_app/controller/utils/constants.dart";
 import "package:dara_app/model/car_list/complete_car_list.dart";
 import "package:dara_app/model/constants/firebase_constants.dart";
 import "package:dara_app/model/home/featured_car_info.dart";
+import "package:dara_app/services/firebase/storage.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
@@ -36,6 +37,7 @@ class _AdminHomeState extends State<AdminHome> {
   List<Map<String, String>> _messages = [];
   String weatherForecastSelectedAddress = "Current Location";
   RegisterModel? _currentUserInfo;
+  List<String> _userFiles = [];
 
   // Function to send a message
   void _sendMessage() async {
@@ -187,16 +189,22 @@ class _AdminHomeState extends State<AdminHome> {
       debugPrint("ChatGPT error: ${e.toString()}");
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      homeController.showOpeningBanner(context);
-      debugPrint("User type - ${PersistentData().userType}");
-
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      LoadingDialog().show(context: context, content: "Please wait while we retrieve your profile information.");
       try {
-        _fetchUserInfo();
+        await _fetchUserDocumentsForVerification();
+        await _fetchUserInfo();
+        LoadingDialog().dismiss();
+        homeController.showOpeningBanner(context, _userFiles.length);
       } catch(e) {
+        LoadingDialog().dismiss();
         debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
       }
     });
+  }
+
+  Future<void> _fetchUserDocumentsForVerification() async {
+    _userFiles = await Storage().getUserFiles();
   }
 
   Future<void> _fetchUserInfo() async {
@@ -277,6 +285,30 @@ class _AdminHomeState extends State<AdminHome> {
   Future<void> _refreshPage() async {
     // Fetch new data and update the UI
     homeController.fetchCars();
+    // Initialize the future directly in initState
+    weatherFuture = homeController.getWeatherForecast(null, null);
+
+    try {
+      //  chatgpt
+      openAI = OpenAI.instance.build(
+        token: Constants.CHAT_GPT_SECRET_KEY, // Replace with your OpenAI API
+        baseOption: HttpSetup(
+          receiveTimeout: Duration(seconds: 20),
+          connectTimeout: Duration(seconds: 20),
+        ),
+        enableLog: true,
+      );
+    } catch(e) {
+      debugPrint("ChatGPT error: ${e.toString()}");
+    }
+
+    try {
+      await _fetchUserDocumentsForVerification();
+      await _fetchUserInfo();
+      homeController.showOpeningBanner(context, _userFiles.length);
+    } catch(e) {
+      debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
+    }
     CustomComponents.showToastMessage("Page refreshed", Colors.black54, Colors.white);
   }
 
@@ -351,17 +383,27 @@ class _AdminHomeState extends State<AdminHome> {
                             children: [
                               CustomComponents.displayText("Hello, ${_currentUserInfo?.role}",
                                   fontWeight: FontWeight.bold, fontSize: 14),
-                              CustomComponents.displayText(
-                                "PH ${_currentUserInfo?.number.isNotEmpty == true ? _currentUserInfo?.number : "- click here to verify"}",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 10,
-                                color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                              GestureDetector(
+                                onTap: () {
+                                  if (_currentUserInfo!.number.isEmpty) {
+                                    PersistentData().uidForPhoneVerification = FirebaseAuth.instance.currentUser!.uid;
+                                    PersistentData().isFromOtpPage = true;
+                                    PersistentData().isFromHomeForPhoneVerification = true;
+                                    Navigator.of(context).pushNamed("register_phone_number");
+                                  }
+                                },
+                                child: CustomComponents.displayText(
+                                  "PH ${_currentUserInfo?.number.isNotEmpty == true ? _currentUserInfo?.number : "- click to verify phone number"}",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 10,
+                                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                                ),
                               ),
                               const SizedBox(height: 10),
                               Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: _currentUserInfo?.number.isNotEmpty == true ? Color(int.parse(
+                                    color: _currentUserInfo?.status.toLowerCase() == "verified" ? Color(int.parse(
                                         ProjectColors.lightGreen.substring(2),
                                         radix: 16)) : Color(int.parse(
                                         ProjectColors.redButtonBackground.substring(2),
@@ -373,7 +415,7 @@ class _AdminHomeState extends State<AdminHome> {
                                       Padding(
                                         padding: const EdgeInsets.only(left: 20),
                                         child: Image.asset(
-                                          _currentUserInfo?.number.isNotEmpty == true ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
+                                          _currentUserInfo?.status.toLowerCase() == "verified" ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
                                           width: 20,
                                           height: 20,
                                         ),
@@ -382,9 +424,9 @@ class _AdminHomeState extends State<AdminHome> {
                                         padding: const EdgeInsets.only(
                                             top: 10, bottom: 10, right: 25, left: 5),
                                         child: CustomComponents.displayText(
-                                          _currentUserInfo?.number.isNotEmpty == true ? ProjectStrings
+                                          _currentUserInfo?.status.toLowerCase() == "verified" ? ProjectStrings
                                               .rentals_header_verified_button : "Unverified",
-                                          color: _currentUserInfo?.number.isNotEmpty == true ? Color(int.parse(
+                                          color: _currentUserInfo?.status.toLowerCase() == "verified" ? Color(int.parse(
                                               ProjectColors.greenButtonMain.substring(2),
                                               radix: 16)) : Color(int.parse(
                                               ProjectColors.redButtonMain.substring(2),

@@ -39,11 +39,10 @@ class _ProfileState extends State<Profile> {
   final ProfileController _profileController = ProfileController();
   List<RentInformation> filteredRentInformation = [];
   int rentCount = 0;
-  String mostFavoriteCar = "";
+  String mostFavoriteCar = "NA";
   int longestRentalPeriodInt = 0;
   String longestRentalPeriodString = "0 Days 0 Hours 0 Minutes";
   double totalAmountSpent = 0.0;
-
 
   // Function to pick an image from the gallery
   Future<void> _pickImage() async {
@@ -101,10 +100,9 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
 
-    _fetchUserInfo();
-    _loadProfileImage(); // Load the profile image on initialization
-
     SchedulerBinding.instance.addPostFrameCallback((_) {
+      _fetchUserInfo();
+      _loadProfileImage(); // Load the profile image on initialization
       _fetchRentInfo(); // Fetch rent info here instead
     });
   }
@@ -342,341 +340,371 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  Future<void> _refresh() async {
+    _fetchUserInfo();
+    _loadProfileImage();
+    _fetchRentInfo();
+    CustomComponents.showToastMessage("Page refreshed", Colors.black54, Colors.white);
+  }
+
+  // @override void didChangeDependencies() {
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+  //
+  //   _fetchUserInfo();
+  //   _loadProfileImage();
+  //   _fetchRentInfo();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-          color: Color(
-              int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 38),
-            child: _currentUserInfo == null ? const Center(child: CircularProgressIndicator()) : Column(
-              children: [
-                //  ActionBar
-                Container(
-                  width: double.infinity,
-                  height: 65,
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          PersistentData().openDrawer(3);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Image.asset("lib/assets/pictures/menu.png"),
-                        ),
-                      ),
-                      CustomComponents.displayText(
-                        "User Information",
-                        fontWeight: FontWeight.bold,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Image.asset(
-                            "lib/assets/pictures/three_vertical_dots.png"),
-                      ),
-                    ],
-                  ),
-                ),
-
-                //  Header
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        "lib/assets/pictures/app_logo_circle.png",
-                        width: 120.0,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(int.parse(
-                              ProjectColors.mainColorHex.substring(2),
-                              radix: 16)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10, bottom: 10, right: 30, left: 30),
-                          child: CustomComponents.displayText(
-                            PersistentData().userType,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 15, right: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomComponents.displayText(
-                                "Hello, ${_currentUserInfo?.role}",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14
-                            ),
-                            CustomComponents.displayText(
-                              "PH ${_currentUserInfo!.number.isNotEmpty ? _currentUserInfo?.number : "- click here to verify"}",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10,
-                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                            ),
-                            const SizedBox(height: 10),
-                            Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: _currentUserInfo!.number.isNotEmpty ? Color(int.parse(
-                                      ProjectColors.lightGreen.substring(2),
-                                      radix: 16)) : Color(int.parse(
-                                      ProjectColors.redButtonBackground.substring(2),
-                                      radix: 16)
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 20),
-                                      child: Image.asset(
-                                        _currentUserInfo!.number.isNotEmpty ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
-                                        width: 20,
-                                        height: 20,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10, bottom: 10, right: 25, left: 5),
-                                      child: CustomComponents.displayText(
-                                        _currentUserInfo?.number.isNotEmpty == true ? ProjectStrings
-                                            .rentals_header_verified_button : "Unverified",
-                                        color: _currentUserInfo!.number.isNotEmpty ? Color(int.parse(
-                                            ProjectColors.greenButtonMain.substring(2),
-                                            radix: 16)) : Color(int.parse(
-                                            ProjectColors.redButtonMain.substring(2),
-                                            radix: 16)),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Image.asset(
-                          "lib/assets/pictures/home_top_image_2.png",
-                          fit: BoxFit
-                              .contain, // Ensure the image fits within its container
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                //  main profile section
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 0),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Column(
+        body: RefreshIndicator(
+          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+          onRefresh: _refresh,
+          child: Container(
+            color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+            height: double.infinity,
+            child: Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                children: [Container(
+                  color: Color(
+                      int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 38),
+                    child: _currentUserInfo == null ? const Center(child: CircularProgressIndicator()) : Column(
                       children: [
-                        //  profile image
-                        GestureDetector(
-                          onTap: () {
-                            _pickImage();
-                            debugPrint("Image URL: $_imageUrl");
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 20, bottom: 10),
-                            child: _imageUrl != null
-                                ? CircleAvatar(
-                              radius: 40,
-                              onBackgroundImageError: (error, stackTrace) {
-                                // In case of an error, show a default asset image
-                              },
-                              backgroundImage: NetworkImage(_imageUrl!), // Display image from URL
-                            )
-                                : const CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 40,
-                              backgroundImage: AssetImage('lib/assets/pictures/user_info_user.png'), // Default image
-                            ),
-                          ),
-                        ),
-                        //  name
-                        CustomComponents.displayText("${_currentUserInfo?.firstName} ${_currentUserInfo?.lastName}",
-                            fontWeight: FontWeight.bold, fontSize: 14),
-                        //  gray line
-                        const SizedBox(height: 20),
+                        //  ActionBar
                         Container(
-                          color: Color(int.parse(
-                              ProjectColors.lineGray.substring(2),
-                              radix: 16)),
-                          height: 1,
                           width: double.infinity,
-                        ),
-                        const SizedBox(height: 15),
-
-                        //  full name
-                        _mainPanelItem(ProjectStrings.user_info_full_name_title,
-                            "${_currentUserInfo?.firstName} ${_currentUserInfo?.lastName}"),
-
-                        //  registered number
-                        _mainPanelItem(
-                            ProjectStrings.user_info_registered_number_title,
-                            _currentUserInfo!.number.toString().isNotEmpty ? _currentUserInfo!.number.toString() : "NA"),
-
-                        //  email address
-                        _mainPanelItem(ProjectStrings.user_info_email_address_title,
-                            _currentUserInfo!.email),
-
-                        //  rental count
-                        _mainPanelItem(ProjectStrings.user_info_rental_count_title, rentCount.toString()),
-
-                        //  favorite
-                        _mainPanelItem(ProjectStrings.user_info_favorite_title, mostFavoriteCar),
-
-                        //  longest rental period
-                        _mainPanelItem(
-                            ProjectStrings.user_info_longest_rental_period_title,
-                            longestRentalPeriodString
-                        ),
-
-                        //  total amount spent
-                        Padding(
-                          padding:
-                          const EdgeInsets.only(right: 15, left: 15, top: 5),
+                          height: 65,
+                          color: Colors.white,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              GestureDetector(
+                                onTap: () {
+                                  PersistentData().openDrawer(3);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Image.asset("lib/assets/pictures/menu.png"),
+                                ),
+                              ),
                               CustomComponents.displayText(
-                                  ProjectStrings.user_info_total_amount_spent_title,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 10,
-                                  color: Color(int.parse(
-                                      ProjectColors.lightGray.substring(2),
-                                      radix: 16))),
-                              CustomComponents.displayText(
-                                  "PHP ${totalAmountSpent.toString()}",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10,
-                                  color: Color(int.parse(
-                                      ProjectColors.mainColorHex.substring(2),
-                                      radix: 16)))
+                                "User Information",
+                                fontWeight: FontWeight.bold,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Image.asset(
+                                    "lib/assets/pictures/three_vertical_dots.png"),
+                              ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20)
-                      ],
-                    ),
-                  ),
-                ),
 
-                //  bottom panel
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 12),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.white
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //  item 1
+                        //  Header
                         Padding(
-                            padding: const EdgeInsets.only(
-                                left: 40, top: 20, bottom: 20, right: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushNamed("to_report");
-                              },
-                              child: _bottomPanelItem(
-                                  "lib/assets/pictures/user_info_report.png",
-                                  Color(int.parse(
-                                      ProjectColors.userInfoRed.substring(2),
+                          padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Image.asset(
+                                "lib/assets/pictures/app_logo_circle.png",
+                                width: 120.0,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(int.parse(
+                                      ProjectColors.mainColorHex.substring(2),
                                       radix: 16)),
-                                  ProjectStrings.user_info_report),
-                            )),
-
-                        //  item 2
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10, right: 30, left: 30),
+                                  child: CustomComponents.displayText(
+                                    PersistentData().userType,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, top: 20, bottom: 20, right: 10),
-                          child: GestureDetector(
-                            onTap: () {
-                              _showContactBottomDialog();
-                            },
-                            child: _bottomPanelItem(
-                                "lib/assets/pictures/user_info_email.png",
-                                Color(int.parse(
-                                    ProjectColors.userInfoGreen.substring(2),
-                                    radix: 16)),
-                                ProjectStrings.user_info_contact),
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 15, right: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomComponents.displayText(
+                                        "Hello, ${_currentUserInfo?.role}",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14
+                                    ),
+                                    CustomComponents.displayText(
+                                      "PH ${_currentUserInfo!.number.isNotEmpty ? _currentUserInfo?.number : "- click to verify phone number"}",
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10,
+                                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: _currentUserInfo!.status.toLowerCase() == "verified" ? Color(int.parse(
+                                              ProjectColors.lightGreen.substring(2),
+                                              radix: 16)) : Color(int.parse(
+                                              ProjectColors.redButtonBackground.substring(2),
+                                              radix: 16)
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 20),
+                                              child: Image.asset(
+                                                _currentUserInfo!.status.toLowerCase() == "verified" ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
+                                                width: 20,
+                                                height: 20,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10, bottom: 10, right: 25, left: 5),
+                                              child: CustomComponents.displayText(
+                                                _currentUserInfo?.status.toLowerCase() == "verified" ? ProjectStrings
+                                                    .rentals_header_verified_button : "Unverified",
+                                                color: _currentUserInfo!.status.toLowerCase() == "verified" ? Color(int.parse(
+                                                    ProjectColors.greenButtonMain.substring(2),
+                                                    radix: 16)) : Color(int.parse(
+                                                    ProjectColors.redButtonMain.substring(2),
+                                                    radix: 16)),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 10,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Image.asset(
+                                  "lib/assets/pictures/home_top_image_2.png",
+                                  fit: BoxFit
+                                      .contain, // Ensure the image fits within its container
+                                ),
+                              ),
+                            ],
                           ),
                         ),
 
-                        //  item 3
+                        //  main profile section
                         Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, top: 20, bottom: 20, right: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    builder: (context) => termsAndCondition(context, 2)
-                                );
-                              },
-                              child: _bottomPanelItem(
-                                  "lib/assets/pictures/user_info_policy.png",
-                                  Color(int.parse(
-                                      ProjectColors.userInfoBlue.substring(2),
+                          padding: const EdgeInsets.only(left: 25, right: 25, top: 0),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Column(
+                              children: [
+                                //  profile image
+                                GestureDetector(
+                                  onTap: () {
+                                    _pickImage();
+                                    debugPrint("Image URL: $_imageUrl");
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 20, bottom: 10),
+                                    child: _imageUrl != null
+                                        ? CircleAvatar(
+                                      radius: 40,
+                                      onBackgroundImageError: (error, stackTrace) {
+                                        // In case of an error, show a default asset image
+                                      },
+                                      backgroundImage: NetworkImage(_imageUrl!), // Display image from URL
+                                    )
+                                        : const CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 40,
+                                      backgroundImage: AssetImage('lib/assets/pictures/user_info_user.png'), // Default image
+                                    ),
+                                  ),
+                                ),
+                                //  name
+                                CustomComponents.displayText("${_currentUserInfo?.firstName} ${_currentUserInfo?.lastName}",
+                                    fontWeight: FontWeight.bold, fontSize: 14),
+                                //  gray line
+                                const SizedBox(height: 20),
+                                Container(
+                                  color: Color(int.parse(
+                                      ProjectColors.lineGray.substring(2),
                                       radix: 16)),
-                                  ProjectStrings.user_info_policy),
-                            )),
+                                  height: 1,
+                                  width: double.infinity,
+                                ),
+                                const SizedBox(height: 15),
 
-                        //  item 4
+                                //  full name
+                                _mainPanelItem(ProjectStrings.user_info_full_name_title,
+                                    "${_currentUserInfo?.firstName} ${_currentUserInfo?.lastName}"),
+
+                                //  registered number
+                                _mainPanelItem(
+                                    ProjectStrings.user_info_registered_number_title,
+                                    _currentUserInfo!.number.toString().isNotEmpty ? _currentUserInfo!.number.toString() : "NA"),
+
+                                //  email address
+                                _mainPanelItem(ProjectStrings.user_info_email_address_title,
+                                    _currentUserInfo!.email),
+
+                                //  rental count
+                                _mainPanelItem(ProjectStrings.user_info_rental_count_title, rentCount.toString()),
+
+                                //  favorite
+                                _mainPanelItem(ProjectStrings.user_info_favorite_title, mostFavoriteCar),
+
+                                //  longest rental period
+                                _mainPanelItem(
+                                    ProjectStrings.user_info_longest_rental_period_title,
+                                    longestRentalPeriodString
+                                ),
+
+                                //  total amount spent
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.only(right: 15, left: 15, top: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CustomComponents.displayText(
+                                          ProjectStrings.user_info_total_amount_spent_title,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 10,
+                                          color: Color(int.parse(
+                                              ProjectColors.lightGray.substring(2),
+                                              radix: 16))),
+                                      CustomComponents.displayText(
+                                          "PHP ${totalAmountSpent.toString()}",
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                          color: Color(int.parse(
+                                              ProjectColors.mainColorHex.substring(2),
+                                              radix: 16)))
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20)
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        //  bottom panel
                         Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, top: 20, bottom: 20, right: 40),
-                            child: GestureDetector(
-                              onTap: () async {
-                                _seeUploadDocumentsDialog();
-                              },
-                              child: _bottomPanelItem(
-                                  "lib/assets/pictures/user_info_documents.png",
-                                  Color(int.parse(
-                                      ProjectColors.userInfoLightBlue.substring(2),
-                                      radix: 16)),
-                                  ProjectStrings.user_info_documents),
-                            )),
+                          padding: const EdgeInsets.only(left: 25, right: 25, top: 12),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.white
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                //  item 1
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 40, top: 20, bottom: 20, right: 10),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed("to_report");
+                                      },
+                                      child: _bottomPanelItem(
+                                          "lib/assets/pictures/user_info_report.png",
+                                          Color(int.parse(
+                                              ProjectColors.userInfoRed.substring(2),
+                                              radix: 16)),
+                                          ProjectStrings.user_info_report),
+                                    )),
+
+                                //  item 2
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, top: 20, bottom: 20, right: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _showContactBottomDialog();
+                                    },
+                                    child: _bottomPanelItem(
+                                        "lib/assets/pictures/user_info_email.png",
+                                        Color(int.parse(
+                                            ProjectColors.userInfoGreen.substring(2),
+                                            radix: 16)),
+                                        ProjectStrings.user_info_contact),
+                                  ),
+                                ),
+
+                                //  item 3
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, top: 20, bottom: 20, right: 10),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            builder: (context) => termsAndCondition(context, 2)
+                                        );
+                                      },
+                                      child: _bottomPanelItem(
+                                          "lib/assets/pictures/user_info_policy.png",
+                                          Color(int.parse(
+                                              ProjectColors.userInfoBlue.substring(2),
+                                              radix: 16)),
+                                          ProjectStrings.user_info_policy),
+                                    )),
+
+                                //  item 4
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, top: 20, bottom: 20, right: 40),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        _seeUploadDocumentsDialog();
+                                      },
+                                      child: _bottomPanelItem(
+                                          "lib/assets/pictures/user_info_documents.png",
+                                          Color(int.parse(
+                                              ProjectColors.userInfoLightBlue.substring(2),
+                                              radix: 16)),
+                                          ProjectStrings.user_info_documents),
+                                    )),
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                )
-              ],
+                )]
+              ),
             ),
-          ),
+          )
         ));
   }
 }

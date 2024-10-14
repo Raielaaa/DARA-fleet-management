@@ -1,3 +1,10 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/model/constants/firebase_constants.dart";
+import "package:dara_app/model/outsource/OutsourceApplication.dart";
+import "package:dara_app/services/firebase/firestore.dart";
+import "package:dara_app/view/shared/info_dialog.dart";
+import "package:dara_app/view/shared/loading.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:mobkit_dashed_border/mobkit_dashed_border.dart";
@@ -55,8 +62,61 @@ class _DocumentSubmissionState extends State<DocumentSubmission> {
       padding: const EdgeInsets.symmetric(horizontal: 25),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed("ap_process_complete");
+        onPressed: () async {
+          PersistentData _persistentData = PersistentData();
+
+          // Fill the _outsourceApplicationData with data from _persistentData
+          try {
+            OutsourceApplication _outsourceApplicationData = OutsourceApplication(
+                viCarModel: _persistentData.viCarModel,
+                viCarBrand: _persistentData.viCarBrand,
+                viManufacturingYear: _persistentData.viManufacturingYear,
+                viNumber: _persistentData.viNumber,
+                ppFirstName: _persistentData.ppFirstName,
+                ppMiddleName: _persistentData.ppMiddleName,
+                ppLastName: _persistentData.ppLastName,
+                ppBirthday: _persistentData.ppBirthday,
+                ppAge: _persistentData.ppAge,
+                ppBirthPlace: _persistentData.ppBirthPlace,
+                ppCitizenship: _persistentData.ppCitizenship,
+                ppCivilStatus: _persistentData.ppCivilStatus,
+                ppMotherName: _persistentData.ppMotherName,
+                ppContactNumber: _persistentData.ppContactNumber,
+                ppEmailAddress: _persistentData.ppEmailAddress,
+                ppAddress: _persistentData.ppAddress,
+                ppYearsStayed: _persistentData.ppYearsStayed,
+                ppHouseStatus: _persistentData.ppHouseStatus,
+                ppTinNumber: _persistentData.ppTinNumber,
+                eiCompanyName: _persistentData.eiCompanyName,
+                eiAddress: _persistentData.eiAddress,
+                eiTelephoneNumber: _persistentData.eiTelephoneNumber,
+                eiPosition: _persistentData.eiPosition,
+                eiLengthOfStay: _persistentData.eiLengthOfStay,
+                eiMonthlySalary: _persistentData.eiMonthlySalary,
+                biBusinessName: _persistentData.biBusinessName,
+                biCompleteAddress: _persistentData.biCompleteAddress,
+                biYearsOfOperation: _persistentData.biYearsOfOperation,
+                biBusinessContactNumber: _persistentData.biBusinessContactNumber,
+                biBusinessEmailAddress: _persistentData.biBusinessEmailAddress,
+                biPosition: _persistentData.biPosition,
+                biMonthlyIncomeGross: _persistentData.biMonthlyIncomeGross,
+                rentalAgreementOptions: _persistentData.rentalAgreementOptions,
+                applicationStatus: _persistentData.applicationStatus
+            );
+
+            // Add the outsource application info to Firestore
+            LoadingDialog().show(context: context, content: "Please wait while we send your application details.");
+            await Firestore().addOutsourceApplicationInfo(
+                collectionName: FirebaseConstants.outsourceApplication,
+                documentName: FirebaseAuth.instance.currentUser?.uid ?? "",
+                data: _outsourceApplicationData.getModelData()
+            );
+            LoadingDialog().dismiss();
+            Navigator.of(context).pushNamed("ap_process_complete");
+          } catch(e) {
+            LoadingDialog().dismiss();
+            InfoDialog().show(context: context, content: "Something went wrong: $e");
+          }
         },
         style: ButtonStyle(
           backgroundColor: MaterialStatePropertyAll<Color>(

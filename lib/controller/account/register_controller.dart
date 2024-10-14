@@ -40,6 +40,7 @@ class RegisterController {
       await _phoneAuthService.verifyOtp(verificationId, smsCode, context);
       // Dismiss loading dialog after successful verification
     } catch (e) {
+      debugPrint("Error from OTP: $e");
       // Dismiss loading dialog if there's an error
       // Re-throw the error so it can be caught in the UI layer
       rethrow;

@@ -81,7 +81,7 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
               //  Text header
               const SizedBox(height: 30),
               CustomComponents.displayText(
-                ProjectStrings.register_verify_number_header,
+                PersistentData().isFromHomeForPhoneVerification ? ProjectStrings.register_verify_number_header : "Enter OTP",
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
                 color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
@@ -90,8 +90,8 @@ class _RegisterVerifyNumberState extends State<RegisterVerifyNumber> {
               //  Text subheader
               const SizedBox(height: 5),
               CustomComponents.displayText(
-                ProjectStrings.register_verify_subheader,
-                fontSize: 10,
+                PersistentData().isFromHomeForPhoneVerification ? ProjectStrings.register_verify_subheader : "Enter the OTP sent to your phone to verify your number",
+                fontSize: 12,
               ),
 
               //  Image display

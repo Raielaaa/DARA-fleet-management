@@ -136,7 +136,7 @@ class ProjectStrings {
   static String register_phone_number_label_hint = "970xxxxxxx";
 
   //  Register page - verify phone number
-  static String register_verify_number_header = "Verify your account";
+  static String register_verify_number_header = "Verify Your Account";
   static String register_verify_subheader = "Sign up new account";
   static const String register_verify_resent_otp_1 = "Didn't receive a code? ";
   static const String register_verify_resent_otp_2 = "Resend OTP";

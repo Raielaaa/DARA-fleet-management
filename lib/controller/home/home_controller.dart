@@ -111,7 +111,7 @@ class HomeController {
     return formattedDate;
   }
 
-  Future<void> showOpeningBanner(BuildContext context) async {
+  Future<void> showOpeningBanner(BuildContext context, int filesLength) async {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -173,6 +173,21 @@ class HomeController {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).pop();
+                        debugPrint("Files length: $filesLength............${filesLength == 5}");
+                        debugPrint("Number: ${PersistentData().userInfo!.number}..............${PersistentData().userInfo!.number.isNotEmpty}");
+                        if (PersistentData().userInfo!.number.isNotEmpty && filesLength == 5 && PersistentData().userInfo?.status.toLowerCase() != "verified") {
+                          InfoDialog().show(
+                              context: context,
+                              content: "Your account is currently under review. Please await admin approval before proceeding.",
+                              header: "Notice"
+                          );
+                        } else if (PersistentData().userInfo!.number.isEmpty || filesLength < 5) {
+                          InfoDialog().show(
+                              context: context,
+                              content: "Your account is unverified. Please verify your phone number and submit all required documents to access full features.",
+                              header: "Warning"
+                          );
+                        }
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -231,12 +246,31 @@ class HomeController {
         }
       case "Driver":
         {
-          _showInformationDialog(context);
-          break;
+          if (PersistentData().userInfo?.status.toLowerCase() == "verified") {
+            _showInformationDialog(context);
+            break;
+          } else {
+            InfoDialog().show(
+                context: context,
+                header: "Account Verification Required",
+                content: "Please verify your account to access this feature."
+            );
+            break;
+          }
         }
       case "Outsource":
         {
-          Navigator.of(context).pushNamed("manage_outsource");
+          if (PersistentData().userInfo?.status.toLowerCase() == "verified") {
+            Navigator.of(context).pushNamed("manage_outsource");
+            break;
+          } else {
+            InfoDialog().show(
+                context: context,
+                header: "Account Verification Required",
+                content: "Please verify your account to access this feature."
+            );
+            break;
+          }
           break;
         }
       case "Renter":

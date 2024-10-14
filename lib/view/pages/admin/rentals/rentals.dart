@@ -698,6 +698,11 @@ class _Rentals extends State<Rentals> {
     );
   }
 
+  Future<void> _refresh() async {
+    _fetchRentRecords();
+    CustomComponents.showToastMessage("Page refreshed", Colors.black54, Colors.white);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -857,24 +862,28 @@ class _Rentals extends State<Rentals> {
                 ),
               ) :
               Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(top: 0, bottom: 100),
-                  itemCount: itemsToBeDisplayed.length, // Replace with your actual data length
-                  itemBuilder: (context, index) {
-                    // Fetch data for each car item from your database here
-                    final rentInfo = itemsToBeDisplayed[index]; // Assume carData is a list of car objects
+                child: RefreshIndicator(
+                  onRefresh: _refresh,
+                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(top: 0, bottom: 100),
+                    itemCount: itemsToBeDisplayed.length, // Replace with your actual data length
+                    itemBuilder: (context, index) {
+                      // Fetch data for each car item from your database here
+                      final rentInfo = itemsToBeDisplayed[index]; // Assume carData is a list of car objects
 
-                    return buildCarListItem(
-                      imagePath: rentInfo.rent_car_UID,
-                      carName: rentInfo.carName,
-                      carRentLocation: rentInfo.rentLocation,
-                      carStartEndDate: "${rentInfo.startDateTime} - ${rentInfo.endDateTime}",
-                      startDate: rentInfo.startDateTime,
-                      endDate: rentInfo.endDateTime,
-                      totalAmount: "PHP ${rentInfo.totalAmount} / total",
-                      rentStatus: rentInfo.rentStatus.toLowerCase()
-                    );
-                  },
+                      return buildCarListItem(
+                        imagePath: rentInfo.rent_car_UID,
+                        carName: rentInfo.carName,
+                        carRentLocation: rentInfo.rentLocation,
+                        carStartEndDate: "${rentInfo.startDateTime} - ${rentInfo.endDateTime}",
+                        startDate: rentInfo.startDateTime,
+                        endDate: rentInfo.endDateTime,
+                        totalAmount: "PHP ${rentInfo.totalAmount} / total",
+                        rentStatus: rentInfo.rentStatus.toLowerCase()
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

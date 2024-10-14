@@ -4,6 +4,7 @@ import 'package:dara_app/model/home/featured_car_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 import '../../model/car_list/complete_car_list.dart';
 import '../../model/renting_proccess/renting_process.dart';
@@ -131,4 +132,45 @@ class PersistentData {
   double weatherMapsLongitude = 0.0;
   double weatherMapsLatitude = 0.0;
   String weatherShortLocation = "Current location";
+
+  //////////////    register phone number (in-app)    ////////////////////////
+  bool isFromHomeForPhoneVerification = false;
+  PersistentTabController tabController = PersistentTabController();
+  String uidForPhoneVerification = "";
+
+  //////////////    outsource application     ///////////////////////////////////
+  String viCarModel = "";
+  String viCarBrand = "";
+  String viManufacturingYear = "";
+  String viNumber = "";
+  String ppFirstName = "";
+  String ppMiddleName = "";
+  String ppLastName = "";
+  String ppBirthday = "";
+  String ppAge = "";
+  String ppBirthPlace = "";
+  String ppCitizenship = "";
+  String ppCivilStatus = "";
+  String ppMotherName = "";
+  String ppContactNumber = "";
+  String ppEmailAddress = "";
+  String ppAddress = "";
+  String ppYearsStayed = "";
+  String ppHouseStatus = "";
+  String ppTinNumber = "";
+  String eiCompanyName = "";
+  String eiAddress = "";
+  String eiTelephoneNumber = "";
+  String eiPosition = "";
+  String eiLengthOfStay = "";
+  String eiMonthlySalary = "";
+  String biBusinessName = "";
+  String biCompleteAddress = "";
+  String biYearsOfOperation = "";
+  String biBusinessContactNumber = "";
+  String biBusinessEmailAddress = "";
+  String biPosition = "";
+  String biMonthlyIncomeGross = "";
+  String rentalAgreementOptions = "";
+  String applicationStatus = "pending";
 }

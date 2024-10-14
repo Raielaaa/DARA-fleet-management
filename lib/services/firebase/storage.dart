@@ -42,7 +42,7 @@ class Storage {
     }
   }
 
-      Future<void> deleteFile(String filePath) async {
+  Future<void> deleteFile(String filePath) async {
     // Check if the file path is valid
     if (!isValidFilePath(filePath)) {
       debugPrint("Invalid file path: $filePath");
@@ -87,7 +87,7 @@ class Storage {
           .listAll();
 
       // Iterate through each item and get the full path of the file
-      result.items.forEach((Reference ref) {
+      for (var ref in result.items) {
         // Get the full path of the file
         String fullPath = ref.fullPath;
 
@@ -96,7 +96,7 @@ class Storage {
 
         // Add the storage location to the list
         filePaths.add(storageLocation);
-      });
+      }
     } catch (e) {
       debugPrint("Error listing files: $e");
     }

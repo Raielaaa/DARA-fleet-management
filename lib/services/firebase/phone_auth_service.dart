@@ -36,11 +36,13 @@ class PhoneAuthService {
       },
       codeAutoRetrievalTimeout: (String verificationId) {
         debugPrint("timeout checkpoint");
+        LoadingDialog().dismiss();
         if (PersistentData().isOtpVerified == false) {
           debugPrint("Timeout: $verificationId");
           PersistentData().isFromOtpPage = true;
           debugPrint("service layer: ${PersistentData().isFromOtpPage}");
           Navigator.of(context).pushNamed("register_phone_number");
+          LoadingDialog().dismiss();
           InfoDialog().show(
               context: context,
               content: "The One-Time Password (OTP) has expired. Please request a new OTP and input it within 60 seconds to proceed.",
@@ -59,7 +61,6 @@ class PhoneAuthService {
       );
 
       await _auth.signInWithCredential(credential);
-      insertPhoneNumberToDB();
 
       InfoDialog().show(
           context: context,
@@ -67,6 +68,16 @@ class PhoneAuthService {
           header: "Notice"
       );
       PersistentData().isOtpVerified = true;
+
+      //  input number to the user if triggered by in-app number verification
+      debugPrint("Is from home: ${PersistentData().isFromHomeForPhoneVerification}");
+      debugPrint("Number: ${PersistentData().inputtedCellphoneNumber.toString()}");
+      if (PersistentData().isFromHomeForPhoneVerification) {
+        Firestore().updateUserPhoneNumber(FirebaseAuth.instance.currentUser!.uid, PersistentData().inputtedCellphoneNumber.toString());
+      } else {
+        insertPhoneNumberToDB();
+      }
+
       Navigator.of(context).pushNamed("register_successful");
       debugPrint("success - register_verify_phone.dart");
     } catch (e) {

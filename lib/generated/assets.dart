@@ -189,6 +189,7 @@ class Assets {
   static const String outsourceApplicationOutsource = 'lib/view/pages/admin/manage/application_list/outsource/application_outsource.dart';
   static const String outsourceInquiriesOutsource = 'lib/view/pages/outsource/inquiries_outsource.dart';
   static const String outsourceManageOutsource = 'lib/view/pages/outsource/manage_outsource.dart';
+  static const String outsourceOutsourceApplication = 'lib/model/outsource/OutsourceApplication.dart';
   static const String picturesAccessDenied = 'lib/assets/pictures/access_denied.webp';
   static const String picturesAccountIntro = 'lib/assets/pictures/account_intro.png';
   static const String picturesAccountant = 'lib/assets/pictures/accountant.jpg';

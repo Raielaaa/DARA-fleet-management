@@ -3,6 +3,7 @@
 import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/controller/utils/intent_utils.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
+import 'package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart';
 import 'package:dara_app/view/pages/admin/car_list/car_list_.dart';
 import 'package:dara_app/view/pages/admin/home/main_home.dart';
 import 'package:dara_app/view/pages/admin/profile/profile.dart';
@@ -77,6 +78,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    PersistentData().tabController = _controller;
+
     List<PersistentTabConfig> _navBarsItems() {
       return [
         PersistentTabConfig(
@@ -398,7 +401,12 @@ class _HomePageState extends State<HomePage> {
               GestureDetector(
                 onTap: () {
                   PersistentData().selectedDrawerIndex = 4;
-                  // Navigator.of(context).pushNamed("rentals");
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => termsAndCondition(context, 2)
+                  );
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

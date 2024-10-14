@@ -46,7 +46,6 @@ class _CarListState extends State<CarList> {
       suvs = cars.where((car) => car.carType.toLowerCase() == 'suv').toList();
       itemsToBeDisplayed = sedans; // Set initial display to sedans
     });
-    debugPrint("refreshed");
   }
 
 

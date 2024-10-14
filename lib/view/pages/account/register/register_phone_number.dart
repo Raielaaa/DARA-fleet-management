@@ -112,27 +112,10 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
           color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
           child: ListView(
             children: [
-              Container(
-                //  Back button
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  onPressed: () {
-                    // Navigator.pushNamed(context, "register_email_pass");
-                  },
-                  icon: const Icon(Icons.arrow_back),
-                  iconSize: 25.0, // desired size
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(), // override default min size of 48px
-                  style: const ButtonStyle(
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                ),
-              ),
-
               //  Text header
               const SizedBox(height: 30),
               CustomComponents.displayText(
-                ProjectStrings.account_register_ep_header,
+                "Verify Phone",
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
                 color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
@@ -141,8 +124,8 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
               //  Text subheader
               const SizedBox(height: 5),
               CustomComponents.displayText(
-                ProjectStrings.account_register_ep_subheader,
-                fontSize: 10,
+                "Please enter your phone number to continue.",
+                fontSize: 12,
               ),
 
               //  Image display
@@ -154,7 +137,7 @@ class _RegisterPhoneNumberState extends State<RegisterPhoneNumber> {
               //  Text - Enter phone number
               const SizedBox(height: 30),
               CustomComponents.displayText(
-                ProjectStrings.register_phone_number_enter_number,
+                "Valid Phone Number",
                 fontWeight: FontWeight.bold,
                 fontSize: 10
               ),

@@ -1,5 +1,7 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 
@@ -41,7 +43,7 @@ class _RegisterSuccessfulState extends State<RegisterSuccessful> {
               //  Text header
               const SizedBox(height: 30),
               CustomComponents.displayText(
-                ProjectStrings.register_complete_header,
+                PersistentData().isFromHomeForPhoneVerification ? ProjectStrings.register_complete_header : "Phone Verification Successful",
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
                 color: Color(int.parse(ProjectColors.blackHeader.substring(2), radix: 16)),
@@ -50,7 +52,7 @@ class _RegisterSuccessfulState extends State<RegisterSuccessful> {
               //  Text subheader
               const SizedBox(height: 5),
               CustomComponents.displayText(
-                ProjectStrings.register_complete_subheader,
+                PersistentData().isFromHomeForPhoneVerification ? ProjectStrings.register_complete_subheader : "Your phone number has been successfully verified. Please click the button to return to the home page.",
                 fontSize: 10,
               ),
 
@@ -67,7 +69,10 @@ class _RegisterSuccessfulState extends State<RegisterSuccessful> {
                   ProjectStrings.register_complete_continue_button,
                   fontSize: 12,
                   onPressed: () {
-                    Navigator.of(context).pushNamed("login_main");
+                    debugPrint("register-success: ${PersistentData().isFromHomeForPhoneVerification}");
+                    PersistentData().userUId = PersistentData().uidForPhoneVerification;
+                    PersistentData().isFromHomeForPhoneVerification ? PersistentData().tabController.jumpToTab(4) : Navigator.of(context).pushNamed("login_main");
+                    PersistentData().isFromHomeForPhoneVerification = false;
                   },
                 ),
               ),

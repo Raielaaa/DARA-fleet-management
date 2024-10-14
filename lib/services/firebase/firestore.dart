@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/model/account/register_model.dart';
 import 'package:dara_app/model/account/user_role.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
 import 'package:dara_app/model/renting_proccess/renting_process.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/car_list/complete_car_list.dart';
@@ -19,6 +21,17 @@ class Firestore {
     .collection(FirebaseConstants.userReportCollection)
     .doc(documentName)
     .set(data);
+  }
+
+  Future<void> addOutsourceApplicationInfo({
+    required String collectionName,
+    required String documentName,
+    required Map<String, String> data
+  }) async {
+    await _firestore
+      .collection(collectionName)
+      .doc(documentName)
+      .set(data);
   }
 
   Future<void> addUserInfo({
@@ -55,6 +68,20 @@ class Firestore {
       debugPrint('User data updated successfully');
     } catch(e) {
       debugPrint('Error updating user data: $e');
+    }
+  }
+
+  Future<void> updateUserPhoneNumber(String userId, String newPhoneNumber) async {
+    debugPrint("userUID: ${PersistentData().uidForPhoneVerification}");
+    DocumentReference userDoc = _firestore.collection(FirebaseConstants.registerCollection).doc(PersistentData().uidForPhoneVerification);
+
+    try {
+      await userDoc.update({
+        "user_number" : newPhoneNumber
+      });
+      debugPrint("User phone number updated successfully");
+    } catch(e) {
+      debugPrint("Error updating user phone number: $e");
     }
   }
 
