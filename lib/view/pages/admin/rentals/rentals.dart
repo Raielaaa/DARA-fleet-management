@@ -832,7 +832,7 @@ class _Rentals extends State<Rentals> {
               //////////////////  list items  ////////////////////////
               const SizedBox(height: 5),
               itemsToBeDisplayed.isEmpty ? Padding(
-                padding: const EdgeInsets.only(left: 25.0, right: 25),
+                padding: const EdgeInsets.only(left: 25.0, right: 25, top: 10),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(

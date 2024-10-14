@@ -105,6 +105,8 @@ class MyApp extends StatelessWidget {
           // Home page
           "home_main": (context) => const HomePage(),
 
+          "admin_home": (context) => const AdminHome(controller: null),
+
           //  Car list
           "car_list": (context) => const CarList(),
 

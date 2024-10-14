@@ -452,11 +452,21 @@ class _ProfileState extends State<Profile> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14
                                     ),
-                                    CustomComponents.displayText(
-                                      "PH ${_currentUserInfo!.number.isNotEmpty ? _currentUserInfo?.number : "- click to verify phone number"}",
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 10,
-                                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                    GestureDetector(
+                                      onTap: () {
+                                        if (_currentUserInfo!.number.isEmpty) {
+                                          PersistentData().uidForPhoneVerification = FirebaseAuth.instance.currentUser!.uid;
+                                          PersistentData().isFromOtpPage = true;
+                                          PersistentData().isFromHomeForPhoneVerification = true;
+                                          Navigator.of(context).pushNamed("register_phone_number");
+                                        }
+                                      },
+                                      child: CustomComponents.displayText(
+                                        "PH ${_currentUserInfo!.number.isNotEmpty ? _currentUserInfo?.number : "- click to verify phone number"}",
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 10,
+                                        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                      ),
                                     ),
                                     const SizedBox(height: 10),
                                     Container(

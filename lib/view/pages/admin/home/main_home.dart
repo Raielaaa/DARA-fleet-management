@@ -21,7 +21,7 @@ import "../../../../services/firebase/firestore.dart";
 
 
 class AdminHome extends StatefulWidget {
-  final PersistentTabController controller;
+  final PersistentTabController? controller;
 
   const AdminHome({super.key, required this.controller});
 
@@ -386,7 +386,6 @@ class _AdminHomeState extends State<AdminHome> {
                               GestureDetector(
                                 onTap: () {
                                   if (_currentUserInfo!.number.isEmpty) {
-                                    PersistentData().uidForPhoneVerification = FirebaseAuth.instance.currentUser!.uid;
                                     PersistentData().isFromOtpPage = true;
                                     PersistentData().isFromHomeForPhoneVerification = true;
                                     Navigator.of(context).pushNamed("register_phone_number");
@@ -465,7 +464,7 @@ class _AdminHomeState extends State<AdminHome> {
                             padding: const EdgeInsets.symmetric(horizontal: 4),
                             child: GestureDetector(
                               onTap: () {
-                                widget.controller.jumpToTab(1);
+                                widget.controller?.jumpToTab(1);
                               },
                               child: Container(
                                 decoration: BoxDecoration(

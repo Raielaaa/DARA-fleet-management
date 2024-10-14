@@ -73,7 +73,7 @@ class Firestore {
 
   Future<void> updateUserPhoneNumber(String userId, String newPhoneNumber) async {
     debugPrint("userUID: ${PersistentData().uidForPhoneVerification}");
-    DocumentReference userDoc = _firestore.collection(FirebaseConstants.registerCollection).doc(PersistentData().uidForPhoneVerification);
+    DocumentReference userDoc = _firestore.collection(FirebaseConstants.registerCollection).doc(FirebaseAuth.instance.currentUser?.uid);
 
     try {
       await userDoc.update({

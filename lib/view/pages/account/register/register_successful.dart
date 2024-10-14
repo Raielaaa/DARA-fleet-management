@@ -28,7 +28,6 @@ class _RegisterSuccessfulState extends State<RegisterSuccessful> {
                 alignment: Alignment.centerLeft,
                 child: IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "register_verify_number");
                   },
                   icon: const Icon(Icons.arrow_back),
                   iconSize: 25.0, // desired size
@@ -53,7 +52,7 @@ class _RegisterSuccessfulState extends State<RegisterSuccessful> {
               const SizedBox(height: 5),
               CustomComponents.displayText(
                 PersistentData().isFromHomeForPhoneVerification ? ProjectStrings.register_complete_subheader : "Your phone number has been successfully verified. Please click the button to return to the home page.",
-                fontSize: 10,
+                fontSize: 12,
               ),
 
               //  Image display
@@ -69,9 +68,15 @@ class _RegisterSuccessfulState extends State<RegisterSuccessful> {
                   ProjectStrings.register_complete_continue_button,
                   fontSize: 12,
                   onPressed: () {
-                    debugPrint("register-success: ${PersistentData().isFromHomeForPhoneVerification}");
-                    PersistentData().userUId = PersistentData().uidForPhoneVerification;
-                    PersistentData().isFromHomeForPhoneVerification ? PersistentData().tabController.jumpToTab(4) : Navigator.of(context).pushNamed("login_main");
+                    PersistentData _persistentData = PersistentData();
+
+                    debugPrint("register-success: ${_persistentData.isFromHomeForPhoneVerification}");
+                    _persistentData.userUId = _persistentData.uidForPhoneVerification;
+                    _persistentData.isFromHomeForPhoneVerification ? Navigator.of(context).pushNamed("admin_home")
+                        : Navigator.of(context).pushNamed("login_main");
+                    // _persistentData.isFromHomeForPhoneVerification ? _persistentData.tabController.jumpToTab(
+                    //     _persistentData.tabController.index == 4 ? 1 : 4
+                    // ) : Navigator.of(context).pushNamed("login_main");
                     PersistentData().isFromHomeForPhoneVerification = false;
                   },
                 ),

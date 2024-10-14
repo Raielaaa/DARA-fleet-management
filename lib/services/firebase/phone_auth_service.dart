@@ -60,7 +60,12 @@ class PhoneAuthService {
         smsCode: smsCode,
       );
 
-      await _auth.signInWithCredential(credential);
+      // await _auth.signInWithCredential(credential);
+      try {
+        await _auth.currentUser?.linkWithCredential(credential);
+      } catch(e) {
+        debugPrint("Linking error@phone_auth_service.dart@ln65: $e");
+      }
 
       InfoDialog().show(
           context: context,
