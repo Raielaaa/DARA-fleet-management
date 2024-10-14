@@ -508,6 +508,9 @@ class _ProfileState extends State<Profile> {
                             child: _imageUrl != null
                                 ? CircleAvatar(
                               radius: 40,
+                              onBackgroundImageError: (error, stackTrace) {
+                                // In case of an error, show a default asset image
+                              },
                               backgroundImage: NetworkImage(_imageUrl!), // Display image from URL
                             )
                                 : const CircleAvatar(

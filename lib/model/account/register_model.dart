@@ -27,7 +27,7 @@ class RegisterModel {
       required this.totalAmountSpent,
       required this.longestRentalDate,
       required this.favorite,
-      required this.rentalCount
+      required this.rentalCount,
     }
   );
 
@@ -45,7 +45,7 @@ class RegisterModel {
       "user_total_amount_spent": totalAmountSpent,
       "user_longest_rental_date": longestRentalDate,
       "user_favorite": favorite,
-      "user_rental_count": rentalCount
+      "user_rental_count": rentalCount,
     };
   }
 
@@ -63,7 +63,7 @@ class RegisterModel {
       totalAmountSpent: data["user_total_amount_spent"] ?? "",
       longestRentalDate: data["user_longest_rental_date"] ?? "",
       favorite: data["user_favorite"] ?? "",
-      rentalCount: data["user_rental_count"] ?? ""
+      rentalCount: data["user_rental_count"] ?? "",
     );
   }
 }

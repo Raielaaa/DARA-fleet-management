@@ -103,7 +103,7 @@ class Auth {
           totalAmountSpent: "",
           longestRentalDate: "",
           favorite: "",
-          rentalCount: ""
+          rentalCount: "",
       );
 
       //  insert user role db

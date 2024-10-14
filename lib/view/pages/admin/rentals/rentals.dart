@@ -25,6 +25,7 @@ class _Rentals extends State<Rentals> {
   List<RentInformation> itemsToBeDisplayed = [];
   List<RentInformation> _rentRecordsHistory = [];
   List<RentInformation> _rentRecordsOnGoing = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -41,23 +42,25 @@ class _Rentals extends State<Rentals> {
 
   Future<void> _fetchRentRecords() async {
     // Fetch the rent records information asynchronously
+    LoadingDialog().show(context: context, content: "Please wait while we retrieve your rent information");
     _rentRecords = await Firestore().getRentRecordsInfo(FirebaseAuth.instance.currentUser!.uid);
+    LoadingDialog().dismiss();
 
     for (RentInformation listItem in _rentRecords) {
       if (RentLog().calculateDateDifference(listItem.endDateTime, RentLog().getCurrentFormattedDateTime()) > 0) {
-        setState(() {
-          _rentRecordsHistory.add(listItem);
-        });
+        _rentRecordsHistory.add(listItem);
       } else {
-        setState(() {
-          _rentRecordsOnGoing.add(listItem);
-        });
+        _rentRecordsOnGoing.add(listItem);
       }
     }
     // Update the UI after data is fetched
     setState(() {
       // Set the fetched data
+      _rentRecordsOnGoing = _rentRecordsOnGoing;
+      _rentRecordsHistory = _rentRecordsHistory;
+      itemsToBeDisplayed = _rentRecordsOnGoing;
       _rentRecords = _rentRecords;
+      _isLoading = false;
     });
   }
 
@@ -698,7 +701,8 @@ class _Rentals extends State<Rentals> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: _isLoading ? const Center(child: CircularProgressIndicator()) // Show loading indicator
+          : Container(
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2),
             radix: 16)),
         child: Padding(

@@ -2,6 +2,7 @@
 
 import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/controller/utils/intent_utils.dart';
+import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:dara_app/view/pages/admin/car_list/car_list_.dart';
 import 'package:dara_app/view/pages/admin/home/main_home.dart';
 import 'package:dara_app/view/pages/admin/profile/profile.dart';
@@ -9,6 +10,7 @@ import 'package:dara_app/view/pages/admin/rentals/rentals.dart';
 import 'package:dara_app/view/shared/colors.dart';
 import 'package:dara_app/view/shared/components.dart';
 import 'package:dara_app/view/shared/strings.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
@@ -297,7 +299,7 @@ class _HomePageState extends State<HomePage> {
                           "Home",
                           fontSize: 12,
                         color: selectedIndex == 0 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
-                        fontWeight: selectedIndex == 0 ? FontWeight.bold : FontWeight.normal
+                        fontWeight: selectedIndex == 0 ? FontWeight.bold : FontWeight.bold
                       )
                     ]
                 ),
@@ -323,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                           "Explore",
                           fontSize: 12,
                           color: selectedIndex == 1 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
-                          fontWeight: selectedIndex == 1 ? FontWeight.bold : FontWeight.normal
+                          fontWeight: selectedIndex == 1 ? FontWeight.bold : FontWeight.bold
                       )
                     ]
                 ),
@@ -349,7 +351,7 @@ class _HomePageState extends State<HomePage> {
                           "Rentals",
                           fontSize: 12,
                           color: selectedIndex == 2 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
-                          fontWeight: selectedIndex == 2 ? FontWeight.bold : FontWeight.normal
+                          fontWeight: selectedIndex == 2 ? FontWeight.bold : FontWeight.bold
                       )
                     ]
                 ),
@@ -375,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                           "Profile",
                           fontSize: 12,
                           color: selectedIndex == 3 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
-                          fontWeight: selectedIndex == 3 ? FontWeight.bold : FontWeight.normal
+                          fontWeight: selectedIndex == 3 ? FontWeight.bold : FontWeight.bold
                       )
                     ]
                 ),
@@ -411,7 +413,7 @@ class _HomePageState extends State<HomePage> {
                           "Terms",
                           fontSize: 12,
                           color: selectedIndex == 4 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
-                          fontWeight: selectedIndex == 4 ? FontWeight.bold : FontWeight.normal
+                          fontWeight: selectedIndex == 4 ? FontWeight.bold : FontWeight.bold
                       )
                     ]
                 ),
@@ -435,7 +437,7 @@ class _HomePageState extends State<HomePage> {
                           "About",
                           fontSize: 12,
                           color: selectedIndex == 5 ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) : const Color(0xff404040),
-                          fontWeight: selectedIndex == 5 ? FontWeight.bold : FontWeight.normal
+                          fontWeight: selectedIndex == 5 ? FontWeight.bold : FontWeight.bold
                       )
                     ]
                 ),
@@ -453,11 +455,21 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 20,
-                        backgroundImage: AssetImage('lib/assets/pictures/user_info_user.png'), // Default image
+                        backgroundImage: NetworkImage(FirebaseConstants.retrieveImage("user_images/${FirebaseAuth.instance.currentUser?.uid}")),
+                        onBackgroundImageError: (error, stackTrace) {
+                          // In case of an error, show a default asset image
+                        },
+                        child: Image.network(
+                          FirebaseConstants.retrieveImage("user_images/${FirebaseAuth.instance.currentUser?.uid}"),
+                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                            return Image.asset('lib/assets/pictures/user_info_user.png'); // Default image
+                          },
+                        ),
                       ),
+
                       const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

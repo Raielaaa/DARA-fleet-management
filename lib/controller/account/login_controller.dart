@@ -37,7 +37,7 @@ class LoginController {
         totalAmountSpent: "",
         longestRentalDate: "",
         favorite: "",
-        rentalCount: ""
+        rentalCount: "",
     );
 
     try {
