@@ -229,6 +229,10 @@ flutter:
     - lib/assets/pictures/drawer_rental.png
     - lib/assets/pictures/drawer_terms.png
     - lib/assets/pictures/drawer_about.png
+    - lib/assets/pictures/about.png
+    - lib/assets/pictures/about_ccc.png
+    - lib/assets/pictures/about_dara.png
+    - lib/assets/pictures/about_logo.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

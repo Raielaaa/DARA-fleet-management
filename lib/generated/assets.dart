@@ -18,6 +18,9 @@ class Assets {
   static const String applicationProcessEmergencyContact = 'lib/view/pages/driver/application_process/emergency_contact.dart';
   static const String applicationProcessPersonalInformation = 'lib/view/pages/driver/application_process/personal_information.dart';
   static const String applicationProcessSupportingDocuments = 'lib/view/pages/driver/application_process/supporting_documents.dart';
+  static const String assetsPicturesAbout = 'lib/assets/pictures/about.png';
+  static const String assetsPicturesAboutCcc = 'lib/assets/pictures/about_ccc.png';
+  static const String assetsPicturesAboutDara = 'lib/assets/pictures/about_dara.png';
   static const String assetsPicturesAccessDenied = 'lib/assets/pictures/access_denied.webp';
   static const String assetsPicturesAccountIntro = 'lib/assets/pictures/account_intro.png';
   static const String assetsPicturesAccountant = 'lib/assets/pictures/accountant.jpg';
@@ -168,6 +171,7 @@ class Assets {
   static const String gcashGcashPayment = 'lib/services/gcash/gcash_payment.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String googleGoogle = 'lib/services/google/google.dart';
+  static const String homeAboutModalSheet = 'lib/view/pages/admin/home/about_modal_sheet.dart';
   static const String homeFeaturedCarInfo = 'lib/model/home/featured_car_info.dart';
   static const String homeHomeController = 'lib/controller/home/home_controller.dart';
   static const String homeHomePage = 'lib/view/pages/admin/home/home_page.dart';
@@ -190,6 +194,10 @@ class Assets {
   static const String outsourceInquiriesOutsource = 'lib/view/pages/outsource/inquiries_outsource.dart';
   static const String outsourceManageOutsource = 'lib/view/pages/outsource/manage_outsource.dart';
   static const String outsourceOutsourceApplication = 'lib/model/outsource/OutsourceApplication.dart';
+  static const String picturesAbout = 'lib/assets/pictures/about.png';
+  static const String picturesAboutCcc = 'lib/assets/pictures/about_ccc.png';
+  static const String picturesAboutDara = 'lib/assets/pictures/about_dara.png';
+  static const String picturesAboutLogo = 'lib/assets/pictures/about_logo.png';
   static const String picturesAccessDenied = 'lib/assets/pictures/access_denied.webp';
   static const String picturesAccountIntro = 'lib/assets/pictures/account_intro.png';
   static const String picturesAccountant = 'lib/assets/pictures/accountant.jpg';

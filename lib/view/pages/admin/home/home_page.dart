@@ -17,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:flutter_side_menu/flutter_side_menu.dart';
 
+import 'about_modal_sheet.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -431,6 +433,15 @@ class _HomePageState extends State<HomePage> {
               GestureDetector(
                 onTap: () {
                   PersistentData().selectedDrawerIndex = 5;
+                  //  Display About ModalBottomSheet
+                  showModalBottomSheet<void>(
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const AboutModalSheet();
+                      }
+                  );
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
