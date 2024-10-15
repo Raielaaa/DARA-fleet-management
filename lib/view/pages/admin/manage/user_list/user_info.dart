@@ -66,10 +66,7 @@ class _UserInfoState extends State<UserInfo> {
             ProjectStrings.admin_user_info_user_list,
             fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/three_vertical_dots.png"),
-          ),
+          CustomComponents.menuButtons(context),
         ],
       ),
     );

@@ -688,11 +688,7 @@ class _Rentals extends State<Rentals> {
             "Rent Profile",
             fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset(
-                "lib/assets/pictures/three_vertical_dots.png"),
-          ),
+          CustomComponents.menuButtons(context),
         ],
       ),
     );

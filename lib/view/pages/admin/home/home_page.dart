@@ -114,18 +114,18 @@ class _HomePageState extends State<HomePage> {
           item: ItemConfig(
             icon: Tab(
               icon: Padding(
-                padding: const EdgeInsets.all(6.0),
+                padding: EdgeInsets.all(PersistentData().userType.toLowerCase() == "admin" ? 6.0 : 2.0),
                 child: Image.asset(
-                  "lib/assets/pictures/bottom_nav_bar_antrip.png",
+                PersistentData().userType.toLowerCase() == "admin" ? "lib/assets/pictures/bottom_nav_bar_antrip.png" : "lib/assets/pictures/google_maps_icon.png",
                 ),
               )
             ),
             title: " ",
-            activeForegroundColor: CupertinoColors.activeBlue,
-            inactiveForegroundColor: CupertinoColors.activeBlue,
+            activeForegroundColor: PersistentData().userType.toLowerCase() == "admin" ? CupertinoColors.activeBlue : Color(int.parse(ProjectColors.lightBlue.substring(2), radix: 16)),
+            inactiveForegroundColor: PersistentData().userType.toLowerCase() == "admin" ? CupertinoColors.activeBlue : Color(int.parse(ProjectColors.lightBlue.substring(2), radix: 16)),
           ),
-          onPressed: (context) {
-            IntentUtils.launchAntripIOT(androidPackageName: "com.slxk.gpsantu");
+          onPressed: (context) async {
+            PersistentData().userType.toLowerCase() == "admin" ? IntentUtils.launchAntripIOT(androidPackageName: "com.slxk.gpsantu") : await IntentUtils.launchGoogleMaps();
           }
         ),
         PersistentTabConfig(
@@ -163,7 +163,8 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.only(top: 50, left: 13, bottom: 15),
         child: drawerUI()
       ),
-        floatingActionButton: Padding(
+        floatingActionButton: PersistentData().userType.toLowerCase() == "admin" ?
+        Padding(
           padding: const EdgeInsets.only(bottom: 55),
           child: FloatingActionButton(
             backgroundColor: Colors.white,
@@ -182,7 +183,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-        ),
+        ) : null,
         body: PersistentTabView(
           backgroundColor: Colors.white,
           handleAndroidBackButtonPress: true,

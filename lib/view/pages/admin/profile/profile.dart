@@ -18,6 +18,7 @@ import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
 import "package:image_picker/image_picker.dart";
+import "../home/about_modal_sheet.dart";
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import "package:url_launcher/url_launcher.dart";
 
@@ -397,11 +398,7 @@ class _ProfileState extends State<Profile> {
                                 "User Information",
                                 fontWeight: FontWeight.bold,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Image.asset(
-                                    "lib/assets/pictures/three_vertical_dots.png"),
-                              ),
+                              CustomComponents.menuButtons(context),
                             ],
                           ),
                         ),

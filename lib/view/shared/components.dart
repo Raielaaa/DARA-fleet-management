@@ -11,7 +11,63 @@ import "package:flutter/material.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:simple_loading_dialog/simple_loading_dialog.dart";
 
+import "../pages/account/register/widgets/terms_and_conditions.dart";
+import "../pages/admin/home/about_modal_sheet.dart";
+
 class CustomComponents {
+  static Widget menuButtons(BuildContext context) {
+    return PopupMenuButton(
+      icon: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Image.asset(
+          "lib/assets/pictures/three_vertical_dots.png",
+        ),
+      ),
+      itemBuilder: (BuildContext context) {
+        return [
+          PopupMenuItem<String>(
+            value: 'option_terms',
+            child: CustomComponents.displayText(
+                "Terms",
+                fontWeight: FontWeight.bold,
+                fontSize: 10
+            ),
+          ),
+          PopupMenuItem<String>(
+            value: 'option_about',
+            child: CustomComponents.displayText(
+                "About",
+                fontWeight: FontWeight.bold,
+                fontSize: 10
+            ),
+          ),
+        ];
+      },
+      onSelected: (String value) {
+        // Handle menu item selection
+        switch (value) {
+          case 'option_terms':
+            showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (context) => termsAndCondition(context, 2)
+            );
+            break;
+          case 'option_about':
+            showModalBottomSheet<void>(
+                backgroundColor: Colors.transparent,
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return const AboutModalSheet();
+                }
+            );
+            break;
+        }
+      },
+    );
+  }
   static void showToastMessage(
       String message,
       Color backgroundColor,

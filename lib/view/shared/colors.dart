@@ -16,6 +16,7 @@ class ProjectColors {
   static String lineGray = "0xffc6c6c6";
   static String antripIOTColor = "0xff007aff";
   static String rowIconLine = "0xffd3d3d3";
+  static String lightBlue = "0xffF8F9FA";
 
   //  user info
   static String userInfoRed = "0xfffeb8bf";

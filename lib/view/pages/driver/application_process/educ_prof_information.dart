@@ -329,10 +329,7 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
             ProjectStrings.driver_ep_title,
             fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/three_vertical_dots.png"),
-          ),
+          CustomComponents.menuButtons(context),
         ],
       ),
     );

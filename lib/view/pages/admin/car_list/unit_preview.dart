@@ -767,7 +767,14 @@ class _UnitPreviewState extends State<UnitPreview> {
                         onPressed: () {
                           if (selectedCarItem.availability != "available") {
                             InfoDialog().show(context: context, content: "The selected car unit is currently unavailable. Please check back later. Thank you for your understanding.", header: "Warning");
-                          } else {
+                          } else if (PersistentData().userInfo?.status.toLowerCase() != "verified") {
+                            InfoDialog().show(
+                                context: context,
+                                content: "Your account is currently unverified. To proceed with renting a car, please complete the verification process or, if you have already submitted your documents, kindly wait until your account is verified.",
+                                header: "Account Verification Required"
+                            );
+                          }
+                          else {
                             _showInformationDialog();
                           }
                     }),
@@ -804,11 +811,7 @@ class _UnitPreviewState extends State<UnitPreview> {
             "Unit Preview",
             fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset(
-                "lib/assets/pictures/three_vertical_dots.png"),
-          ),
+          CustomComponents.menuButtons(context),
         ],
       ),
     );

@@ -410,11 +410,7 @@ class _ApplicationDriverState extends State<ApplicationDriver> {
             ProjectStrings.application_list_driver_outsource_detailed_info_applicant_info,
             fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset(
-                "lib/assets/pictures/three_vertical_dots.png"),
-          ),
+          CustomComponents.menuButtons(context),
         ],
       ),
     );

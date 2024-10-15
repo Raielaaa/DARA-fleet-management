@@ -500,10 +500,7 @@ class _OutsourceManageState extends State<OutsourceManage> {
             ProjectStrings.outsource_action_bar_title,
             fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/three_vertical_dots.png"),
-          ),
+          CustomComponents.menuButtons(context),
         ],
       ),
     );

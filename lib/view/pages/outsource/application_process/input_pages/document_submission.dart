@@ -528,10 +528,7 @@ class _DocumentSubmissionState extends State<DocumentSubmission> {
             ProjectStrings.outsource_ds_appbar_title,
             fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/three_vertical_dots.png"),
-          ),
+          CustomComponents.menuButtons(context),
         ],
       ),
     );
