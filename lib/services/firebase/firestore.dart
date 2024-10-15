@@ -160,6 +160,14 @@ class Firestore {
     return querySnapshot.docs.map((doc) => RentInformation.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
   }
 
+  Future<List<RentInformation>> getRentRecords() async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection(FirebaseConstants.rentRecordsCollection)
+        .get();
+
+    return querySnapshot.docs.map((doc) => RentInformation.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
+  }
+
   Future<List<RentInformation>> getSelectedRecordsInfo(String startDate, String endDate, String location) async {
     // Fetch all documents from the collection with location filtering
     QuerySnapshot querySnapshot = await _firestore
