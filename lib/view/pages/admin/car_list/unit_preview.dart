@@ -767,7 +767,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                         onPressed: () {
                           if (selectedCarItem.availability != "available") {
                             InfoDialog().show(context: context, content: "The selected car unit is currently unavailable. Please check back later. Thank you for your understanding.", header: "Warning");
-                          } else if (PersistentData().userInfo?.status.toLowerCase() != "verified") {
+                          } else if (PersistentData().userInfo?.status.toLowerCase() != "verified" || PersistentData().userInfo!.number.toString().isEmpty) {
                             InfoDialog().show(
                                 context: context,
                                 content: "Your account is currently unverified. To proceed with renting a car, please complete the verification process or, if you have already submitted your documents, kindly wait until your account is verified.",

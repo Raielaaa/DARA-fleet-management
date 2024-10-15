@@ -21,6 +21,7 @@ class Assets {
   static const String assetsPicturesAbout = 'lib/assets/pictures/about.png';
   static const String assetsPicturesAboutCcc = 'lib/assets/pictures/about_ccc.png';
   static const String assetsPicturesAboutDara = 'lib/assets/pictures/about_dara.png';
+  static const String assetsPicturesAboutLogo = 'lib/assets/pictures/about_logo.png';
   static const String assetsPicturesAccessDenied = 'lib/assets/pictures/access_denied.webp';
   static const String assetsPicturesAccountIntro = 'lib/assets/pictures/account_intro.png';
   static const String assetsPicturesAccountant = 'lib/assets/pictures/accountant.jpg';
@@ -163,6 +164,7 @@ class Assets {
   static const String documentsVerifyBooking = 'lib/view/pages/admin/rent_process/documents/verify_booking.dart';
   static const String driverApplicationDriver = 'lib/view/pages/admin/manage/application_list/driver/application_driver.dart';
   static const String driverDriver = 'lib/view/pages/driver/driver.dart';
+  static const String driverDriverApplication = 'lib/model/driver/driver_application.dart';
   static const String entryEntryPageVideo = 'lib/view/pages/entry/entry_page_video.dart';
   static const String firebaseAuth = 'lib/services/firebase/auth.dart';
   static const String firebaseFirestore = 'lib/services/firebase/firestore.dart';

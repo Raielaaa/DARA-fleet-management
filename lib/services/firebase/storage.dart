@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class Storage {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  Future<void> uploadSelectedFile(String filePath, BuildContext context) async {
+  Future<void> uploadSelectedFile(String filePath, BuildContext context, String? employedOrBusiness,  String? storagePath) async {
     // Check if the file path is not null or empty
     if (filePath.isNotEmpty) {
       File file = File(filePath);
@@ -18,10 +18,17 @@ class Storage {
         // Extract the file name from the file path
         String fileName = file.uri.pathSegments.last;
 
+        // Add a prefix to the file name based on the employedOrBusiness argument
+        if (employedOrBusiness == "business") {
+          fileName = "business.$fileName";
+        } else if (employedOrBusiness == "employed") {
+          fileName = "employed.$fileName";
+        }
+
         // Get a reference to Firebase Storage for the target path
         Reference storageReference = FirebaseStorage.instance
             .ref()
-            .child("rent_documents_upload/${FirebaseAuth.instance.currentUser!.uid}/$fileName");
+            .child("${storagePath ?? "rent_documents_upload"}/${FirebaseAuth.instance.currentUser!.uid}/$fileName");
 
         // Start the file upload
         UploadTask uploadTask = storageReference.putFile(file);

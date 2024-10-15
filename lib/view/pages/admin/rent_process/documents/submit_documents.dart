@@ -165,7 +165,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
 
     // Handling upload
     for (var entry in indexStringMap.entries) {
-      await _storage.uploadSelectedFile(entry.value, context);
+      await _storage.uploadSelectedFile(entry.value, context, null, null);
     }
   }
 
