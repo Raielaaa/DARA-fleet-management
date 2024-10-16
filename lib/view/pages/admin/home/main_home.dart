@@ -204,7 +204,7 @@ class _AdminHomeState extends State<AdminHome> {
   }
 
   Future<void> _fetchUserDocumentsForVerification() async {
-    _userFiles = await Storage().getUserFiles();
+    _userFiles = await Storage().getUserFiles(FirebaseConstants.rentDocumentsUpload, FirebaseAuth.instance.currentUser!.uid);
   }
 
   Future<void> _fetchUserInfo() async {

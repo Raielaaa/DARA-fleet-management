@@ -84,13 +84,13 @@ class Storage {
   }
 
 
-  Future<List<String>> getUserFiles() async {
+  Future<List<String>> getUserFiles(String storagePath, String userUID) async {
     List<String> filePaths = [];
 
     try {
       // Reference to the folder where your files are stored
       final ListResult result = await _storage
-          .ref("${FirebaseConstants.rentDocumentsUpload}/${FirebaseAuth.instance.currentUser?.uid}")
+          .ref("$storagePath/$userUID")
           .listAll();
 
       // Iterate through each item and get the full path of the file
@@ -109,5 +109,43 @@ class Storage {
     }
 
     return filePaths;
+  }
+
+  Future<List<Map<String, dynamic>>> getUserFilesForInquiry(String storagePath, String userUID) async {
+    List<Map<String, dynamic>> fileDetails = [];
+
+    try {
+      // Reference to the folder where your files are stored
+      final ListResult result = await _storage
+          .ref("$storagePath/$userUID")
+          .listAll();
+
+      // Iterate through each item and get the full path, size, and upload date of the file
+      for (var ref in result.items) {
+        // Get the full path of the file
+        String fullPath = ref.fullPath;
+
+        // Format it to include the `gs://` prefix and your Firebase bucket name
+        String storageLocation = 'gs://${_storage.bucket}/$fullPath';
+
+        // Get the metadata of the file
+        final FullMetadata metadata = await ref.getMetadata();
+
+        // Get the file size and upload date
+        int fileSize = metadata.size ?? 0; // File size in bytes
+        DateTime? uploadDate = metadata.updated;
+
+        // Add the details to the list
+        fileDetails.add({
+          'storageLocation': storageLocation,
+          'fileSize': fileSize,
+          'uploadDate': uploadDate,
+        });
+      }
+    } catch (e) {
+      debugPrint("Error listing files: $e");
+    }
+
+    return fileDetails;
   }
 }

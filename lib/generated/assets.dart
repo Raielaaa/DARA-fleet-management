@@ -185,6 +185,7 @@ class Assets {
   static const String inputPagesPersonalProfile = 'lib/view/pages/outsource/application_process/input_pages/personal_profile.dart';
   static const String inputPagesVehicleInformation = 'lib/view/pages/outsource/application_process/input_pages/vehicle_information.dart';
   static const String inquiriesInquiries = 'lib/view/pages/admin/manage/inquiries/inquiries.dart';
+  static const String inquiriesPdfViewer = 'lib/view/pages/admin/manage/inquiries/pdf_viewer.dart';
   static const String libFirebaseOptions = 'lib/firebase_options.dart';
   static const String libMain = 'lib/main.dart';
   static const String loginLogin = 'lib/view/pages/account/login/login.dart';

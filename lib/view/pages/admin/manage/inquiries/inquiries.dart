@@ -1,3 +1,4 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:dara_app/model/account/register_model.dart";
 import "package:dara_app/services/firebase/firestore.dart";
 import "package:dara_app/view/shared/colors.dart";
@@ -5,13 +6,20 @@ import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:dara_app/view/pages/admin/manage/inquiries/pdf_viewer.dart";
+import "package:dio/dio.dart";
 import "package:firebase_auth/firebase_auth.dart";
+import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
+import "package:path_provider/path_provider.dart";
 import "package:slide_switcher/slide_switcher.dart";
+import "package:url_launcher/url_launcher.dart";
 
 import "../../../../../controller/singleton/persistent_data.dart";
+import "../../../../../model/constants/firebase_constants.dart";
 import "../../../../../model/renting_proccess/renting_process.dart";
+import "../../../../../services/firebase/storage.dart";
 
 class Inquiries extends StatefulWidget {
   const Inquiries({super.key});
@@ -25,6 +33,7 @@ class _InquiriesState extends State<Inquiries> {
   RegisterModel? _userInfoTemp;
   List<RentInformation> ongoingInquiry = [];
   List<RentInformation> pastDuesInquiry = [];
+  List<Map<String, dynamic>> _submittedFiles = [];
 
   @override
   void initState() {
@@ -37,54 +46,62 @@ class _InquiriesState extends State<Inquiries> {
   }
 
   Future<void> retrieveUserInfo(String renterUID) async {
+    List<Map<String, dynamic>> files = await Storage().getUserFilesForInquiry(FirebaseConstants.rentDocumentsUpload, renterUID);
     RegisterModel? _userData = await Firestore().getUserInfo(renterUID);
+
+    if (!mounted) return;
+
     setState(() {
       _userInfoTemp = _userData!;
+      _submittedFiles = files;
     });
   }
 
   Future<void> retrieveRentRecords() async {
     try {
-      // Show the loading dialog while retrieving rent records
       LoadingDialog().show(
         context: context,
         content: "Retrieving rent inquiries. Please wait a moment.",
       );
 
-      // Retrieve rent records outside of setState
       List<RentInformation> records = await Firestore().getRentRecords();
 
       for (var item in records) {
         if (isDateInPast(item.startDateTime)) {
-          setState(() {
-            pastDuesInquiry.add(item);
-          });
+          if (mounted) {
+            setState(() {
+              pastDuesInquiry.add(item);
+            });
+          }
         } else {
-          setState(() {
-            ongoingInquiry.add(item);
-          });
+          if (mounted) {
+            setState(() {
+              ongoingInquiry.add(item);
+            });
+          }
         }
       }
 
-      // Use setState to update the state after the async call
-      setState(() {
-        rentInformationList = ongoingInquiry; // Assign the retrieved records
-      });
+      if (mounted) {
+        setState(() {
+          rentInformationList = ongoingInquiry;
+        });
+      }
 
-      // Dismiss the loading dialog
       LoadingDialog().dismiss();
     } catch (e) {
-      // Dismiss the loading dialog if there's an error
-      LoadingDialog().dismiss();
-      // Show an info dialog with the error message
-      InfoDialog().show(
-        context: context,
-        content: "Something went wrong: $e",
-        header: "Warning",
-      );
+      if (mounted) {
+        LoadingDialog().dismiss();
+        InfoDialog().show(
+          context: context,
+          content: "Something went wrong: $e",
+          header: "Warning",
+        );
+      }
       debugPrint("Error@inquiries.dart@ln45: $e");
     }
   }
+
 
   bool isDateInPast(String dateStr) {
     // Parse the date string
@@ -95,7 +112,7 @@ class _InquiriesState extends State<Inquiries> {
     return parsedDate.isBefore(DateTime.now());
   }
 
-  Widget buildInfoRow(String title, String value, {EdgeInsets? padding}) {
+  Widget buildInfoRow(String title, String value, {EdgeInsets? padding, int? itemNumber}) {
     return Padding(
       padding: padding ?? const EdgeInsets.only(right: 15, left: 15, top: 5),
       child: Row(
@@ -111,7 +128,8 @@ class _InquiriesState extends State<Inquiries> {
             )),
           ),
           const Spacer(),
-          Expanded(
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
             child: CustomComponents.displayText(
               value,
               fontWeight: FontWeight.bold,
@@ -211,7 +229,7 @@ class _InquiriesState extends State<Inquiries> {
                                                           .lineGray)),
                                                       width: 1)),
                                               child: Center(
-                                                  child: CustomComponents.displayText("1",
+                                                  child: CustomComponents.displayText("${index + 1}",
                                                       fontSize: 12,
                                                       fontWeight: FontWeight.bold))),
                                         ),
@@ -254,7 +272,7 @@ class _InquiriesState extends State<Inquiries> {
                                         radix: 16)),
                                   ),
                                   // Name
-                                  buildInfoRow(ProjectStrings.ri_name_title, "${_userInfoTemp?.firstName} ${_userInfoTemp?.lastName}", padding: const EdgeInsets.only(right: 15, left: 15, top: 15)),
+                                  buildInfoRow(ProjectStrings.ri_name_title, "${_userInfoTemp?.firstName} ${_userInfoTemp?.lastName}", padding: const EdgeInsets.only(right: 15, left: 15, top: 15), itemNumber: index),
 
                                   // Email
                                   buildInfoRow(ProjectStrings.ri_email_title, _userInfoTemp!.email),
@@ -264,6 +282,9 @@ class _InquiriesState extends State<Inquiries> {
 
                                   //  role
                                   buildInfoRow("Role:", _userInfoTemp!.role),
+
+                                  //  rent location
+                                  buildInfoRow("Rent Location:", rentInformationList[index].rentLocation),
 
                                   // Rent start date
                                   buildInfoRow(ProjectStrings.ri_rent_start_date_title, rentInformationList[index].startDateTime),
@@ -280,6 +301,9 @@ class _InquiriesState extends State<Inquiries> {
                                   // Reserved
                                   buildInfoRow(ProjectStrings.ri_reserved_title, rentInformationList[index].reservationFee == "0" ? "No" : "Yes"),
 
+                                  //  total fee
+                                  buildInfoRow("Total Amount:", rentInformationList[index].totalAmount),
+
                                   const SizedBox(height: 30),
 
                                   //  attached documents
@@ -295,16 +319,13 @@ class _InquiriesState extends State<Inquiries> {
                                     ),
                                   ),
 
-                                  displayDocuments(
-                                      ProjectStrings.ri_government_id_1),
-                                  displayDocuments(
-                                      ProjectStrings.ri_government_id_2),
-                                  displayDocuments(
-                                      ProjectStrings.ri_driver_license),
-                                  displayDocuments(
-                                      ProjectStrings.ri_proof_of_billing),
-                                  displayDocuments(
-                                      ProjectStrings.ri_ltms_portal),
+                                  ..._submittedFiles.map((file) {
+                                    return displayDocuments(
+                                      file["storageLocation"],
+                                      (file["fileSize"] / 1024).toStringAsFixed(2),
+                                      DateFormat("MMMM dd, yyyy | hh:mm a").format(file["uploadDate"]).toString(),
+                                    );
+                                  }),
 
                                   const SizedBox(height: 30),
 
@@ -328,6 +349,21 @@ class _InquiriesState extends State<Inquiries> {
                                           labelText: ProjectStrings.ri_approve,
                                           textColor: ProjectColors.greenButtonMain,
                                           onTap: () {
+                                            InfoDialog().showWithCancelProceedButton(
+                                              context: context,
+                                              content: "Are you sure you want to approve this rent application? This action cannot be undone, and the applicant will be notified.",
+                                              header: "Confirm Approval",
+                                              actionCode: 1,
+                                              onProceed: () async {
+                                                try {
+                                                  LoadingDialog().show(context: context, content: "Please wait while we update renting records");
+                                                  await updateDB();
+                                                } catch(e) {
+                                                  InfoDialog().show(context: context, content: "Something went wrong: $e");
+                                                }
+                                                LoadingDialog().dismiss();
+                                              }
+                                            );
                                           },
                                         )
                                       ]
@@ -347,6 +383,10 @@ class _InquiriesState extends State<Inquiries> {
         ),
       ),
     );
+  }
+
+  Future<void> updateDB() async {
+
   }
 
   Widget switcher(List<RentInformation> ongoingInquiry, List<RentInformation> pastDuesInquiry) {
@@ -378,6 +418,80 @@ class _InquiriesState extends State<Inquiries> {
           fontWeight: FontWeight.w600,
         )
       ],
+    );
+  }
+
+  Widget displayDocuments(String? documentName, String fileSize, String fileDateUploaded) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      color: Color(int.parse(
+                          ProjectColors.mainColorHex.substring(2),
+                          radix: 16))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: CustomComponents.displayText(documentName!.split(".").last.toUpperCase(),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      documentName?.split("/").last ?? "Empty",
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: ProjectStrings.general_font_family
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        CustomComponents.displayText("$fileSize KB",
+                            fontSize: 10,
+                            color: Color(int.parse(
+                                ProjectColors.lightGray.substring(2),
+                                radix: 16))),
+                        const SizedBox(width: 20),
+                        CustomComponents.displayText(
+                            fileDateUploaded,
+                            fontSize: 10,
+                            color: Color(int.parse(
+                                ProjectColors.lightGray.substring(2),
+                                radix: 16)))
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          //  view text
+          GestureDetector(
+            onTap: () {
+              viewDocument(documentName);
+            },
+            child: CustomComponents.displayText(ProjectStrings.ri_view,
+                color: Color(int.parse(ProjectColors.mainColorHex.substring(2),
+                    radix: 16)),
+                fontSize: 10,
+                fontWeight: FontWeight.bold),
+          )
+        ],
+      ),
     );
   }
 
@@ -449,65 +563,89 @@ class _InquiriesState extends State<Inquiries> {
     );
   }
 
-  Widget displayDocuments(String documentName) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            child: Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3),
-                      color: Color(int.parse(
-                          ProjectColors.mainColorHex.substring(2),
-                          radix: 16))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: CustomComponents.displayText(ProjectStrings.ri_jpg,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    CustomComponents.displayText(documentName,
-                        fontSize: 10, fontWeight: FontWeight.w500),
-                    Row(
-                      children: [
-                        CustomComponents.displayText(ProjectStrings.ri_size,
-                            fontSize: 10,
-                            color: Color(int.parse(
-                                ProjectColors.lightGray.substring(2),
-                                radix: 16))),
-                        const SizedBox(width: 20),
-                        CustomComponents.displayText(
-                            ProjectStrings.ri_document_date,
-                            fontSize: 10,
-                            color: Color(int.parse(
-                                ProjectColors.lightGray.substring(2),
-                                radix: 16)))
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
+  Future<void> viewDocument(String gsUrl) async {
+    try {
+      // Show loading dialog
+      LoadingDialog().show(context: context, content: "Retrieving the document, please wait.");
+
+      // Convert gs:// URL to a download URL
+      final ref = FirebaseStorage.instance.refFromURL(gsUrl);
+      final downloadUrl = await ref.getDownloadURL();
+      LoadingDialog().dismiss();
+
+      // Determine file type based on extension
+      String fileExtension = gsUrl.split('.').last.toLowerCase();
+
+      if (fileExtension == 'pdf') {
+        // Open PDF viewer for PDF files
+        // Download the file to a local path
+        final directory = await getTemporaryDirectory();
+        final filePath = '${directory.path}/temp_document.pdf';
+
+        // Download the file using Dio
+        await Dio().download(downloadUrl, filePath);
+
+        LoadingDialog().dismiss();
+
+        // Open PDF viewer for PDF files
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PdfViewerScreen(downloadUrl: filePath),
           ),
-          //  view text
-          CustomComponents.displayText(ProjectStrings.ri_view,
-              color: Color(int.parse(ProjectColors.mainColorHex.substring(2),
-                  radix: 16)),
-              fontSize: 10,
-              fontWeight: FontWeight.bold)
-        ],
-      ),
-    );
+        );
+      } else if (fileExtension == 'doc' || fileExtension == 'docx') {
+        // Provide a download link for DOC or DOCX files
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Download Document"),
+              content: Text("Would you like to download this document?"),
+              actions: [
+                TextButton(
+                  child: Text("Cancel"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text("Download"),
+                  onPressed: () {
+                    // Open the document URL in the browser
+                    launchUrl(Uri.parse(downloadUrl));
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        // Handle image files (PNG, JPG, JPEG)
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              child: CachedNetworkImage(
+                imageUrl: downloadUrl,
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            );
+          },
+        );
+      }
+    } catch (e) {
+      LoadingDialog().dismiss();
+      debugPrint("Error fetching download URL: $e");
+      // Show an error dialog
+      InfoDialog().show(
+        context: context,
+        content: "Something went wrong while retrieving the document.",
+        header: "Error",
+      );
+    }
   }
 }

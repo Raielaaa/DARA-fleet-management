@@ -1,7 +1,9 @@
 import "package:file_picker/file_picker.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:mobkit_dashed_border/mobkit_dashed_border.dart";
 
+import "../../../../model/constants/firebase_constants.dart";
 import "../../../../services/firebase/storage.dart";
 import "../../../shared/colors.dart";
 import "../../../shared/components.dart";
@@ -47,7 +49,7 @@ class _UploadDocumentsState extends State<UploadDocuments> {
     BuildContext? currentContext = context;
 
     LoadingDialog().show(context: currentContext, content: "Please wait while we retrieve your documents.");
-    List<String> files = await Storage().getUserFiles();
+    List<String> files = await Storage().getUserFiles(FirebaseConstants.rentDocumentsUpload, FirebaseAuth.instance.currentUser!.uid);
     _originalFilePaths.clear();
 
     // Fill the _originalFilePaths with retrieved files
