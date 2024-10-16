@@ -115,7 +115,7 @@ class _ProfileState extends State<Profile> {
     LoadingDialog().dismiss();
 
     for (RentInformation listItems in rentInformation) {
-      if (listItems.rentStatus.toLowerCase() == "pending") {
+      if (listItems.rentStatus.toLowerCase() == "approved") {
         filteredRentInformation.add(listItems);
       }
     }
@@ -342,6 +342,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> _refresh() async {
+    filteredRentInformation.clear();
     _fetchUserInfo();
     _loadProfileImage();
     _fetchRentInfo();
@@ -605,7 +606,7 @@ class _ProfileState extends State<Profile> {
                                               ProjectColors.lightGray.substring(2),
                                               radix: 16))),
                                       CustomComponents.displayText(
-                                          "PHP ${totalAmountSpent.toString()}",
+                                          "PHP ${_currentUserInfo!.totalAmountSpent}",
                                           fontWeight: FontWeight.bold,
                                           fontSize: 10,
                                           color: Color(int.parse(

@@ -7,10 +7,12 @@ class Assets {
   static const String accountRegisterController = 'lib/controller/account/register_controller.dart';
   static const String accountRegisterModel = 'lib/model/account/register_model.dart';
   static const String accountUserRole = 'lib/model/account/user_role.dart';
+  static const String accountantAccountant = 'lib/model/accountant/accountant.dart';
   static const String accountantAccountantHome = 'lib/view/pages/accountant/accountant_home.dart';
   static const String accountantIncome = 'lib/view/pages/accountant/income.dart';
   static const String accountantIncomeDialog = 'lib/view/pages/accountant/income_dialog.dart';
   static const String accountantStatefulDialog = 'lib/view/pages/accountant/stateful_dialog.dart';
+  static const String adminManageInquiriesInquiries = 'lib/controller/admin_manage/inquiries/inquiries.dart';
   static const String applicationListApplicationList = 'lib/view/pages/admin/manage/application_list/application_list.dart';
   static const String applicationProcessAgreementOptionsDialog = 'lib/view/pages/outsource/application_process/agreement_options_dialog.dart';
   static const String applicationProcessComplete = 'lib/view/pages/outsource/application_process/complete.dart';
@@ -156,6 +158,8 @@ class Assets {
   static const String carListCarList = 'lib/view/pages/admin/car_list/car_list_.dart';
   static const String carListCarListController = 'lib/controller/car_list/car_list_controller.dart';
   static const String carListCompleteCarList = 'lib/model/car_list/complete_car_list.dart';
+  static const String carListInquiries = 'lib/controller/admin_manage/car_list/inquiries.dart';
+  static const String carListSample = 'lib/controller/admin_manage/car_list/sample.dart';
   static const String carListUnitPreview = 'lib/view/pages/admin/car_list/unit_preview.dart';
   static const String carouselCarouselPage = 'lib/view/pages/carousel/carousel_page.dart';
   static const String centerButtonGoogleMaps = 'lib/view/pages/admin/center_button/google_maps.dart';

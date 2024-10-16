@@ -54,6 +54,7 @@ import 'package:dara_app/view/pages/outsource/application_process/input_pages/pe
 import 'package:dara_app/view/pages/outsource/application_process/input_pages/vehicle_information.dart';
 import 'package:dara_app/view/pages/outsource/inquiries_outsource.dart';
 import 'package:dara_app/view/pages/outsource/manage_outsource.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,12 @@ import 'package:flutter/services.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // Configure Firebase App Check with a Debug Provider
+  FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.debug, // Use debug provider for testing
+  );
+
   runApp(const MyApp());
 }
 

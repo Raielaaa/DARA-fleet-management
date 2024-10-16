@@ -323,7 +323,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
           child: Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 15),
             child: CustomComponents.displayText(
-              ProjectStrings.ps_proceed_button,
+              "Proceed",
               color: Colors.white,
               fontSize: 12,
               fontWeight: FontWeight.bold,

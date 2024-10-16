@@ -1,5 +1,7 @@
 import "package:cached_network_image/cached_network_image.dart";
+import "package:dara_app/controller/admin_manage/inquiries/inquiries.dart";
 import "package:dara_app/model/account/register_model.dart";
+import "package:dara_app/model/accountant/accountant.dart";
 import "package:dara_app/services/firebase/firestore.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
@@ -7,14 +9,16 @@ import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:dara_app/view/pages/admin/manage/inquiries/pdf_viewer.dart";
-import "package:dio/dio.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
+import "package:flutter/scheduler.dart";
 import "package:intl/intl.dart";
-import "package:path_provider/path_provider.dart";
+import 'package:path_provider/path_provider.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import "package:slide_switcher/slide_switcher.dart";
-import "package:url_launcher/url_launcher.dart";
+import 'package:open_file/open_file.dart';
 
 import "../../../../../controller/singleton/persistent_data.dart";
 import "../../../../../model/constants/firebase_constants.dart";
@@ -29,68 +33,80 @@ class Inquiries extends StatefulWidget {
 }
 
 class _InquiriesState extends State<Inquiries> {
-  List<RentInformation> rentInformationList = [];
   RegisterModel? _userInfoTemp;
   List<RentInformation> ongoingInquiry = [];
   List<RentInformation> pastDuesInquiry = [];
   List<Map<String, dynamic>> _submittedFiles = [];
 
+  List<RentInformation> rentInformationList = [];
+  List<Map<String, dynamic>> inquiriesWithUserData = [];
+  bool _isLoading = true;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      retrieveRentRecords();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _retrieveRentRecords();
     });
   }
 
-  Future<void> retrieveUserInfo(String renterUID) async {
-    List<Map<String, dynamic>> files = await Storage().getUserFilesForInquiry(FirebaseConstants.rentDocumentsUpload, renterUID);
-    RegisterModel? _userData = await Firestore().getUserInfo(renterUID);
-
-    if (!mounted) return;
-
-    setState(() {
-      _userInfoTemp = _userData!;
-      _submittedFiles = files;
-    });
-  }
-
-  Future<void> retrieveRentRecords() async {
+  Future<void> _retrieveRentRecords() async {
     try {
+      // Show loading dialog
       LoadingDialog().show(
         context: context,
         content: "Retrieving rent inquiries. Please wait a moment.",
       );
 
-      List<RentInformation> records = await Firestore().getRentRecords();
+      // Retrieve all rent records
+      List<RentInformation> pendingRecords = [];
 
-      for (var item in records) {
-        if (isDateInPast(item.startDateTime)) {
-          if (mounted) {
-            setState(() {
-              pastDuesInquiry.add(item);
-            });
-          }
+      List<RentInformation> records = await Firestore().getRentRecords();
+      records.forEach((item) {
+        if (item.rentStatus.toLowerCase() == "pending") {
+          pendingRecords.add(item);
+        }
+      });
+      List<Map<String, dynamic>> tempData = [];
+
+      // Clear existing lists
+      ongoingInquiry.clear();
+      pastDuesInquiry.clear();
+
+      // Retrieve user data and submitted files for each record
+      for (var record in pendingRecords) {
+        RegisterModel? userInfo = await Firestore().getUserInfo(record.renterUID);
+        List<Map<String, dynamic>> userFiles = await Storage().getUserFilesForInquiry(FirebaseConstants.rentDocumentsUpload, record.renterUID);
+
+        // Add the data to a temporary list
+        tempData.add({
+          'rentInformation': record,
+          'userInfo': userInfo,
+          'submittedFiles': userFiles,
+        });
+
+        // Separate records into ongoing and past dues based on the startDateTime
+        if (isDateInPast(record.startDateTime)) {
+          pastDuesInquiry.add(record);
         } else {
-          if (mounted) {
-            setState(() {
-              ongoingInquiry.add(item);
-            });
-          }
+          ongoingInquiry.add(record);
         }
       }
 
-      if (mounted) {
-        setState(() {
-          rentInformationList = ongoingInquiry;
-        });
-      }
+      if (!mounted) return;
 
+      // Update the state with the initial data (current dues)
+      setState(() {
+        inquiriesWithUserData = tempData;
+        rentInformationList = ongoingInquiry;  // Set the default view to ongoingInquiry
+        _isLoading = false;
+      });
+
+      // Dismiss the loading dialog
       LoadingDialog().dismiss();
     } catch (e) {
       if (mounted) {
+        // Dismiss loading dialog and show error dialog
         LoadingDialog().dismiss();
         InfoDialog().show(
           context: context,
@@ -104,15 +120,12 @@ class _InquiriesState extends State<Inquiries> {
 
 
   bool isDateInPast(String dateStr) {
-    // Parse the date string
     DateFormat format = DateFormat("MMMM d, yyyy | hh:mm a");
     DateTime parsedDate = format.parse(dateStr);
-
-    // Compare with the current date
     return parsedDate.isBefore(DateTime.now());
   }
 
-  Widget buildInfoRow(String title, String value, {EdgeInsets? padding, int? itemNumber}) {
+  Widget buildInfoRow(String title, String value, {EdgeInsets? padding}) {
     return Padding(
       padding: padding ?? const EdgeInsets.only(right: 15, left: 15, top: 5),
       child: Row(
@@ -134,7 +147,7 @@ class _InquiriesState extends State<Inquiries> {
               value,
               fontWeight: FontWeight.bold,
               fontSize: 10,
-              textAlign: TextAlign.end
+              textAlign: TextAlign.end,
             ),
           ),
         ],
@@ -146,16 +159,18 @@ class _InquiriesState extends State<Inquiries> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(int.parse(ProjectColors.mainColorBackground.substring(2),
-            radix: 16)),
+        color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
         child: Padding(
           padding: const EdgeInsets.only(top: 38),
-          child: Column(
+          child: _isLoading
+              ? Center(
+            child: CircularProgressIndicator(
+              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+            ),
+          )
+              : Column(
             children: [
-              // ActionBar
               actionBar(),
-
-              // title and subheader
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -171,213 +186,203 @@ class _InquiriesState extends State<Inquiries> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: CustomComponents.displayText(
-                      ProjectStrings.ri_subheader,
-                      fontSize: 10),
+                      ProjectStrings.ri_subheader, fontSize: 10),
                 ),
               ),
-
-              // main body
               // Switch option
               const SizedBox(height: 15),
-              switcher(ongoingInquiry!, pastDuesInquiry!),
+              // switcher(ongoingInquiry, pastDuesInquiry),
+              switcher(),
               const SizedBox(height: 15),
-
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: rentInformationList.isEmpty ? Center(
-                    child: CircularProgressIndicator(
-                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                  child: inquiriesWithUserData.isEmpty
+                      ? const Center(
+                    child: Text(
+                      "No inquiries found.",
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
                     ),
-                  ) : ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemCount: rentInformationList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        retrieveUserInfo(rentInformationList[index].renterUID);
+                  )
+                      : ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: rentInformationList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final rentInfo = rentInformationList[index]; // Use rentInformationList for rentInfo
 
-                        return _userInfoTemp == null ? Center(
-                          child: CircularProgressIndicator(color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))),
-                        ) : Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, top: 10),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                          const EdgeInsets.only(top: 3),
-                                          child: Container(
-                                              width: 30,
-                                              height: 30,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Color(int.parse(
-                                                      ProjectColors.mainColorBackground
-                                                          .substring(2),
-                                                      radix: 16)),
-                                                  border: Border.all(
-                                                      color: Color(int.parse(ProjectColors
-                                                          .lineGray)),
-                                                      width: 1)),
-                                              child: Center(
-                                                  child: CustomComponents.displayText("${index + 1}",
-                                                      fontSize: 12,
-                                                      fontWeight: FontWeight.bold))),
+                      // Get user info and submitted files using the appropriate logic
+                      final userInfo = inquiriesWithUserData
+                          .firstWhere((element) => element['rentInformation'] == rentInfo)['userInfo'];
+                      final submittedFiles = inquiriesWithUserData
+                          .firstWhere((element) => element['rentInformation'] == rentInfo)['submittedFiles'];
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, top: 10),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 3),
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(int.parse(
+                                              ProjectColors.mainColorBackground.substring(2), radix: 16)),
+                                          border: Border.all(
+                                              color: Color(int.parse(ProjectColors.lineGray)), width: 1),
                                         ),
-                                        const SizedBox(width: 20.0),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              CustomComponents.displayText(
-                                                ProjectStrings
-                                                    .ri_renter_information_title,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              const SizedBox(height: 2),
-                                              CustomComponents.displayText(
-                                                ProjectStrings
-                                                    .ri_renter_information_subheader,
-                                                color: Color(int.parse(
-                                                    ProjectColors.lightGray
-                                                        .substring(2),
-                                                    radix: 16)),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ],
+                                        child: Center(
+                                          child: CustomComponents.displayText(
+                                              "${index + 1}",
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 20.0),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          CustomComponents.displayText(
+                                            ProjectStrings.ri_renter_information_title,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                        ),
-                                      ],
+                                          const SizedBox(height: 2),
+                                          CustomComponents.displayText(
+                                            ProjectStrings.ri_renter_information_subheader,
+                                            color: Color(int.parse(
+                                                ProjectColors.lightGray.substring(2), radix: 16)),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                height: 1,
+                                width: double.infinity,
+                                color: Color(int.parse(ProjectColors.lineGray.substring(2), radix: 16)),
+                              ),
+                              buildInfoRow(ProjectStrings.ri_name_title, "${userInfo?.firstName} ${userInfo?.lastName}"),
+                              buildInfoRow(ProjectStrings.ri_email_title, userInfo?.email ?? "N/A"),
+                              buildInfoRow(ProjectStrings.ri_phone_number_title, userInfo?.number ?? "N/A"),
+                              buildInfoRow("car Unit:", rentInfo.carName),
+                              buildInfoRow("Role:", userInfo?.role ?? "N/A"),
+                              buildInfoRow("Rent Location:", rentInfo.rentLocation),
+                              buildInfoRow(ProjectStrings.ri_rent_start_date_title, rentInfo.startDateTime),
+                              buildInfoRow(ProjectStrings.ri_rent_end_date_title, rentInfo.endDateTime),
+                              buildInfoRow(ProjectStrings.ri_delivery_mode_title, rentInfo.pickupOrDelivery),
+                              buildInfoRow(ProjectStrings.ri_delivery_location_title, rentInfo.deliveryLocation),
+                              buildInfoRow(ProjectStrings.ri_reserved_title, rentInfo.reservationFee == "0" ? "No" : "Yes"),
+                              buildInfoRow("Total Amount:", rentInfo.totalAmount),
+                              const SizedBox(height: 30),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15, right: 15),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: CustomComponents.displayText(
+                                    ProjectStrings.ri_attached_document,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
                                   ),
-
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    height: 1,
-                                    width: double.infinity,
-                                    color: Color(int.parse(
-                                        ProjectColors.lineGray.substring(2),
-                                        radix: 16)),
-                                  ),
-                                  // Name
-                                  buildInfoRow(ProjectStrings.ri_name_title, "${_userInfoTemp?.firstName} ${_userInfoTemp?.lastName}", padding: const EdgeInsets.only(right: 15, left: 15, top: 15), itemNumber: index),
-
-                                  // Email
-                                  buildInfoRow(ProjectStrings.ri_email_title, _userInfoTemp!.email),
-
-                                  // Phone number
-                                  buildInfoRow(ProjectStrings.ri_phone_number_title, _userInfoTemp!.number),
-
-                                  //  role
-                                  buildInfoRow("Role:", _userInfoTemp!.role),
-
-                                  //  rent location
-                                  buildInfoRow("Rent Location:", rentInformationList[index].rentLocation),
-
-                                  // Rent start date
-                                  buildInfoRow(ProjectStrings.ri_rent_start_date_title, rentInformationList[index].startDateTime),
-
-                                  // Rent end date
-                                  buildInfoRow(ProjectStrings.ri_rent_end_date_title, rentInformationList[index].endDateTime),
-
-                                  // Delivery mode
-                                  buildInfoRow(ProjectStrings.ri_delivery_mode_title, rentInformationList[index].pickupOrDelivery),
-
-                                  // Delivery location
-                                  buildInfoRow(ProjectStrings.ri_delivery_location_title, rentInformationList[index].deliveryLocation),
-
-                                  // Reserved
-                                  buildInfoRow(ProjectStrings.ri_reserved_title, rentInformationList[index].reservationFee == "0" ? "No" : "Yes"),
-
-                                  //  total fee
-                                  buildInfoRow("Total Amount:", rentInformationList[index].totalAmount),
-
-                                  const SizedBox(height: 30),
-
-                                  //  attached documents
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, right: 15),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: CustomComponents.displayText(
-                                          ProjectStrings.ri_attached_document,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12),
+                                ),
+                              ),
+                              ...submittedFiles.map((file) {
+                                return displayDocuments(
+                                  file["storageLocation"],
+                                  (file["fileSize"] / 1024).toStringAsFixed(2),
+                                  DateFormat("MMMM dd, yyyy | hh:mm a").format(file["uploadDate"]).toString(),
+                                );
+                              }),
+                              //  add note/approve button
+                              const SizedBox(height: 30),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    actionButton(
+                                      iconPath: "lib/assets/pictures/rentals_denied.png",
+                                      backgroundColor: ProjectColors.redButtonBackground,
+                                      labelText: ProjectStrings.ri_add_note,
+                                      textColor: ProjectColors.redButtonMain,
+                                      onTap: () {
+                                        Navigator.pushNamed(context, "rentals_report");
+                                      },
                                     ),
-                                  ),
-
-                                  ..._submittedFiles.map((file) {
-                                    return displayDocuments(
-                                      file["storageLocation"],
-                                      (file["fileSize"] / 1024).toStringAsFixed(2),
-                                      DateFormat("MMMM dd, yyyy | hh:mm a").format(file["uploadDate"]).toString(),
-                                    );
-                                  }),
-
-                                  const SizedBox(height: 30),
-
-                                  //  add note/approve button
-                                  Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        actionButton(
-                                          iconPath: "lib/assets/pictures/rentals_denied.png",
-                                          backgroundColor: ProjectColors.redButtonBackground,
-                                          labelText: ProjectStrings.ri_add_note,
-                                          textColor: ProjectColors.redButtonMain,
-                                          onTap: () {
-                                            Navigator.pushNamed(context, "rentals_report");
-                                          },
-                                        ),
-                                        const SizedBox(width: 10),
-                                        actionButton(
-                                          iconPath: "lib/assets/pictures/rentals_verified.png",
-                                          backgroundColor: ProjectColors.lightGreen,
-                                          labelText: ProjectStrings.ri_approve,
-                                          textColor: ProjectColors.greenButtonMain,
-                                          onTap: () {
-                                            InfoDialog().showWithCancelProceedButton(
-                                              context: context,
-                                              content: "Are you sure you want to approve this rent application? This action cannot be undone, and the applicant will be notified.",
-                                              header: "Confirm Approval",
-                                              actionCode: 1,
-                                              onProceed: () async {
-                                                try {
-                                                  LoadingDialog().show(context: context, content: "Please wait while we update renting records");
-                                                  await updateDB();
-                                                } catch(e) {
-                                                  InfoDialog().show(context: context, content: "Something went wrong: $e");
-                                                }
+                                    const SizedBox(width: 10),
+                                    actionButton(
+                                      iconPath: "lib/assets/pictures/rentals_verified.png",
+                                      backgroundColor: ProjectColors.lightGreen,
+                                      labelText: ProjectStrings.ri_approve,
+                                      textColor: ProjectColors.greenButtonMain,
+                                      onTap: () {
+                                        InfoDialog().showWithCancelProceedButton(
+                                            context: context,
+                                            content: "Are you sure you want to approve this rent application? This action cannot be undone, and the applicant will be notified.",
+                                            header: "Confirm Approval",
+                                            actionCode: 1,
+                                            onProceed: () async {
+                                              InfoDialog().dismiss();
+                                              try {
+                                                LoadingDialog().show(
+                                                    context: context,
+                                                    content: "Please wait while we update renting records"
+                                                );
+                                                await updateDB(rentInformationList[index]);
                                                 LoadingDialog().dismiss();
+                                                setState(() {
+                                                  for (int i = ongoingInquiry.length - 1; i >= 0; i--) {
+                                                    if (
+                                                    ongoingInquiry[i].rent_car_UID == rentInformationList[index].rent_car_UID &&
+                                                        ongoingInquiry[i].renterUID == rentInformationList[index].renterUID &&
+                                                        ongoingInquiry[i].startDateTime == rentInformationList[index].startDateTime &&
+                                                        ongoingInquiry[i].estimatedDrivingDistance == rentInformationList[index].estimatedDrivingDistance &&
+                                                        ongoingInquiry[i].estimatedDrivingDuration == rentInformationList[index].estimatedDrivingDuration
+                                                    ) {
+                                                      ongoingInquiry.removeAt(i);
+                                                      debugPrint("Item deleted");
+                                                    }
+                                                  }
+                                                });
+                                              } catch(e) {
+                                                InfoDialog().show(
+                                                  context: context,
+                                                  content: "An error occurred while updating the records. Please try again later. Error details: $e",
+                                                );
                                               }
-                                            );
-                                          },
-                                        )
-                                      ]
-                                  ),
+                                            }
+                                        );
+                                      },
+                                    )
+                                  ]
+                              ),
 
-                                  const SizedBox(height: 30)
-                                ],
-                              )),
-                        );
-                      }),
+                              const SizedBox(height: 30)
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-
-              const SizedBox(height: 50)
+              const SizedBox(height: 50),
             ],
           ),
         ),
@@ -385,11 +390,46 @@ class _InquiriesState extends State<Inquiries> {
     );
   }
 
-  Future<void> updateDB() async {
+  Future<void> updateDB(RentInformation rentInformation) async {
+    InquiriesController _inquiriesController = InquiriesController();
 
+    try {
+      AccountantModel _accountantModel = AccountantModel(
+          rentCarName: rentInformation.carName,
+          rentCarType: rentInformation.carType,
+          rentCarUID: rentInformation.rent_car_UID,
+          rentDeliveryDistance: rentInformation.deliveryDistance,
+          rentDeliveryDuration: rentInformation.deliveryDuration,
+          rentDeliveryFee: rentInformation.deliveryFee,
+          rentDeliveryLocation: rentInformation.deliveryLocation,
+          rentDriverFee: rentInformation.driverFee,
+          rentEndDateTime: rentInformation.endDateTime,
+          rentEstimatedDrivingDistance: rentInformation.estimatedDrivingDistance,
+          rentEstimatedDrivingDuration: rentInformation.estimatedDrivingDuration,
+          rentMileageFee: rentInformation.mileageFee,
+          rentNotes: rentInformation.adminNotes,
+          rentPickupOrDelivery: rentInformation.pickupOrDelivery,
+          rentRentLocation: rentInformation.rentLocation,
+          rentRentalFee: rentInformation.rentalFee,
+          rentRenterEmail: rentInformation.renterEmail,
+          rentRenterUID: rentInformation.renterUID,
+          rentReservationFee: rentInformation.reservationFee,
+          rentStartDateTime: rentInformation.startDateTime,
+          rentStatus: rentInformation.rentStatus,
+          rentTotalAmount: rentInformation.totalAmount,
+          rentWithDriver: rentInformation.withDriver
+      );
+
+      await _inquiriesController.updateDB(
+          rentInformation,
+          _accountantModel.getModelData()
+      );
+    } catch(e) {
+      debugPrint("Error@inquiries.dart@ln394: $e");
+    }
   }
 
-  Widget switcher(List<RentInformation> ongoingInquiry, List<RentInformation> pastDuesInquiry) {
+  Widget switcher() {
     return SlideSwitcher(
       indents: 3,
       containerColor: Colors.white,
@@ -595,32 +635,25 @@ class _InquiriesState extends State<Inquiries> {
           ),
         );
       } else if (fileExtension == 'doc' || fileExtension == 'docx') {
-        // Provide a download link for DOC or DOCX files
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Download Document"),
-              content: Text("Would you like to download this document?"),
-              actions: [
-                TextButton(
-                  child: Text("Cancel"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  child: Text("Download"),
-                  onPressed: () {
-                    // Open the document URL in the browser
-                    launchUrl(Uri.parse(downloadUrl));
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        LoadingDialog().show(context: context, content: "Please wait while we try to process the document.");
+        // Download DOC or DOCX files directly to the app
+        final directory = await getTemporaryDirectory();
+        final filePath = '${directory.path}/temp_document.$fileExtension';
+
+        // Use Dio to download the document
+        await Dio().download(downloadUrl, filePath);
+        LoadingDialog().dismiss();
+
+        // Open the downloaded DOC or DOCX file
+        final result = await OpenFile.open(filePath);
+        // if (result.message != 'Success') {
+        //   // Handle the case where the file couldn't be opened
+        //   InfoDialog().show(
+        //     context: context,
+        //     content: "Could not open the document.",
+        //     header: "Error",
+        //   );
+        // }
       } else {
         // Handle image files (PNG, JPG, JPEG)
         showDialog(

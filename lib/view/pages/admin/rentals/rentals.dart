@@ -695,6 +695,9 @@ class _Rentals extends State<Rentals> {
   }
 
   Future<void> _refresh() async {
+    _rentRecords.clear();
+    _rentRecordsHistory.clear();
+    _rentRecordsOnGoing.clear();
     _fetchRentRecords();
     CustomComponents.showToastMessage("Page refreshed", Colors.black54, Colors.white);
   }
