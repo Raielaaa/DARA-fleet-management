@@ -240,7 +240,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50)
+                    const SizedBox(height: 100)
                   ],
                 ),
               )
@@ -602,6 +602,16 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
               padding: const EdgeInsets.only(left: 20, right: 20, top: 5),
               child: CustomComponents.displayText(
                   ProjectStrings.rp_details_fees_agreement_entry,
+                  fontSize: 10,
+                  textAlign: TextAlign.justify),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 5),
+              child: CustomComponents.displayText(
+                  ProjectStrings.rp_details_fees_agreement_entry_2,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
                   fontSize: 10,
                   textAlign: TextAlign.justify),
             ),

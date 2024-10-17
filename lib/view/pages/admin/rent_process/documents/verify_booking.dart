@@ -1,3 +1,4 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -22,7 +23,7 @@ class _VerifyBookingState extends State<VerifyBooking> {
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)))),
         onPressed: () {
-          Navigator.of(context).pushNamed("home_main");
+          Navigator.of(context).pushNamedAndRemoveUntil("home_main", (route) => false);
         },
         child: Center(
           child: Padding(

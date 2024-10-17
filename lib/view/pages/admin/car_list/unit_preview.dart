@@ -50,9 +50,9 @@ class _UnitPreviewState extends State<UnitPreview> {
     },
   ];
 
-  void _showInformationDialog() {
+  void _showInformationDialog(BuildContext parentContext) {
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -119,7 +119,8 @@ class _UnitPreviewState extends State<UnitPreview> {
                                   guides.length - 1) {
                                 _informationDialogCurrentIndex++;
                               } else {
-                                Navigator.of(context).pushNamed("rp_booking_details");
+                                Navigator.of(parentContext).pushNamed("rp_booking_details");
+                                Navigator.of(context).pop();
                               }
                             });
                           },
@@ -775,7 +776,7 @@ class _UnitPreviewState extends State<UnitPreview> {
                             );
                           }
                           else {
-                            _showInformationDialog();
+                            _showInformationDialog(context);
                           }
                     }),
                   ),

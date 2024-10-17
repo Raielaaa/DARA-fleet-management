@@ -543,7 +543,8 @@ class ProjectStrings {
   static const String rp_details_fees_reservation_fee = "Reservation Fee Agreement";
   static const String rp_details_fees_reservation_fees_entry = "PHP 500";
   static const String rp_details_fees_agreement = "I Agree to Pay the Reservation Fee";
-  static const String rp_details_fees_agreement_entry = "By agreeing, the reservation fee will act as a down payment and be deducted from the total payment. This fee ensures priority in case of schedule conflicts. Please note that the reservation fee is not refundable.";
+  static const String rp_details_fees_agreement_entry = "By agreeing, the reservation fee will act as a down payment and be deducted from the total payment.";
+  static const String rp_details_fees_agreement_entry_2 = "This fee ensures priority in case of schedule conflicts. Please note that the reservation fee is not refundable.";
   static const String rp_details_fees_proceed_to_payment = "Proceed to Payment";
   static const String rp_details_fees_send_screenshot_1 = "Alternatively, you can ";
   static const String rp_details_fees_send_screenshot_2 = "click here";

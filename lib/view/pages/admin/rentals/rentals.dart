@@ -30,16 +30,20 @@ class _Rentals extends State<Rentals> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // _seeCompleteBookingInfo();
-      try {
-        _fetchRentRecords();
-      } catch(e) {
-        debugPrint("Fetch rent records error-rentals.dart: $e}");
-      }
+    debugPrint("Init state: checker-1");
+    _rentRecords.clear();
+    _rentRecordsHistory.clear();
+    _rentRecordsOnGoing.clear();
+    _isLoading = true; // Reset the loading state
+    debugPrint("Init state: checker-2");
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      debugPrint("Init state: checker-2.5: $_isLoading");
+      await _fetchRentRecords();
+      debugPrint("Init state: checker-3");
+      debugPrint("Init state: checker-4: $_isLoading");
     });
   }
-
   Future<void> _fetchRentRecords() async {
     // Fetch the rent records information asynchronously
     LoadingDialog().show(context: context, content: "Please wait while we retrieve your rent information");
@@ -62,6 +66,7 @@ class _Rentals extends State<Rentals> {
       _rentRecords = _rentRecords;
       _isLoading = false;
     });
+    _isLoading = false;
   }
 
   Widget buildInfoRowSecondPanel(String title, String value, String titleColor, {double topPadding = 5}) {

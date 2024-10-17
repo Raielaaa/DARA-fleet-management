@@ -168,6 +168,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
     for (var entry in indexStringMap.entries) {
       await _storage.uploadSelectedFile(entry.value, context, null, null);
     }
+    debugPrint("Update finished");
   }
 
   Widget _buildAppBar() {
@@ -310,9 +311,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
         ),
         onPressed: () async {
           try {
-            LoadingDialog().show(context: context, content: "Please wait while we process your documents.");
             await updateDB();
-            LoadingDialog().dismiss();
             Navigator.of(context).pushNamed("rp_verify_booking");
           } catch(e) {
             LoadingDialog().dismiss();
@@ -457,6 +456,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 70)
                     ],
                   )
                 ),
