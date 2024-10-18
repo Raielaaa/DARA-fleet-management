@@ -6,6 +6,9 @@ import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 
+import "../../../controller/singleton/persistent_data.dart";
+import "../../../controller/utils/intent_utils.dart";
+
 class AccountantOption extends StatefulWidget {
   const AccountantOption({super.key});
 
@@ -39,10 +42,10 @@ class _AccountantOptionState extends State<AccountantOption> {
                       const SizedBox(height: 30),
                       integratedApps(),
                       const SizedBox(height: 30),
-                      incomeListHeader(),
-                      const SizedBox(height: 15),
-                      mainReportSection(),
-                      const SizedBox(height: 50)
+                      // incomeListHeader(),
+                      // const SizedBox(height: 15),
+                      // mainReportSection(),
+                      // const SizedBox(height: 50)
                     ],
                   ),
                 ),
@@ -66,15 +69,20 @@ class _AccountantOptionState extends State<AccountantOption> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Image.asset(
-                      "lib/assets/pictures/exit.png",
-                      width: 20,
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Image.asset(
+                        "lib/assets/pictures/exit.png",
+                        width: 20,
+                      ),
                     ),
                   ),
                 ),
@@ -273,10 +281,15 @@ class _AccountantOptionState extends State<AccountantOption> {
         const SizedBox(height: 15),
         Row(
           children: [
-            buildIntegratedApp(
-              "lib/assets/pictures/google_maps_icon.png",
-              ProjectStrings.manage_reports_google_maps,
-              "0xffffffff",
+            GestureDetector(
+              onTap: () async {
+                await IntentUtils.launchGoogleMaps();
+              },
+              child: buildIntegratedApp(
+                "lib/assets/pictures/google_maps_icon.png",
+                ProjectStrings.manage_reports_google_maps,
+                "0xffffffff",
+              ),
             ),
             const SizedBox(width: 15),
             GestureDetector(
@@ -476,9 +489,14 @@ class _AccountantOptionState extends State<AccountantOption> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/left_arrow.png"),
+          GestureDetector(
+            onTap: () {
+              PersistentData().openDrawer(0);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset("lib/assets/pictures/menu.png"),
+            ),
           ),
           CustomComponents.displayText(
             ProjectStrings.income_page_appbar_title,
