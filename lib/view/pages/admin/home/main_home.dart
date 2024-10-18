@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 
 import "../../../../model/account/register_model.dart";
 import "../../../../services/firebase/firestore.dart";
+import "../../account/account_opening.dart";
 
 
 class AdminHome extends StatefulWidget {
@@ -578,22 +579,38 @@ class _AdminHomeState extends State<AdminHome> {
                             ),
                           ),
                         ),
-                        //  AI chatbot
+                        //  logout
                         Expanded(
                           child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet<void>(
-                                  backgroundColor: Colors.white,
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return StatefulBuilder(
-                                      builder: (BuildContext context, StateSetter setModalState) {
-                                        return displayBottomSheetChatBot(context, setModalState);
-                                      },
-                                    );
-                                  }
-                              );
+                            onTap: () async {
+                              //  for AI chatbot
+                              // showModalBottomSheet<void>(
+                              //     backgroundColor: Colors.white,
+                              //     isScrollControlled: true,
+                              //     context: context,
+                              //     builder: (BuildContext context) {
+                              //       return StatefulBuilder(
+                              //         builder: (BuildContext context, StateSetter setModalState) {
+                              //           return displayBottomSheetChatBot(context, setModalState);
+                              //         },
+                              //       );
+                              //     }
+                              // );
+                              try {
+                                InfoDialog().showWithCancelProceedButton(
+                                    context: context,
+                                    content: "Are you sure you want to logout your account?",
+                                    header: "Confirm Action",
+                                    actionCode: 1,
+                                    onProceed: () async {
+                                  await FirebaseAuth.instance.signOut();
+                                  InfoDialog().dismiss();
+                                  _controller.dispose();
+                                  Navigator.of(context, rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (context) => const AccountOpening()));
+                                });
+                              } catch(e) {
+                                debugPrint("Error@main_home.dart@ln601: $e");
+                              }
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -607,7 +624,7 @@ class _AdminHomeState extends State<AdminHome> {
                                   child: Column(
                                     children: [
                                       Image.asset(
-                                        "lib/assets/pictures/home_top_settings.png",
+                                        "lib/assets/pictures/top_option_logout.png",
                                         fit: BoxFit.contain,
                                       ),
                                       Padding(
@@ -615,8 +632,7 @@ class _AdminHomeState extends State<AdminHome> {
                                         child: CustomComponents.displayText(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 10,
-                                          ProjectStrings
-                                              .admin_home_top_options_settings,
+                                          "Logout",
                                           color: Color(int.parse(
                                               ProjectColors.darkGray.substring(2),
                                               radix: 16)),

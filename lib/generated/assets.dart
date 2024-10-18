@@ -321,6 +321,7 @@ class Assets {
   static const String picturesSiTransmission = 'lib/assets/pictures/si_transmission.png';
   static const String picturesStar = 'lib/assets/pictures/star.png';
   static const String picturesThreeVerticalDots = 'lib/assets/pictures/three_vertical_dots.png';
+  static const String picturesTopOptionLogout = 'lib/assets/pictures/top_option_logout.png';
   static const String picturesToyotaInnovaBg = 'lib/assets/pictures/toyota_innova_bg.jpg';
   static const String picturesTrash = 'lib/assets/pictures/trash.png';
   static const String picturesUnitPreviewMainImage = 'lib/assets/pictures/unit_preview_main_image.jpg';
