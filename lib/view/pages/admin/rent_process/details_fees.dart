@@ -175,7 +175,8 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                                 deliveryFee: deliveryFee.toString(),
                                 driverFee: _persistentData.bookingDetailsRentWithDriver ? driverFee.toString() : "PHP 0.0",
                                 reservationFee: payReservationFee ? "500" : "0",
-                                totalAmount: totalFee.toString()
+                                totalAmount: totalFee.toString(),
+                              carOwner: _persistentData.selectedCarItem?.carOwner ?? "null"
                             );
 
                             LoadingDialog().show(context: context, content: "Please wait while we process your rent application.");

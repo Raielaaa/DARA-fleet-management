@@ -142,7 +142,7 @@ class _OutsourceManageState extends State<OutsourceManage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      ShowDialog().seeCompleteReportInfo(context);
+                      // ShowDialog().seeCompleteReportInfo(context);
                     },
                     child: Row(
                       children: [

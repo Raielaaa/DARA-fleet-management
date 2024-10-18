@@ -8,6 +8,7 @@ class Assets {
   static const String accountRegisterModel = 'lib/model/account/register_model.dart';
   static const String accountUserRole = 'lib/model/account/user_role.dart';
   static const String accountantAccountant = 'lib/model/accountant/accountant.dart';
+  static const String accountantAccountantController = 'lib/controller/accountant/accountant_controller.dart';
   static const String accountantAccountantHome = 'lib/view/pages/accountant/accountant_home.dart';
   static const String accountantIncome = 'lib/view/pages/accountant/income.dart';
   static const String accountantIncomeDialog = 'lib/view/pages/accountant/income_dialog.dart';

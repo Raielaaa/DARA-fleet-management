@@ -1,11 +1,17 @@
+import "package:dara_app/controller/accountant/accountant_controller.dart";
+import "package:dara_app/model/car_list/complete_car_list.dart";
+import "package:dara_app/model/renting_proccess/renting_process.dart";
+import "package:dara_app/services/firebase/firestore.dart";
 import "package:dara_app/view/pages/accountant/income_dialog.dart";
 import "package:dara_app/view/pages/accountant/stateful_dialog.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:intl/intl.dart";
 
 class IncomePage extends StatefulWidget {
   const IncomePage({super.key});
@@ -15,12 +21,68 @@ class IncomePage extends StatefulWidget {
 }
 
 class _IncomePageState extends State<IncomePage> {
-  String? _selectedMonth = "January";
+  String? _selectedMonth = "Grand Total";
+  AccountantController _accountantController = AccountantController();
+  List<RentInformation> _accountantRecordsToBeDisplayed = [];
+  List<RentInformation> _retrievedAccountantRecords = [];
+  List<RentInformation> _datsOwnedUnits = [];
+  List<RentInformation> _outsourceOwnedUnits = [];
+  bool _isLoading = true;
+  String __totalAmount = "0.0";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _retrieveAccountantRecords();
+    });
+  }
+
+  Future<void> _retrieveAccountantRecords() async {
+    try {
+      LoadingDialog().show(context: context, content: "Please wait while we retrieve income records.");
+      List<RentInformation> accountantRecords = await _accountantController.getAccountantRawList();
+      LoadingDialog().dismiss();
+
+      setState(() {
+        _retrievedAccountantRecords = accountantRecords;
+        _accountantRecordsToBeDisplayed = _retrievedAccountantRecords;
+        calculateTotalAmount();
+        _isLoading = false;
+      });
+    } catch(e) {
+      LoadingDialog().dismiss();
+      debugPrint("Error@income.dart@ln41: $e");
+    }
+  }
+
+  String formatNumber(dynamic number) {
+    // Convert the number to a double first if it's a string
+    double parsedNumber = double.tryParse(number.toString()) ?? 0.0;
+    return NumberFormat("#,##0.0000", "en_US").format(parsedNumber);
+  }
+
+
+  void calculateTotalAmount() {
+    double _totalAmount = 0.0;
+
+    for (var item in _accountantRecordsToBeDisplayed) {
+      _totalAmount += double.parse(item.totalAmount);
+    }
+
+    final formatter = NumberFormat("#,##0.0000", "en_US");
+    setState(() {
+      __totalAmount = formatNumber(_totalAmount);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: _isLoading ? Center(child: CircularProgressIndicator(color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))))
+          : Container(
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
         child: Padding(
           padding: const EdgeInsets.only(top: 38),
@@ -61,9 +123,9 @@ class _IncomePageState extends State<IncomePage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: CustomComponents.displayText(
-                          ProjectStrings.income_page_breakdown,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold
+                            ProjectStrings.income_page_breakdown,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold
                         ),
                       ),
                       const SizedBox(height: 3),
@@ -95,12 +157,11 @@ class _IncomePageState extends State<IncomePage> {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 10,
+      itemCount: _accountantRecordsToBeDisplayed.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 15),
+          padding: const EdgeInsets.only(bottom: 10),
           child: Container(
-            height: 90,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -113,7 +174,8 @@ class _IncomePageState extends State<IncomePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      ShowDialog().seeCompleteReportInfo(context);
+                      ShowDialog().seeCompleteReportInfo(_accountantRecordsToBeDisplayed[index], context);
+                      // ShowDialog().seeCompleteReportInfo(index);
                     },
                     child: Row(
                       children: [
@@ -148,13 +210,19 @@ class _IncomePageState extends State<IncomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomComponents.displayText(
-                              ProjectStrings.manage_accountant_date_range,
+                              "${_accountantRecordsToBeDisplayed[index].startDateTime} -",
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 10,
                             ),
-                            const SizedBox(height: 5),
+                            const SizedBox(height: 3),
                             CustomComponents.displayText(
-                              ProjectStrings.manage_accountant_amount,
+                              _accountantRecordsToBeDisplayed[index].endDateTime,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                            const SizedBox(height: 10),
+                            CustomComponents.displayText(
+                              "PHP ${formatNumber(_accountantRecordsToBeDisplayed[index].totalAmount)}",
                               fontSize: 10,
                             ),
                           ],
@@ -264,7 +332,7 @@ class _IncomePageState extends State<IncomePage> {
           ),
           const SizedBox(height: 5),
           CustomComponents.displayText(
-            ProjectStrings.income_page_amount,
+            __totalAmount,
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 22
@@ -312,7 +380,7 @@ class _IncomePageState extends State<IncomePage> {
       value: _selectedMonth,
       isExpanded: true,
       items: <String>[
-        'January', 'February', 'March', 'April', 'May', 'June',
+        "Grand Total", 'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
       ].map(
         (String month) {

@@ -1033,7 +1033,8 @@ class _AdminHomeState extends State<AdminHome> {
                             fuelVariant: carInfo.fuelVariant,
                             horsePower: carInfo.horsePower,
                             longDescription: carInfo.longDescription,
-                            shortDescription: carInfo.shortDescription
+                            shortDescription: carInfo.shortDescription,
+                          carOwner: carInfo.carOwner
                         );
                         Navigator.of(context).pushNamed("selected_item");
                       },

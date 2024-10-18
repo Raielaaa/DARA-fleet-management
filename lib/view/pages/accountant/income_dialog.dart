@@ -1,10 +1,15 @@
+import "package:dara_app/model/car_list/complete_car_list.dart";
+import "package:dara_app/services/firebase/firestore.dart";
 import "package:dara_app/view/pages/admin/rent_process/booking_details.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import "package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart";
 import "package:intl/intl.dart";
+
+import "../../../model/renting_proccess/renting_process.dart";
 
 class ShowDialog {
   final DatePickerField _startDateField = DatePickerField(
@@ -53,7 +58,64 @@ class ShowDialog {
     );
   }
 
-  Future<void> seeCompleteReportInfo(BuildContext context) async {
+  Widget buildInfoRow(String title, String value, {Color? titleColor, Color? valueColor}) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 15, left: 15, top: 5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomComponents.displayText(
+            title,
+            fontWeight: FontWeight.w500,
+            fontSize: 10,
+            color: titleColor ?? Colors.grey,
+          ),
+          Expanded(
+            child: CustomComponents.displayText(
+              value,
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.end,
+              fontSize: 10,
+              color: valueColor ?? Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String calculateDateDifference(String startDateTime, String endDateTime) {
+    // Define the date format used in the input strings
+    DateFormat dateFormat = DateFormat("MMMM d, yyyy | hh:mm a");
+
+    // Parse the date strings into DateTime objects
+    DateTime startDate = dateFormat.parse(startDateTime);
+    DateTime endDate = dateFormat.parse(endDateTime);
+
+    // Calculate the difference
+    Duration difference = endDate.difference(startDate);
+
+    // Extract days, hours, and minutes
+    int days = difference.inDays;
+    int hours = difference.inHours.remainder(24);
+    int minutes = difference.inMinutes.remainder(60);
+
+    // Return the result as a formatted string
+    return "$days days, $hours hours, and $minutes minutes";
+  }
+
+  Future<void> seeCompleteReportInfo(RentInformation _rentInformation, BuildContext context) async {
+    CompleteCarInfo? _selectedCarInfo;
+
+    LoadingDialog().show(context: context, content: "Please wait while re retrieve records.");
+    List<CompleteCarInfo> _completeCarInfo = await Firestore().getCompleteCars();
+
+    for (var item in _completeCarInfo) {
+      if (item.carUID == _rentInformation.rent_car_UID) _selectedCarInfo = item;
+    }
+    LoadingDialog().dismiss();
+
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -110,7 +172,6 @@ class ShowDialog {
                     const SizedBox(height: 10),
                     Container(
                         color: Colors.white,
-                        height: 250,
                         child: Column(
                           children: [
                             Padding(
@@ -177,550 +238,188 @@ class ShowDialog {
                                   ProjectColors.lineGray.substring(2),
                                   radix: 16)),
                             ),
-                            //  car model
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_car_model_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_car_model,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
+                            buildInfoRow(ProjectStrings.dialog_car_model_title, _selectedCarInfo!.name),
+                            buildInfoRow(ProjectStrings.dialog_transmission_title, _selectedCarInfo.transmission),
+                            buildInfoRow(ProjectStrings.dialog_capacity_title, _selectedCarInfo.capacity),
+                            buildInfoRow(ProjectStrings.dialog_fuel_title, _selectedCarInfo.fuelVariant),
+                            buildInfoRow(ProjectStrings.dialog_fuel_capacity_title, _selectedCarInfo.fuel),
+                            buildInfoRow(ProjectStrings.dialog_unit_color_title, _selectedCarInfo.color),
+                            buildInfoRow(ProjectStrings.dialog_engine_title, _selectedCarInfo.engine),
                 
-                            //  Transmission
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_transmission_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_transmission,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  seat capacity
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_capacity_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_capacity,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  fuel variant
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_fuel_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_fuel,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  fuel capacity
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_fuel_capacity_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_fuel_capacity,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  unit color
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_unit_color_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog__unit_color,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  engine
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_engine_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_engine,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            const SizedBox(height: 10)
+                            const SizedBox(height: 30)
                           ],
-                        )),
+                        )
+                    ),
                     //  rent information
                     const SizedBox(height: 20),
                     Container(
-                        color: Colors.white,
-                        height: 250,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15, top: 10),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3),
-                                    child: Container(
-                                        width: 30,
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Color(int.parse(
-                                                ProjectColors.mainColorBackground
-                                                    .substring(2),
-                                                radix: 16)),
-                                            border: Border.all(
-                                                color: Color(int.parse(
-                                                    ProjectColors.lineGray)),
-                                                width: 1)),
-                                        child: Center(
-                                            child: CustomComponents.displayText(
-                                                "2",
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold))),
-                                  ),
-                                  const SizedBox(
-                                      width:
-                                          20.0), // Optional: Add spacing between the Text and the Column
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomComponents.displayText(
-                                          ProjectStrings.dialog_title_2,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        const SizedBox(height: 2),
-                                        CustomComponents.displayText(
-                                          ProjectStrings.dialog_title_2_subheader,
-                                          color: Color(int.parse(
-                                              ProjectColors.lightGray
-                                                  .substring(2),
-                                              radix: 16)),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ],
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 3),
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+                                      border: Border.all(
+                                        color: Color(int.parse(ProjectColors.lineGray)),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: CustomComponents.displayText(
+                                        "2",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(width: 20.0),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomComponents.displayText(
+                                        ProjectStrings.dialog_title_2,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      const SizedBox(height: 2),
+                                      CustomComponents.displayText(
+                                        ProjectStrings.dialog_title_2_subheader,
+                                        color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                
-                            const SizedBox(height: 10),
-                            Container(
-                              height: 1,
-                              width: double.infinity,
-                              color: Color(int.parse(
-                                  ProjectColors.lineGray.substring(2),
-                                  radix: 16)),
-                            ),
-                            //  rent start date
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_rent_start_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_rent_start,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  rent end date
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_rent_end_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog__rent_end,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  delivery mode
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_delivery_mode_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_delivery_mode,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  delivery location
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings
-                                          .dialog_delivery_location_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_delivery_location,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  location
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_location_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_location,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  isReserve
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_reserved_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_reserved,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  admin notes
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.dialog_admin_notes_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.dialog_admin_notes,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            const SizedBox(height: 10)
-                          ],
-                        )),
-                      
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 1,
+                            width: double.infinity,
+                            color: Color(int.parse(ProjectColors.lineGray.substring(2), radix: 16)),
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_rent_start_title,
+                            _rentInformation.startDateTime,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_rent_end_title,
+                            _rentInformation.endDateTime,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_delivery_mode_title,
+                            _rentInformation.pickupOrDelivery,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_delivery_location_title,
+                            _rentInformation.deliveryLocation.isEmpty ? "NA" : _rentInformation.deliveryLocation,
+                          ),
+                          buildInfoRow(
+                            "Rent Location",
+                            _rentInformation.rentLocation,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_admin_notes_title,
+                            _rentInformation.adminNotes,
+                          ),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
                     //  report information
                     const SizedBox(height: 20),
                     Container(
-                        color: Colors.white,
-                        height: 150,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15, top: 10),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3),
-                                    child: Container(
-                                        width: 30,
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Color(int.parse(
-                                                ProjectColors.mainColorBackground
-                                                    .substring(2),
-                                                radix: 16)),
-                                            border: Border.all(
-                                                color: Color(int.parse(
-                                                    ProjectColors.lineGray)),
-                                                width: 1)),
-                                        child: Center(
-                                            child: CustomComponents.displayText(
-                                                "3",
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold))),
-                                  ),
-                                  const SizedBox(
-                                      width:
-                                          20.0), // Optional: Add spacing between the Text and the Column
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomComponents.displayText(
-                                          ProjectStrings.income_page_third_panel_title,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        const SizedBox(height: 2),
-                                        CustomComponents.displayText(
-                                          ProjectStrings.income_page_third_panel_subheader,
-                                          color: Color(int.parse(
-                                              ProjectColors.lightGray
-                                                  .substring(2),
-                                              radix: 16)),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ],
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 3),
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+                                      border: Border.all(
+                                        color: Color(int.parse(ProjectColors.lineGray)),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: CustomComponents.displayText(
+                                        "3",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(width: 20.0),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomComponents.displayText(
+                                        ProjectStrings.income_page_third_panel_title,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      const SizedBox(height: 2),
+                                      CustomComponents.displayText(
+                                        ProjectStrings.income_page_third_panel_subheader,
+                                        color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                
-                            const SizedBox(height: 10),
-                            Container(
-                              height: 1,
-                              width: double.infinity,
-                              color: Color(int.parse(
-                                  ProjectColors.lineGray.substring(2),
-                                  radix: 16)),
-                            ),
-                            //  photo
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.income_page_rent_duration_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.income_page_rent_duration_content,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  location
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.income_page_reserved_customers_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.income_page_reserved_customer_content,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                
-                            //  issues
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, top: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomComponents.displayText(
-                                      ProjectStrings.income_page_amount_title,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Color(int.parse(
-                                          ProjectColors.lightGray.substring(2),
-                                          radix: 16))),
-                                  CustomComponents.displayText(
-                                    ProjectStrings.income_page_amount_content,
-                                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        )),
-                    const SizedBox(height: 15)
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 1,
+                            width: double.infinity,
+                            color: Color(int.parse(ProjectColors.lineGray.substring(2), radix: 16)),
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.income_page_rent_duration_title,
+                            calculateDateDifference(_rentInformation.startDateTime, _rentInformation.endDateTime),
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.income_page_reserved_customers_title,
+                            _rentInformation.reservationFee == "500" ? "Yes" : "No",
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.income_page_amount_title,
+                            "PHP ${_rentInformation.totalAmount}",
+                            valueColor: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                          ),
+                          const SizedBox(height: 30)
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 30)
                   ],
                 ),
               ),

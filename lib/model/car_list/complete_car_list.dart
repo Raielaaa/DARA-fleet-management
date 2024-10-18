@@ -22,6 +22,7 @@ class CompleteCarInfo {
   final String transmission;
   final String carType;
   final String carUID;
+  final String carOwner;
 
   CompleteCarInfo({
     required this.carUID,
@@ -46,7 +47,8 @@ class CompleteCarInfo {
     required this.fuelVariant,
     required this.horsePower,
     required this.longDescription,
-    required this.shortDescription
+    required this.shortDescription,
+    required this.carOwner
   });
 
   factory CompleteCarInfo.fromFirestore(Map<String, dynamic> data) {
@@ -73,7 +75,8 @@ class CompleteCarInfo {
       fuelVariant: data["car_fuel_variant"] ?? "",
       horsePower: data["car_horse_power"] ?? "",
       longDescription:  data["car_long_description"] ?? "",
-      shortDescription: data["car_short_description"] ?? ""
+      shortDescription: data["car_short_description"] ?? "",
+      carOwner: data["car_owner"]
     );
   }
 }

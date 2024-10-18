@@ -248,6 +248,14 @@ class Firestore {
     }
   }
 
+  Future<List<RentInformation>> getAccountantRecords() async {
+    QuerySnapshot _querySnapshot = await _firestore
+        .collection(FirebaseConstants.accountantCollection)
+        .get();
+
+    return _querySnapshot.docs.map((doc) => RentInformation.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
+  }
+
   Future<void> updateRentStatus({
     required String carUID,
     required String estimatedDrivingDistance,

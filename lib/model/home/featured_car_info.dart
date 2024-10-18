@@ -22,6 +22,7 @@ class FeaturedCarInfo {
   final String totalEarnings;
   final String transmission;
   final String carType;
+  final String carOwner;
 
   FeaturedCarInfo({
     required this.carUID,
@@ -46,7 +47,8 @@ class FeaturedCarInfo {
     required this.fuelVariant,
     required this.horsePower,
     required this.longDescription,
-    required this.shortDescription
+    required this.shortDescription,
+    required this.carOwner
   });
 
   factory FeaturedCarInfo.fromFirestore(Map<String, dynamic> data) {
@@ -73,7 +75,8 @@ class FeaturedCarInfo {
         fuelVariant: data["car_fuel_variant"] ?? "",
         horsePower: data["car_horse_power"] ?? "",
         longDescription:  data["car_long_description"] ?? "",
-        shortDescription: data["car_short_description"] ?? ""
+        shortDescription: data["car_short_description"] ?? "",
+      carOwner: data["car_owner"]
     );
   }
 }

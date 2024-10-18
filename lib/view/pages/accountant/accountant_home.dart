@@ -138,7 +138,7 @@ class _AccountantOptionState extends State<AccountantOption> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      ShowDialog().seeCompleteReportInfo(context);
+                      // ShowDialog().seeCompleteReportInfo(context);
                     },
                     child: Row(
                       children: [

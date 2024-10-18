@@ -22,6 +22,7 @@ class RentInformation {
   String rentStatus;
   String adminNotes;
   String rent_car_UID;
+  String carOwner;
 
   RentInformation({
     required this.rent_car_UID,
@@ -46,7 +47,8 @@ class RentInformation {
     required this.totalAmount,
     required this.carType,
     required this.rentStatus,
-    required this.adminNotes
+    required this.adminNotes,
+    required this.carOwner
   });
 
   Map<String, String> getModelData() {
@@ -73,7 +75,8 @@ class RentInformation {
       "rent_reservationFee" : reservationFee,
       "rent_totalAmount" : totalAmount,
       "rent_status" : rentStatus,
-      "rent_notes" : adminNotes
+      "rent_notes" : adminNotes,
+      "rent_car_owner" : carOwner
     };
   }
 
@@ -101,7 +104,8 @@ class RentInformation {
         totalAmount: data["rent_totalAmount"] ?? "",
         rentStatus: data["rent_status"] ?? "",
         adminNotes:  data["rent_notes"] ?? "",
-        driverFee: "rent_driverFee"
+        driverFee: "rent_driverFee",
+      carOwner: data["rent_car_owner"]
     );
   }
 }
