@@ -240,6 +240,8 @@ flutter:
     - lib/assets/pictures/about_dara.png
     - lib/assets/pictures/about_logo.png
     - lib/assets/pictures/top_option_logout.png
+    - lib/assets/pictures/save_booking_details_2.png
+    - lib/assets/pictures/save_booking_details.jpg
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

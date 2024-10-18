@@ -140,6 +140,7 @@ class Assets {
   static const String assetsPicturesSiTransmission = 'lib/assets/pictures/si_transmission.png';
   static const String assetsPicturesStar = 'lib/assets/pictures/star.png';
   static const String assetsPicturesThreeVerticalDots = 'lib/assets/pictures/three_vertical_dots.png';
+  static const String assetsPicturesTopOptionLogout = 'lib/assets/pictures/top_option_logout.png';
   static const String assetsPicturesToyotaInnovaBg = 'lib/assets/pictures/toyota_innova_bg.jpg';
   static const String assetsPicturesTrash = 'lib/assets/pictures/trash.png';
   static const String assetsPicturesUnitPreviewMainImage = 'lib/assets/pictures/unit_preview_main_image.jpg';
@@ -307,6 +308,8 @@ class Assets {
   static const String picturesRentalsPending = 'lib/assets/pictures/rentals_pending.png';
   static const String picturesRentalsVerified = 'lib/assets/pictures/rentals_verified.png';
   static const String picturesRightArrow = 'lib/assets/pictures/right_arrow.png';
+  static const String picturesSaveBookingDetails = 'lib/assets/pictures/save_booking_details.jpg';
+  static const String picturesSaveBookingDetails2 = 'lib/assets/pictures/save_booking_details_2.png';
   static const String picturesSeeMore = 'lib/assets/pictures/see_more.png';
   static const String picturesSend = 'lib/assets/pictures/send.png';
   static const String picturesSettings = 'lib/assets/pictures/settings.png';

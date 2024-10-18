@@ -169,7 +169,14 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                               left: 25, right: 25, top: 30, bottom: 30),
                           child: Column(
                             children: [
+                              //  image
+                              Image.asset(
+                                  "lib/assets/pictures/save_booking_details_2.png",
+                                height: 200
+                              ),
+
                               //  start and end date
+                              const SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -185,7 +192,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 30),
+                              const SizedBox(height: 15),
                               //  start and end time
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -197,7 +204,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                               ),
 
                               //  address
-                              const SizedBox(height: 30),
+                              const SizedBox(height: 15),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment
                                     .start, // Ensures alignment to start
@@ -317,7 +324,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                               ),
 
                               //  proceed button
-                              const SizedBox(height: 200),
+                              const SizedBox(height: 80),
                               ElevatedButton(
                                   style: ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll<
@@ -386,6 +393,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 100)
                   ],
                 ),
               )
@@ -453,8 +461,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(5),
               border: Border.all(
-                color: Color(
-                    int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
+                color: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
                 width: 1,
               ),
             ),
