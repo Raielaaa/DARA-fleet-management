@@ -245,7 +245,8 @@ class ShowDialog {
                             buildInfoRow(ProjectStrings.dialog_fuel_capacity_title, _selectedCarInfo.fuel),
                             buildInfoRow(ProjectStrings.dialog_unit_color_title, _selectedCarInfo.color),
                             buildInfoRow(ProjectStrings.dialog_engine_title, _selectedCarInfo.engine),
-                
+                            buildInfoRow("Owner", _selectedCarInfo.carOwner),
+
                             const SizedBox(height: 30)
                           ],
                         )

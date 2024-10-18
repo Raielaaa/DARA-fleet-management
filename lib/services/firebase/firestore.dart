@@ -249,11 +249,18 @@ class Firestore {
   }
 
   Future<List<RentInformation>> getAccountantRecords() async {
-    QuerySnapshot _querySnapshot = await _firestore
-        .collection(FirebaseConstants.accountantCollection)
-        .get();
+    try {
+      QuerySnapshot _querySnapshot = await _firestore
+          .collection(FirebaseConstants.accountantCollection)
+          .get();
 
-    return _querySnapshot.docs.map((doc) => RentInformation.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
+      return _querySnapshot.docs.map((doc) => RentInformation.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
+
+    } catch(e) {
+      debugPrint("Error@firestore.dart@ln257: $e");
+      return [];
+    }
+
   }
 
   Future<void> updateRentStatus({

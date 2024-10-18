@@ -104,8 +104,8 @@ class RentInformation {
         totalAmount: data["rent_totalAmount"] ?? "",
         rentStatus: data["rent_status"] ?? "",
         adminNotes:  data["rent_notes"] ?? "",
-        driverFee: "rent_driverFee",
-      carOwner: data["rent_car_owner"]
+        driverFee: data["rent_driverFee"] ?? "",
+      carOwner: data["rent_car_owner"] ?? ""
     );
   }
 }

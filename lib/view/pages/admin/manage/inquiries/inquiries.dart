@@ -62,11 +62,12 @@ class _InquiriesState extends State<Inquiries> {
       List<RentInformation> pendingRecords = [];
 
       List<RentInformation> records = await Firestore().getRentRecords();
-      records.forEach((item) {
+      for (var item in records) {
         if (item.rentStatus.toLowerCase() == "pending") {
           pendingRecords.add(item);
         }
-      });
+        debugPrint("Test rent info: ${item.driverFee}");
+      }
       List<Map<String, dynamic>> tempData = [];
 
       // Clear existing lists
@@ -129,6 +130,7 @@ class _InquiriesState extends State<Inquiries> {
     return Padding(
       padding: padding ?? const EdgeInsets.only(right: 15, left: 15, top: 5),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomComponents.displayText(
@@ -198,12 +200,33 @@ class _InquiriesState extends State<Inquiries> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: inquiriesWithUserData.isEmpty
-                      ? const Center(
-                    child: Text(
-                      "No inquiries found.",
-                      style: TextStyle(color: Colors.grey, fontSize: 16),
-                    ),
-                  )
+                      ? Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 30),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  "lib/assets/pictures/data_not_found.jpg",
+                                  width: MediaQuery.of(context).size.width - 200,
+                                ),
+                                const SizedBox(height: 20),
+                                CustomComponents.displayText(
+                                    "No records found at the moment. Please try again later.",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10
+                                ),
+                                const SizedBox(height: 10)
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
                       : ListView.builder(
                     padding: EdgeInsets.zero,
                     itemCount: rentInformationList.length,
@@ -283,14 +306,19 @@ class _InquiriesState extends State<Inquiries> {
                               buildInfoRow(ProjectStrings.ri_name_title, "${userInfo?.firstName} ${userInfo?.lastName}"),
                               buildInfoRow(ProjectStrings.ri_email_title, userInfo?.email ?? "N/A"),
                               buildInfoRow(ProjectStrings.ri_phone_number_title, userInfo?.number ?? "N/A"),
-                              buildInfoRow("car Unit:", rentInfo.carName),
+                              buildInfoRow("Car Unit:", rentInfo.carName),
+                              buildInfoRow("Car Owner:", rentInfo.carOwner),
                               buildInfoRow("Role:", userInfo?.role ?? "N/A"),
                               buildInfoRow("Rent Location:", rentInfo.rentLocation),
+                              buildInfoRow("Est. Driving Distance:", rentInfo.estimatedDrivingDistance),
+                              buildInfoRow("Est. Driving Duration:", rentInfo.estimatedDrivingDuration),
                               buildInfoRow(ProjectStrings.ri_rent_start_date_title, rentInfo.startDateTime),
                               buildInfoRow(ProjectStrings.ri_rent_end_date_title, rentInfo.endDateTime),
                               buildInfoRow(ProjectStrings.ri_delivery_mode_title, rentInfo.pickupOrDelivery),
                               buildInfoRow(ProjectStrings.ri_delivery_location_title, rentInfo.deliveryLocation),
                               buildInfoRow(ProjectStrings.ri_reserved_title, rentInfo.reservationFee == "0" ? "No" : "Yes"),
+                              buildInfoRow("With Driver:", rentInfo.withDriver.toLowerCase() == "no" ? "No" : "Yes"),
+                              buildInfoRow("Driver Fee:", rentInfo.driverFee),
                               buildInfoRow("Total Amount:", rentInfo.totalAmount),
                               const SizedBox(height: 30),
                               Padding(

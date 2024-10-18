@@ -43,7 +43,7 @@ class _IncomePageState extends State<IncomePage> {
   Future<void> _retrieveAccountantRecords() async {
     try {
       LoadingDialog().show(context: context, content: "Please wait while we retrieve income records.");
-      List<RentInformation> accountantRecords = await _accountantController.getAccountantRawList();
+      List<RentInformation> accountantRecords = await Firestore().getRentRecords();
       LoadingDialog().dismiss();
 
       setState(() {
@@ -54,7 +54,7 @@ class _IncomePageState extends State<IncomePage> {
       });
     } catch(e) {
       LoadingDialog().dismiss();
-      debugPrint("Error@income.dart@ln41: $e");
+      debugPrint("Error@income.dart@ln57: $e");
     }
   }
 
@@ -64,12 +64,34 @@ class _IncomePageState extends State<IncomePage> {
     return NumberFormat("#,##0.0000", "en_US").format(parsedNumber);
   }
 
+  void _filterRecordsByMonth() {
+    if (_selectedMonth == "Grand Total") {
+      // Show all records if "Grand Total" is selected
+      _accountantRecordsToBeDisplayed = _retrievedAccountantRecords;
+    } else {
+      _accountantRecordsToBeDisplayed = _retrievedAccountantRecords.where((record) {
+        // Parse the month from the rent_endDateTime string (e.g., "October 31, 2024 | 12:00 AM")
+        String rentEndDateTime = record.endDateTime;
+        String recordMonth = rentEndDateTime.split(" ")[0]; // Extract the month part
+
+        // Compare the extracted month with the selected month
+        return recordMonth == _selectedMonth;
+      }).toList();
+    }
+    // Recalculate the total amount based on the filtered list
+    calculateTotalAmount();
+  }
+
 
   void calculateTotalAmount() {
     double _totalAmount = 0.0;
 
     for (var item in _accountantRecordsToBeDisplayed) {
-      _totalAmount += double.parse(item.totalAmount);
+      try {
+        _totalAmount += double.parse(item.totalAmount);
+      } catch(e) {
+        debugPrint("Error@income.dart@ln75: $e");
+      }
     }
 
     final formatter = NumberFormat("#,##0.0000", "en_US");
@@ -174,31 +196,25 @@ class _IncomePageState extends State<IncomePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      debugPrint("Owner: ${_accountantRecordsToBeDisplayed[index].carOwner.toLowerCase()}");
                       ShowDialog().seeCompleteReportInfo(_accountantRecordsToBeDisplayed[index], context);
-                      // ShowDialog().seeCompleteReportInfo(index);
                     },
                     child: Row(
                       children: [
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Color(
-                              int.parse(
-                                ProjectColors.reportMainColorBackground.substring(2),
-                                radix: 16,
-                              ),
-                            ),
+                            color: _accountantRecordsToBeDisplayed[index].carOwner.toLowerCase() == "dats" ?
+                              Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16)) :
+                              Color(int.parse(ProjectColors.outsourceColorBackground.substring(2), radix: 16)),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(18.0),
                             child: CustomComponents.displayText(
                               "SR",
-                              color: Color(
-                                int.parse(
-                                  ProjectColors.mainColorHex.substring(2),
-                                  radix: 16,
-                                ),
-                              ),
+                              color: _accountantRecordsToBeDisplayed[index].carOwner.toLowerCase() == "dats" ?
+                                Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)) :
+                                Color(int.parse(ProjectColors.outsourceColorMain.substring(2), radix: 16)),
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
                             ),
@@ -350,21 +366,21 @@ class _IncomePageState extends State<IncomePage> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(
-            color: Color(0xff404040),
+            color: Colors.transparent,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(
-            color: Color(0xff404040),
+            color: Colors.transparent,
             width: 1,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(
-            color: Color(0xff404040),
+            color: Colors.transparent,
             width: 1,
           ),
         ),
@@ -393,6 +409,7 @@ class _IncomePageState extends State<IncomePage> {
       onChanged: (value) {
         setState(() {
           _selectedMonth = value;
+          _filterRecordsByMonth(); // Filter the records based on the selected month
         });
       },
     );

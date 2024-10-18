@@ -76,7 +76,7 @@ class CompleteCarInfo {
       horsePower: data["car_horse_power"] ?? "",
       longDescription:  data["car_long_description"] ?? "",
       shortDescription: data["car_short_description"] ?? "",
-      carOwner: data["car_owner"]
+      carOwner: data["car_owner"] ?? ""
     );
   }
 }

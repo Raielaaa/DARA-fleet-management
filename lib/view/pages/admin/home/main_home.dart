@@ -382,7 +382,7 @@ class _AdminHomeState extends State<AdminHome> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomComponents.displayText("Hello, ${_currentUserInfo?.role}",
+                              CustomComponents.displayText("Hello, ${PersistentData().userType}",
                                   fontWeight: FontWeight.bold, fontSize: 14),
                               GestureDetector(
                                 onTap: () {
