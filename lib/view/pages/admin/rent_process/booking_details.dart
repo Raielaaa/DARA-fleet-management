@@ -99,8 +99,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
 
     if (picked != null) {
       setState(() {
-        datePickerField.selectedDate =
-            DateFormat("MMMM dd, yyyy").format(picked);
+        datePickerField.selectedDate = DateFormat("MMMM dd, yyyy").format(picked);
 
         if (selectedDateStartOrEnd == "start_date") {
           _persistentData.bookingDetailsStartingDate = datePickerField.selectedDate;
@@ -132,8 +131,8 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
             }
           });
         },
-        sunrise: TimeOfDay(hour: 6, minute: 0), // optional
-        sunset: TimeOfDay(hour: 18, minute: 0), // optional
+        sunrise: const TimeOfDay(hour: 6, minute: 0), // optional
+        sunset: const TimeOfDay(hour: 18, minute: 0), // optional
         minuteInterval: TimePickerInterval.FIVE, // optional
         iosStylePicker: true, // Enable iOS-style picker
       ),

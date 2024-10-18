@@ -71,13 +71,14 @@ class ShowDialog {
             fontSize: 10,
             color: titleColor ?? Colors.grey,
           ),
+          const SizedBox(width: 50),
           Expanded(
             child: CustomComponents.displayText(
               value,
               fontWeight: FontWeight.bold,
               textAlign: TextAlign.end,
               fontSize: 10,
-              color: valueColor ?? Color(int.parse(ProjectColors.blackBody.substring(2), radix: 16)),
+              color: valueColor ?? const Color(0xff404040),
             ),
           ),
         ],

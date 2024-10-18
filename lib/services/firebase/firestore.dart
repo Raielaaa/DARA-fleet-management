@@ -6,6 +6,7 @@ import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
 import 'package:dara_app/model/renting_proccess/renting_process.dart';
 import 'package:dara_app/view/shared/info_dialog.dart';
+import 'package:dara_app/view/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -291,6 +292,60 @@ class Firestore {
       }
     } catch (e) {
       debugPrint("Error updating rent status: $e");
+    }
+  }
+
+  Future<void> updateRentRecordsFromAccountant({
+    required RentInformation selectedRentInformation,
+    String? newStartDate,
+    String? newEndDate,
+    String? newStartTime,
+    String? newEndTime,
+    String? newAmount,
+  }) async {
+    try {
+      // Fetch rent records matching the criteria
+      QuerySnapshot querySnapshot = await _firestore
+          .collection(FirebaseConstants.rentRecordsCollection)
+          .where("rent_car_UID", isEqualTo: selectedRentInformation.rent_car_UID)
+          .where("rent_estimatedDrivingDistance", isEqualTo: selectedRentInformation.estimatedDrivingDistance)
+          .where("rent_startDateTime", isEqualTo: selectedRentInformation.startDateTime)
+          .where("rent_endDateTime", isEqualTo: selectedRentInformation.endDateTime)
+          .get();
+
+      // Check if any records match the query
+      if (querySnapshot.docs.isEmpty) {
+        debugPrint("No matching rent record found for the provided criteria.");
+        return;
+      }
+
+      // Iterate through matched documents to update fields
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        Map<String, dynamic> updates = {};
+
+        if (newStartDate != null && newStartTime != null) {
+          updates["rent_startDateTime"] = "$newStartDate | $newStartTime";
+        }
+
+        if (newEndDate != null && newEndTime != null) {
+          updates["rent_endDateTime"] = "$newEndDate | $newEndTime";
+        }
+
+        if (newAmount != null) {
+          updates["rent_totalAmount"] = newAmount;
+        }
+
+        if (updates.isNotEmpty) {
+          await doc.reference.update(updates);
+          debugPrint("Rent record ${doc.id} updated successfully.");
+          LoadingDialog().dismiss();
+        } else {
+          debugPrint("No valid updates were provided for rent record ${doc.id}.");
+        }
+      }
+    } catch (e, stackTrace) {
+      debugPrint("Failed to update rent records: $e");
+      debugPrint("Stack trace: $stackTrace");
     }
   }
 }

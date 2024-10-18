@@ -192,12 +192,12 @@ class _AccountantOptionState extends State<AccountantOption> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return StatefulDateDialog();
-                              }
-                            );
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (BuildContext context) {
+                            //     return StatefulDateDialog();
+                            //   }
+                            // );
                           },
                           child: const Icon(
                             Icons.edit,

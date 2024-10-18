@@ -40,6 +40,10 @@ class _IncomePageState extends State<IncomePage> {
     });
   }
 
+  Future<void> refreshData() async {
+    await _retrieveAccountantRecords();
+  }
+
   Future<void> _retrieveAccountantRecords() async {
     try {
       LoadingDialog().show(context: context, content: "Please wait while we retrieve income records.");
@@ -113,9 +117,12 @@ class _IncomePageState extends State<IncomePage> {
               actionBar(),
 
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(right: 25, left: 25, top: 20),
-                  child: Column(
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    refreshData();
+                  },
+                  child: ListView(
+                    padding: const EdgeInsets.only(right: 25, left: 25, top: 20),
                     children: [
                       //  greetings header
                       Align(
@@ -254,7 +261,7 @@ class _IncomePageState extends State<IncomePage> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return StatefulDateDialog();
+                                return StatefulDateDialog(selectedRentInformation: _accountantRecordsToBeDisplayed[index]);
                               }
                             );
                           },
@@ -264,15 +271,15 @@ class _IncomePageState extends State<IncomePage> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        GestureDetector(
-                          onTap: () {
-                            showConfirmDialog();
-                          },
-                          child: Image.asset(
-                            "lib/assets/pictures/trash.png",
-                            width: 20,
-                          ),
-                        ),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     showConfirmDialog();
+                        //   },
+                        //   child: Image.asset(
+                        //     "lib/assets/pictures/trash.png",
+                        //     width: 20,
+                        //   ),
+                        // ),
                       ],
                     ),
                   )

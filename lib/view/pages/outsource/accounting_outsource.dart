@@ -167,12 +167,12 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return StatefulDateDialog();
-                              }
-                            );
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (BuildContext context) {
+                            //     return StatefulDateDialog();
+                            //   }
+                            // );
                           },
                           child: const Icon(
                             Icons.edit,
