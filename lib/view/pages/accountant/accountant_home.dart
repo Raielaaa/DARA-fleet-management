@@ -462,7 +462,7 @@ class _AccountantOptionState extends State<AccountantOption> {
               ),
               const SizedBox(height: 3),
               CustomComponents.displayText(
-                ProjectStrings.manage_reports_date,
+                PersistentData().getCurrentFormattedDate(),
                 fontSize: 12,
                 textAlign: TextAlign.start,
               ),

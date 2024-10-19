@@ -4,6 +4,7 @@ import 'package:dara_app/model/home/featured_car_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 import '../../model/car_list/complete_car_list.dart';
@@ -173,4 +174,12 @@ class PersistentData {
   String biMonthlyIncomeGross = "";
   String rentalAgreementOptions = "";
   String applicationStatus = "pending";
+
+  /////// current date
+
+  String getCurrentFormattedDate() {
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('EEE, MMMM d, y');
+    return formatter.format(now);
+  }
 }

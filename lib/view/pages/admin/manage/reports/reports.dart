@@ -4,6 +4,8 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
+import "../../../../../controller/singleton/persistent_data.dart";
+
 class ManageReports extends StatefulWidget {
   const ManageReports({super.key});
 
@@ -827,7 +829,7 @@ class _ManageReportsState extends State<ManageReports> {
                                 ),
                                 const SizedBox(height: 3),
                                 CustomComponents.displayText(
-                                  ProjectStrings.manage_reports_date,
+                                  PersistentData().getCurrentFormattedDate(),
                                   fontSize: 12,
                                   textAlign: TextAlign.start,
                                 ),
