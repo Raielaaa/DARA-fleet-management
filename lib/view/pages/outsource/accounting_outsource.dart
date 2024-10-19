@@ -4,8 +4,15 @@ import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:intl/intl.dart";
+
+import "../../../controller/singleton/persistent_data.dart";
+import "../../../model/renting_proccess/renting_process.dart";
+import "../../../services/firebase/firestore.dart";
+import "../../shared/loading.dart";
 
 class OutsourceAccounting extends StatefulWidget {
   const OutsourceAccounting({super.key});
@@ -15,12 +22,97 @@ class OutsourceAccounting extends StatefulWidget {
 }
 
 class _OutsourceAccountingState extends State<OutsourceAccounting> {
-  String? _selectedMonth = "January";
+  String? _selectedMonth = "Grand Total";
+  List<RentInformation> _accountantRecordsToBeDisplayed = [];
+  List<RentInformation> _retrievedAccountantRecords = [];
+  bool _isLoading = true;
+  String __totalAmount = "0.0";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _retrieveAccountantRecords();
+    });
+  }
+
+  Future<void> refreshData() async {
+    await _retrieveAccountantRecords();
+  }
+
+  Future<void> _retrieveAccountantRecords() async {
+    try {
+      LoadingDialog().show(context: context, content: "Please wait while we retrieve income records.");
+      List<RentInformation> accountantRecords = await Firestore().getRentRecords();
+      LoadingDialog().dismiss();
+
+      List<RentInformation> filteredAccountantRecords = [];
+      for (var item in accountantRecords) {
+        if (item.carOwner.contains(FirebaseAuth.instance.currentUser!.uid)) {
+          filteredAccountantRecords.add(item);
+        }
+      }
+
+      setState(() {
+        _retrievedAccountantRecords = filteredAccountantRecords;
+        _accountantRecordsToBeDisplayed = _retrievedAccountantRecords;
+        calculateTotalAmount();
+        _isLoading = false;
+      });
+    } catch(e) {
+      LoadingDialog().dismiss();
+      debugPrint("Error@income.dart@ln63: $e");
+    }
+  }
+
+  String formatNumber(dynamic number) {
+    // Convert the number to a double first if it's a string
+    double parsedNumber = double.tryParse(number.toString()) ?? 0.0;
+    return NumberFormat("#,##0.0000", "en_US").format(parsedNumber);
+  }
+
+  void _filterRecordsByMonth() {
+    if (_selectedMonth == "Grand Total") {
+      // Show all records if "Grand Total" is selected
+      _accountantRecordsToBeDisplayed = _retrievedAccountantRecords;
+    } else {
+      _accountantRecordsToBeDisplayed = _retrievedAccountantRecords.where((record) {
+        // Parse the month from the rent_endDateTime string (e.g., "October 31, 2024 | 12:00 AM")
+        String rentEndDateTime = record.endDateTime;
+        String recordMonth = rentEndDateTime.split(" ")[0]; // Extract the month part
+
+        // Compare the extracted month with the selected month
+        return recordMonth == _selectedMonth;
+      }).toList();
+    }
+    // Recalculate the total amount based on the filtered list
+    calculateTotalAmount();
+  }
+
+  void calculateTotalAmount() {
+    double totalAmount = 0.0;
+
+    for (var item in _accountantRecordsToBeDisplayed) {
+      try {
+        totalAmount += double.parse(item.totalAmount);
+      } catch(e) {
+        debugPrint("Error@income.dart@ln101: $e");
+      }
+    }
+
+    final formatter = NumberFormat("#,##0.0000", "en_US");
+    setState(() {
+      __totalAmount = formatNumber(totalAmount);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: _isLoading ? Center(child: CircularProgressIndicator(color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))))
+          : Container(
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
         child: Padding(
           padding: const EdgeInsets.only(top: 38),
@@ -29,57 +121,62 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
               actionBar(),
 
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(right: 25, left: 25, top: 20),
-                  child: Column(
-                    children: [
-                      //  greetings header
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomComponents.displayText(
-                          ProjectStrings.income_page_header,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    refreshData();
+                  },
+                  child: ListView(
+                    padding: const EdgeInsets.only(right: 25, left: 25, top: 20),
+                    children: [Column(
+                      children: [
+                        //  greetings header
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomComponents.displayText(
+                            ProjectStrings.income_page_header,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 3),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomComponents.displayText(
-                          ProjectStrings.income_page_subheader,
-                          fontSize: 10,
-                          textAlign: TextAlign.start,
+                        const SizedBox(height: 3),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomComponents.displayText(
+                            ProjectStrings.income_page_subheader,
+                            fontSize: 10,
+                            textAlign: TextAlign.start,
+                          ),
                         ),
-                      ),
 
-                      const SizedBox(height: 20),
-                      dropdownButton(),
-                      const SizedBox(height: 20),
-                      totalAmount(),
-                      const SizedBox(height: 30),
+                        const SizedBox(height: 20),
+                        dropdownButton(),
+                        const SizedBox(height: 20),
+                        totalAmount(),
+                        const SizedBox(height: 30),
 
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomComponents.displayText(
-                          ProjectStrings.income_page_breakdown,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomComponents.displayText(
+                            ProjectStrings.income_page_breakdown,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 3),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomComponents.displayText(
-                          ProjectStrings.income_page_breakdown_subheader,
-                          fontSize: 10,
+                        const SizedBox(height: 3),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomComponents.displayText(
+                            ProjectStrings.income_page_breakdown_subheader,
+                            fontSize: 10,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 30),
-                      itemsLegend(),
-                      const SizedBox(height: 20),
-                      mainReportSection(),
-                      const SizedBox(height: 50)
-                    ],
+                        const SizedBox(height: 30),
+                        itemsLegend(),
+                        const SizedBox(height: 20),
+                        mainReportSection(),
+                        const SizedBox(height: 50)
+                      ],
+                    )]
                   ),
                 ),
               )
@@ -95,12 +192,11 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 10,
+      itemCount: _accountantRecordsToBeDisplayed.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 15),
           child: Container(
-            height: 90,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -113,7 +209,7 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // ShowDialog().seeCompleteReportInfo(context);
+                      ShowDialog().seeCompleteReportInfo(_accountantRecordsToBeDisplayed[index], context);
                     },
                     child: Row(
                       children: [
@@ -122,7 +218,7 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
                             borderRadius: BorderRadius.circular(5),
                             color: Color(
                               int.parse(
-                                ProjectColors.userListOutsourceHexBackground.substring(2),
+                                ProjectColors.outsourceColorBackground.substring(2),
                                 radix: 16,
                               ),
                             ),
@@ -133,7 +229,7 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
                               "SR",
                               color: Color(
                                 int.parse(
-                                  ProjectColors.userListOutsourceHex.substring(2),
+                                  ProjectColors.outsourceColorMain.substring(2),
                                   radix: 16,
                                 ),
                               ),
@@ -148,13 +244,19 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomComponents.displayText(
-                              ProjectStrings.manage_accountant_date_range,
+                              "${_accountantRecordsToBeDisplayed[index].startDateTime} -",
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 10,
                             ),
-                            const SizedBox(height: 5),
+                            const SizedBox(height: 3),
                             CustomComponents.displayText(
-                              ProjectStrings.manage_accountant_amount,
+                              _accountantRecordsToBeDisplayed[index].endDateTime,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                            const SizedBox(height: 10),
+                            CustomComponents.displayText(
+                              "PHP ${formatNumber(_accountantRecordsToBeDisplayed[index].totalAmount)}",
                               fontSize: 10,
                             ),
                           ],
@@ -167,28 +269,23 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // showDialog(
-                            //   context: context,
-                            //   builder: (BuildContext context) {
-                            //     return StatefulDateDialog();
-                            //   }
-                            // );
+                            ShowDialog().seeCompleteReportInfo(_accountantRecordsToBeDisplayed[index], context);
                           },
                           child: const Icon(
-                            Icons.edit,
+                            Icons.more_horiz,
                             size: 20,
                           ),
                         ),
                         const SizedBox(width: 15),
-                        GestureDetector(
-                          onTap: () {
-                            showConfirmDialog();
-                          },
-                          child: Image.asset(
-                            "lib/assets/pictures/trash.png",
-                            width: 20,
-                          ),
-                        ),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     showConfirmDialog();
+                        //   },
+                        //   child: Image.asset(
+                        //     "lib/assets/pictures/trash.png",
+                        //     width: 20,
+                        //   ),
+                        // ),
                       ],
                     ),
                   )
@@ -216,7 +313,7 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
           width: 20,
           height: 20,
           decoration: BoxDecoration(
-            color: Color(int.parse(ProjectColors.userListOutsourceHex.substring(2), radix: 16)),
+            color: Color(int.parse(ProjectColors.outsourceColorMain.substring(2), radix: 16)),
             borderRadius: BorderRadius.circular(5)
           ),
         ),
@@ -248,7 +345,7 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
           ),
           const SizedBox(height: 5),
           CustomComponents.displayText(
-            ProjectStrings.income_page_amount,
+            __totalAmount,
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 22
@@ -266,21 +363,21 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(
-            color: Color(0xff404040),
+            color: Colors.transparent,
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(
-            color: Color(0xff404040),
+            color: Colors.transparent,
             width: 1,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(
-            color: Color(0xff404040),
+            color: Colors.transparent,
             width: 1,
           ),
         ),
@@ -296,7 +393,7 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
       value: _selectedMonth,
       isExpanded: true,
       items: <String>[
-        'January', 'February', 'March', 'April', 'May', 'June',
+        "Grand Total", 'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
       ].map(
         (String month) {
@@ -309,6 +406,7 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
       onChanged: (value) {
         setState(() {
           _selectedMonth = value;
+          _filterRecordsByMonth();
         });
       },
     );
@@ -322,9 +420,14 @@ class _OutsourceAccountingState extends State<OutsourceAccounting> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/left_arrow.png"),
+          GestureDetector(
+            onTap: () {
+              PersistentData().openDrawer(0);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset("lib/assets/pictures/menu.png"),
+            ),
           ),
           CustomComponents.displayText(
             ProjectStrings.income_page_appbar_title,

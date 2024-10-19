@@ -24,11 +24,8 @@ class IncomePage extends StatefulWidget {
 
 class _IncomePageState extends State<IncomePage> {
   String? _selectedMonth = "Grand Total";
-  AccountantController _accountantController = AccountantController();
   List<RentInformation> _accountantRecordsToBeDisplayed = [];
   List<RentInformation> _retrievedAccountantRecords = [];
-  List<RentInformation> _datsOwnedUnits = [];
-  List<RentInformation> _outsourceOwnedUnits = [];
   bool _isLoading = true;
   String __totalAmount = "0.0";
 
@@ -60,7 +57,7 @@ class _IncomePageState extends State<IncomePage> {
       });
     } catch(e) {
       LoadingDialog().dismiss();
-      debugPrint("Error@income.dart@ln57: $e");
+      debugPrint("Error@income.dart@ln63: $e");
     }
   }
 
