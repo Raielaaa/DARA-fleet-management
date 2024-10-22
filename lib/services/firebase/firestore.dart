@@ -136,6 +136,14 @@ class Firestore {
     return null;
   }
 
+  Future<List<RegisterModel>> getCompleteUserList() async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection(FirebaseConstants.registerCollection)
+        .get();
+
+    return querySnapshot.docs.map((doc) => RegisterModel.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
+  }
+
 
   Future<List<RentInformation>> getRentRecordsInfo(String currentUserUID) async {
     // Fetch all documents from the collection

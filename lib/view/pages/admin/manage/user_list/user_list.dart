@@ -1,8 +1,14 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
+import "package:dara_app/model/account/register_model.dart";
 import "package:dara_app/view/pages/admin/manage/user_list/SortFilterDrawer.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
+import "package:flutter/scheduler.dart";
+
+import "../../../../../controller/admin_manage/user_list/user_list_controller.dart";
 
 class UserList extends StatefulWidget {
   const UserList({super.key});
@@ -13,12 +19,93 @@ class UserList extends StatefulWidget {
 
 class _UserListState extends State<UserList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final UserListController _userListController = UserListController();
+  late List<RegisterModel> originalData;
+  late List<RegisterModel> retrievedData;
+  List<RegisterModel> renterList = [];
+  List<RegisterModel> driverList = [];
+  List<RegisterModel> outsourceList = [];
+  bool _isLoading = true;
+
+  String _key = '';
+  String _value = '';
+
+  void _applySortAndFilter(String key, String value) {
+    setState(() {
+      _key = key;
+      _value = value;
+    });
+
+    // Refresh the list based on the selected sort and filter options
+    _updateUserList();
+  }
+
+  Future<void> _updateUserList() async {
+    // Start with the original data
+    List<RegisterModel> filteredList = List.from(originalData);
+
+    // Apply filters based on the selected value
+    if (_value == "verified") {
+      filteredList = filteredList.where((item) => item.status.toLowerCase() == "verified").toList();
+    } else if (_value == "unverified") {
+      filteredList = filteredList.where((item) => item.status.toLowerCase() == "unverified").toList();
+    } else if (_value == "renter") {
+      filteredList = filteredList.where((item) => item.role.toLowerCase() == "renter").toList();
+    } else if (_value == "outsource") {
+      filteredList = filteredList.where((item) => item.role.toLowerCase() == "outsource").toList();
+    } else if (_value == "driver") {
+      filteredList = filteredList.where((item) => item.role.toLowerCase() == "driver").toList();
+    } else if (_value == "clear") {
+      // If 'clear' is selected, show all original data
+      filteredList = List.from(originalData);
+    }
+
+    // Update the state with the filtered data
+    setState(() {
+      retrievedData = filteredList;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      retrieveUserList();
+    });
+  }
+
+  Future<void> _refreshPage() async {
+    LoadingDialog().show(context: context, content: "Please wait while we refresh the page.");
+    await retrieveUserList();
+    LoadingDialog().dismiss();
+  }
+
+  Future<void> retrieveUserList() async {
+    originalData = await _userListController.getCompleteUserList();
+
+    setState(() {
+      for (var item in originalData) {
+        if (item.role.toLowerCase() == "renter") {
+          renterList.add(item);
+        } else if (item.role.toLowerCase() == "outsource") {
+          outsourceList.add(item);
+        } else if (item.role.toLowerCase() == "driver") {
+          driverList.add(item);
+        }
+        debugPrint("counter");
+      }
+      retrievedData = originalData;
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: const SortFilterDrawer(),
+      endDrawer: SortFilterDrawer(onApply: _applySortAndFilter),
       body: Container(
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
         child: Padding(
@@ -132,6 +219,8 @@ class _UserListState extends State<UserList> {
     required String userEmail,
     required String userStatus,
     required String userType,
+    required String userProfilePicPath,
+    required RegisterModel selectedUserInformation
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -203,6 +292,7 @@ class _UserListState extends State<UserList> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
+                      PersistentData().selectedUser = selectedUserInformation;
                       Navigator.of(context).pushNamed("manage_user_list_info");
                     },
                     child: Column(
@@ -233,7 +323,7 @@ class _UserListState extends State<UserList> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: userStatus == "Verified" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16))
+                      color: userStatus.toLowerCase() == "verified" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16))
                         : Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
                     ),
                     child: Row(
@@ -241,7 +331,7 @@ class _UserListState extends State<UserList> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
-                            userStatus == "Verified" ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
+                            userStatus.toLowerCase() == "verified" ? "lib/assets/pictures/rentals_verified.png" : "lib/assets/pictures/rentals_denied.png",
                             width: 20,
                             height: 20,
                           ),
@@ -255,7 +345,7 @@ class _UserListState extends State<UserList> {
                           ),
                           child: CustomComponents.displayText(
                             userStatus,
-                            color: userStatus == "Verified" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16))
+                            color: userStatus.toLowerCase() == "verified" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16))
                                   : Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
                             fontWeight: FontWeight.bold,
                             fontSize: 10,
@@ -269,18 +359,18 @@ class _UserListState extends State<UserList> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: userType == "Renter" ? Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
-                        : userType == "Driver" ? Color(int.parse(ProjectColors.userListDriverHexBackground.substring(2), radix: 16))
-                        : userType == "Outsource" ? Color(int.parse(ProjectColors.userListOutsourceHexBackground.substring(2), radix: 16))
+                      color: userType.toLowerCase() == "renter" ? Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
+                        : userType.toLowerCase() == "driver" ? Color(int.parse(ProjectColors.userListDriverHexBackground.substring(2), radix: 16))
+                        : userType.toLowerCase() == "outsource" ? Color(int.parse(ProjectColors.userListOutsourceHexBackground.substring(2), radix: 16))
                         : Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
                       child: CustomComponents.displayText(
                         userType,
-                        color: userType == "Renter" ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
-                        : userType == "Driver" ? Color(int.parse(ProjectColors.userListDriverHex.substring(2), radix: 16))
-                        : userType == "Outsource" ? Color(int.parse(ProjectColors.userListOutsourceHex.substring(2), radix: 16))
+                        color: userType.toLowerCase() == "renter" ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                        : userType.toLowerCase() == "driver" ? Color(int.parse(ProjectColors.userListDriverHex.substring(2), radix: 16))
+                        : userType.toLowerCase() == "outsource" ? Color(int.parse(ProjectColors.userListOutsourceHex.substring(2), radix: 16))
                         : Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
@@ -296,64 +386,40 @@ class _UserListState extends State<UserList> {
     );
   }
 
-  List<List<String>> items = [
-    [
-      ProjectStrings.admin_user_list_name_1,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_1,
-      ProjectStrings.admin_user_list_verified,
-      ProjectStrings.admin_user_list_renter
-    ],
-    [
-      ProjectStrings.admin_user_list_name_2,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_2,
-      ProjectStrings.admin_user_list_unverified,
-      ProjectStrings.admin_user_list_driver
-    ],
-    [
-      ProjectStrings.admin_user_list_name_3,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_3,
-      ProjectStrings.admin_user_list_verified,
-      ProjectStrings.admin_user_list_outsource
-    ],
-    [
-      ProjectStrings.admin_user_list_name_4,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_4,
-      ProjectStrings.admin_user_list_verified,
-      ProjectStrings.admin_user_list_renter
-    ],
-    [
-      ProjectStrings.admin_user_list_name_3,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_3,
-      ProjectStrings.admin_user_list_unverified,
-      ProjectStrings.admin_user_list_outsource
-    ],
-  ];
-
   Widget _userListItems() {
     return Expanded(
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: _designPerItem(
-              imagePath: "lib/assets/pictures/user_info_user.png",
-              userName: items[index][0],
-              userContactNumber:items[index][1],
-              userEmail: items[index][2],
-              userStatus: items[index][3],
-              userType: items[index][4]
-            ),
-          );
+      child: _isLoading
+          ? Center(
+        child: CircularProgressIndicator(
+          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+        ),
+      )
+          : RefreshIndicator(
+        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+        onRefresh: () async {
+          await _refreshPage();
         },
-      ),
+            child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: retrievedData.length,
+                    itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: _designPerItem(
+                imagePath: "lib/assets/pictures/user_info_user.png",
+                userName: "${retrievedData[index].firstName} ${retrievedData[index].lastName}",
+                userContactNumber:retrievedData[index].number,
+                userEmail: retrievedData[index].email,
+                userStatus: retrievedData[index].status,
+                userType: retrievedData[index].role,
+                userProfilePicPath: "",
+                selectedUserInformation: retrievedData[index]
+              ),
+            );
+                    },
+                  ),
+          ),
     );
   }
 
@@ -365,20 +431,20 @@ class _UserListState extends State<UserList> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/left_arrow.png"),
+          GestureDetector(
+            onTap: () {
+              PersistentData().openDrawer(0);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset("lib/assets/pictures/menu.png"),
+            ),
           ),
           CustomComponents.displayText(
             ProjectStrings.admin_user_list_appbar_title,
             fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset(
-              "lib/assets/pictures/three_vertical_dots.png",
-            ),
-          ),
+          CustomComponents.menuButtons(context)
         ],
       ),
     );

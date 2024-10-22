@@ -182,4 +182,8 @@ class PersistentData {
     final DateFormat formatter = DateFormat('EEE, MMMM d, y');
     return formatter.format(now);
   }
+
+
+  ////////////////    admin options - user info   ///////////////////////////
+  RegisterModel? selectedUser;
 }

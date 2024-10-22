@@ -1,6 +1,7 @@
 import 'package:dara_app/controller/rent_process/rent_process.dart';
 import 'package:dara_app/view/shared/colors.dart';
 import 'package:dara_app/view/shared/components.dart';
+import 'package:dara_app/view/shared/loading.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import 'package:flutter/material.dart';
 
@@ -180,7 +181,8 @@ class InfoDialog {
     {
       required BuildContext context,
       required String content,
-      String header = "Please wait..."
+      String header = "Please wait...",
+      Future<void> Function()? confirmAction
     }
   ) {
     debugPrint("breakpoint - 1");
@@ -252,18 +254,28 @@ class InfoDialog {
                         ),
                       ),
                       const SizedBox(width: 30),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 10, right: 40, left: 40),
-                          child: CustomComponents.displayText(
-                            ProjectStrings.income_page_confirm_delete_confirm,
-                            color: Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12
+                      GestureDetector(
+                        onTap: () async {
+                          if (confirmAction != null) {
+                            LoadingDialog().show(context: context, content: "Updating records, please wait.");
+                            await confirmAction();
+                            LoadingDialog().dismiss();
+                          }
+                          dismiss(); // Close the dialog
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 40, left: 40),
+                            child: CustomComponents.displayText(
+                              ProjectStrings.income_page_confirm_delete_confirm,
+                              color: Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12
+                            ),
                           ),
                         ),
                       ),

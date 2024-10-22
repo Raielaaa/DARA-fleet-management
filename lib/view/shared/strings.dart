@@ -695,7 +695,7 @@ class ProjectStrings {
 
   //  admin options - user list
   static const String admin_user_nav_drawer_sort_and_filter = "Sort & Filter";
-  static const String admin_user_nav_drawer_clear_all = "Clear All";
+  static const String admin_user_nav_drawer_clear_all = "Clear";
   static const String admin_user_nav_drawer_apply = "Apply";
   static const String admin_user_nav_drawer_sort_by = "Sort By";
   static const String admin_user_nav_drawer_alphabetical = "Alphabetical";

@@ -6,7 +6,9 @@ import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 
 class SortFilterDrawer extends StatefulWidget {
-  const SortFilterDrawer({super.key});
+  final Function(String key, String value) onApply;
+
+  const SortFilterDrawer({super.key, required this.onApply});
 
   @override
   State<SortFilterDrawer> createState() => _SortFilterDrawerState();
@@ -36,14 +38,14 @@ class _SortFilterDrawerState extends State<SortFilterDrawer> {
               const SizedBox(height: 15),
               _clearOrSave(),
               const SizedBox(height: 30),
-              CustomComponents.displayText(
-                  ProjectStrings.admin_user_nav_drawer_sort_by,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold
-                ),
-              const SizedBox(height: 10),
-              _dropdownButton(),
-              const SizedBox(height: 30),
+              // CustomComponents.displayText(
+              //     ProjectStrings.admin_user_nav_drawer_sort_by,
+              //     fontSize: 10,
+              //     fontWeight: FontWeight.bold
+              //   ),
+              // const SizedBox(height: 10),
+              // _dropdownButton(),
+              // const SizedBox(height: 30),
               CustomComponents.displayText(
                 ProjectStrings.admin_user_nav_drawer_filter_by,
                 fontSize: 10,
@@ -54,7 +56,7 @@ class _SortFilterDrawerState extends State<SortFilterDrawer> {
               const SizedBox(height: 10),
               _verifiedStatus(),
               const SizedBox(height: 10),
-              _dateJoined()
+              // _dateJoined()
             ],
           ),
         ),
@@ -215,71 +217,83 @@ class _SortFilterDrawerState extends State<SortFilterDrawer> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //  verified
-                Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16))
-                    ),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Image.asset(
-                            "lib/assets/pictures/rentals_verified.png",
-                            width: 20,
-                            height: 20,
+                GestureDetector(
+                  onTap: () {
+                    widget.onApply("key", "verified");
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16))
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Image.asset(
+                              "lib/assets/pictures/rentals_verified.png",
+                              width: 20,
+                              height: 20,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            right: 20,
-                            left: 5,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              bottom: 10,
+                              right: 20,
+                              left: 5,
+                            ),
+                            child: CustomComponents.displayText(
+                              ProjectStrings.admin_user_nav_drawer_verified,
+                              color: Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16)),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
                           ),
-                          child: CustomComponents.displayText(
-                            ProjectStrings.admin_user_nav_drawer_verified,
-                            color: Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16)),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                  ),
                 ),
                 const SizedBox(width: 10),
                 //  unverified
-                Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
-                    ),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Image.asset(
-                            "lib/assets/pictures/rentals_denied.png",
-                            width: 20,
-                            height: 20,
+                GestureDetector(
+                  onTap: () {
+                    widget.onApply("key", "unverified");
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Image.asset(
+                              "lib/assets/pictures/rentals_denied.png",
+                              width: 20,
+                              height: 20,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            right: 20,
-                            left: 5,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              bottom: 10,
+                              right: 20,
+                              left: 5,
+                            ),
+                            child: CustomComponents.displayText(
+                              ProjectStrings.admin_user_nav_drawer_unverified,
+                              color: Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
                           ),
-                          child: CustomComponents.displayText(
-                            ProjectStrings.admin_user_nav_drawer_unverified,
-                            color: Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                  ),
                 ),
               ],
             )
@@ -310,28 +324,46 @@ class _SortFilterDrawerState extends State<SortFilterDrawer> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _rectangularItems(
-                  name: ProjectStrings.admin_user_nav_drawer_renter,
-                  horizontalPadding: 15,
-                  verticalPadding: 10,
-                  backgroundColor: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
-                  textColor: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                GestureDetector(
+                  onTap: () {
+                    widget.onApply("key", "renter");
+                    Navigator.of(context).pop();
+                  },
+                  child: _rectangularItems(
+                    name: ProjectStrings.admin_user_nav_drawer_renter,
+                    horizontalPadding: 15,
+                    verticalPadding: 10,
+                    backgroundColor: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+                    textColor: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                  ),
                 ),
                 const SizedBox(width: 10),
-                _rectangularItems(
-                  name: ProjectStrings.admin_user_nav_drawer_outsource,
-                  horizontalPadding: 15,
-                  verticalPadding: 10,
-                  backgroundColor: Color(int.parse(ProjectColors.outsourceColorBackground.substring(2), radix: 16)),
-                  textColor: Color(int.parse(ProjectColors.outsourceColorMain.substring(2), radix: 16))
+                GestureDetector(
+                  onTap: () {
+                    widget.onApply("key", "outsource");
+                    Navigator.of(context).pop();
+                  },
+                  child: _rectangularItems(
+                    name: ProjectStrings.admin_user_nav_drawer_outsource,
+                    horizontalPadding: 15,
+                    verticalPadding: 10,
+                    backgroundColor: Color(int.parse(ProjectColors.outsourceColorBackground.substring(2), radix: 16)),
+                    textColor: Color(int.parse(ProjectColors.outsourceColorMain.substring(2), radix: 16))
+                  ),
                 ),
                 const SizedBox(width: 10),
-                _rectangularItems(
-                  name: ProjectStrings.admin_user_nav_drawer_driver,
-                  horizontalPadding: 15,
-                  verticalPadding: 10,
-                  backgroundColor: Color(int.parse(ProjectColors.userListDriverHexBackground.substring(2), radix: 16)),
-                  textColor: Color(int.parse(ProjectColors.userListDriverHex.substring(2), radix: 16))
+                GestureDetector(
+                  onTap: () {
+                    widget.onApply("key", "driver");
+                    Navigator.of(context).pop();
+                  },
+                  child: _rectangularItems(
+                    name: ProjectStrings.admin_user_nav_drawer_driver,
+                    horizontalPadding: 15,
+                    verticalPadding: 10,
+                    backgroundColor: Color(int.parse(ProjectColors.userListDriverHexBackground.substring(2), radix: 16)),
+                    textColor: Color(int.parse(ProjectColors.userListDriverHex.substring(2), radix: 16))
+                  ),
                 ),
               ],
             )
@@ -398,22 +430,34 @@ class _SortFilterDrawerState extends State<SortFilterDrawer> {
 
   Widget _clearOrSave() {
     return Row(children: [
-      _rectangularItems(
-          name: ProjectStrings.admin_user_nav_drawer_clear_all,
-          horizontalPadding: 35,
-          verticalPadding: 15,
-          backgroundColor: Colors.white,
-          textColor: const Color(0xff404040)),
-      const SizedBox(width: 20),
-      _rectangularItems(
-          name: ProjectStrings.admin_user_nav_drawer_apply,
-          horizontalPadding: 35,
-          verticalPadding: 15,
-          backgroundColor: Color(int.parse(
-              ProjectColors.mainColorBackground.substring(2),
-              radix: 16)),
-          textColor: Color(
-              int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)))
+      GestureDetector(
+        onTap: () {
+          widget.onApply("key", "clear");
+          Navigator.of(context).pop();
+        },
+        child: _rectangularItems(
+            name: ProjectStrings.admin_user_nav_drawer_clear_all,
+            horizontalPadding: 35,
+            verticalPadding: 15,
+            backgroundColor: Colors.white,
+            textColor: const Color(0xff404040)),
+      ),
+      const SizedBox(width: 10),
+      GestureDetector(
+        onTap: () {
+          widget.onApply("key", "apply");
+          Navigator.of(context).pop();
+        },
+        child: _rectangularItems(
+            name: ProjectStrings.admin_user_nav_drawer_apply,
+            horizontalPadding: 35,
+            verticalPadding: 15,
+            backgroundColor: Color(int.parse(
+                ProjectColors.mainColorBackground.substring(2),
+                radix: 16)),
+            textColor: Color(
+                int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))),
+      )
     ]);
   }
 

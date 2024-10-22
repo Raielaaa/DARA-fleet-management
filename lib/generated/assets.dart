@@ -126,6 +126,8 @@ class Assets {
   static const String assetsPicturesRentalsPending = 'lib/assets/pictures/rentals_pending.png';
   static const String assetsPicturesRentalsVerified = 'lib/assets/pictures/rentals_verified.png';
   static const String assetsPicturesRightArrow = 'lib/assets/pictures/right_arrow.png';
+  static const String assetsPicturesSaveBookingDetails = 'lib/assets/pictures/save_booking_details.jpg';
+  static const String assetsPicturesSaveBookingDetails2 = 'lib/assets/pictures/save_booking_details_2.png';
   static const String assetsPicturesSeeMore = 'lib/assets/pictures/see_more.png';
   static const String assetsPicturesSend = 'lib/assets/pictures/send.png';
   static const String assetsPicturesSettings = 'lib/assets/pictures/settings.png';
@@ -374,6 +376,7 @@ class Assets {
   static const String userListSortFilterDrawer = 'lib/view/pages/admin/manage/user_list/SortFilterDrawer.dart';
   static const String userListUserInfo = 'lib/view/pages/admin/manage/user_list/user_info.dart';
   static const String userListUserList = 'lib/view/pages/admin/manage/user_list/user_list.dart';
+  static const String userListUserListController = 'lib/controller/admin_manage/user_list/user_list_controller.dart';
   static const String utilsConstants = 'lib/controller/utils/constants.dart';
   static const String utilsIntentUtils = 'lib/controller/utils/intent_utils.dart';
   static const String videosLightAnimatedLogo = 'lib/assets/videos/light_animated_logo.mp4';

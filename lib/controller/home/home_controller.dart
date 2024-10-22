@@ -61,8 +61,10 @@ class HomeController {
     return forecastData;
   }
 
-  void makePhoneCall() async {
-    var url = Uri.parse("tel:09701900391");
+  void makePhoneCall({
+    String number = "09701900391"
+}) async {
+    var url = Uri.parse("tel:$number");
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
@@ -70,10 +72,12 @@ class HomeController {
     }
   }
 
-  void showMessageApp() async {
+  void showMessageApp({
+    String number = "09971263452"
+  }) async {
     // Android
     String body = "Please type your inquiry here.";
-    Uri url = Uri.parse("sms:+63 0970 190 0391?body=$body");
+    Uri url = Uri.parse("sms:$number?body=$body");
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
@@ -87,8 +91,10 @@ class HomeController {
     }
   }
 
-  void showGmailApp() async {
-    String email = Uri.encodeComponent("rbhonra@ccc.edu.ph");
+  void showGmailApp({
+    String userEmail = "donalpha.transportservice@gmail.com"
+}) async {
+    String email = Uri.encodeComponent(userEmail);
     String subject = Uri.encodeComponent("DARA - Support Request");
     String body = Uri.encodeComponent("Please type your inquiry here.");
 
@@ -460,7 +466,10 @@ class HomeController {
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  Future<void> showContactBottomDialog(BuildContext context) async {
+  Future<void> showContactBottomDialog(BuildContext context, {
+    String number = "09971263452",
+    String email = "donalpha.transportservices@gmail.coom"
+  }) async {
     return showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -479,32 +488,32 @@ class HomeController {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
-                    showGmailApp();
+                    showGmailApp(userEmail: email);
                   },
                   child: _bottomSheetContactItems(
                       "lib/assets/pictures/bottom_email.png",
                       ProjectStrings.to_bottom_email_title,
-                      ProjectStrings.to_bottom_email_content),
+                      email),
                 ),
                 const SizedBox(height: 15),
                 GestureDetector(
                   onTap: () {
-                    showMessageApp();
+                    showMessageApp(number: number);
                   },
                   child: _bottomSheetContactItems(
                       "lib/assets/pictures/bottom_chat.png",
                       ProjectStrings.to_bottom_message_title,
-                      ProjectStrings.to_bottom_message_content),
+                      number),
                 ),
                 const SizedBox(height: 15),
                 GestureDetector(
                   onTap: () {
-                    makePhoneCall();
+                    makePhoneCall(number: number);
                   },
                   child: _bottomSheetContactItems(
                       "lib/assets/pictures/bottom_call.png",
                       ProjectStrings.to_bottom_call_title,
-                      ProjectStrings.to_bottom_call_content),
+                      number),
                 ),
                 const SizedBox(height: 60),
               ],
@@ -514,7 +523,10 @@ class HomeController {
   }
 
   Widget _bottomSheetContactItems(
-      String imagePath, String contactTitle, String contactContent) {
+    String imagePath,
+    String contactTitle,
+    String contactContent
+  ) {
     return Row(
       children: [
         Image.asset(

@@ -790,19 +790,20 @@ class _ManageReportsState extends State<ManageReports> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Image.asset("lib/assets/pictures/left_arrow.png"),
+                    GestureDetector(
+                      onTap: () {
+                        PersistentData().openDrawer(0);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Image.asset("lib/assets/pictures/menu.png"),
+                      ),
                     ),
                     CustomComponents.displayText(
                       ProjectStrings.manage_reports_appbar,
                       fontWeight: FontWeight.bold,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Image.asset(
-                          "lib/assets/pictures/three_vertical_dots.png"),
-                    ),
+                    CustomComponents.menuButtons(context),
                   ],
                 ),
               ),
@@ -1096,7 +1097,10 @@ class _ManageReportsState extends State<ManageReports> {
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Center(
-                child: Image.asset(imagePath, width: 20),
+                child: Image.asset(
+                    imagePath,
+                    width: imagePath.contains("manage_report_inquiries.png") ? 27 : imagePath.contains("application_list.png") ? 17 : 20
+                ),
               ),
             ),
           ),
