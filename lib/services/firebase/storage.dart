@@ -49,6 +49,41 @@ class Storage {
     }
   }
 
+  // Uploading a selected file as a personal document
+  Future<void> uploadSelectedFileDriver(String filePath, BuildContext context, String? storagePath) async {
+    // Check if the file path is not null or empty
+    if (filePath.isNotEmpty) {
+      File file = File(filePath);
+
+      try {
+        // Extract the file name from the file path
+        String fileName = file.uri.pathSegments.last;
+
+        // Get a reference to Firebase Storage for the target path
+        Reference storageReference = FirebaseStorage.instance
+            .ref()
+            .child("${storagePath ?? "personal_documents_upload"}/${FirebaseAuth.instance.currentUser!.uid}/$fileName");
+
+        // Start the file upload
+        UploadTask uploadTask = storageReference.putFile(file);
+        TaskSnapshot taskSnapshot = await uploadTask;
+
+        // Show success message to the user
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("File uploaded successfully: $fileName")),
+        );
+      } catch (e) {
+        // Handle any errors during the file upload
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error uploading file: $e")),
+        );
+      }
+    } else {
+      debugPrint("Invalid file path. Please select a valid file.");
+    }
+  }
+
+
   Future<void> deleteFile(String filePath) async {
     // Check if the file path is valid
     if (!isValidFilePath(filePath)) {

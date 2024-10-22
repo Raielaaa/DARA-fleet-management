@@ -1,5 +1,4 @@
 import "package:dara_app/controller/singleton/persistent_data.dart";
-import "package:dara_app/view/pages/outsource/application_process/agreement_options_dialog.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
@@ -7,21 +6,20 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import 'package:enhance_stepper/enhance_stepper.dart';
 
-class DriverEducProfInformation extends StatefulWidget {
-  const DriverEducProfInformation({super.key});
+class VehicleInformation extends StatefulWidget {
+  const VehicleInformation({super.key});
 
   @override
-  State<DriverEducProfInformation> createState() => _DriverEducProfInformationState();
+  State<VehicleInformation> createState() => _VehicleInformationState();
 }
 
-class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
+class _VehicleInformationState extends State<VehicleInformation> {
   int _currentStep = 0;
-  final List<bool> _isActiveList = [true, false]; // Step active state
-
-  TextEditingController educationalAttainmentController = TextEditingController();
-  TextEditingController driverLicenseController = TextEditingController();
-  TextEditingController sssNumberController = TextEditingController();
-  TextEditingController tinNumberController = TextEditingController();
+  final List<bool> _isActiveList = [true, false, false, false]; // Step active state
+  TextEditingController modelController = TextEditingController();
+  TextEditingController brandController = TextEditingController();
+  TextEditingController yearController = TextEditingController();
+  TextEditingController plateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +50,8 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                  padding: const EdgeInsets.only(top: 25, bottom: 15),
-                                  child: horizontalIcons()
+                                padding: const EdgeInsets.only(top: 25, bottom: 15),
+                                child: horizontalIcons()
                               ),
 
                               Padding(
@@ -72,6 +70,7 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
                                   fontSize: 10,
                                 ),
                               ),
+                              // Include the applicationStepper here
                               applicationStepper(),
                             ],
                           ),
@@ -93,29 +92,40 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
-          "lib/assets/pictures/oap_profile_selected.png",
+          "lib/assets/pictures/oap_vehicle_selected.png",
           width: MediaQuery.of(context).size.width / 17,
         ),
         const SizedBox(width: 5),
         Container(
           height: 1,
           width: MediaQuery.of(context).size.width / 13,
-          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+          color: Color(int.parse(ProjectColors.rowIconLine.substring(2), radix: 16)),
         ),
         const SizedBox(width: 5),
         Image.asset(
-          "lib/assets/pictures/dap_emergency_contact_selected.png",
+          "lib/assets/pictures/oap_profile_not_selected.png",
           width: MediaQuery.of(context).size.width / 17,
         ),
         const SizedBox(width: 5),
         Container(
           height: 1,
           width: MediaQuery.of(context).size.width / 13,
-          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+          color: Color(int.parse(ProjectColors.rowIconLine.substring(2), radix: 16)),
         ),
         const SizedBox(width: 5),
         Image.asset(
-          "lib/assets/pictures/dap_book_selected.png",
+          "lib/assets/pictures/oap_employment_not_selected.png",
+          width: MediaQuery.of(context).size.width / 20,
+        ),
+        const SizedBox(width: 5),
+        Container(
+          height: 1,
+          width: MediaQuery.of(context).size.width / 13,
+          color: Color(int.parse(ProjectColors.rowIconLine.substring(2), radix: 16)),
+        ),
+        const SizedBox(width: 5),
+        Image.asset(
+          "lib/assets/pictures/oap_business_not_selected.png",
           width: MediaQuery.of(context).size.width / 15,
         ),
         const SizedBox(width: 5),
@@ -134,12 +144,37 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
     );
   }
 
+  // Method to create EnhanceStep
+  EnhanceStep createStep(
+    bool isActive,
+    String title,
+    String contentText,
+    TextEditingController controller
+  ) {
+    return EnhanceStep(
+      isActive: isActive,
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          fontFamily: ProjectStrings.general_font_family,
+        ),
+      ),
+      content: Column(
+        children: [
+          _rowItems(contentText, controller),
+        ],
+      ),
+    );
+  }
+
   Widget applicationStepper() {
     return Theme(
       data: ThemeData(
-          colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
-          )
+        colorScheme: Theme.of(context).colorScheme.copyWith(
+          primary: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+        )
       ),
       child: EnhanceStepper(
         currentStep: _currentStep,
@@ -158,24 +193,24 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
             });
           } else {
             if (
-            educationalAttainmentController.value.text.isEmpty ||
-                driverLicenseController.value.text.isEmpty ||
-                sssNumberController.value.text.isEmpty ||
-                tinNumberController.value.text.isEmpty
+              modelController.value.text.isEmpty ||
+              brandController.value.text.isEmpty ||
+              yearController.value.text.isEmpty ||
+              plateController.value.text.isEmpty
             ) {
               InfoDialog().show(
-                  context: context,
-                  content: ProjectStrings.outsource_dialog_content,
-                  header: ProjectStrings.outsource_dialog_title
+                context: context,
+                content: ProjectStrings.outsource_dialog_content,
+                header: ProjectStrings.outsource_dialog_title
               );
             } else {
-              PersistentData _persistentData = PersistentData();
-              _persistentData.depiEducationalAttainment = educationalAttainmentController.value.text;
-              _persistentData.depiDriverLicenseNumber = driverLicenseController.value.text;
-              _persistentData.depiSSSNumber = sssNumberController.value.text;
-              _persistentData.depiTINNumber = tinNumberController.value.text;
+              PersistentData _persistenData = PersistentData();
+              _persistenData.viCarModel = modelController.value.text;
+              _persistenData.viCarBrand = brandController.value.text;
+              _persistenData.viManufacturingYear = yearController.value.text;
+              _persistenData.viNumber = plateController.value.text;
 
-              Navigator.of(context).pushNamed("driver_ap_supporting_documents");
+              Navigator.of(context).pushNamed("ap_personal_profile");
             }
           }
         },
@@ -232,54 +267,29 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
         steps: <EnhanceStep>[
           createStep(
             _isActiveList[0],
-            ProjectStrings.driver_ep_educational_attainment,
-            [
-              ProjectStrings.driver_ep_educational_attainment
-            ],
-            [
-              educationalAttainmentController
-            ],
+            ProjectStrings.outsource_vi_model,
+            ProjectStrings.outsource_vi_model_content,
+            modelController,
           ),
           createStep(
-              _isActiveList[1],
-              ProjectStrings.driver_ep_government_identification_number,
-              [
-                ProjectStrings.driver_ep_driver_license,
-                ProjectStrings.driver_ep_sss_number,
-                ProjectStrings.driver_ep_tin_number
-              ],
-              [
-                driverLicenseController,
-                sssNumberController,
-                tinNumberController
-              ]
-          )
+            _isActiveList[1],
+            ProjectStrings.outsource_vi_brand,
+            ProjectStrings.outsource_vi_brand_content,
+            brandController,
+          ),
+          createStep(
+            _isActiveList[2],
+            ProjectStrings.outsource_vi_year,
+            ProjectStrings.outsource_vi_year_content,
+            yearController,
+          ),
+          createStep(
+            _isActiveList[3],
+            ProjectStrings.outsource_vi_plate,
+            ProjectStrings.outsource_vi_plate_content,
+            plateController,
+          ),
         ],
-      ),
-    );
-  }
-
-  // Method to create EnhanceStep
-  EnhanceStep createStep(
-      bool isActive,
-      String title,
-      List<String> contentText,
-      List<TextEditingController> controller
-      ) {
-    return EnhanceStep(
-      isActive: isActive,
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          fontFamily: ProjectStrings.general_font_family,
-        ),
-      ),
-      content: Column(
-          children: List.generate(contentText.length, (index) {
-            return _rowItems(contentText[index], controller[index]);
-          })
       ),
     );
   }
@@ -333,7 +343,7 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
             child: Image.asset("lib/assets/pictures/left_arrow.png"),
           ),
           CustomComponents.displayText(
-            ProjectStrings.driver_ep_title,
+            ProjectStrings.outsource_vehicle_information,
             fontWeight: FontWeight.bold,
           ),
           CustomComponents.menuButtons(context),

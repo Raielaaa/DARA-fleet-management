@@ -344,7 +344,7 @@ class _UserListState extends State<UserList> {
                             left: 5,
                           ),
                           child: CustomComponents.displayText(
-                            userStatus,
+                            CustomComponents.capitalizeFirstLetter(userStatus),
                             color: userStatus.toLowerCase() == "verified" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16))
                                   : Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
                             fontWeight: FontWeight.bold,

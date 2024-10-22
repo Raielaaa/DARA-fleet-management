@@ -310,7 +310,6 @@ class _DocumentSubmissionState extends State<DocumentSubmission> {
                   ),
                   const SizedBox(width: 20.0),
                   Expanded(
-                    // Use Expanded only if the parent widget has constraints
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

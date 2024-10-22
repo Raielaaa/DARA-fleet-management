@@ -7,21 +7,29 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import 'package:enhance_stepper/enhance_stepper.dart';
 
-class DriverEducProfInformation extends StatefulWidget {
-  const DriverEducProfInformation({super.key});
+class BusinessInformation extends StatefulWidget {
+  const BusinessInformation({super.key});
 
   @override
-  State<DriverEducProfInformation> createState() => _DriverEducProfInformationState();
+  State<BusinessInformation> createState() => _BusinessInformationState();
 }
 
-class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
+class _BusinessInformationState extends State<BusinessInformation> {
   int _currentStep = 0;
-  final List<bool> _isActiveList = [true, false]; // Step active state
+  final List<bool> _isActiveList = [true, false, false]; // Step active state
 
-  TextEditingController educationalAttainmentController = TextEditingController();
-  TextEditingController driverLicenseController = TextEditingController();
-  TextEditingController sssNumberController = TextEditingController();
-  TextEditingController tinNumberController = TextEditingController();
+  //  business details controllers
+  TextEditingController businessNameController = TextEditingController();
+  TextEditingController completeAddressController = TextEditingController();
+  TextEditingController yearsOfOperationController = TextEditingController();
+
+  //  contact information controllers
+  TextEditingController businessContactNumberController = TextEditingController();
+  TextEditingController businessEmailAddressController = TextEditingController();
+
+  //  role and income controllers
+  TextEditingController positionController = TextEditingController();
+  TextEditingController monthlyIncomeGrossController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +101,17 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
+          "lib/assets/pictures/oap_vehicle_selected.png",
+          width: MediaQuery.of(context).size.width / 17,
+        ),
+        const SizedBox(width: 5),
+        Container(
+          height: 1,
+          width: MediaQuery.of(context).size.width / 13,
+          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+        ),
+        const SizedBox(width: 5),
+        Image.asset(
           "lib/assets/pictures/oap_profile_selected.png",
           width: MediaQuery.of(context).size.width / 17,
         ),
@@ -104,8 +123,8 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
         ),
         const SizedBox(width: 5),
         Image.asset(
-          "lib/assets/pictures/dap_emergency_contact_selected.png",
-          width: MediaQuery.of(context).size.width / 17,
+          "lib/assets/pictures/oap_employment_selected.png",
+          width: MediaQuery.of(context).size.width / 20,
         ),
         const SizedBox(width: 5),
         Container(
@@ -115,7 +134,7 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
         ),
         const SizedBox(width: 5),
         Image.asset(
-          "lib/assets/pictures/dap_book_selected.png",
+          "lib/assets/pictures/oap_business_selected.png",
           width: MediaQuery.of(context).size.width / 15,
         ),
         const SizedBox(width: 5),
@@ -137,9 +156,9 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
   Widget applicationStepper() {
     return Theme(
       data: ThemeData(
-          colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
-          )
+        colorScheme: Theme.of(context).colorScheme.copyWith(
+          primary: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+        )
       ),
       child: EnhanceStepper(
         currentStep: _currentStep,
@@ -158,24 +177,35 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
             });
           } else {
             if (
-            educationalAttainmentController.value.text.isEmpty ||
-                driverLicenseController.value.text.isEmpty ||
-                sssNumberController.value.text.isEmpty ||
-                tinNumberController.value.text.isEmpty
+              businessNameController.value.text.isEmpty ||
+              completeAddressController.value.text.isEmpty ||
+              yearsOfOperationController.value.text.isEmpty ||
+              businessContactNumberController.value.text.isEmpty ||
+              businessEmailAddressController.value.text.isEmpty ||
+              positionController.value.text.isEmpty ||
+              monthlyIncomeGrossController.value.text.isEmpty
             ) {
               InfoDialog().show(
-                  context: context,
-                  content: ProjectStrings.outsource_dialog_content,
-                  header: ProjectStrings.outsource_dialog_title
+                context: context,
+                content: ProjectStrings.outsource_dialog_content,
+                header: ProjectStrings.outsource_dialog_title
               );
             } else {
               PersistentData _persistentData = PersistentData();
-              _persistentData.depiEducationalAttainment = educationalAttainmentController.value.text;
-              _persistentData.depiDriverLicenseNumber = driverLicenseController.value.text;
-              _persistentData.depiSSSNumber = sssNumberController.value.text;
-              _persistentData.depiTINNumber = tinNumberController.value.text;
+              _persistentData.biBusinessName = businessNameController.value.text;
+              _persistentData.biCompleteAddress = completeAddressController.value.text;
+              _persistentData.biYearsOfOperation = yearsOfOperationController.value.text;
+              _persistentData.biBusinessContactNumber = businessContactNumberController.value.text;
+              _persistentData.biBusinessEmailAddress = businessEmailAddressController.value.text;
+              _persistentData.biPosition = positionController.value.text;
+              _persistentData.biMonthlyIncomeGross = monthlyIncomeGrossController.value.text;
 
-              Navigator.of(context).pushNamed("driver_ap_supporting_documents");
+              showDialog(
+                  context: context,
+                  builder: (buildContext) {
+                    return AgreementOptionsDialog(parentContext: context);
+                  }
+              );
             }
           }
         },
@@ -232,28 +262,42 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
         steps: <EnhanceStep>[
           createStep(
             _isActiveList[0],
-            ProjectStrings.driver_ep_educational_attainment,
+            ProjectStrings.outsource_bi_business_details,
             [
-              ProjectStrings.driver_ep_educational_attainment
+              ProjectStrings.outsource_bi_business_name,
+              ProjectStrings.outsource_bi_complete_address,
+              ProjectStrings.outsource_bi_years_of_operation
             ],
             [
-              educationalAttainmentController
+              businessNameController,
+              completeAddressController,
+              yearsOfOperationController
             ],
           ),
           createStep(
-              _isActiveList[1],
-              ProjectStrings.driver_ep_government_identification_number,
-              [
-                ProjectStrings.driver_ep_driver_license,
-                ProjectStrings.driver_ep_sss_number,
-                ProjectStrings.driver_ep_tin_number
-              ],
-              [
-                driverLicenseController,
-                sssNumberController,
-                tinNumberController
-              ]
-          )
+            _isActiveList[1],
+            ProjectStrings.outsource_bi_contact_information,
+            [
+              ProjectStrings.outsource_bi_business_contact_number,
+              ProjectStrings.outsource_bi_business_email_address
+            ],
+            [
+              businessContactNumberController,
+              businessEmailAddressController
+            ]
+          ),
+          createStep(
+            _isActiveList[2],
+            ProjectStrings.outsource_bi_role_and_income,
+            [
+              ProjectStrings.outsource_bi_position,
+              ProjectStrings.outsource_monthly_income_gross,
+            ],
+            [
+              positionController,
+              monthlyIncomeGrossController
+            ],
+          ),
         ],
       ),
     );
@@ -261,11 +305,11 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
 
   // Method to create EnhanceStep
   EnhanceStep createStep(
-      bool isActive,
-      String title,
-      List<String> contentText,
-      List<TextEditingController> controller
-      ) {
+    bool isActive,
+    String title,
+    List<String> contentText,
+    List<TextEditingController> controller
+  ) {
     return EnhanceStep(
       isActive: isActive,
       title: Text(
@@ -277,9 +321,9 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
         ),
       ),
       content: Column(
-          children: List.generate(contentText.length, (index) {
-            return _rowItems(contentText[index], controller[index]);
-          })
+        children: List.generate(contentText.length, (index) {
+          return _rowItems(contentText[index], controller[index]);
+        })
       ),
     );
   }
@@ -333,7 +377,7 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
             child: Image.asset("lib/assets/pictures/left_arrow.png"),
           ),
           CustomComponents.displayText(
-            ProjectStrings.driver_ep_title,
+            ProjectStrings.outsource_bi_appbar_title,
             fontWeight: FontWeight.bold,
           ),
           CustomComponents.menuButtons(context),

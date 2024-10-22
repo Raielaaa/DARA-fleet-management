@@ -186,4 +186,31 @@ class PersistentData {
 
   ////////////////    admin options - user info   ///////////////////////////
   RegisterModel? selectedUser;
+
+
+
+  /////////////     driver application process    //////////////////////////////
+  String dpiFirstName = "";
+  String dpiMiddleName = "";
+  String dpiLastName = "";
+  String dpiBirthday = "";
+  String dpiCivilStatus = "";
+  String dpiReligion = "";
+  String dpiCompleteAddress = "";
+  String dpiMobileNumber = "";
+  String dpiEmailAddress = "";
+  String dpiFatherName = "";
+  String dpiFatherBirthPlace = "";
+  String dpiMotherName = "";
+  String dpiMotherBirthplace = "";
+  String dpiHeight = "";
+  String dpiWeight = "";
+  String decNameContactPerson = "";
+  String decRelationshipToApplicant = "";
+  String decContactNumber = "";
+  String decCompleteAddress = "";
+  String depiEducationalAttainment = "";
+  String depiDriverLicenseNumber = "";
+  String depiSSSNumber = "";
+  String depiTINNumber = "";
 }

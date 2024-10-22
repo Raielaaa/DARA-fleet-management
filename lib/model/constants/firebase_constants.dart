@@ -7,6 +7,7 @@ class FirebaseConstants {
   static const String reportImages = "report_images";
   static const String userReportCollection = "data-user-reports";
   static const String outsourceApplication = "dara-outsource-application";
+  static const String driverApplication = "dara-driver-application";
   static const String accountantCollection = "dara-accountant-records";
 
   static String URlforCarImages(String imagePath) {

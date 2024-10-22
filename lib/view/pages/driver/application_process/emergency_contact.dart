@@ -1,3 +1,4 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/view/pages/outsource/application_process/agreement_options_dialog.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
@@ -168,6 +169,12 @@ class _DriverEmergencyContactState extends State<DriverEmergencyContact> {
                   header: ProjectStrings.outsource_dialog_title
               );
             } else {
+              PersistentData _persistentData = PersistentData();
+              _persistentData.decNameContactPerson = contactPersonNameController.value.text;
+              _persistentData.decRelationshipToApplicant = relationshipController.value.text;
+              _persistentData.decContactNumber = contactNumberController.value.text;
+              _persistentData.decCompleteAddress = completeAddressController.value.text;
+
               Navigator.of(context).pushNamed("driver_ap_educ_prof_information");
             }
           }

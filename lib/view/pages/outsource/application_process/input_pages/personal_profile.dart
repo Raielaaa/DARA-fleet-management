@@ -1,5 +1,4 @@
 import "package:dara_app/controller/singleton/persistent_data.dart";
-import "package:dara_app/view/pages/outsource/application_process/agreement_options_dialog.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
@@ -7,20 +6,38 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
 import 'package:enhance_stepper/enhance_stepper.dart';
 
-class DriverEducProfInformation extends StatefulWidget {
-  const DriverEducProfInformation({super.key});
+class PersonalProfile extends StatefulWidget {
+  const PersonalProfile({super.key});
 
   @override
-  State<DriverEducProfInformation> createState() => _DriverEducProfInformationState();
+  State<PersonalProfile> createState() => _PersonalProfileState();
 }
 
-class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
+class _PersonalProfileState extends State<PersonalProfile> {
   int _currentStep = 0;
-  final List<bool> _isActiveList = [true, false]; // Step active state
+  final List<bool> _isActiveList = [true, false, false, false]; // Step active state
 
-  TextEditingController educationalAttainmentController = TextEditingController();
-  TextEditingController driverLicenseController = TextEditingController();
-  TextEditingController sssNumberController = TextEditingController();
+  //  personal data controllers
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController middleNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController birthdayController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController placeOfBirthController = TextEditingController();
+  TextEditingController citizenshipController = TextEditingController();
+  TextEditingController civilStatusController = TextEditingController();
+  TextEditingController motherInfoController = TextEditingController();
+
+  //  contact information controllers
+  TextEditingController contactNumberController = TextEditingController();
+  TextEditingController emailAddressController = TextEditingController();
+
+  //  residence details controllers
+  TextEditingController addressController = TextEditingController();
+  TextEditingController yearsStayedController = TextEditingController();
+  TextEditingController homeStatusController = TextEditingController();
+
+  //  identification controllers
   TextEditingController tinNumberController = TextEditingController();
 
   @override
@@ -52,8 +69,8 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                  padding: const EdgeInsets.only(top: 25, bottom: 15),
-                                  child: horizontalIcons()
+                                padding: const EdgeInsets.only(top: 25, bottom: 15),
+                                child: horizontalIcons()
                               ),
 
                               Padding(
@@ -93,6 +110,17 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
+          "lib/assets/pictures/oap_vehicle_selected.png",
+          width: MediaQuery.of(context).size.width / 17,
+        ),
+        const SizedBox(width: 5),
+        Container(
+          height: 1,
+          width: MediaQuery.of(context).size.width / 13,
+          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+        ),
+        const SizedBox(width: 5),
+        Image.asset(
           "lib/assets/pictures/oap_profile_selected.png",
           width: MediaQuery.of(context).size.width / 17,
         ),
@@ -100,22 +128,22 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
         Container(
           height: 1,
           width: MediaQuery.of(context).size.width / 13,
-          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+          color: Color(int.parse(ProjectColors.rowIconLine.substring(2), radix: 16)),
         ),
         const SizedBox(width: 5),
         Image.asset(
-          "lib/assets/pictures/dap_emergency_contact_selected.png",
-          width: MediaQuery.of(context).size.width / 17,
+          "lib/assets/pictures/oap_employment_not_selected.png",
+          width: MediaQuery.of(context).size.width / 20,
         ),
         const SizedBox(width: 5),
         Container(
           height: 1,
           width: MediaQuery.of(context).size.width / 13,
-          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+          color: Color(int.parse(ProjectColors.rowIconLine.substring(2), radix: 16)),
         ),
         const SizedBox(width: 5),
         Image.asset(
-          "lib/assets/pictures/dap_book_selected.png",
+          "lib/assets/pictures/oap_business_not_selected.png",
           width: MediaQuery.of(context).size.width / 15,
         ),
         const SizedBox(width: 5),
@@ -137,9 +165,9 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
   Widget applicationStepper() {
     return Theme(
       data: ThemeData(
-          colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
-          )
+        colorScheme: Theme.of(context).colorScheme.copyWith(
+          primary: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+        )
       ),
       child: EnhanceStepper(
         currentStep: _currentStep,
@@ -158,24 +186,47 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
             });
           } else {
             if (
-            educationalAttainmentController.value.text.isEmpty ||
-                driverLicenseController.value.text.isEmpty ||
-                sssNumberController.value.text.isEmpty ||
-                tinNumberController.value.text.isEmpty
+              firstNameController.value.text.isEmpty ||
+              middleNameController.value.text.isEmpty ||
+              lastNameController.value.text.isEmpty ||
+              birthdayController.value.text.isEmpty ||
+              ageController.value.text.isEmpty ||
+              placeOfBirthController.value.text.isEmpty ||
+              citizenshipController.value.text.isEmpty ||
+              motherInfoController.value.text.isEmpty ||
+              civilStatusController.value.text.isEmpty ||
+              contactNumberController.value.text.isEmpty ||
+              emailAddressController.value.text.isEmpty ||
+              addressController.value.text.isEmpty ||
+              yearsStayedController.value.text.isEmpty ||
+              homeStatusController.value.text.isEmpty ||
+              tinNumberController.value.text.isEmpty
             ) {
               InfoDialog().show(
-                  context: context,
-                  content: ProjectStrings.outsource_dialog_content,
-                  header: ProjectStrings.outsource_dialog_title
+                context: context,
+                content: ProjectStrings.outsource_dialog_content,
+                header: ProjectStrings.outsource_dialog_title
               );
             } else {
               PersistentData _persistentData = PersistentData();
-              _persistentData.depiEducationalAttainment = educationalAttainmentController.value.text;
-              _persistentData.depiDriverLicenseNumber = driverLicenseController.value.text;
-              _persistentData.depiSSSNumber = sssNumberController.value.text;
-              _persistentData.depiTINNumber = tinNumberController.value.text;
+              _persistentData.ppFirstName = firstNameController.value.text;
+              _persistentData.ppMiddleName = middleNameController.value.text;
+              _persistentData.ppLastName = lastNameController.value.text;
+              _persistentData.ppBirthday = birthdayController.value.text;
+              _persistentData.ppAge = ageController.value.text;
+              _persistentData.ppBirthPlace = placeOfBirthController.value.text;
+              _persistentData.ppCitizenship = citizenshipController.value.text;
+              _persistentData.ppCivilStatus = civilStatusController.value.text;
+              _persistentData.ppMotherName = motherInfoController.value.text;
+              _persistentData.ppContactNumber = contactNumberController.value.text;
+              _persistentData.ppEmailAddress = emailAddressController.value.text;
+              _persistentData.ppAddress = addressController.value.text;
+              _persistentData.ppYearsStayed = yearsStayedController.value.text;
+              _persistentData.ppHouseStatus = homeStatusController.value.text;
+              _persistentData.ppTinNumber = tinNumberController.value.text;
 
-              Navigator.of(context).pushNamed("driver_ap_supporting_documents");
+
+              Navigator.of(context).pushNamed("ap_employment_information");
             }
           }
         },
@@ -232,28 +283,66 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
         steps: <EnhanceStep>[
           createStep(
             _isActiveList[0],
-            ProjectStrings.driver_ep_educational_attainment,
+            ProjectStrings.outsource_pp_personal_data,
             [
-              ProjectStrings.driver_ep_educational_attainment
+              ProjectStrings.outsource_pp_first_name,
+              ProjectStrings.outsource_pp_middle_name,
+              ProjectStrings.outsource_pp_last_name,
+              ProjectStrings.outsource_pp_birthday,
+              ProjectStrings.outsource_pp_age,
+              ProjectStrings.outsource_pp_place_of_birth,
+              ProjectStrings.outsource_pp_citizenship,
+              ProjectStrings.outsource_pp_civil_status,
+              ProjectStrings.outsource_pp_mother_info
             ],
             [
-              educationalAttainmentController
+              firstNameController,
+              middleNameController,
+              lastNameController,
+              birthdayController,
+              ageController,
+              placeOfBirthController,
+              citizenshipController,
+              civilStatusController,
+              motherInfoController
             ],
           ),
           createStep(
-              _isActiveList[1],
-              ProjectStrings.driver_ep_government_identification_number,
-              [
-                ProjectStrings.driver_ep_driver_license,
-                ProjectStrings.driver_ep_sss_number,
-                ProjectStrings.driver_ep_tin_number
-              ],
-              [
-                driverLicenseController,
-                sssNumberController,
-                tinNumberController
-              ]
-          )
+            _isActiveList[1],
+            ProjectStrings.outsource_pp_contact_information,
+            [
+              ProjectStrings.outsource_pp_contact_number,
+              ProjectStrings.outsource_pp_email_address
+            ],
+            [
+              contactNumberController,
+              emailAddressController
+            ]
+          ),
+          createStep(
+            _isActiveList[2],
+            ProjectStrings.outsource_pp_residence_details,
+            [
+              ProjectStrings.outsource_pp_address,
+              ProjectStrings.outsource_pp_years_stayed,
+              ProjectStrings.outsource_pp_house_status
+            ],
+            [
+              addressController,
+              yearsStayedController,
+              homeStatusController
+            ],
+          ),
+          createStep(
+            _isActiveList[3],
+            ProjectStrings.outsource_pp_identification,
+            [
+              ProjectStrings.outsource_pp_tin_number
+            ],
+            [
+              tinNumberController
+            ],
+          ),
         ],
       ),
     );
@@ -261,11 +350,11 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
 
   // Method to create EnhanceStep
   EnhanceStep createStep(
-      bool isActive,
-      String title,
-      List<String> contentText,
-      List<TextEditingController> controller
-      ) {
+    bool isActive,
+    String title,
+    List<String> contentText,
+    List<TextEditingController> controller
+  ) {
     return EnhanceStep(
       isActive: isActive,
       title: Text(
@@ -277,9 +366,9 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
         ),
       ),
       content: Column(
-          children: List.generate(contentText.length, (index) {
-            return _rowItems(contentText[index], controller[index]);
-          })
+        children: List.generate(contentText.length, (index) {
+          return _rowItems(contentText[index], controller[index]);
+        })
       ),
     );
   }
@@ -333,7 +422,7 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
             child: Image.asset("lib/assets/pictures/left_arrow.png"),
           ),
           CustomComponents.displayText(
-            ProjectStrings.driver_ep_title,
+            ProjectStrings.outsource_pp_action_bar,
             fontWeight: FontWeight.bold,
           ),
           CustomComponents.menuButtons(context),

@@ -1,3 +1,4 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/view/pages/outsource/application_process/agreement_options_dialog.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
@@ -190,6 +191,23 @@ class _DriverPersonalInformationState extends State<DriverPersonalInformation> {
                   header: ProjectStrings.outsource_dialog_title
               );
             } else {
+              PersistentData _persistentData = PersistentData();
+              _persistentData.dpiFirstName = firstNameController.value.text;
+              _persistentData.dpiMiddleName = middleNameController.value.text;
+              _persistentData.dpiLastName = lastNameController.value.text;
+              _persistentData.dpiBirthday = birthdayController.value.text;
+              _persistentData.dpiCivilStatus = civilStatusController.value.text;
+              _persistentData.dpiReligion = religionController.value.text;
+              _persistentData.dpiCompleteAddress = completeAddressController.value.text;
+              _persistentData.dpiMobileNumber = mobileNumberController.value.text;
+              _persistentData.dpiEmailAddress = emailAddressController.value.text;
+              _persistentData.dpiFatherName = fatherNameController.value.text;
+              _persistentData.dpiFatherBirthPlace = fatherBirthPlaceController.value.text;
+              _persistentData.dpiMotherName = motherController.value.text;
+              _persistentData.dpiMotherBirthplace = motherBirthPlaceController.value.text;
+              _persistentData.dpiHeight = heightController.value.text;
+              _persistentData.dpiWeight = weightController.value.text;
+
               Navigator.of(context).pushNamed("driver_ap_emergency_contact");
             }
           }
