@@ -825,7 +825,15 @@ class _DocumentSubmissionState extends State<DocumentSubmission> {
                   biPosition: _persistentData.biPosition,
                   biMonthlyIncomeGross: _persistentData.biMonthlyIncomeGross,
                   rentalAgreementOptions: _persistentData.rentalAgreementOptions,
-                  applicationStatus: _persistentData.applicationStatus
+                  applicationStatus: _persistentData.applicationStatus,
+                  userID: _persistentData.userInfo!.id,
+                  userFirstName: _persistentData.userInfo!.firstName,
+                  userLastName: _persistentData.userInfo!.lastName,
+                  userEmail: _persistentData.userInfo!.email,
+                  userDateRegistered: _persistentData.getCurrentFormattedDate(),
+                  userType: _persistentData.userType,
+                  userNumber: _persistentData.userInfo!.number,
+                  ppEducationalAttainment: _persistentData.ppEducationalAttainment
               );
 
               // Add the outsource application info to Firestore

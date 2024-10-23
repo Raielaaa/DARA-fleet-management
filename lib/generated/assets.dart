@@ -13,6 +13,7 @@ class Assets {
   static const String accountantIncome = 'lib/view/pages/accountant/income.dart';
   static const String accountantIncomeDialog = 'lib/view/pages/accountant/income_dialog.dart';
   static const String accountantStatefulDialog = 'lib/view/pages/accountant/stateful_dialog.dart';
+  static const String adminManageApplicationListApplicationList = 'lib/controller/admin_manage/application_list/application_list.dart';
   static const String adminManageInquiriesInquiries = 'lib/controller/admin_manage/inquiries/inquiries.dart';
   static const String applicationListApplicationList = 'lib/view/pages/admin/manage/application_list/application_list.dart';
   static const String applicationProcessAgreementOptionsDialog = 'lib/view/pages/outsource/application_process/agreement_options_dialog.dart';

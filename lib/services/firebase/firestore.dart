@@ -3,7 +3,9 @@ import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/model/account/register_model.dart';
 import 'package:dara_app/model/account/user_role.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
+import 'package:dara_app/model/driver/driver_application.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
+import 'package:dara_app/model/outsource/OutsourceApplication.dart';
 import 'package:dara_app/model/renting_proccess/renting_process.dart';
 import 'package:dara_app/view/shared/info_dialog.dart';
 import 'package:dara_app/view/shared/loading.dart';
@@ -117,6 +119,16 @@ class Firestore {
     QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.registerRoleCollection).get();
     return querySnapshot.docs
         .map((doc) => UserRoleLocal.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
+  }
+
+  Future<List<OutsourceApplication>> getOutsourceApplications() async {
+    QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.outsourceApplication).get();
+    return querySnapshot.docs.map((doc) => OutsourceApplication.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
+  }
+
+  Future<List<DriverApplication>> getDriverApplications() async {
+    QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.driverApplication).get();
+    return querySnapshot.docs.map((doc) => DriverApplication.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
   }
 
   Future<RegisterModel?> getUserInfo(String currentUserUID) async {

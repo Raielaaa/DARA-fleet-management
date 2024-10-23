@@ -127,7 +127,15 @@ class _DriverSupportingDocumentsState extends State<DriverSupportingDocuments> {
                   epiEducationAttainment: _persistentData.depiEducationalAttainment,
                   epiDriverLicense: _persistentData.depiDriverLicenseNumber,
                   epiSSSNumber: _persistentData.depiSSSNumber,
-                  epiTINNumber: _persistentData.depiTINNumber
+                  epiTINNumber: _persistentData.depiTINNumber,
+                  driverApplicationStatus: "pending",
+                  userID: _persistentData.userInfo!.id,
+                  userFirstName: _persistentData.userInfo!.firstName,
+                  userLastName: _persistentData.userInfo!.lastName,
+                  userEmail: _persistentData.userInfo!.email,
+                  userDateRegistered: _persistentData.getCurrentFormattedDate(),
+                  userType: _persistentData.userType,
+                  userNumber: _persistentData.userInfo!.number
               );
 
               // Add the outsource application info to Firestore

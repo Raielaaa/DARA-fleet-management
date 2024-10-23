@@ -26,6 +26,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
   TextEditingController placeOfBirthController = TextEditingController();
   TextEditingController citizenshipController = TextEditingController();
   TextEditingController civilStatusController = TextEditingController();
+  TextEditingController educationalAttainmentController = TextEditingController();
   TextEditingController motherInfoController = TextEditingController();
 
   //  contact information controllers
@@ -217,6 +218,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
               _persistentData.ppBirthPlace = placeOfBirthController.value.text;
               _persistentData.ppCitizenship = citizenshipController.value.text;
               _persistentData.ppCivilStatus = civilStatusController.value.text;
+              _persistentData.ppEducationalAttainment = educationalAttainmentController.value.text;
               _persistentData.ppMotherName = motherInfoController.value.text;
               _persistentData.ppContactNumber = contactNumberController.value.text;
               _persistentData.ppEmailAddress = emailAddressController.value.text;
@@ -290,6 +292,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
               ProjectStrings.outsource_pp_last_name,
               ProjectStrings.outsource_pp_birthday,
               ProjectStrings.outsource_pp_age,
+              "Highest Educational Attainment",
               ProjectStrings.outsource_pp_place_of_birth,
               ProjectStrings.outsource_pp_citizenship,
               ProjectStrings.outsource_pp_civil_status,
@@ -301,6 +304,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
               lastNameController,
               birthdayController,
               ageController,
+              educationalAttainmentController,
               placeOfBirthController,
               citizenshipController,
               civilStatusController,

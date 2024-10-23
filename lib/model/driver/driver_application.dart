@@ -1,4 +1,11 @@
 class DriverApplication {
+  String userType;
+  String userID;
+  String userFirstName;
+  String userLastName;
+  String userEmail;
+  String userDateRegistered;
+  String userNumber;
   String piFirstName;
   String piMiddleName;
   String piLastName;
@@ -22,8 +29,16 @@ class DriverApplication {
   String epiDriverLicense;
   String epiSSSNumber;
   String epiTINNumber;
+  String driverApplicationStatus;
 
   DriverApplication({
+    required this.userType,
+    required this.userID,
+    required this.userFirstName,
+    required this.userLastName,
+    required this.userEmail,
+    required this.userDateRegistered,
+    required this.userNumber,
     required this.piFirstName,
     required this.piMiddleName,
     required this.piLastName,
@@ -47,10 +62,18 @@ class DriverApplication {
     required this.epiDriverLicense,
     required this.epiSSSNumber,
     required this.epiTINNumber,
+    required this.driverApplicationStatus
   });
 
   Map<String, String> getModelData() {
     return {
+      "user_type": userType,
+      "user_id": userID,
+      "user_first_name": userFirstName,
+      "user_last_name": userLastName,
+      "user_email": userEmail,
+      "user_date_registered": userDateRegistered,
+      "user_number": userNumber,
       "pi_first_name": piFirstName,
       "pi_middle_name": piMiddleName,
       "pi_last_name": piLastName,
@@ -74,11 +97,19 @@ class DriverApplication {
       "epi_driver_license": epiDriverLicense,
       "epi_sss_number": epiSSSNumber,
       "epi_tin_number": epiTINNumber,
+      "application_status": driverApplicationStatus
     };
   }
 
   factory DriverApplication.fromFirestore(Map<String, dynamic> data) {
     return DriverApplication(
+      userType: data["user_type"] ?? "",
+      userID: data["user_id"] ?? "",
+      userFirstName: data["user_first_name"] ?? "",
+      userLastName: data["user_last_name"] ?? "",
+      userEmail: data["user_email"] ?? "",
+      userDateRegistered: data["user_date_registered"] ?? "",
+      userNumber: data["user_number"] ?? "",
       piFirstName: data["pi_first_name"] ?? "",
       piMiddleName: data["pi_middle_name"] ?? "",
       piLastName: data["pi_last_name"] ?? "",
@@ -102,6 +133,7 @@ class DriverApplication {
       epiDriverLicense: data["epi_driver_license"] ?? "",
       epiSSSNumber: data["epi_sss_number"] ?? "",
       epiTINNumber: data["epi_tin_number"] ?? "",
+      driverApplicationStatus: data["application_status"] ?? ""
     );
   }
 }

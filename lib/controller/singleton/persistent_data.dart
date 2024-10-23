@@ -1,6 +1,8 @@
 // ignore_for_file: unnecessary_getters_setters
 import 'package:dara_app/model/account/register_model.dart';
+import 'package:dara_app/model/driver/driver_application.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
+import 'package:dara_app/model/outsource/OutsourceApplication.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -165,6 +167,7 @@ class PersistentData {
   String eiPosition = "";
   String eiLengthOfStay = "";
   String eiMonthlySalary = "";
+  String ppEducationalAttainment = "";
   String biBusinessName = "";
   String biCompleteAddress = "";
   String biYearsOfOperation = "";
@@ -213,4 +216,8 @@ class PersistentData {
   String depiDriverLicenseNumber = "";
   String depiSSSNumber = "";
   String depiTINNumber = "";
+
+
+  /////////////////////////   Applications    ////////////////////////////////////////
+  String selectedApplicantUID = "";
 }

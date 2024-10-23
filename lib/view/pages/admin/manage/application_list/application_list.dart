@@ -1,6 +1,12 @@
+import 'package:dara_app/controller/admin_manage/application_list/application_list.dart';
+import 'package:dara_app/controller/singleton/persistent_data.dart';
+import 'package:dara_app/model/outsource/OutsourceApplication.dart';
+import 'package:dara_app/view/shared/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:slide_switcher/slide_switcher.dart';
 
+import '../../../../../model/driver/driver_application.dart';
 import '../../../../shared/colors.dart';
 import '../../../../shared/components.dart';
 import '../../../../shared/strings.dart';
@@ -13,6 +19,112 @@ class ApplicationList extends StatefulWidget {
 }
 
 class _ApplicationListState extends State<ApplicationList> {
+  late List<OutsourceApplication> outsourceApplicationList;
+  late List<DriverApplication> driverApplicationList;
+  final ApplicationListController _applicationListController = ApplicationListController();
+  List<Map<String, String>> listToBeDisplayed = [];
+  List<Map<String, String>> pendingApplications = [];
+  List<Map<String, String>> approvedApplications = [];
+  List<Map<String, String>> declinedApplications = [];
+  int _currentSelectedIndex = 0;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _fetchDriverOutsourceApplicationInfo();
+    });
+  }
+
+  Future<void> refreshPage() async {
+    LoadingDialog().show(context: context, content: "Please wait while we retrieve the applications.");
+    await _fetchDriverOutsourceApplicationInfo();
+    LoadingDialog().dismiss();
+  }
+
+  Future<void> _fetchDriverOutsourceApplicationInfo() async {
+    listToBeDisplayed.clear();
+    pendingApplications.clear();
+    approvedApplications.clear();
+    declinedApplications.clear();
+
+    try {
+      LoadingDialog().show(context: context, content: "Please wait while we retrieve the applications.");
+      List<OutsourceApplication> outsourceApplicationListTemp = await _applicationListController.getOutsourceApplicationList();
+      List<DriverApplication> driverApplicationListTemp = await _applicationListController.getDriverApplicationList();
+      LoadingDialog().dismiss();
+
+      setState(() {
+        outsourceApplicationList = outsourceApplicationListTemp;
+        driverApplicationList = driverApplicationListTemp;
+        _isLoading = false;
+
+        // Populate all the application lists based on status
+        for (var item in outsourceApplicationList) {
+          debugPrint("date: ${item.userDateRegistered}");
+          Map<String, String> applicationData = {
+            "first_name": item.userFirstName,
+            "last_name": item.userLastName,
+            "email": item.userEmail,
+            "number": item.userNumber,
+            "status": item.applicationStatus,
+            "role": item.userType,
+            "id": item.userID,
+            "registered_date": item.userDateRegistered
+          };
+          _categorizeApplication(applicationData);
+        }
+
+        for (var item in driverApplicationList) {
+          debugPrint("date-driver: ${item.userDateRegistered}");
+          Map<String, String> applicationData = {
+            "first_name": item.userFirstName,
+            "last_name": item.userLastName,
+            "email": item.userEmail,
+            "number": item.userNumber,
+            "status": item.driverApplicationStatus,
+            "role": item.userType,
+            "id": item.userID,
+            "registered_date": item.userDateRegistered
+          };
+          _categorizeApplication(applicationData);
+        }
+
+        // Display the correct list based on the current selected index
+        _updateListToBeDisplayed();
+      });
+    } catch (e) {
+      LoadingDialog().dismiss();
+      debugPrint("error@_fetchDriverOutsourceApplicationInfo@application_list.dart");
+    }
+  }
+
+  void _categorizeApplication(Map<String, String> applicationData) {
+    String status = applicationData["status"]!.toLowerCase();
+    if (status == "pending") {
+      pendingApplications.add(applicationData);
+    } else if (status == "approved") {
+      approvedApplications.add(applicationData);
+    } else if (status == "declined") {
+      declinedApplications.add(applicationData);
+    }
+  }
+
+  void _updateListToBeDisplayed() {
+    setState(() {
+      if (_currentSelectedIndex == 0) {
+        listToBeDisplayed = pendingApplications;
+      } else if (_currentSelectedIndex == 1) {
+        listToBeDisplayed = approvedApplications;
+      } else if (_currentSelectedIndex == 2) {
+        listToBeDisplayed = declinedApplications;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +159,7 @@ class _ApplicationListState extends State<ApplicationList> {
               //  switch option
               const SizedBox(height: 15),
               switchOption(),
-              const SizedBox(height: 15),
+              const SizedBox(height: 10),
               _userListItems(),
               const SizedBox(height: 55)
             ],
@@ -58,12 +170,14 @@ class _ApplicationListState extends State<ApplicationList> {
   }
 
   Widget _designPerItem({
+    required String userID,
     required String imagePath,
     required String userName,
     required String userContactNumber,
     required String userEmail,
     required String userStatus,
     required String userType,
+    required String dateRegistered
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -136,7 +250,7 @@ class _ApplicationListState extends State<ApplicationList> {
                               fontSize: 10,
                             ),
                             CustomComponents.displayText(
-                              userEmail,
+                              dateRegistered,
                               fontSize: 10,
                             ),
                           ],
@@ -147,7 +261,9 @@ class _ApplicationListState extends State<ApplicationList> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(userType == "Driver" ? "manage_application_driver" : "manage_application_outsource");
+                      PersistentData().selectedApplicantUID = userID;
+
+                      Navigator.of(context).pushNamed(userType.toLowerCase() == "driver" ? "manage_application_driver" : "manage_application_outsource");
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -177,8 +293,8 @@ class _ApplicationListState extends State<ApplicationList> {
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: userStatus == "Verified" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16))
-                            : userStatus == "Unverified" || userStatus == "Declined" ? Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
+                        color: userStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16))
+                            : userStatus.toLowerCase() == "declined" || userStatus.toLowerCase() == "declined" ? Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
                             : Color(int.parse(ProjectColors.applicationListPendingBackground.substring(2), radix: 16))
                     ),
                     child: Row(
@@ -186,8 +302,8 @@ class _ApplicationListState extends State<ApplicationList> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: Image.asset(
-                            userStatus == "Verified" ? "lib/assets/pictures/rentals_verified.png"
-                                : userStatus == "Unverified" ? "lib/assets/pictures/rentals_denied.png"
+                            userStatus.toLowerCase() == "approved" ? "lib/assets/pictures/rentals_verified.png"
+                                : userStatus.toLowerCase() == "declined" ? "lib/assets/pictures/rentals_denied.png"
                                 : "lib/assets/pictures/pending_blue.png",
                             width: 20,
                             height: 20,
@@ -201,9 +317,9 @@ class _ApplicationListState extends State<ApplicationList> {
                             left: 5,
                           ),
                           child: CustomComponents.displayText(
-                            userStatus,
-                            color: userStatus == "Verified" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16))
-                                : userStatus == "Declined" || userStatus == "Unverified" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16))
+                            CustomComponents.capitalizeFirstLetter(userStatus),
+                            color: userStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16))
+                                : userStatus.toLowerCase() == "declined" || userStatus.toLowerCase() == "unverified" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16))
                                 : Color(int.parse(ProjectColors.applicationListPending.substring(2), radix: 16)),
                             fontWeight: FontWeight.bold,
                             fontSize: 10,
@@ -217,18 +333,18 @@ class _ApplicationListState extends State<ApplicationList> {
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: userType == "Renter" ? Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
-                            : userType == "Driver" ? Color(int.parse(ProjectColors.userListDriverHexBackground.substring(2), radix: 16))
-                            : userType == "Outsource" ? Color(int.parse(ProjectColors.userListOutsourceHexBackground.substring(2), radix: 16))
+                        color: userType.toLowerCase() == "renter" ? Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
+                            : userType.toLowerCase() == "driver" ? Color(int.parse(ProjectColors.userListDriverHexBackground.substring(2), radix: 16))
+                            : userType.toLowerCase() == "outsource" ? Color(int.parse(ProjectColors.userListOutsourceHexBackground.substring(2), radix: 16))
                             : Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
                       child: CustomComponents.displayText(
                         userType,
-                        color: userType == "Renter" ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
-                            : userType == "Driver" ? Color(int.parse(ProjectColors.userListDriverHex.substring(2), radix: 16))
-                            : userType == "Outsource" ? Color(int.parse(ProjectColors.userListOutsourceHex.substring(2), radix: 16))
+                        color: userType.toLowerCase() == "renter" ? Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                            : userType.toLowerCase() == "driver" ? Color(int.parse(ProjectColors.userListDriverHex.substring(2), radix: 16))
+                            : userType.toLowerCase() == "outsource" ? Color(int.parse(ProjectColors.userListOutsourceHex.substring(2), radix: 16))
                             : Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
@@ -244,63 +360,62 @@ class _ApplicationListState extends State<ApplicationList> {
     );
   }
 
-  List<List<String>> items = [
-    [
-      ProjectStrings.admin_user_list_name_1,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_1,
-      ProjectStrings.admin_user_list_verified,
-      ProjectStrings.admin_user_list_outsource
-    ],
-    [
-      ProjectStrings.admin_user_list_name_2,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_2,
-      "Pending",
-      ProjectStrings.admin_user_list_driver
-    ],
-    [
-      ProjectStrings.admin_user_list_name_3,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_3,
-      ProjectStrings.admin_user_list_verified,
-      ProjectStrings.admin_user_list_outsource
-    ],
-    [
-      ProjectStrings.admin_user_list_name_4,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_4,
-      ProjectStrings.admin_user_list_verified,
-      ProjectStrings.admin_user_list_driver
-    ],
-    [
-      ProjectStrings.admin_user_list_name_3,
-      ProjectStrings.admin_user_list_contact_no,
-      ProjectStrings.admin_user_list_email_3,
-      "Pending",
-      ProjectStrings.admin_user_list_outsource
-    ],
-  ];
-
   Widget _userListItems() {
     return Expanded(
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: _designPerItem(
-                imagePath: "lib/assets/pictures/user_info_user.png",
-                userName: items[index][0],
-                userContactNumber:items[index][1],
-                userEmail: items[index][2],
-                userStatus: items[index][3],
-                userType: items[index][4]
+      child: _isLoading ? Padding(
+        padding: const EdgeInsets.only(left: 25.0, right: 25, top: 10),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5)
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              child: Column(
+                children: [
+                  Image.asset(
+                    "lib/assets/pictures/data_not_found.jpg",
+                    width: MediaQuery.of(context).size.width - 200,
+                  ),
+                  const SizedBox(height: 20),
+                  CustomComponents.displayText(
+                      "No records found at the moment. Please try again later.",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10
+                  ),
+                  const SizedBox(height: 10)
+                ],
+              ),
             ),
-          );
+          ),
+        ),
+      ) : RefreshIndicator(
+        onRefresh: () async {
+          refreshPage();
         },
+        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          itemCount: listToBeDisplayed.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: _designPerItem(
+                imagePath: "lib/assets/pictures/user_info_user.png",
+                userName: "${listToBeDisplayed[index]["first_name"]} ${listToBeDisplayed[index]["last_name"]}",
+                userContactNumber: "${listToBeDisplayed[index]["number"]}",
+                userEmail: "${listToBeDisplayed[index]["email"]}",
+                userStatus: "${listToBeDisplayed[index]["status"]}",
+                userType: "${listToBeDisplayed[index]["role"]}",
+                userID: "${listToBeDisplayed[index]["id"]}",
+                dateRegistered: "${listToBeDisplayed[index]["registered_date"]}"
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -315,7 +430,10 @@ class _ApplicationListState extends State<ApplicationList> {
       ],
       containerHeight: 50,
       containerWight: MediaQuery.of(context).size.width - 50,
-      onSelect: (index) {},
+      onSelect: (index) {
+        _currentSelectedIndex = index;
+        _updateListToBeDisplayed();
+      },
       children: [
         CustomComponents.displayText(
           ProjectStrings.application_list_options_pending,
@@ -347,19 +465,20 @@ class _ApplicationListState extends State<ApplicationList> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/left_arrow.png"),
+          GestureDetector(
+            onTap: () {
+              PersistentData().openDrawer(0);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset("lib/assets/pictures/menu.png"),
+            ),
           ),
           CustomComponents.displayText(
             ProjectStrings.application_list_manage_title,
             fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset(
-                "lib/assets/pictures/three_vertical_dots.png"),
-          ),
+          CustomComponents.menuButtons(context),
         ],
       ),
     );

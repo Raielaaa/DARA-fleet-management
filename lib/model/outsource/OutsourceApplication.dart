@@ -1,4 +1,11 @@
 class OutsourceApplication {
+  String userType;
+  String userID;
+  String userFirstName;
+  String userLastName;
+  String userEmail;
+  String userDateRegistered;
+  String userNumber;
   String viCarModel;
   String viCarBrand;
   String viManufacturingYear;
@@ -13,6 +20,7 @@ class OutsourceApplication {
   String ppCivilStatus;
   String ppMotherName;
   String ppContactNumber;
+  String ppEducationalAttainment;
   String ppEmailAddress;
   String ppAddress;
   String ppYearsStayed;
@@ -35,6 +43,13 @@ class OutsourceApplication {
   String applicationStatus;
 
   OutsourceApplication({
+    required this.userType,
+    required this.userID,
+    required this.userFirstName,
+    required this.userLastName,
+    required this.userEmail,
+    required this.userDateRegistered,
+    required this.userNumber,
     required this.viCarModel,
     required this.viCarBrand,
     required this.viManufacturingYear,
@@ -42,6 +57,7 @@ class OutsourceApplication {
     required this.ppFirstName,
     required this.ppMiddleName,
     required this.ppLastName,
+    required this.ppEducationalAttainment,
     required this.ppBirthday,
     required this.ppAge,
     required this.ppBirthPlace,
@@ -73,6 +89,13 @@ class OutsourceApplication {
 
   Map<String, String> getModelData() {
     return {
+      "user_type": userType,
+      "user_id": userID,
+      "user_first_name": userFirstName,
+      "user_last_name": userLastName,
+      "user_email": userEmail,
+      "user_date_registered": userDateRegistered,
+      "user_number": userNumber,
       "vi_car_model": viCarModel,
       "vi_car_brand": viCarBrand,
       "vi_manufacturing_year": viManufacturingYear,
@@ -85,6 +108,7 @@ class OutsourceApplication {
       "pp_birth_place": ppBirthPlace,
       "pp_citizenship": ppCitizenship,
       "pp_civil_status": ppCivilStatus,
+      "pp_educational_attainment": ppEducationalAttainment,
       "pp_mother_name": ppMotherName,
       "pp_contact_number": ppContactNumber,
       "pp_email_address": ppEmailAddress,
@@ -106,12 +130,19 @@ class OutsourceApplication {
       "bi_position": biPosition,
       "bi_monthly_income_gross": biMonthlyIncomeGross,
       "rental_agreement_options": rentalAgreementOptions,
-      "application_status": applicationStatus,
+      "application_status": applicationStatus
     };
   }
 
   factory OutsourceApplication.fromFirestore(Map<String, dynamic> data) {
     return OutsourceApplication(
+      userType: data["user_type"] ?? "",
+      userID: data["user_id"] ?? "",
+      userFirstName: data["user_first_name"] ?? "",
+      userLastName: data["user_last_name"] ?? "",
+      userEmail: data["user_email"] ?? "",
+      userDateRegistered: data["user_date_registered"] ?? "",
+      userNumber: data["user_number"] ?? "",
       viCarModel: data["vi_car_model"] ?? "",
       viCarBrand: data["vi_car_brand"] ?? "",
       viManufacturingYear: data["vi_manufacturing_year"] ?? "",
@@ -125,6 +156,7 @@ class OutsourceApplication {
       ppCitizenship: data["pp_citizenship"] ?? "",
       ppCivilStatus: data["pp_civil_status"] ?? "",
       ppMotherName: data["pp_mother_name"] ?? "",
+      ppEducationalAttainment: data["pp_educational_attainment"] ?? "",
       ppContactNumber: data["pp_contact_number"] ?? "",
       ppEmailAddress: data["pp_email_address"] ?? "",
       ppAddress: data["pp_address"] ?? "",
