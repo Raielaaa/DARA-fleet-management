@@ -35,19 +35,22 @@ class _RegisterState extends State<Register> {
 
   Future<void> _showUserOptionsDialog() async {
     return showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return PopScope(
-            canPop: false,
-            child: Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              backgroundColor: Color(int.parse(
-                ProjectColors.mainColorBackground.substring(2),
-                radix: 16,
-              )),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final isSmallScreen = screenWidth < 600; // Adjust breakpoint if needed
+
+        return PopScope(
+          canPop: false,
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            backgroundColor: Color(
+              int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16),
+            ),
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -62,14 +65,14 @@ class _RegisterState extends State<Register> {
                         ),
                         child: Image.asset(
                           "lib/assets/pictures/header_background_curves.png",
-                          width: MediaQuery.of(context).size.width - 10,
-                          height: 70, // Adjust height as needed
+                          width: screenWidth - 20,
+                          height: 70,
                           fit: BoxFit.cover,
                         ),
                       ),
                       Padding(
-                        padding:
-                            const EdgeInsets.only(right: 15, left: 15, top: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 12),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -80,16 +83,15 @@ class _RegisterState extends State<Register> {
                             ),
                             Image.asset(
                               "lib/assets/pictures/app_logo_circle.png",
-                              width: 80.0,
+                              width: isSmallScreen ? 60.0 : 80.0,
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-
-                  //  main body
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+                  // Main body
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -99,9 +101,11 @@ class _RegisterState extends State<Register> {
                           Navigator.of(context).pop();
                         },
                         child: _userType(
-                            ProjectStrings.user_type_outsource_title,
-                            ProjectStrings.user_type_outsource_content,
-                            "lib/assets/pictures/user_type_outsource.jpg"),
+                          ProjectStrings.user_type_outsource_title,
+                          ProjectStrings.user_type_outsource_content,
+                          "lib/assets/pictures/user_type_outsource.jpg",
+                          isSmallScreen,
+                        ),
                       ),
                       const SizedBox(width: 10),
                       GestureDetector(
@@ -110,9 +114,11 @@ class _RegisterState extends State<Register> {
                           Navigator.of(context).pop();
                         },
                         child: _userType(
-                            ProjectStrings.user_type_driver_title,
-                            ProjectStrings.user_type_driver_content,
-                            "lib/assets/pictures/user_type_driver.jpeg"),
+                          ProjectStrings.user_type_driver_title,
+                          ProjectStrings.user_type_driver_content,
+                          "lib/assets/pictures/user_type_driver.jpeg",
+                          isSmallScreen,
+                        ),
                       ),
                     ],
                   ),
@@ -123,22 +129,25 @@ class _RegisterState extends State<Register> {
                       Navigator.of(context).pop();
                     },
                     child: _userType(
-                        ProjectStrings.user_type_user_title,
-                        ProjectStrings.user_type_user_body,
-                        "lib/assets/pictures/user_type_user.jpg"),
+                      ProjectStrings.user_type_user_title,
+                      ProjectStrings.user_type_user_body,
+                      "lib/assets/pictures/user_type_user.jpg",
+                      isSmallScreen,
+                    ),
                   ),
-
-                  const SizedBox(height: 30)
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
-  Widget _userType(String header, String subHeader, String imagePath) {
+  Widget _userType(String header, String subHeader, String imagePath, bool isSmallScreen) {
     return Container(
-      width: 150,
+      width: isSmallScreen ? 155 : 175,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: Colors.white,
@@ -180,11 +189,12 @@ class _RegisterState extends State<Register> {
               ),
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
         ],
       ),
     );
   }
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = (await showRoundedDatePicker(

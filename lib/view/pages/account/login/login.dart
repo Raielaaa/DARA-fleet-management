@@ -99,18 +99,20 @@ class _LoginMain extends State<LoginMain> {
 
   Future<void> _showUserOptionsDialog() async {
     return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            backgroundColor: Color(int.parse(
-              ProjectColors.mainColorBackground.substring(2),
-              radix: 16,
-            )),
+      context: context,
+      builder: (BuildContext context) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final isSmallScreen = screenWidth < 600; // Adjust breakpoint if needed
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          backgroundColor: Color(
+            int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16),
+          ),
+          child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Top design
@@ -123,14 +125,14 @@ class _LoginMain extends State<LoginMain> {
                       ),
                       child: Image.asset(
                         "lib/assets/pictures/header_background_curves.png",
-                        width: MediaQuery.of(context).size.width - 10,
-                        height: 70, // Adjust height as needed
+                        width: screenWidth - 20,
+                        height: 70,
                         fit: BoxFit.cover,
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(right: 15, left: 15, top: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 12),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -141,140 +143,108 @@ class _LoginMain extends State<LoginMain> {
                           ),
                           Image.asset(
                             "lib/assets/pictures/app_logo_circle.png",
-                            width: 80.0,
+                            width: isSmallScreen ? 60.0 : 80.0,
                           ),
                         ],
                       ),
                     ),
                   ],
                 ),
-
-                //  main body
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    //  admin/manager
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        setState(() {
-                          clickedUserType = "Admin/Manager";
-                          PersistentData().userType = "Admin";
-                        });
-                      },
-                      child: _userType(
-                          ProjectStrings.account_login_main_admin_manager,
-                          "lib/assets/pictures/admin_manager.jpg"),
+                // Grid of user type options
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isSmallScreen ? 8 : 16,
+                  ),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Two columns
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 1 / 0.65, // Adjust the aspect ratio to control height
                     ),
-                    const SizedBox(width: 10),
-                    //  accountant
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        setState(() {
-                          clickedUserType = "Accountant";
-                          PersistentData().userType = "Accountant";
-                        });
-                      },
-                      child: _userType(
-                          ProjectStrings.account_login_main_accountant,
-                          "lib/assets/pictures/accountant.jpg"),
-                    ),
-                  ],
+                    itemCount: 5, // Number of items
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      // List of user types and corresponding image paths
+                      final userTypes = [
+                        {"header": "Admin/Manager", "imagePath": "lib/assets/pictures/admin_manager.jpg", "userType": "Admin"},
+                        {"header": "Accountant", "imagePath": "lib/assets/pictures/accountant.jpg", "userType": "Accountant"},
+                        {"header": "Driver", "imagePath": "lib/assets/pictures/user_type_driver.jpeg", "userType": "Driver"},
+                        {"header": "Outsource", "imagePath": "lib/assets/pictures/user_type_outsource.jpg", "userType": "Outsource"},
+                        {"header": "Renter", "imagePath": "lib/assets/pictures/user_type_user.jpg", "userType": "Renter"},
+                      ];
+
+                      // Get the current user type data
+                      final userTypeData = userTypes[index];
+
+                      return _buildUserTypeOption(
+                        userTypeData["header"]!,
+                        userTypeData["imagePath"]!,
+                        userTypeData["userType"]!,
+                      );
+                    },
+                  ),
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    //  driver
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        setState(() {
-                          clickedUserType = "Driver";
-                          PersistentData().userType = "Driver";
-                        });
-                      },
-                      child: _userType(
-                          ProjectStrings.account_login_main_driver,
-                          "lib/assets/pictures/user_type_driver.jpeg"),
-                    ),
-                    const SizedBox(width: 10),
-                    //  outsource
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        setState(() {
-                          clickedUserType = "Outsource";
-                          PersistentData().userType = "Outsource";
-                        });
-                      },
-                      child: _userType(
-                          ProjectStrings.account_login_main_outsource,
-                          "lib/assets/pictures/user_type_outsource.jpg"),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                //  user
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    setState(() {
-                      clickedUserType = "Renter";
-                      PersistentData().userType = "Renter";
-                    });
-                  },
-                  child: _userType(
-                      "Renter",
-                      "lib/assets/pictures/user_type_user.jpg"),
-                ),
-                const SizedBox(height: 30)
+
+                const SizedBox(height: 20),
               ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
-    Widget _userType(String header, String imagePath) {
-    return Container(
-      width: 150,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(5),
-              topRight: Radius.circular(5),
-            ),
-            child: Image.asset(
-              imagePath,
-              height: 60,
-              width: double.infinity, // Expand image to full width
-              fit: BoxFit.cover, // Cover the entire width of the container
-            ),
-          ),
-          const SizedBox(height: 13),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: CustomComponents.displayText(
-                header,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
+  Widget _buildUserTypeOption(String header, String imagePath, String userType) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pop();
+        setState(() {
+          clickedUserType = header;
+          PersistentData().userType = userType;
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(5),
+                topRight: Radius.circular(5),
+              ),
+              child: Image.asset(
+                imagePath,
+                height: 60,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
-          ),
-          const SizedBox(height: 15),
-        ],
+            const SizedBox(height: 13),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: CustomComponents.displayText(
+                  header,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+          ],
+        ),
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

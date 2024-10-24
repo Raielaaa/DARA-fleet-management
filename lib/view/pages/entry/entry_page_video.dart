@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:video_player/video_player.dart';
+import 'package:flutter/services.dart';
 
 class EntryPage extends StatefulWidget {
   const EntryPage({Key? key});
@@ -27,6 +28,14 @@ class _EntryPageState extends State<EntryPage> {
       setState(() {});
       _controller.play(); // Start playing the video after initialization
     });
+  }
+
+  Future<void> loadImage(String imageUrl) async {
+    try {
+      await precacheImage(AssetImage(imageUrl), context);
+    } catch(e) {
+      debugPrint("Error@loadImage@entry_page_video.dart");
+    }
   }
 
 

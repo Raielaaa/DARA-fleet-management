@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '766376203192',
     projectId: 'dara-renting-app',
     storageBucket: 'dara-renting-app.appspot.com',
-    iosBundleId: 'com.example.daraApp',
+    iosBundleId: 'com.dats.daraApp',
   );
 }

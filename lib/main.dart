@@ -81,9 +81,18 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
-        // Add other providers here if needed
       ],
       child: MaterialApp(
+        // builder: (BuildContext context, Widget? child) {
+        //   return MediaQuery(
+        //     data: MediaQuery.of(context).copyWith(
+        //       devicePixelRatio: 0.5,
+        //       textScaler: const TextScaler.linear(0.8)
+        //     ),
+        //     child: child!
+        //   );
+        // },
+        themeMode: ThemeMode.light,
         debugShowCheckedModeBanner: false,
         home: const DeepLinkHandler(),
         routes: {
