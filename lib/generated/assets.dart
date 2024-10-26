@@ -38,6 +38,8 @@ class Assets {
   static const String assetsPicturesApplicationListPending = 'lib/assets/pictures/application_list_pending.png';
   static const String assetsPicturesApply = 'lib/assets/pictures/apply.png';
   static const String assetsPicturesBackupRestore = 'lib/assets/pictures/backup_restore.png';
+  static const String assetsPicturesBackuprestore = 'lib/assets/pictures/backuprestore.png';
+  static const String assetsPicturesBanner = 'lib/assets/pictures/banner.png';
   static const String assetsPicturesBottomCall = 'lib/assets/pictures/bottom_call.png';
   static const String assetsPicturesBottomChat = 'lib/assets/pictures/bottom_chat.png';
   static const String assetsPicturesBottomEmail = 'lib/assets/pictures/bottom_email.png';
@@ -126,6 +128,7 @@ class Assets {
   static const String assetsPicturesRentalsDenied = 'lib/assets/pictures/rentals_denied.png';
   static const String assetsPicturesRentalsPending = 'lib/assets/pictures/rentals_pending.png';
   static const String assetsPicturesRentalsVerified = 'lib/assets/pictures/rentals_verified.png';
+  static const String assetsPicturesRents = 'lib/assets/pictures/rents.png';
   static const String assetsPicturesRightArrow = 'lib/assets/pictures/right_arrow.png';
   static const String assetsPicturesSaveBookingDetails = 'lib/assets/pictures/save_booking_details.jpg';
   static const String assetsPicturesSaveBookingDetails2 = 'lib/assets/pictures/save_booking_details_2.png';
@@ -160,6 +163,9 @@ class Assets {
   static const String assetsPicturesUserTypeOutsource = 'lib/assets/pictures/user_type_outsource.jpg';
   static const String assetsPicturesUserTypeUser = 'lib/assets/pictures/user_type_user.jpg';
   static const String assetsPicturesVerifyDocuments = 'lib/assets/pictures/verify_documents.png';
+  static const String assetsPicturesView = 'lib/assets/pictures/view.png';
+  static const String backupBackup = 'lib/view/pages/admin/manage/backup/Backup.dart';
+  static const String bannerBanner = 'lib/view/pages/admin/manage/banner/Banner.dart';
   static const String carListCarList = 'lib/view/pages/admin/car_list/car_list_.dart';
   static const String carListCarListController = 'lib/controller/car_list/car_list_controller.dart';
   static const String carListCompleteCarList = 'lib/model/car_list/complete_car_list.dart';
@@ -222,6 +228,8 @@ class Assets {
   static const String picturesApplicationListPending = 'lib/assets/pictures/application_list_pending.png';
   static const String picturesApply = 'lib/assets/pictures/apply.png';
   static const String picturesBackupRestore = 'lib/assets/pictures/backup_restore.png';
+  static const String picturesBackuprestore = 'lib/assets/pictures/backuprestore.png';
+  static const String picturesBanner = 'lib/assets/pictures/banner.png';
   static const String picturesBottomCall = 'lib/assets/pictures/bottom_call.png';
   static const String picturesBottomChat = 'lib/assets/pictures/bottom_chat.png';
   static const String picturesBottomEmail = 'lib/assets/pictures/bottom_email.png';
@@ -310,6 +318,7 @@ class Assets {
   static const String picturesRentalsDenied = 'lib/assets/pictures/rentals_denied.png';
   static const String picturesRentalsPending = 'lib/assets/pictures/rentals_pending.png';
   static const String picturesRentalsVerified = 'lib/assets/pictures/rentals_verified.png';
+  static const String picturesRents = 'lib/assets/pictures/rents.png';
   static const String picturesRightArrow = 'lib/assets/pictures/right_arrow.png';
   static const String picturesSaveBookingDetails = 'lib/assets/pictures/save_booking_details.jpg';
   static const String picturesSaveBookingDetails2 = 'lib/assets/pictures/save_booking_details_2.png';
@@ -344,6 +353,7 @@ class Assets {
   static const String picturesUserTypeOutsource = 'lib/assets/pictures/user_type_outsource.jpg';
   static const String picturesUserTypeUser = 'lib/assets/pictures/user_type_user.jpg';
   static const String picturesVerifyDocuments = 'lib/assets/pictures/verify_documents.png';
+  static const String picturesView = 'lib/assets/pictures/view.png';
   static const String profileProfile = 'lib/view/pages/admin/profile/profile.dart';
   static const String profileProfileController = 'lib/controller/profile/profile_controller.dart';
   static const String profileUploadDocuments = 'lib/view/pages/admin/profile/upload_documents.dart';
@@ -353,6 +363,7 @@ class Assets {
   static const String registerRegisterPhoneNumber = 'lib/view/pages/account/register/register_phone_number.dart';
   static const String registerRegisterSuccessful = 'lib/view/pages/account/register/register_successful.dart';
   static const String registerRegisterVerifyPhone = 'lib/view/pages/account/register/register_verify_phone.dart';
+  static const String rentLogsRentLogs = 'lib/view/pages/admin/manage/rent_logs/rent_logs.dart';
   static const String rentProcessBookingDetails = 'lib/view/pages/admin/rent_process/booking_details.dart';
   static const String rentProcessDeliveryMode = 'lib/view/pages/admin/rent_process/delivery_mode.dart';
   static const String rentProcessDetailsFees = 'lib/view/pages/admin/rent_process/details_fees.dart';
@@ -373,6 +384,7 @@ class Assets {
   static const String sharedStrings = 'lib/view/shared/strings.dart';
   static const String singletonPersistentData = 'lib/controller/singleton/persistent_data.dart';
   static const String statusStatus = 'lib/view/pages/admin/manage/status/status.dart';
+  static const String unitsUnits = 'lib/view/pages/admin/manage/units/Units.dart';
   static const String userListEditUserInfo = 'lib/view/pages/admin/manage/user_list/edit_user_info.dart';
   static const String userListSortFilterDrawer = 'lib/view/pages/admin/manage/user_list/SortFilterDrawer.dart';
   static const String userListUserInfo = 'lib/view/pages/admin/manage/user_list/user_info.dart';

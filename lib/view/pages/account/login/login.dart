@@ -150,11 +150,11 @@ class _LoginMain extends State<LoginMain> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 // Grid of user type options
                 Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: isSmallScreen ? 8 : 16,
+                    horizontal: isSmallScreen ? 11 : 19,
                   ),
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -188,7 +188,7 @@ class _LoginMain extends State<LoginMain> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
               ],
             ),
           ),

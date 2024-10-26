@@ -244,6 +244,10 @@ flutter:
     - lib/assets/pictures/top_option_logout.png
     - lib/assets/pictures/save_booking_details_2.png
     - lib/assets/pictures/save_booking_details.jpg
+    - lib/assets/pictures/rents.png
+    - lib/assets/pictures/view.png
+    - lib/assets/pictures/banner.png
+    - lib/assets/pictures/backuprestore.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png

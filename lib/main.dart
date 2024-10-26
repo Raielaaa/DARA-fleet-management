@@ -1,4 +1,5 @@
 import 'package:dara_app/controller/providers/register_provider.dart';
+import 'package:dara_app/controller/rentals/rent_log.dart';
 import 'package:dara_app/services/maps/map_screen.dart';
 import 'package:dara_app/services/maps/map_screen_weather.dart';
 import 'package:dara_app/view/pages/account/account_opening.dart';
@@ -18,6 +19,7 @@ import 'package:dara_app/view/pages/admin/manage/application_list/application_li
 import 'package:dara_app/view/pages/admin/manage/application_list/driver/application_driver.dart';
 import 'package:dara_app/view/pages/admin/manage/application_list/outsource/application_outsource.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
+import 'package:dara_app/view/pages/admin/manage/rent_logs/rent_logs.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
 import 'package:dara_app/view/pages/admin/manage/status/status.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/edit_user_info.dart';
@@ -155,6 +157,9 @@ class MyApp extends StatelessWidget {
           "manage_application_list": (context) => const ApplicationList(),
           "manage_application_driver": (context) => const ApplicationDriver(),
           "manage_application_outsource": (context) => const ApplicationOutsource(),
+
+          //  Admin option - bottom row
+          "manage_rent_logs": (context) => const RentLogs(),
 
           // Renting process - Booking Details
           "rp_booking_details": (context) => const RPBookingDetails(),
