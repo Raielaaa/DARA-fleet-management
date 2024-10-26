@@ -603,7 +603,6 @@ class _InquiriesState extends State<Inquiries> {
     );
   }
 
-
   Widget actionBar() {
     return Container(
       width: double.infinity,

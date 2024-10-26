@@ -29,6 +29,7 @@ class _UserListState extends State<UserList> {
 
   String _key = '';
   String _value = '';
+  String _searchQuery = '';
 
   void _applySortAndFilter(String key, String value) {
     setState(() {
@@ -58,6 +59,16 @@ class _UserListState extends State<UserList> {
     } else if (_value == "clear") {
       // If 'clear' is selected, show all original data
       filteredList = List.from(originalData);
+    }
+
+    // search filter function
+    if (_searchQuery.isNotEmpty) {
+      filteredList = filteredList.where((item) =>
+      item.firstName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          item.lastName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          item.number.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          item.email.toLowerCase().contains(_searchQuery.toLowerCase())
+      ).toList();
     }
 
     // Update the state with the filtered data
@@ -99,6 +110,14 @@ class _UserListState extends State<UserList> {
       retrievedData = originalData;
       _isLoading = false;
     });
+  }
+
+  void _searchUserList(String query) {
+    setState(() {
+      _searchQuery = query; // Update the search query
+    });
+
+    _updateUserList(); // Update the user list based on the search query
   }
 
   @override
@@ -175,6 +194,7 @@ class _UserListState extends State<UserList> {
             SizedBox(
               width: MediaQuery.of(context).size.width - 170,
               child: TextField(
+                onChanged: _searchUserList,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.zero,
                   hintText: ProjectStrings.admin_user_list_search,
