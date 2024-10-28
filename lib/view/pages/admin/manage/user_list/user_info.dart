@@ -7,12 +7,14 @@ import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:dio/dio.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
 import "package:intl/intl.dart";
 import "package:open_file/open_file.dart";
 import "package:path_provider/path_provider.dart";
+import 'package:cloud_functions/cloud_functions.dart';
 
 import "../../../../../controller/singleton/persistent_data.dart";
 import "../../../../../model/constants/firebase_constants.dart";
@@ -82,6 +84,28 @@ class _UserInfoState extends State<UserInfo> {
     );
   }
 
+  Future<void> deleteUser(String uid) async {
+    if (uid.isEmpty) {
+      debugPrint('UID is empty');
+      return;
+    }
+
+    try {
+      HttpsCallable callable = FirebaseFunctions.instance.httpsCallable('deleteUser');
+      debugPrint("UID to be deleted: $uid");
+      debugPrint("Calling Cloud Function with data: {'uid': $uid}");
+      final response = await callable.call(<String, dynamic>{'uid': uid});
+
+      if (response.data['error'] != null) {
+        debugPrint('Cloud Function error: ${response.data['error']}');
+      } else {
+        debugPrint(response.data['message']);
+      }
+    } catch (e) {
+      debugPrint('Error deleting user: $e');
+    }
+  }
+
   void showConfirmDialog() {
     InfoDialog().showDecoratedTwoOptionsDialog(
       context: context,
@@ -94,6 +118,7 @@ class _UserInfoState extends State<UserInfo> {
               .collection(FirebaseConstants.registerCollection)
               .doc(PersistentData().selectedUser!.id)
               .delete();
+          // await deleteUser(PersistentData().selectedUser!.id);
 
           debugPrint('Document has been successfully removed.');
           Navigator.of(context).pop();

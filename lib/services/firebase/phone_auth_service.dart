@@ -102,7 +102,7 @@ class PhoneAuthService {
     try {
       await Firestore().updateUserDataRegister(
           PersistentData().userUId,
-          PersistentData().selectedRoleOnRegister == "Renter" ? "verified" : "unverified",
+          PersistentData().selectedRoleOnRegister == "Renter" ? "unverified" : "unverified",
           PersistentData().inputtedCellphoneNumber.toString()
       );
       debugPrint("number successfully added to DB");

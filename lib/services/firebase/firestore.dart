@@ -77,6 +77,20 @@ class Firestore {
     }
   }
 
+  Future<bool> checkIfUserRecordsExists(String uid) async {
+    try {
+      // Reference to the document with the specified UID
+      DocumentSnapshot document = await FirebaseFirestore.instance.collection(FirebaseConstants.registerCollection).doc(uid).get();
+
+      // Check if the document exists
+      return document.exists;
+    } catch (e) {
+      // Handle any errors here
+      debugPrint('Error checking document existence: $e');
+      return false;
+    }
+  }
+
   Future<void> updateUserPhoneNumber(String userId, String newPhoneNumber) async {
     debugPrint("userUID: ${PersistentData().uidForPhoneVerification}");
     DocumentReference userDoc = _firestore.collection(FirebaseConstants.registerCollection).doc(FirebaseAuth.instance.currentUser?.uid);

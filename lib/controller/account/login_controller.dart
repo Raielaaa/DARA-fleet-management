@@ -141,27 +141,25 @@ class LoginController {
     _loadingDialog.show(context: context, content: "Please wait while we verify your account credentials.");
 
     List<UserRoleLocal> _userRoleLocal = await Firestore().getUserRoleInfo();
+    bool userFound = false;
 
-    for (int i = 0; i <= _userRoleLocal.length - 1; i++) {
+    for (int i = 0; i < _userRoleLocal.length; i++) {
       if (_userRoleLocal[i].email == email && _userRoleLocal[i].chosenRole == PersistentData().userType) {
-        debugPrint("Renter debug - email1: ${_userRoleLocal[i].email}");
-        debugPrint("Renter debug - email2: $email");
-        debugPrint("Renter debug - chosenRole1: ${_userRoleLocal[i].chosenRole}");
-        debugPrint("Renter debug - chosenRole2: ${PersistentData().userType}");
-
+        userFound = true;
+        debugPrint("check");
         await Auth().signInWithEmailAndPassword(email: email, password: password, context: context);
-        _loadingDialog.dismiss();
         break;
-      } else {
-        _loadingDialog.dismiss();
-        InfoDialog().show(
-            context: context,
-            content: "An account with the selected role does not exist. Please ensure you selected the correct role during registration.",
-            header: "Warning"
-        );
-        debugPrint("role error count");
       }
     }
+
     _loadingDialog.dismiss();
+
+    if (!userFound) {
+      InfoDialog().show(
+          context: context,
+          content: "An account with the selected role does not exist. Please ensure you selected the correct role during registration.",
+          header: "Warning"
+      );
+    }
   }
 }

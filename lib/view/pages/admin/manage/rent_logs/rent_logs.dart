@@ -3,8 +3,10 @@ import "package:flutter/scheduler.dart";
 import "package:intl/intl.dart";
 import "package:slide_switcher/slide_switcher.dart";
 
+import "../../../../../controller/rentals/rent_log.dart";
 import "../../../../../controller/singleton/persistent_data.dart";
 import "../../../../../model/account/register_model.dart";
+import "../../../../../model/car_list/complete_car_list.dart";
 import "../../../../../model/renting_proccess/renting_process.dart";
 import "../../../../../services/firebase/firestore.dart";
 import "../../../../shared/colors.dart";
@@ -50,6 +52,446 @@ class _RentLogsState extends State<RentLogs> {
     await _retrieveRentRecords();
   }
 
+  Future<void> _seeCompleteBookingInfo(
+      RentInformation rentInformation,
+      CompleteCarInfo carInformation,
+      RegisterModel renterInformation
+  ) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          backgroundColor: Color(int.parse(
+              ProjectColors.mainColorBackground.substring(2),
+              radix: 16)),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: SingleChildScrollView( // Added to make content scrollable
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Top design
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            topRight: Radius.circular(5),
+                          ),
+                          child: Image.asset(
+                            "lib/assets/pictures/header_background_curves.png",
+                            width: MediaQuery.of(context).size.width - 10,
+                            height: 70, // Adjust height as needed
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 15, left: 15, top: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomComponents.displayText(
+                                  ProjectStrings.dialog_title_1,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12),
+                              Image.asset(
+                                "lib/assets/pictures/app_logo_circle.png",
+                                width: 80.0,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    // Section 1
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 3),
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(int.parse(
+                                            ProjectColors.mainColorBackground
+                                                .substring(2),
+                                            radix: 16)),
+                                        border: Border.all(
+                                            color: Color(int.parse(ProjectColors.lineGray)),
+                                            width: 1)),
+                                    child: Center(
+                                        child: CustomComponents.displayText(
+                                            "1",
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                ),
+                                const SizedBox(width: 20.0),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomComponents.displayText(
+                                        ProjectStrings.dialog_car_info_title,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      const SizedBox(height: 2),
+                                      CustomComponents.displayText(
+                                        ProjectStrings.dialog_car_info,
+                                        color: Color(int.parse(
+                                            ProjectColors.lightGray.substring(2),
+                                            radix: 16)),
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 1,
+                            width: double.infinity,
+                            color: Color(int.parse(
+                                ProjectColors.lineGray.substring(2),
+                                radix: 16)),
+                          ),
+                          // Car model and other information
+                          buildInfoRow(
+                            ProjectStrings.dialog_car_model_title,
+                            carInformation.name,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_transmission_title,
+                            carInformation.transmission,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_capacity_title,
+                            carInformation.capacity,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_fuel_title,
+                            carInformation.fuelVariant,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_fuel_capacity_title,
+                            carInformation.fuel,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_unit_color_title,
+                            carInformation.color,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRow(
+                            ProjectStrings.dialog_engine_title,
+                            carInformation.engine,
+                            ProjectColors.lightGray,
+                          ),
+                          const SizedBox(height: 20)
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    // Section 2
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 3),
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(int.parse(
+                                            ProjectColors.mainColorBackground
+                                                .substring(2),
+                                            radix: 16)),
+                                        border: Border.all(
+                                            color: Color(int.parse(ProjectColors.lineGray)),
+                                            width: 1)),
+                                    child: Center(
+                                        child: CustomComponents.displayText(
+                                            "2",
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                ),
+                                const SizedBox(width: 20.0),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomComponents.displayText(
+                                        ProjectStrings.dialog_title_2,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      const SizedBox(height: 2),
+                                      CustomComponents.displayText(
+                                        ProjectStrings.dialog_title_2_subheader,
+                                        color: Color(int.parse(
+                                            ProjectColors.lightGray.substring(2),
+                                            radix: 16)),
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 1,
+                            width: double.infinity,
+                            color: Color(int.parse(
+                                ProjectColors.lineGray.substring(2),
+                                radix: 16)),
+                          ),
+                          // Rent start date and other details
+                          buildInfoRowSecondPanel(
+                            ProjectStrings.dialog_rent_start_title,
+                            rentInformation.startDateTime,
+                            ProjectColors.lightGray,
+                            topPadding: 15,
+                          ),
+                          buildInfoRowSecondPanel(
+                            ProjectStrings.dialog_rent_end_title,
+                            rentInformation.endDateTime,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            "Pickup or Delivery:",
+                            rentInformation.pickupOrDelivery,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            "Delivery Location:",
+                            rentInformation.deliveryLocation,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            ProjectStrings.dialog_location_title,
+                            rentInformation.rentLocation,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            ProjectStrings.dialog_reserved_title,
+                            rentInformation.reservationFee.contains("500") ? "Yes" : "No",
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            ProjectStrings.dialog_admin_notes_title,
+                            rentInformation.adminNotes,
+                            ProjectColors.lightGray,
+                          ),
+                          const SizedBox(height: 20)
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    //  Section 3
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 3),
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(int.parse(
+                                            ProjectColors.mainColorBackground
+                                                .substring(2),
+                                            radix: 16)),
+                                        border: Border.all(
+                                            color: Color(int.parse(ProjectColors.lineGray)),
+                                            width: 1)),
+                                    child: Center(
+                                        child: CustomComponents.displayText(
+                                            "3",
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                ),
+                                const SizedBox(width: 20.0),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomComponents.displayText(
+                                        "Renter Information",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      const SizedBox(height: 2),
+                                      CustomComponents.displayText(
+                                        "Provides Complete Renter Details",
+                                        color: Color(int.parse(
+                                            ProjectColors.lightGray.substring(2),
+                                            radix: 16)),
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 1,
+                            width: double.infinity,
+                            color: Color(int.parse(
+                                ProjectColors.lineGray.substring(2),
+                                radix: 16)),
+                          ),
+                          // Rent start date and other details
+                          buildInfoRowSecondPanel(
+                            "Full Name:",
+                            "${renterInformation.firstName} ${renterInformation.lastName}",
+                            ProjectColors.lightGray,
+                            topPadding: 15,
+                          ),
+                          buildInfoRowSecondPanel(
+                            "Contact Number:",
+                            renterInformation.number,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            "Email:",
+                            renterInformation.email,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            "Total Spent:",
+                            rentInformation.totalAmount,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            "Birthday:",
+                            renterInformation.birthday,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            "Role:",
+                            renterInformation.role,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
+                            "Date Created:",
+                            renterInformation.dateCreated,
+                            ProjectColors.lightGray,
+                          ),
+                          const SizedBox(height: 20)
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20)
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+  Widget buildInfoRowSecondPanel(String title, String value, String titleColor, {double topPadding = 5}) {
+    return Padding(
+      padding: EdgeInsets.only(right: 15, left: 15, top: topPadding),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Title text
+          Expanded(
+            flex: 1,
+            child: CustomComponents.displayText(
+              title,
+              fontWeight: FontWeight.w500,
+              fontSize: 10,
+              color: Color(int.parse(titleColor.substring(2), radix: 16)),
+            ),
+          ),
+          // Value text, allowing flexibility and wrapping if needed
+          Expanded(
+            flex: 3,
+            child: CustomComponents.displayText(
+              value,
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
+              textAlign: TextAlign.end, // Align the text to the right
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildInfoRow(String title, String value, String titleColor) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 15, left: 15, top: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomComponents.displayText(
+            title,
+            fontWeight: FontWeight.w500,
+            fontSize: 10,
+            color: Color(int.parse(titleColor.substring(2), radix: 16)),
+          ),
+          CustomComponents.displayText(
+            value,
+            fontWeight: FontWeight.bold,
+            fontSize: 10,
+          ),
+        ],
+      ),
+    );
+  }
+
   void _searchUserList(String query) {
     final filteredList = allRents.where((rent) {
       final carName = rent.carName.toLowerCase();
@@ -86,7 +528,7 @@ class _RentLogsState extends State<RentLogs> {
       await _retrieveUserInfo(allRents); // Fetch user info after getting rent records
 
       for (var item in allRents) {
-        if (item.rentStatus.toLowerCase() == "approved" || item.rentStatus.toLowerCase() == "denied") {
+        if (item.rentStatus.toLowerCase() == "approved" || item.rentStatus.toLowerCase() == "denied" || item.rentStatus.toLowerCase() == "declined") {
           if (isDateInPast(item.endDateTime)) {
             setState(() {
               historyRents.add(item);
@@ -97,7 +539,7 @@ class _RentLogsState extends State<RentLogs> {
               approvedRents.add(item);
               _isLoading = false;
             });
-          } else if (item.rentStatus.toLowerCase() == "denied") {
+          } else if (item.rentStatus.toLowerCase() == "denied" || item.rentStatus.toLowerCase() == "declined") {
             setState(() {
               deniedRents.add(item);
               _isLoading = false;
@@ -244,7 +686,9 @@ class _RentLogsState extends State<RentLogs> {
                 renterName: "${currentUser.firstName} ${currentUser.lastName}",
                 remainingDays: "${calculateDateDifference(currentItem.startDateTime, currentItem.endDateTime)}",
                 deliveryOrPickup: CustomComponents.capitalizeFirstLetter(currentItem.pickupOrDelivery),
-                status: "Unpaid",
+                status: CustomComponents.capitalizeFirstLetter(currentItem.paymentStatus),
+                completeRentInfo: currentItem,
+                postApproveStatus: currentItem.postApproveStatus
               ),
             );
           },
@@ -276,7 +720,9 @@ class _RentLogsState extends State<RentLogs> {
     required String renterName,
     required String remainingDays,
     required String deliveryOrPickup,
-    required String status
+    required String status,
+    required RentInformation completeRentInfo,
+    required String postApproveStatus
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -353,6 +799,20 @@ class _RentLogsState extends State<RentLogs> {
                               ),
                             ],
                           ),
+                          completeRentInfo.rentStatus.toLowerCase() ==  "approved" ? Row(
+                            children: [
+                              CustomComponents.displayText(
+                                "Rent status: ",
+                                fontSize: 10,
+                              ),
+                              CustomComponents.displayText(
+                                  CustomComponents.capitalizeFirstLetter(postApproveStatus),
+                                  fontSize: 10,
+                                  color: postApproveStatus.toLowerCase() == "completed" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16)) :
+                                  postApproveStatus.toLowerCase() == "cancelled" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)) : const Color(0xff404040)
+                              ),
+                            ],
+                          ) : const SizedBox()
                         ],
                       ),
                     ),
@@ -367,9 +827,11 @@ class _RentLogsState extends State<RentLogs> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image.asset(
-                          "lib/assets/pictures/see_more.png",
-                          width: 22,
+
+                        Icon(
+                          Icons.edit_note,
+                          size: 25,
+                          color: Color(int.parse("0xff7a7b7e")),
                         ),
                         CustomComponents.displayText(
                           "",
@@ -390,8 +852,8 @@ class _RentLogsState extends State<RentLogs> {
                   // status
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: status.toLowerCase() == "paid" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16)) : Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
+                      borderRadius: BorderRadius.circular(5),
+                      color: status.toLowerCase() == "paid" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16)) : Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
                     ),
                     child: Row(
                       children: [
@@ -422,18 +884,29 @@ class _RentLogsState extends State<RentLogs> {
                   ),
 
                   // User type
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
-                      child: CustomComponents.displayText(
-                        "See more",
-                        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10,
+                  GestureDetector(
+                    onTap: () async {
+                      LoadingDialog().show(context: context, content: "Please wait while retrieve your rent information");
+                      final List<RentInformation> retrievedRentingData = await RentLog().getSelectedRentRecords(startDate: completeRentInfo.startDateTime, endDate: completeRentInfo.endDateTime, location: completeRentInfo.rentLocation);
+                      final CompleteCarInfo selectedCarCompleteInfo = await RentLog().getSelectedCarCompleteInfo(carName: carName);
+                      final RegisterModel? userInfo = await Firestore().getUserInfo(completeRentInfo.renterUID);
+                      LoadingDialog().dismiss();
+
+                      _seeCompleteBookingInfo(retrievedRentingData[0], selectedCarCompleteInfo, userInfo!);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
+                        child: CustomComponents.displayText(
+                          "See more",
+                          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
                       ),
                     ),
                   ),

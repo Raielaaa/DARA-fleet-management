@@ -32,7 +32,6 @@ class Auth {
       required BuildContext context
     }
   ) async {
-    LoadingDialog().show(context: context, content: "Please wait while we verify your crredentials.");
     try {
       UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -41,26 +40,37 @@ class Auth {
 
       User? user = userCredential.user;
       if (user != null) {
-        debugPrint("services-firebase-auth.dart/29 - Successfully logged in as: ${user.email}");
-        LoadingDialog().dismiss();
-
         if (context.mounted) {
-          Navigator.pushNamed(context, "home_main");
+          bool result = await Firestore().checkIfUserRecordsExists(FirebaseAuth.instance.currentUser!.uid);
+          if (result) {
+            LoadingDialog().dismiss();
+            Navigator.pushNamed(context, "home_main");
+          } else {
+            LoadingDialog().dismiss();
+            InfoDialog().show(
+                context: context,
+                content: "Your account has been removed by the administrator. If you believe this action was made in error, please reach out to us for assistance.\n\nContact:\nEmail: donalphaservices@gmail.com\nPhone: 09701900391",
+              header: "Account Deletion Notice"
+            );
+            debugPrint("Showing SnackBar");
+
+          }
         } else {
+          LoadingDialog().dismiss();
           debugPrint("services-firebase-auth.dart/37 - Unmounted context");
         }
       }
     } on FirebaseAuthException catch(e) {
       LoadingDialog().dismiss();
       if (context.mounted) {
-        InfoDialog().show(context: context, content: "An error occured: ${e.message}", header: "Warning");
+        InfoDialog().show(context: context, content: "An error occurred: ${e.message}", header: "Warning");
       } else {
         debugPrint("services-firebase-auth.dart/46 - Unmounted context");
       }
     } catch (e) {
       LoadingDialog().dismiss();
       if (context.mounted) {
-        InfoDialog().show(context: context, content: "An unknown error occured: ${e.toString()}", header: "Warning");
+        InfoDialog().show(context: context, content: "An unknown error occurred: ${e.toString()}", header: "Warning");
       } else {
         debugPrint("services-firebase-auth.dart/60 - Unmounted context");
       }

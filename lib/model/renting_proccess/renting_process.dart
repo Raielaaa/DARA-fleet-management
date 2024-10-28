@@ -23,8 +23,12 @@ class RentInformation {
   String adminNotes;
   String rent_car_UID;
   String carOwner;
+  String paymentStatus;
+  String postApproveStatus;
 
   RentInformation({
+    required this.postApproveStatus,
+    required this.paymentStatus,
     required this.rent_car_UID,
     required this.renterUID,
     required this.renterEmail,
@@ -53,6 +57,8 @@ class RentInformation {
 
   Map<String, String> getModelData() {
     return {
+      "rent_post_approve_status" : postApproveStatus,
+      "rent_payment_status" : paymentStatus,
       "rent_car_UID" : rent_car_UID,
       "rent_carType" : carType,
       "rent_renterUID" : renterUID,
@@ -82,6 +88,8 @@ class RentInformation {
 
   factory RentInformation.fromFirestore(Map<String, dynamic> data) {
     return RentInformation(
+        postApproveStatus: data["rent_post_approve_status"] ?? "",
+        paymentStatus: data["rent_payment_status"] ?? "",
         carType: data["rent_carType"] ?? "",
         rent_car_UID: data["rent_car_UID"] ?? "",
         renterUID: data["rent_renterUID"] ?? "",
