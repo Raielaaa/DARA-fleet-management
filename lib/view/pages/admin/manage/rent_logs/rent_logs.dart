@@ -14,6 +14,7 @@ import "../../../../shared/components.dart";
 import "../../../../shared/info_dialog.dart";
 import "../../../../shared/loading.dart";
 import "../../../../shared/strings.dart";
+import "edit_rental_info.dart";
 
 class RentLogs extends StatefulWidget {
   const RentLogs({super.key});
@@ -529,17 +530,17 @@ class _RentLogsState extends State<RentLogs> {
 
       for (var item in allRents) {
         if (item.rentStatus.toLowerCase() == "approved" || item.rentStatus.toLowerCase() == "denied" || item.rentStatus.toLowerCase() == "declined") {
-          if (isDateInPast(item.endDateTime)) {
+          if (item.postApproveStatus.toLowerCase() == "completed") {
             setState(() {
               historyRents.add(item);
               _isLoading = false;
             });
-          } else if (item.rentStatus.toLowerCase() == "approved") {
+          } else if (item.postApproveStatus.toLowerCase() == "ongoing") {
             setState(() {
               approvedRents.add(item);
               _isLoading = false;
             });
-          } else if (item.rentStatus.toLowerCase() == "denied" || item.rentStatus.toLowerCase() == "declined") {
+          } else if (item.postApproveStatus.toLowerCase() == "cancelled") {
             setState(() {
               deniedRents.add(item);
               _isLoading = false;
@@ -820,8 +821,15 @@ class _RentLogsState extends State<RentLogs> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      // PersistentData().selectedUser = selectedUserInformation;
-                      // Navigator.of(context).pushNamed("manage_user_list_info");
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+                        ),
+                        builder: (BuildContext context) {
+                          return EditRentalInfoBottomSheet(completeRentInfo: completeRentInfo, parentContext: context,);
+                      });
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -919,6 +927,217 @@ class _RentLogsState extends State<RentLogs> {
     );
   }
 
+  // Future showEditBottomSheet(BuildContext parentContext, RentInformation completeRentInfo) {
+  //   // Reset the selected indices to ensure the correct state is reflected every time the bottom sheet is shown
+  //   _currentSelectedIndexPaymentStatus = completeRentInfo.paymentStatus == "paid" ? 0 : 1;
+  //   _currentSelectedIndexRentStatus = completeRentInfo.postApproveStatus == "ongoing" ? 0 : completeRentInfo.postApproveStatus == "completed" ? 1 : 2;
+  //
+  //   selectedItemForEditPaymentStatus = completeRentInfo.paymentStatus;
+  //   selectedItemForEditRentStatus = completeRentInfo.postApproveStatus;
+  //
+  //   return showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+  //     ),
+  //     builder: (BuildContext context) {
+  //       return FractionallySizedBox(
+  //         heightFactor: 0.55,
+  //         widthFactor: 1,
+  //         child: Padding(
+  //           padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
+  //           child: ListView(
+  //             children: [
+  //               UnconstrainedBox(
+  //                 child: Container(
+  //                   width: 50,
+  //                   height: 7,
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.grey,
+  //                     borderRadius: BorderRadius.circular(50),
+  //                   ),
+  //                 ),
+  //               ),
+  //               const SizedBox(height: 30),
+  //               CustomComponents.displayText("Edit Rental Information", fontWeight: FontWeight.bold),
+  //               const SizedBox(height: 5),
+  //               CustomComponents.displayText("Update payment status and rental progress", fontSize: 10),
+  //               const SizedBox(height: 30),
+  //               CustomComponents.displayText("Payment Status", fontWeight: FontWeight.bold, fontSize: 10),
+  //               const SizedBox(height: 10),
+  //               switchOptionPaymentStatus(completeRentInfo), // Call without parameters now
+  //               const SizedBox(height: 15),
+  //               CustomComponents.displayText("Rent Status", fontWeight: FontWeight.bold, fontSize: 10),
+  //               const SizedBox(height: 10),
+  //               switchOptionRentStatus(completeRentInfo), // Call without parameters now
+  //               const SizedBox(height: 50),
+  //               saveCancelButtons(completeRentInfo, parentContext),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+  //
+  // int? _currentSelectedIndexPaymentStatus;
+  // int? _currentSelectedIndexRentStatus;
+  // String selectedItemForEditPaymentStatus = "";
+  // String selectedItemForEditRentStatus = "";
+  //
+  // // Payment Status Switcher
+  // // Payment Status Switcher
+  // Widget switchOptionPaymentStatus(RentInformation completeRentInfo) {
+  //   // Set the initial index based on the completeRentInfo
+  //   _currentSelectedIndexPaymentStatus = completeRentInfo.paymentStatus == "paid" ? 0 : 1;
+  //
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //     children: [
+  //       GestureDetector(
+  //         onTap: () {
+  //           setState(() {
+  //             _currentSelectedIndexPaymentStatus = 0;
+  //             selectedItemForEditPaymentStatus = "paid";
+  //             debugPrint("Payment Status updated to: $selectedItemForEditPaymentStatus");
+  //           });
+  //         },
+  //         child: Container(
+  //           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+  //           decoration: BoxDecoration(
+  //             color: _currentSelectedIndexPaymentStatus == 0 ? Color(int.parse(ProjectColors.mainColorHex)) : Colors.white,
+  //             borderRadius: BorderRadius.circular(7),
+  //             border: Border.all(color: Color(int.parse(ProjectColors.mainColorHex)), width: 2),
+  //           ),
+  //           child: CustomComponents.displayText(
+  //             "Paid",
+  //             color: _currentSelectedIndexPaymentStatus == 0 ? Colors.white : Color(int.parse(ProjectColors.mainColorHex)),
+  //             fontSize: 12,
+  //             fontWeight: FontWeight.w600,
+  //           ),
+  //         ),
+  //       ),
+  //       GestureDetector(
+  //         onTap: () {
+  //           setState(() {
+  //             _currentSelectedIndexPaymentStatus = 1;
+  //             selectedItemForEditPaymentStatus = "unpaid";
+  //             debugPrint("Payment Status updated to: $selectedItemForEditPaymentStatus");
+  //           });
+  //         },
+  //         child: Container(
+  //           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+  //           decoration: BoxDecoration(
+  //             color: _currentSelectedIndexPaymentStatus == 1 ? Color(int.parse(ProjectColors.mainColorHex)) : Colors.white,
+  //             borderRadius: BorderRadius.circular(7),
+  //             border: Border.all(color: Color(int.parse(ProjectColors.mainColorHex)), width: 2),
+  //           ),
+  //           child: CustomComponents.displayText(
+  //             "Unpaid",
+  //             color: _currentSelectedIndexPaymentStatus == 1 ? Colors.white : Color(int.parse(ProjectColors.mainColorHex)),
+  //             fontSize: 12,
+  //             fontWeight: FontWeight.w600,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+  //
+  //
+  // // Rent Status Switcher
+  // Widget switchOptionRentStatus(RentInformation completeRentInfo) {
+  //   if (_currentSelectedIndexRentStatus == null) {
+  //     _currentSelectedIndexRentStatus = completeRentInfo.postApproveStatus == "ongoing" ? 0
+  //         : completeRentInfo.postApproveStatus == "completed" ? 1 : 2;
+  //     selectedItemForEditRentStatus = completeRentInfo.postApproveStatus;
+  //   }
+  //
+  //   return SlideSwitcher(
+  //     indents: 3,
+  //     containerColor: Colors.white,
+  //     containerBorderRadius: 7,
+  //     slidersColors: [
+  //       Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16)),
+  //     ],
+  //     containerHeight: 50,
+  //     containerWight: MediaQuery.of(context).size.width - 50,
+  //     initialIndex: _currentSelectedIndexRentStatus ?? 0,
+  //     onSelect: (index) {
+  //       setState(() {
+  //         _currentSelectedIndexRentStatus = index;
+  //         selectedItemForEditRentStatus = (index == 0) ? "ongoing" : (index == 1) ? "completed" : "cancelled";
+  //       });
+  //     },
+  //     children: [
+  //       CustomComponents.displayText(
+  //         "Ongoing",
+  //         color: Color(int.parse(ProjectColors.mainColorHex)),
+  //         fontSize: 12,
+  //         fontWeight: FontWeight.w600,
+  //       ),
+  //       CustomComponents.displayText(
+  //         "Completed",
+  //         color: Color(int.parse(ProjectColors.mainColorHex)),
+  //         fontSize: 12,
+  //         fontWeight: FontWeight.w600,
+  //       ),
+  //       CustomComponents.displayText(
+  //         "Cancelled",
+  //         color: Color(int.parse(ProjectColors.mainColorHex)),
+  //         fontSize: 12,
+  //         fontWeight: FontWeight.w600,
+  //       ),
+  //     ],
+  //   );
+  // }
+  //
+  //
+  // // Save and Cancel Button
+  // Widget saveCancelButtons(RentInformation completeRentInfo, BuildContext parentContext) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     children: [
+  //       GestureDetector(
+  //         onTap: () {
+  //           InfoDialog().showDecoratedTwoOptionsDialog(
+  //             context: parentContext,
+  //             content: ProjectStrings.edit_user_info_dialog_content,
+  //             header: ProjectStrings.edit_user_info_dialog_header,
+  //             confirmAction: () async {
+  //               await Firestore().updateRentStatusRentLogs(
+  //                 carUID: completeRentInfo.rent_car_UID,
+  //                 estimatedDrivingDistance: completeRentInfo.estimatedDrivingDistance,
+  //                 startDateTime: completeRentInfo.startDateTime,
+  //                 endDateTime: completeRentInfo.endDateTime,
+  //                 newPaymentStatus: selectedItemForEditPaymentStatus,
+  //                 newPostApproveStatus: selectedItemForEditRentStatus
+  //               );
+  //               Navigator.of(parentContext).pop();
+  //             },
+  //           );
+  //         },
+  //         child: Container(
+  //           decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(5),
+  //               color: Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
+  //           ),
+  //           child: Padding(
+  //             padding: const EdgeInsets.only(top: 15, bottom: 15, right: 55, left: 55),
+  //             child: CustomComponents.displayText(
+  //                 "Save",
+  //                 color: Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
+  //                 fontWeight: FontWeight.bold,
+  //                 fontSize: 12
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
   Widget switchOption() {
     return SlideSwitcher(
       indents: 3,
@@ -935,19 +1154,19 @@ class _RentLogsState extends State<RentLogs> {
       },
       children: [
         CustomComponents.displayText(
-          "Approved",
+          "Ongoing",
           color: Color(int.parse(ProjectColors.mainColorHex)),
           fontSize: 12,
           fontWeight: FontWeight.w600,
         ),
         CustomComponents.displayText(
-          "History",
+          "Completed",
           color: Color(int.parse(ProjectColors.mainColorHex)),
           fontSize: 12,
           fontWeight: FontWeight.w600,
         ),
         CustomComponents.displayText(
-          "Denied",
+          "Cancelled",
           color: Color(int.parse(ProjectColors.mainColorHex)),
           fontSize: 12,
           fontWeight: FontWeight.w600,
@@ -955,7 +1174,6 @@ class _RentLogsState extends State<RentLogs> {
       ],
     );
   }
-
 
   Widget _searchAndFilterBar() {
     return Container(

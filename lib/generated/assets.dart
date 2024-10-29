@@ -363,6 +363,7 @@ class Assets {
   static const String registerRegisterPhoneNumber = 'lib/view/pages/account/register/register_phone_number.dart';
   static const String registerRegisterSuccessful = 'lib/view/pages/account/register/register_successful.dart';
   static const String registerRegisterVerifyPhone = 'lib/view/pages/account/register/register_verify_phone.dart';
+  static const String rentLogsEditRentalInfo = 'lib/view/pages/admin/manage/rent_logs/edit_rental_info.dart';
   static const String rentLogsRentLogs = 'lib/view/pages/admin/manage/rent_logs/rent_logs.dart';
   static const String rentProcessBookingDetails = 'lib/view/pages/admin/rent_process/booking_details.dart';
   static const String rentProcessDeliveryMode = 'lib/view/pages/admin/rent_process/delivery_mode.dart';

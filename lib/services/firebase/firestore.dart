@@ -329,6 +329,39 @@ class Firestore {
     }
   }
 
+  Future<void> updateRentStatusRentLogs({
+    required String carUID,
+    required String estimatedDrivingDistance,
+    required String startDateTime,
+    required String endDateTime,
+    required String newPaymentStatus,
+    required String newPostApproveStatus
+  }) async {
+    try {
+      // Query Firestore to find the document based on the provided filters
+      QuerySnapshot querySnapshot = await _firestore
+          .collection(FirebaseConstants.rentRecordsCollection)
+          .where("rent_car_UID", isEqualTo: carUID)
+          .where("rent_estimatedDrivingDistance", isEqualTo: estimatedDrivingDistance)
+          .where("rent_startDateTime", isEqualTo: startDateTime)
+          .where("rent_endDateTime", isEqualTo: endDateTime)
+          .get();
+
+      // If a matching document is found, update its "rent_status" field
+      if (querySnapshot.docs.isNotEmpty) {
+        for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+          await doc.reference.update({"rent_payment_status": newPaymentStatus});
+          await doc.reference.update({"rent_post_approve_status": newPostApproveStatus});
+          debugPrint("Rent status updated for document: ${doc.id}");
+        }
+      } else {
+        debugPrint("No matching rent record found.");
+      }
+    } catch (e) {
+      debugPrint("Error updating rent status: $e");
+    }
+  }
+
   Future<void> updateRentRecordsFromAccountant({
     required RentInformation selectedRentInformation,
     String? newStartDate,

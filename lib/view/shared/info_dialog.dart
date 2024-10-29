@@ -177,18 +177,15 @@ class InfoDialog {
     }
   }
 
-  void showDecoratedTwoOptionsDialog(
-    {
-      required BuildContext context,
-      required String content,
-      String header = "Please wait...",
-      Future<void> Function()? confirmAction
-    }
-  ) {
-    debugPrint("breakpoint - 1");
+  void showDecoratedTwoOptionsDialog({
+    required BuildContext context,
+    required String content,
+    String header = "Please wait...",
+    Future<void> Function()? confirmAction,
+  }) {
     if (!_isShowing) {
-      debugPrint("breakpoint - 2");
       _isShowing = true;
+
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -222,12 +219,12 @@ class InfoDialog {
                   CustomComponents.displayText(
                     header,
                     fontSize: 12,
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
                   ),
                   const SizedBox(height: 3),
                   CustomComponents.displayText(
                     content,
-                    fontSize: 10
+                    fontSize: 10,
                   ),
                   const SizedBox(height: 25),
                   Row(
@@ -240,15 +237,20 @@ class InfoDialog {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Color(int.parse(ProjectColors.confirmActionCancelBackground.substring(2), radix: 16))
+                            color: Color(int.parse(
+                                ProjectColors.confirmActionCancelBackground.substring(2),
+                                radix: 16)),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 40, left: 40),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 40),
                             child: CustomComponents.displayText(
                               ProjectStrings.income_page_confirm_delete_cancel,
-                              color: Color(int.parse(ProjectColors.confirmActionCancelMain.substring(2), radix: 16)),
+                              color: Color(int.parse(
+                                  ProjectColors.confirmActionCancelMain.substring(2),
+                                  radix: 16)),
                               fontWeight: FontWeight.bold,
-                              fontSize: 12
+                              fontSize: 12,
                             ),
                           ),
                         ),
@@ -261,34 +263,39 @@ class InfoDialog {
                             await confirmAction();
                             LoadingDialog().dismiss();
                           }
-                          dismiss(); // Close the dialog
+                          dismiss(); // Ensure dismissal after action completes
                         },
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16))
+                            color: Color(int.parse(
+                                ProjectColors.redButtonBackground.substring(2),
+                                radix: 16)),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 40, left: 40),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 40),
                             child: CustomComponents.displayText(
                               ProjectStrings.income_page_confirm_delete_confirm,
-                              color: Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
+                              color: Color(int.parse(
+                                  ProjectColors.redButtonMain.substring(2),
+                                  radix: 16)),
                               fontWeight: FontWeight.bold,
-                              fontSize: 12
+                              fontSize: 12,
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10)
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
           );
         },
       ).then((_) {
-        _isShowing = false;
+        _isShowing = false; // Reset _isShowing here after dialog closes
         _context = null;
       });
     }
