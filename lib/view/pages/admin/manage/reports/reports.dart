@@ -959,7 +959,7 @@ class _ManageReportsState extends State<ManageReports> {
                               // inquiries
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed("manage_inquiries");
+                                  Navigator.of(context).pushNamed("manage_car_list");
                                 },
                                 child: buildAdminOption(
                                   "lib/assets/pictures/view.png",
