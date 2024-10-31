@@ -365,7 +365,7 @@ class _EditUserInfoState extends State<EditUserInfo> {
         children: [
           Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100)
+              borderRadius: BorderRadius.circular(100)
             ),
             width: 40,
             height: 40,
@@ -419,12 +419,12 @@ class _EditUserInfoState extends State<EditUserInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomComponents.displayText(
-                    ProjectStrings.admin_user_info_name,
+                    "${PersistentData().selectedUser?.firstName} ${PersistentData().selectedUser?.lastName}",
                     fontSize: 12,
                     fontWeight: FontWeight.bold),
                 const SizedBox(height: 2),
                 CustomComponents.displayText(
-                    ProjectStrings.admin_user_info_user_type,
+                    PersistentData().selectedUser!.role,
                     color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
                     fontSize: 10,
                     fontWeight: FontWeight.w500),

@@ -220,4 +220,8 @@ class PersistentData {
 
   /////////////////////////   Applications    ////////////////////////////////////////
   String selectedApplicantUID = "";
+
+
+  ////////////////////////        manage units    /////////////////////////
+  CompleteCarInfo? selectedCarUnitForManageUnit;
 }

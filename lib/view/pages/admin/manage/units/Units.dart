@@ -1,6 +1,10 @@
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:dara_app/model/constants/firebase_constants.dart";
+import "package:dara_app/view/shared/loading.dart";
 import "package:flutter/material.dart";
 import "package:slide_switcher/slide_switcher.dart";
 
+import "../../../../../controller/car_list/car_list_controller.dart";
 import "../../../../../controller/singleton/persistent_data.dart";
 import "../../../../../model/car_list/complete_car_list.dart";
 import "../../../../shared/colors.dart";
@@ -15,10 +19,39 @@ class ManageCarList extends StatefulWidget {
 }
 
 class _ManageCarListState extends State<ManageCarList> {
+  final CarListController _carListController = CarListController();
   TextEditingController _searchController = TextEditingController();
   List<CompleteCarInfo> itemsToBeDisplayed = [];
   List<CompleteCarInfo> sedans = [];
   List<CompleteCarInfo> suvs = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCars();
+  }
+
+  Future<void> fetchCars() async {
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(FirebaseConstants.carInfoCollection).get();
+    List<CompleteCarInfo> cars = querySnapshot.docs
+        .map((doc) => CompleteCarInfo.fromFirestore(doc.data() as Map<String, dynamic>))
+        .toList();
+
+    setState(() {
+      // Sort and categorize cars here
+      cars.sort((a, b) => b.rentCount.compareTo(a.rentCount));
+      sedans = cars.where((car) => car.carType.toLowerCase() == 'sedan').toList();
+      suvs = cars.where((car) => car.carType.toLowerCase() == 'suv').toList();
+      itemsToBeDisplayed = sedans; // Set initial display to sedans
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _refreshPage() async {
+    await fetchCars();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,150 +136,191 @@ class _ManageCarListState extends State<ManageCarList> {
   Widget carList() {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25),
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        itemCount: 3,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
+      child: _isLoading
+          ? Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(7)
+                borderRadius: BorderRadius.circular(5)),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: Column(
+                  children: [
+                    CircularProgressIndicator(
+                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                    ),
+                    const SizedBox(height: 10),
+                    Image.asset(
+                      "lib/assets/pictures/data_not_found.jpg",
+                      width: MediaQuery.of(context).size.width - 200,
+                    ),
+                    const SizedBox(height: 20),
+                    CustomComponents.displayText(
+                        "No records found at the moment. Please try again later.",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10),
+                    const SizedBox(height: 10)
+                  ],
+                ),
               ),
-              child: Column(
-                children: [
-                  //  list item header
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+          ) : RefreshIndicator(
+        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+        onRefresh: () async {
+          _refreshPage();
+        },
+            child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: itemsToBeDisplayed.length,
+                    itemBuilder: (BuildContext context, int index) {
+            CompleteCarInfo currentItem = itemsToBeDisplayed[index];
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(7)
+                ),
+                child: Column(
+                  children: [
+                    //  list item header
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomComponents.displayText(
+                                  currentItem.name,
+                                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14
+                              ),
+                              const SizedBox(height: 3),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  CustomComponents.displayText(
+                                      currentItem.carType.toLowerCase() == "sedan" ? "Sedan - ${
+                                          currentItem.carOwner.toLowerCase() == "dats" ? "Owner Unit" : "Outsource Unit"
+                                      }" : "SUV - ${
+                                          currentItem.carOwner.toLowerCase() == "dats" ? "Owner Unit" : "Outsource Unit"
+                                      }",
+                                      fontSize: 10
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CustomComponents.displayText(
+                                  "PHP ${currentItem.price}",
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold
+                              ),
+                              CustomComponents.displayText(
+                                  " / 24 hrs",
+                                  fontSize: 10
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    const SizedBox(height: 5),
+                    //  main content
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Image.network(
+                            FirebaseConstants.retrieveImage(currentItem.mainPicUrl),
+                            width: 100,
+                          )
+                        ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomComponents.displayText(
-                                "Mitsubishi Mirage G4",
-                                color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14
+                            specificationsItem(
+                              firstItemImage: "lib/assets/pictures/color_icon.png",
+                              firstItemTitle: currentItem.color,
+                              firstItemSubtitle: "Color",
+                              secondItemImage: "lib/assets/pictures/fuel_icon.png",
+                              secondItemTitle: currentItem.fuel,
+                              secondItemSubtitle: "Fuel"
                             ),
-                            const SizedBox(height: 3),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CustomComponents.displayText(
-                                    "Sedan - ",
-                                    fontSize: 10
-                                ),
-                                CustomComponents.displayText(
-                                    "Outsource Unit",
-                                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            CustomComponents.displayText(
-                                "PHP 2000",
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold
+                            const SizedBox(height: 10),
+                            specificationsItem(
+                                firstItemImage: "lib/assets/pictures/capacity_icon.png",
+                                firstItemTitle: "${currentItem.capacity} seats",
+                                firstItemSubtitle: "Capacity",
+                                secondItemImage: "lib/assets/pictures/gear_icon.png",
+                                secondItemTitle: currentItem.transmission,
+                                secondItemSubtitle: "Gear"
                             ),
-                            CustomComponents.displayText(
-                                " / 24 hrs",
-                                fontSize: 10
+                            const SizedBox(height: 10),
+                            specificationsItem(
+                                firstItemImage: "lib/assets/pictures/fuel_variant_icon.png",
+                                firstItemTitle: currentItem.fuelVariant,
+                                firstItemSubtitle: "Fuel Variant",
+                                secondItemImage: "lib/assets/pictures/mileage_icon.png",
+                                secondItemTitle: currentItem.mileage,
+                                secondItemSubtitle: "Mileage"
                             ),
                           ],
                         )
-                      ],
+                      ]
                     ),
-                  ),
-                  const Divider(),
-                  const SizedBox(height: 5),
-                  //  main content
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Image.asset(
-                          "lib/assets/pictures/car_list_placeholder_accent.png",
-                          width: 100,
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          specificationsItem(
-                            firstItemImage: "lib/assets/pictures/color_icon.png",
-                            firstItemTitle: "White",
-                            firstItemSubtitle: "Color",
-                            secondItemImage: "lib/assets/pictures/fuel_icon.png",
-                            secondItemTitle: "34 Liters",
-                            secondItemSubtitle: "Fuel"
-                          ),
-                          const SizedBox(height: 10),
-                          specificationsItem(
-                              firstItemImage: "lib/assets/pictures/capacity_icon.png",
-                              firstItemTitle: "5 seats",
-                              firstItemSubtitle: "Capacity",
-                              secondItemImage: "lib/assets/pictures/gear_icon.png",
-                              secondItemTitle: "Automatic",
-                              secondItemSubtitle: "Gear"
-                          ),
-                          const SizedBox(height: 10),
-                          specificationsItem(
-                              firstItemImage: "lib/assets/pictures/fuel_variant_icon.png",
-                              firstItemTitle: "Gasoline",
-                              firstItemSubtitle: "Fuel Variant",
-                              secondItemImage: "lib/assets/pictures/mileage_icon.png",
-                              secondItemTitle: "15849 Km",
-                              secondItemSubtitle: "Mileage"
-                          ),
-                        ],
-                      )
-                    ]
-                  ),
-                  const Divider(),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 7),
-                      child: Container(
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16)),
-                          borderRadius: BorderRadius.circular(7)
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
-                            child: CustomComponents.displayText(
-                              "View More",
-                              fontWeight: FontWeight.bold,
-                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                              fontSize: 10
+                    const Divider(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 7),
+                        child: GestureDetector(
+                          onTap: () {
+                            PersistentData().selectedCarUnitForManageUnit = currentItem;
+                            Navigator.of(context).pushNamed("manage_view_more");
+                          },
+                          child: Container(
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16)),
+                              borderRadius: BorderRadius.circular(7)
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
+                                child: CustomComponents.displayText(
+                                  "View More",
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                  fontSize: 10
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 7)
-                ],
+                    const SizedBox(height: 7)
+                  ],
+                ),
               ),
-            ),
-          );
-        }
-      ),
+            );
+                    }
+                  ),
+          ),
     );
   }
 
