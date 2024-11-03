@@ -25,7 +25,7 @@ import 'package:dara_app/view/pages/admin/manage/status/status.dart';
 import 'package:dara_app/view/pages/admin/manage/units/add_unit.dart';
 import 'package:dara_app/view/pages/admin/manage/units/units.dart';
 import 'package:dara_app/view/pages/admin/manage/units/edit_unit.dart';
-import 'package:dara_app/view/pages/admin/manage/units/view_mode.dart';
+import 'package:dara_app/view/pages/admin/manage/units/view_more.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/edit_user_info.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/user_info.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/user_list.dart';

@@ -1,4 +1,5 @@
 import "package:cached_network_image/cached_network_image.dart";
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/model/car_list/complete_car_list.dart";
 import "package:dara_app/model/constants/firebase_constants.dart";
 import "package:dio/dio.dart";
@@ -79,6 +80,39 @@ class _ViewMoreState extends State<ViewMore> {
     );
   }
 
+  Future<void> deleteSelectedCarUnit() async {
+    await FirebaseFirestore.instance
+        .collection(FirebaseConstants.carInfoCollection)
+        .doc(carUnitInfo.carUID)
+        .delete();
+    await deleteFilesWithPrefix("car_images", carUnitInfo.carUID);
+  }
+
+  Future<void> deleteFilesWithPrefix(String storagePath, String prefix) async {
+    try {
+      // Reference to the storage path
+      final Reference storageRef = FirebaseStorage.instance.ref(storagePath);
+
+      // List all items in the storage path
+      final ListResult listResult = await storageRef.listAll();
+
+      // Loop through each item and check if the file name starts with the specified prefix
+      for (Reference item in listResult.items) {
+        String fileName = item.name; // Get file name
+
+        if (fileName.startsWith(prefix)) {
+          // Delete the file
+          await item.delete();
+          debugPrint("Deleted file: $fileName");
+        }
+      }
+
+      debugPrint("All files with prefix '$prefix' have been deleted.");
+    } catch (e) {
+      debugPrint("Error deleting files: $e");
+    }
+  }
+
   Widget editDeleteFunction() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -86,23 +120,36 @@ class _ViewMoreState extends State<ViewMore> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)),
-                borderRadius: BorderRadius.circular(7)
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(),
+            child: GestureDetector(
+              onTap: () {
+                InfoDialog().showDecoratedTwoOptionsDialog(
+                    context: context,
+                    content: ProjectStrings.edit_user_info_dialog_content,
+                    header: ProjectStrings.edit_user_info_dialog_header,
+                    confirmAction: () async {
+                      await deleteSelectedCarUnit();
+                      Navigator.of(context).pop();
+                    }
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)),
+                  borderRadius: BorderRadius.circular(7)
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 13),
-                  child: Center(
-                    child: CustomComponents.displayText(
-                      "Delete",
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12
-                    ),
-                  )
+                  padding: const EdgeInsets.only(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 13),
+                    child: Center(
+                      child: CustomComponents.displayText(
+                        "Delete",
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12
+                      ),
+                    )
+                  ),
                 ),
               ),
             ),
