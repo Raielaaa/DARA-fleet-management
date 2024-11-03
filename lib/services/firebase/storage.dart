@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -48,6 +49,46 @@ class Storage {
       debugPrint("Invalid file path. Please select a valid file.");
     }
   }
+  Future<void> uploadNewCarPhotos(String filePath, String docName, int index, BuildContext context, String? storagePath) async {
+    if (filePath.isNotEmpty) {
+      File file = File(filePath);
+
+      try {
+        // Determine the file extension
+        String extension = filePath.split('.').last.toLowerCase();
+
+        // Construct the file name based on the document name and index
+        String fileName;
+        if (index == 0) {
+          fileName = '${docName}_main_pic.$extension';
+        } else {
+          fileName = '${docName}_pic$index.$extension';
+        }
+
+        // Construct the full path in Firebase Storage
+        String fullPath = '$storagePath/$fileName';
+        debugPrint("Filename: $fileName.......fullpath: $fullPath");
+        debugPrint("docName: ${fileName.split("_")[0]}");
+        final DocumentReference documentReference = FirebaseFirestore.instance
+            .collection(FirebaseConstants.carInfoCollection)
+            .doc(fileName.split("_")[0]);
+        await documentReference.update({
+          index == 0 ? "car_main_pic" : "car_pic$index": fullPath
+        });
+
+        // Upload the file
+        await FirebaseStorage.instance.ref(fullPath).putFile(file);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("File $fileName uploaded successfully.")),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error uploading file: $e")),
+        );
+      }
+    }
+  }
+
 
   // Uploading a selected file as a personal document
   Future<void> uploadSelectedFileDriver(String filePath, BuildContext context, String? storagePath) async {

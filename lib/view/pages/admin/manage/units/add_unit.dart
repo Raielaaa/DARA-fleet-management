@@ -6,6 +6,7 @@ import "package:mobkit_dashed_border/mobkit_dashed_border.dart";
 import "../../../../../controller/singleton/persistent_data.dart";
 import "../../../../../model/car_list/complete_car_list.dart";
 import "../../../../../model/constants/firebase_constants.dart";
+import "../../../../../services/firebase/storage.dart";
 import "../../../../shared/colors.dart";
 import "../../../../shared/components.dart";
 import "../../../../shared/info_dialog.dart";
@@ -26,13 +27,16 @@ class _AddUnitState extends State<AddUnit> {
     0: '',
     1: '',
     2: '',
-    3: ''
+    3: '',
+    4: "",
+    5: ""
   };
   List<String> itemsToBeDeletedToDB = [];
   List<String> _originalFilePaths = [];
   List<String> _newListTobeAddedToDB = [];
   List<String> _fileNames = List<String>.filled(6, "No picture selected"); // Display file names
   List<String> _fileIcons = List<String>.filled(6, 'lib/assets/pictures/user_info_upload.png');
+  late Map<String, String?> updateData;
 
   String _getFileIcon(String extension) {
     switch (extension.toLowerCase()) {
@@ -90,15 +94,15 @@ class _AddUnitState extends State<AddUnit> {
           "horsepower": "",
           "engine": "",
           "fuel": "",
-          "fuel_variant": "",
-          "type": "",
-          "transmission": "",
+          "fuel_variant": "gasoline",
+          "type": "sedan",
+          "transmission": "automatic",
           "short_description": "",
           "long_description": "",
           "mileage": "",
           "rent_count": "",
           "earnings": "",
-          "owner": ""
+          "owner": "dats"
         };
 
         carInfo.forEach((key, value) {
@@ -173,12 +177,37 @@ class _AddUnitState extends State<AddUnit> {
   }
 
   Future<void> updateDB() async {
-    // await saveReplacements();
+    String docName = await getNextDocumentName();
     await updatedRecords();
+    await uploadPhotos(docName);
+  }
+
+  List<String> removeDuplicatesString(List<String> originalList) {
+    return originalList.toSet().toList();
+  }
+
+  Future<void> uploadPhotos(String docName) async {
+    Storage _storage = Storage();
+
+    // Delete old files from the database if needed
+    for (var value in removeDuplicatesString(itemsToBeDeletedToDB)) {
+      await _storage.deleteFile(value);
+    }
+
+    // Upload new files using the consistent naming convention
+    for (var i = 0; i < indexStringMap.length; i++) {
+      String filePath = indexStringMap[i] ?? '';
+      await _storage.uploadNewCarPhotos(filePath, docName, i, context, "car_images");
+    }
+  }
+
+  bool isAnyFieldEmpty(Map<String, String?> data) {
+    return data.values.any((value) => value == null || value.isEmpty);
   }
 
   Future<void> updatedRecords() async {
-    final updateData = {
+    String documentID = await getNextDocumentName();
+    updateData = {
       "car_name": carInfo["name"],
       "car_price": carInfo["price"],
       "car_color": carInfo["color"],
@@ -193,10 +222,11 @@ class _AddUnitState extends State<AddUnit> {
       "car_long_description": carInfo["long_description"],
       "car_mileage": "${carInfo["mileage"]} km/L",
       "car_rent_count": carInfo["rent_count"],
-      "car_total_earnings": carInfo["earnings"]
+      "car_total_earnings": carInfo["earnings"],
+      "car_UID": documentID,
+      "car_availability": "available",
+      "car_owner": carInfo["owner"]
     };
-
-    String documentID = await getNextDocumentName();
 
     // Update Firestore records
     await updateMultipleFields(
@@ -248,15 +278,41 @@ class _AddUnitState extends State<AddUnit> {
         const SizedBox(width: 30),
         GestureDetector(
           onTap: () {
-            InfoDialog().showDecoratedTwoOptionsDialog(
-                context: context,
-                content: ProjectStrings.edit_user_info_dialog_content,
-                header: ProjectStrings.edit_user_info_dialog_header,
-                confirmAction: () async {
-                  await updateDB();
-                  Navigator.of(context).pop();
-                }
-            );
+            Map<String, String?> tempData = {
+              "car_name": carInfo["name"],
+              "car_price": carInfo["price"],
+              "car_color": carInfo["color"],
+              "car_capacity": carInfo["capacity"],
+              "car_horse_power": "${carInfo["horsepower"]} hp",
+              "car_engine": carInfo["engine"],
+              "car_fuel": carInfo["fuel"],
+              "car_fuel_variant": carInfo["fuel_variant"],
+              "car_type": carInfo["type"],
+              "car_transmission": carInfo["transmission"],
+              "car_short_description": carInfo["short_description"],
+              "car_long_description": carInfo["long_description"],
+              "car_mileage": "${carInfo["mileage"]} km/L",
+              "car_rent_count": carInfo["rent_count"],
+              "car_total_earnings": carInfo["earnings"]
+            };
+
+            if (_originalFilePaths.where((path) => path.isEmpty).isNotEmpty || isAnyFieldEmpty(tempData)) {
+              InfoDialog().show(
+                  context: context,
+                  content: "Please ensure all fields are completed before proceeding.",
+                  header: "Required Fields Missing"
+              );
+            } else {
+              InfoDialog().showDecoratedTwoOptionsDialog(
+                  context: context,
+                  content: ProjectStrings.edit_user_info_dialog_content,
+                  header: ProjectStrings.edit_user_info_dialog_header,
+                  confirmAction: () async {
+                    await updateDB();
+                    Navigator.of(context).pop();
+                  }
+              );
+            }
           },
           child: Container(
             decoration: BoxDecoration(
@@ -534,7 +590,7 @@ class _AddUnitState extends State<AddUnit> {
               _infoField("Mileage", "mileage"),
               _infoField("Rent Count", "rent_count"),
               _infoField("Earnings", "earnings"),
-              // _infoField("Owner", "owner"),
+              _infoField("Owner", "owner"),
 
               const SizedBox(height: 20)
             ],
@@ -836,6 +892,54 @@ class _AddUnitState extends State<AddUnit> {
             onChanged: (newValue) {
               // Update userInfo with the new value
               carInfo[key] = newValue;
+            },
+            decoration: InputDecoration(
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(int.parse(ProjectColors.lineGray.substring(2), radix: 16)),
+                ),
+              ),
+              contentPadding: const EdgeInsets.only(bottom: 13),
+              isDense: true,
+            ),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 10,
+                fontFamily: ProjectStrings.general_font_family
+            ),
+          ) : key == "owner" ? DropdownButtonFormField<String>(
+            value: carInfo[key]?.toLowerCase() == "dats" ? "dats" : "outsource",
+            items: const [
+              DropdownMenuItem(
+                value: "dats",
+                child: Text(
+                  "dats",
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: Color(0xFF1D1D1D),
+                      fontFamily: ProjectStrings.general_font_family
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: "outsource",
+                child: Text(
+                  "outsource",
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: Color(0xFF1D1D1D),
+                      fontFamily: ProjectStrings.general_font_family
+                  ),
+                ),
+              ),
+            ],
+            onChanged: (newValue) {
+              if (newValue != null) {
+                setState(() {
+                  carInfo[key] = newValue;
+                  controller.text = newValue; // Update the controller
+                });
+              }
             },
             decoration: InputDecoration(
               border: UnderlineInputBorder(
