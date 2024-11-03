@@ -22,6 +22,7 @@ class _ManageCarListState extends State<ManageCarList> {
   final CarListController _carListController = CarListController();
   TextEditingController _searchController = TextEditingController();
   List<CompleteCarInfo> itemsToBeDisplayed = [];
+  List<CompleteCarInfo> allCars = [];
   List<CompleteCarInfo> sedans = [];
   List<CompleteCarInfo> suvs = [];
   bool _isLoading = true;
@@ -30,6 +31,33 @@ class _ManageCarListState extends State<ManageCarList> {
   void initState() {
     super.initState();
     fetchCars();
+
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    String searchQuery = _searchController.text.toLowerCase();
+    setState(() {
+      itemsToBeDisplayed = allCars.where((car) {
+        return car.color.toLowerCase().contains(searchQuery) ||
+            car.fuel.toLowerCase().contains(searchQuery) ||
+            car.capacity.toString().contains(searchQuery) ||
+            car.transmission.toLowerCase().contains(searchQuery) ||
+            car.fuelVariant.toLowerCase().contains(searchQuery) ||
+            car.mileage.toLowerCase().contains(searchQuery) ||
+            car.name.toLowerCase().contains(searchQuery) ||
+            car.carOwner.toLowerCase().contains(searchQuery) ||
+            car.carType.toLowerCase().contains(searchQuery) ||
+            car.price.toString().contains(searchQuery);
+      }).toList();
+    });
   }
 
   Future<void> fetchCars() async {
@@ -44,6 +72,7 @@ class _ManageCarListState extends State<ManageCarList> {
       cars.sort((a, b) => b.rentCount.compareTo(a.rentCount));
       sedans = cars.where((car) => car.carType.toLowerCase() == 'sedan').toList();
       suvs = cars.where((car) => car.carType.toLowerCase() == 'suv').toList();
+      allCars = [...sedans, ...suvs];
       itemsToBeDisplayed = sedans; // Set initial display to sedans
       _isLoading = false;
     });
@@ -87,35 +116,7 @@ class _ManageCarListState extends State<ManageCarList> {
                 ),
               ),
               const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                      borderRadius: BorderRadius.circular(7)
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.add_circle_outline_outlined,
-                          size: 17,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 10),
-                        CustomComponents.displayText(
-                            "Add new unit",
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              addUnitButton(),
               const SizedBox(height: 15),
               switcher(sedans, suvs),
               const SizedBox(height: 15),
@@ -127,6 +128,43 @@ class _ManageCarListState extends State<ManageCarList> {
               Expanded(child: carList()),
               const SizedBox(height: 60)
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget addUnitButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed("manage_add_unit");
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+              borderRadius: BorderRadius.circular(7)
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.add_circle_outline_outlined,
+                  size: 17,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 10),
+                CustomComponents.displayText(
+                    "Add new unit",
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10
+                )
+              ],
+            ),
           ),
         ),
       ),

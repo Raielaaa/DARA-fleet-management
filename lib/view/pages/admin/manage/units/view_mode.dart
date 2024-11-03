@@ -377,6 +377,9 @@ class _ViewMoreState extends State<ViewMore> {
               _infoField("Short Description", carUnitInfo.shortDescription),
               _infoField("Long Description", carUnitInfo.longDescription),
               _infoField("Owner", carUnitInfo.carOwner),
+              _infoField("Mileage", carUnitInfo.mileage),
+              _infoField("Rent Count", carUnitInfo.rentCount),
+              _infoField("Total Earnings", carUnitInfo.totalEarnings),
 
               const SizedBox(height: 20),
               // _attachedDocumentsSection(),

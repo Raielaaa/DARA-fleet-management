@@ -22,7 +22,8 @@ import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
 import 'package:dara_app/view/pages/admin/manage/rent_logs/rent_logs.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
 import 'package:dara_app/view/pages/admin/manage/status/status.dart';
-import 'package:dara_app/view/pages/admin/manage/units/Units.dart';
+import 'package:dara_app/view/pages/admin/manage/units/add_unit.dart';
+import 'package:dara_app/view/pages/admin/manage/units/units.dart';
 import 'package:dara_app/view/pages/admin/manage/units/edit_unit.dart';
 import 'package:dara_app/view/pages/admin/manage/units/view_mode.dart';
 import 'package:dara_app/view/pages/admin/manage/user_list/edit_user_info.dart';
@@ -166,6 +167,7 @@ class MyApp extends StatelessWidget {
           "manage_car_list": (context) => const ManageCarList(),
           "manage_view_more": (context) => const ViewMore(),
           "manage_edit_unit": (context) => const EditUnit(),
+          "manage_add_unit": (context) => const AddUnit(),
 
           // Renting process - Booking Details
           "rp_booking_details": (context) => const RPBookingDetails(),

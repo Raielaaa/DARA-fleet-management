@@ -385,8 +385,9 @@ class Assets {
   static const String sharedStrings = 'lib/view/shared/strings.dart';
   static const String singletonPersistentData = 'lib/controller/singleton/persistent_data.dart';
   static const String statusStatus = 'lib/view/pages/admin/manage/status/status.dart';
+  static const String unitsAddUnit = 'lib/view/pages/admin/manage/units/add_unit.dart';
   static const String unitsEditUnit = 'lib/view/pages/admin/manage/units/edit_unit.dart';
-  static const String unitsUnits = 'lib/view/pages/admin/manage/units/Units.dart';
+  static const String unitsUnits = 'lib/view/pages/admin/manage/units/units.dart';
   static const String unitsViewMode = 'lib/view/pages/admin/manage/units/view_mode.dart';
   static const String userListEditUserInfo = 'lib/view/pages/admin/manage/user_list/edit_user_info.dart';
   static const String userListSortFilterDrawer = 'lib/view/pages/admin/manage/user_list/SortFilterDrawer.dart';

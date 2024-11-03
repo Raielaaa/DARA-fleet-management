@@ -1,59 +1,107 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:file_picker/file_picker.dart";
+import "package:flutter/material.dart";
+import "package:mobkit_dashed_border/mobkit_dashed_border.dart";
 
-import '../../../../../controller/singleton/persistent_data.dart';
-import '../../../../../model/car_list/complete_car_list.dart';
-import '../../../../../model/constants/firebase_constants.dart';
-import '../../../../shared/colors.dart';
-import '../../../../shared/components.dart';
-import '../../../../shared/info_dialog.dart';
-import '../../../../shared/loading.dart';
-import '../../../../shared/strings.dart';
+import "../../../../../controller/singleton/persistent_data.dart";
+import "../../../../../model/car_list/complete_car_list.dart";
+import "../../../../../model/constants/firebase_constants.dart";
+import "../../../../shared/colors.dart";
+import "../../../../shared/components.dart";
+import "../../../../shared/info_dialog.dart";
+import "../../../../shared/strings.dart";
 
-class EditUnit extends StatefulWidget {
-  const EditUnit({super.key});
+class AddUnit extends StatefulWidget {
+  const AddUnit({super.key});
 
   @override
-  State<EditUnit> createState() => _EditUnitState();
+  State<AddUnit> createState() => _AddUnitState();
 }
 
-class _EditUnitState extends State<EditUnit> {
-  Map<String, String> userInfo = {};
+class _AddUnitState extends State<AddUnit> {
+  Map<String, String> carInfo = {};
   Map<String, TextEditingController> controllers = {};
-  CompleteCarInfo carUnitInfo = PersistentData().selectedCarUnitForManageUnit!;
-  Map<String, XFile> _newImages = {};
+  List<int> selectedIndex = [];
+  Map<int, String> indexStringMap = {
+    0: '',
+    1: '',
+    2: '',
+    3: ''
+  };
+  List<String> itemsToBeDeletedToDB = [];
+  List<String> _originalFilePaths = [];
+  List<String> _newListTobeAddedToDB = [];
+  List<String> _fileNames = List<String>.filled(6, "No picture selected"); // Display file names
+  List<String> _fileIcons = List<String>.filled(6, 'lib/assets/pictures/user_info_upload.png');
+
+  String _getFileIcon(String extension) {
+    switch (extension.toLowerCase()) {
+      case 'pdf':
+        return 'lib/assets/pictures/pdf.png';
+      case 'doc':
+      case 'docx':
+        return 'lib/assets/pictures/docx.png';
+      case 'jpg':
+        return 'lib/assets/pictures/jpg.png';
+      case 'jpeg':
+        return 'lib/assets/pictures/jpeg.png';
+      case 'png':
+        return 'lib/assets/pictures/png.png';
+      default:
+        return 'lib/assets/pictures/user_info_upload.png'; // Default icon for unsupported types
+    }
+  }
+
+  String getDocumentTitle(int index) {
+    switch (index) {
+      case 0:
+        return "Transparent BG Picture";
+      case 1:
+        return "Picture 1";
+      case 2:
+        return "Picture 2";
+      case 3:
+        return "Picture 3";
+      case 4:
+        return "Picture 4";
+      case 5:
+        return "Picture 5";
+      default:
+        return "Unknown Document";
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+    while (_originalFilePaths.length < 6) {
+      _originalFilePaths.add("");
+    }
+
     Future.microtask(() {
       setState(() {
-        userInfo = {
-          "name": carUnitInfo.name,
-          "price": carUnitInfo.price,
-          "color": carUnitInfo.color,
-          "capacity": carUnitInfo.capacity,
-          "horsepower": carUnitInfo.horsePower.split(" ")[0],
-          "engine": carUnitInfo.engine,
-          "fuel": carUnitInfo.fuel.split(" ")[0],
-          "fuel_variant": carUnitInfo.fuelVariant,
-          "type": carUnitInfo.carType,
-          "transmission": carUnitInfo.transmission,
-          "short_description": carUnitInfo.shortDescription,
-          "long_description": carUnitInfo.longDescription,
-          "mileage": carUnitInfo.mileage.split(" ")[0],
-          "rent_count": carUnitInfo.rentCount,
-          "earnings": carUnitInfo.totalEarnings,
-          // "owner": carUnitInfo.carOwner,
+        carInfo = {
+          "name": "",
+          "price": "",
+          "color": "",
+          "capacity": "",
+          "horsepower": "",
+          "engine": "",
+          "fuel": "",
+          "fuel_variant": "",
+          "type": "",
+          "transmission": "",
+          "short_description": "",
+          "long_description": "",
+          "mileage": "",
+          "rent_count": "",
+          "earnings": "",
+          "owner": ""
         };
 
-        userInfo.forEach((key, value) {
+        carInfo.forEach((key, value) {
           controllers[key] = TextEditingController(text: value);
         });
       });
@@ -78,9 +126,8 @@ class _EditUnitState extends State<EditUnit> {
                     _headerSection(),
                     const SizedBox(height: 20),
                     _renterInfoContainer(context),
-                    // _bottomSection(),
                     const SizedBox(height: 15),
-                    carPhotos(context),
+                    employedPanel(),
                     const SizedBox(height: 15),
                     confirmCancelButtons(),
                     const SizedBox(height: 80)
@@ -94,34 +141,67 @@ class _EditUnitState extends State<EditUnit> {
     );
   }
 
+  Future<String> getNextDocumentName() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    // Replace 'your_collection' with the actual collection name where documents are stored
+    QuerySnapshot querySnapshot = await firestore.collection(FirebaseConstants.carInfoCollection).get();
+
+    List<String> documentNames = [];
+
+    // Extract document names
+    for (var doc in querySnapshot.docs) {
+      String docName = doc.id; // Assuming document ID is the name you want
+      if (docName.startsWith('C')) {
+        documentNames.add(docName);
+      }
+    }
+
+    // Find the maximum number
+    int maxNumber = 0;
+
+    for (String name in documentNames) {
+      int number = int.parse(name.substring(1));
+      if (number > maxNumber) {
+        maxNumber = number;
+      }
+    }
+
+    // Increment and format the new name
+    maxNumber++;
+    return 'C${maxNumber.toString().padLeft(3, '0')}'; // Returns C011, C012, etc.
+  }
+
   Future<void> updateDB() async {
-    await saveReplacements();
+    // await saveReplacements();
     await updatedRecords();
   }
 
   Future<void> updatedRecords() async {
     final updateData = {
-      "car_name": userInfo["name"],
-      "car_price": userInfo["price"],
-      "car_color": userInfo["color"],
-      "car_capacity": userInfo["capacity"],
-      "car_horse_power": "${userInfo["horsepower"]} hp",
-      "car_engine": userInfo["engine"],
-      "car_fuel": userInfo["fuel"],
-      "car_fuel_variant": userInfo["fuel_variant"],
-      "car_type": userInfo["type"],
-      "car_transmission": userInfo["transmission"],
-      "car_short_description": userInfo["short_description"],
-      "car_long_description": userInfo["long_description"],
-      "car_mileage": "${userInfo["mileage"]} km/L",
-      "car_rent_count": userInfo["rent_count"],
-      "car_total_earnings": userInfo["earnings"]
+      "car_name": carInfo["name"],
+      "car_price": carInfo["price"],
+      "car_color": carInfo["color"],
+      "car_capacity": carInfo["capacity"],
+      "car_horse_power": "${carInfo["horsepower"]} hp",
+      "car_engine": carInfo["engine"],
+      "car_fuel": carInfo["fuel"],
+      "car_fuel_variant": carInfo["fuel_variant"],
+      "car_type": carInfo["type"],
+      "car_transmission": carInfo["transmission"],
+      "car_short_description": carInfo["short_description"],
+      "car_long_description": carInfo["long_description"],
+      "car_mileage": "${carInfo["mileage"]} km/L",
+      "car_rent_count": carInfo["rent_count"],
+      "car_total_earnings": carInfo["earnings"]
     };
+
+    String documentID = await getNextDocumentName();
 
     // Update Firestore records
     await updateMultipleFields(
       collectionPath: FirebaseConstants.carInfoCollection,
-      documentID: carUnitInfo.mainPicUrl.split("/")[1].split("_")[0],
+      documentID: documentID,
       updateData: updateData,
     );
   }
@@ -135,245 +215,9 @@ class _EditUnitState extends State<EditUnit> {
       await FirebaseFirestore.instance
           .collection(collectionPath)
           .doc(documentID)
-          .update(updateData);
+          .set(updateData);
     } catch(e) {
       debugPrint("An error occurred: $e");
-    }
-  }
-
-  Widget _carInfoRow() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, top: 10),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 3),
-            child: Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(int.parse(
-                    ProjectColors.mainColorBackground.substring(2), radix: 16)),
-                border: Border.all(
-                    color: Color(int.parse(ProjectColors.lineGray)), width: 1),
-              ),
-              child: Center(
-                child: CustomComponents.displayText(
-                    "2",
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomComponents.displayText(
-                    "Vehicle Photos",
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
-                const SizedBox(height: 2),
-                CustomComponents.displayText(
-                    "Overview of car photos",
-                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget carPhotos(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(7)),
-        child: Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _carInfoRow(),
-              Divider(color: Color(int.parse(ProjectColors.lineGray.substring(2), radix: 16))),
-              displayPhotoRow(carUnitInfo.mainPicUrl.split("/")[1], "", ""),
-              displayPhotoRow(carUnitInfo.pic1Url.split("/")[1], "", ""),
-              displayPhotoRow(carUnitInfo.pic2Url.split("/")[1], "", ""),
-              displayPhotoRow(carUnitInfo.pic3Url.split("/")[1], "", ""),
-              displayPhotoRow(carUnitInfo.pic4Url.split("/")[1], "", ""),
-              displayPhotoRow(carUnitInfo.pic5Url.split("/")[1], "", ""),
-
-              const SizedBox(height: 20),
-              // _attachedDocumentsSection(),
-              //
-              // const SizedBox(height: 10),
-              // _bottomPanel(context),
-              // const SizedBox(height: 10),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget displayPhotoRow(String? documentName, String fileSize, String fileDateUploaded) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, right: 15, left: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            child: Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3),
-                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: CustomComponents.displayText(documentName!.split(".").last.toUpperCase(),
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      documentName?.split("/").last ?? "Empty",
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: ProjectStrings.general_font_family
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          //delete image
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () => onReplace(documentName),
-                child: CustomComponents.displayText(
-                    "replace",
-                    color: Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold
-                ),
-              ),
-              const SizedBox(width: 30),
-              //  view text
-              GestureDetector(
-                onTap: () {
-                  viewDocument(FirebaseConstants.retrieveImage("car_images/$documentName"));
-                },
-                child: CustomComponents.displayText(ProjectStrings.ri_view,
-                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2),
-                        radix: 16)),
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Future<void> onReplace(String oldImageName) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
-
-    if (pickedFile != null) {
-      setState(() {
-        _newImages[oldImageName] = pickedFile;  // Add the new image to the map
-      });
-    }
-  }
-
-  Future<void> saveReplacements() async {
-    for (var entry in _newImages.entries) {
-      String oldImageName = entry.key;
-      XFile newImage = entry.value;
-
-      debugPrint("oldImageName: $oldImageName");
-      debugPrint("newImage-name: ${newImage.name}");
-      debugPrint("newImage-path: ${newImage.path}");
-      try {
-        // Delete the old image from Firebase Storage
-        final oldImageUrl = FirebaseConstants.retrieveImage("car_images/$oldImageName");
-        final oldRef = FirebaseStorage.instance.refFromURL(oldImageUrl);
-        await oldRef.delete();
-
-        // Upload the new image
-        final newImageRef = FirebaseStorage.instance.ref('car_images/$oldImageName');
-        await newImageRef.putFile(File(newImage.path));
-        final newDownloadUrl = await newImageRef.getDownloadURL();
-
-        // // Update Firestore with the new image URL
-        // await FirebaseFirestore.instance
-        //     .collection(FirebaseConstants.carInfoCollection)
-        //     .doc(oldImageName.toString().split("_")[0])
-        //     .update({'car_images/$oldImageName': newDownloadUrl});
-
-      } catch (e) {
-        debugPrint("Error replacing image: $e");
-      }
-    }
-
-    setState(() {
-      _newImages.clear();  // Clear the map after saving all replacements
-    });
-  }
-
-  Future<void> viewDocument(String gsUrl) async {
-    try {
-      // Show loading dialog
-      LoadingDialog().show(context: context, content: "Retrieving the document, please wait.");
-
-      // Convert gs:// URL to a download URL
-      final ref = FirebaseStorage.instance.refFromURL(gsUrl);
-      final downloadUrl = await ref.getDownloadURL();
-      LoadingDialog().dismiss();
-
-      // Determine file type based on extension
-      String fileExtension = gsUrl.split('.').last.toLowerCase();
-
-      // Handle image files (PNG, JPG, JPEG)
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: CachedNetworkImage(
-              imageUrl: downloadUrl,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-          );
-        },
-      );
-    } catch (e) {
-      LoadingDialog().dismiss();
-      debugPrint("Error fetching download URL: $e");
-      // Show an error dialog
-      InfoDialog().show(
-        context: context,
-        content: "Something went wrong while retrieving the document.",
-        header: "Error",
-      );
     }
   }
 
@@ -434,6 +278,235 @@ class _EditUnitState extends State<EditUnit> {
     );
   }
 
+  Widget employedPanel() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25),
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5)
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(int.parse(
+                          ProjectColors.mainColorBackground
+                              .substring(2),
+                          radix: 16,
+                        )),
+                        border: Border.all(
+                          color:
+                          Color(int.parse(ProjectColors.lineGray)),
+                          width: 1,
+                        ),
+                      ),
+                      child: Center(
+                        child: CustomComponents.displayText(
+                          "2",
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 20.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomComponents.displayText(
+                          "Vehicle Photos",
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        const SizedBox(height: 2),
+                        CustomComponents.displayText(
+                          "Upload your vehicle photos below.",
+                          color: Color(int.parse(
+                            ProjectColors.lightGray.substring(2),
+                            radix: 16,
+                          )),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: Color(int.parse(
+                ProjectColors.lineGray.substring(2),
+                radix: 16,
+              )),
+            ),
+
+            // ListView for uploaded documents
+            SizedBox(
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: _originalFilePaths.length,
+                itemBuilder: (context, index) {
+                  return _uploadDocumentsItem(
+                    _originalFilePaths[index],
+                    getDocumentTitle(index),
+                    index,
+                  );
+                },
+              ),
+            ),
+
+            //  save documents button
+            const SizedBox(height: 30),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _uploadDocumentsItem(String documentName, String headerName, int index) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              border: DashedBorder.fromBorderSide(
+                  dashLength: 4,
+                  side: BorderSide(
+                      color: Color(int.parse(
+                          ProjectColors.userInfoDialogBrokenLinesColor
+                              .substring(2),
+                          radix: 16)),
+                      width: 1)),
+              borderRadius: const BorderRadius.all(Radius.circular(5))),
+          child: Center(
+              child:
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20, top: 10, right: 0, bottom: 10),
+                    child: Image.asset(
+                      _getFileIcon(_fileIcons[index]),
+                      height: 60,
+                    ),
+                  ),
+                ),
+                Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10, right: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomComponents.displayText(
+                              headerName,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold),
+                          Text(
+                            _fileNames[index],
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                color: Colors.grey,
+                                fontFamily: ProjectStrings.general_font_family,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(height: 5),
+                          TextButton(
+                            onPressed: () {
+                              _pickFile(index, context);
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                Color(int.parse(
+                                    ProjectColors.userInfoDialogBrokenLinesColor
+                                        .substring(2),
+                                    radix: 16)),
+                              ),
+                              shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                              ),
+                              padding: MaterialStatePropertyAll<EdgeInsets>(
+                                  EdgeInsets.only(
+                                      left: 18,
+                                      right: 18,
+                                      top: 8,
+                                      bottom: 8)), // Remove default padding
+                              minimumSize: MaterialStatePropertyAll<Size>(
+                                  Size(0, 0)), // Ensures no minimum size
+                              tapTargetSize: MaterialTapTargetSize
+                                  .shrinkWrap, // Shrinks the tap target size
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5, right: 5),
+                              child: CustomComponents.displayText(
+                                ProjectStrings.user_info_choose_a_file,
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                )
+              ])),
+        ));
+  }
+
+  Future<void> _pickFile(int index, BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png'], // Only allow image extensions
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        selectedIndex.add(index);
+        itemsToBeDeletedToDB.add(_originalFilePaths[index]);
+        _newListTobeAddedToDB.add(result.files.first.path!);
+        inputString(index, result.files.first.path!);
+
+        // Replace the file at the current index with the newly selected file
+        _originalFilePaths[index] = result.files.first.path!;
+        String fileName = result.files.first.name; // Extract file name
+        String fileExtension = fileName.split('.').last; // Extract file extension
+
+        // Update the display based on file type
+        _fileIcons[index] = fileExtension; // Update image icon
+        _fileNames[index] = fileName; // Update the file name display
+      });
+    }
+  }
+
+  void inputString(int index, String newString) {
+    if (indexStringMap.containsKey(index)) {
+      indexStringMap[index] = newString; // Overwrite the string at the index
+    } else {
+      debugPrint('Index $index is out of range.');
+    }
+  }
+
+
   Widget _renterInfoContainer(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -488,7 +561,7 @@ class _EditUnitState extends State<EditUnit> {
           ),
           const SizedBox(height: 10),
           key == "type" ? DropdownButtonFormField<String>(
-            value: userInfo[key]?.toLowerCase() == "sedan" ? "sedan" : "suv",
+            value: carInfo[key]?.toLowerCase() == "sedan" ? "sedan" : "suv",
             items: const [
               DropdownMenuItem(
                 value: "sedan",
@@ -516,7 +589,7 @@ class _EditUnitState extends State<EditUnit> {
             onChanged: (newValue) {
               if (newValue != null) {
                 setState(() {
-                  userInfo[key] = newValue;
+                  carInfo[key] = newValue;
                   controller.text = newValue; // Update the controller
                 });
               }
@@ -536,7 +609,7 @@ class _EditUnitState extends State<EditUnit> {
                 fontFamily: ProjectStrings.general_font_family
             ),
           ) : key == "fuel_variant" ? DropdownButtonFormField<String>(
-            value: userInfo[key]?.toLowerCase() == "gasoline" ? "gasoline" : "diesel",
+            value: carInfo[key]?.toLowerCase() == "gasoline" ? "gasoline" : "diesel",
             items: const [
               DropdownMenuItem(
                 value: "gasoline",
@@ -564,7 +637,7 @@ class _EditUnitState extends State<EditUnit> {
             onChanged: (newValue) {
               if (newValue != null) {
                 setState(() {
-                  userInfo[key] = newValue;
+                  carInfo[key] = newValue;
                   controller.text = newValue; // Update the controller
                 });
               }
@@ -584,7 +657,7 @@ class _EditUnitState extends State<EditUnit> {
                 fontFamily: ProjectStrings.general_font_family
             ),
           ) : key == "transmission" ? DropdownButtonFormField<String>(
-            value: userInfo[key]?.toLowerCase() == "automatic" ? "automatic" : "manual",
+            value: carInfo[key]?.toLowerCase() == "automatic" ? "automatic" : "manual",
             items: const [
               DropdownMenuItem(
                 value: "automatic",
@@ -612,7 +685,7 @@ class _EditUnitState extends State<EditUnit> {
             onChanged: (newValue) {
               if (newValue != null) {
                 setState(() {
-                  userInfo[key] = newValue;
+                  carInfo[key] = newValue;
                   controller.text = newValue; // Update the controller
                 });
               }
@@ -636,7 +709,7 @@ class _EditUnitState extends State<EditUnit> {
             controller: controller,
             onChanged: (newValue) {
               // Update userInfo with the new value
-              userInfo[key] = newValue;
+              carInfo[key] = newValue;
             },
             decoration: InputDecoration(
               border: UnderlineInputBorder(
@@ -657,7 +730,7 @@ class _EditUnitState extends State<EditUnit> {
             controller: controller,
             onChanged: (newValue) {
               // Update userInfo with the new value
-              userInfo[key] = newValue;
+              carInfo[key] = newValue;
             },
             decoration: InputDecoration(
               border: UnderlineInputBorder(
@@ -678,7 +751,7 @@ class _EditUnitState extends State<EditUnit> {
             controller: controller,
             onChanged: (newValue) {
               // Update userInfo with the new value
-              userInfo[key] = newValue;
+              carInfo[key] = newValue;
             },
             decoration: InputDecoration(
               border: UnderlineInputBorder(
@@ -699,7 +772,7 @@ class _EditUnitState extends State<EditUnit> {
             controller: controller,
             onChanged: (newValue) {
               // Update userInfo with the new value
-              userInfo[key] = newValue;
+              carInfo[key] = newValue;
             },
             decoration: InputDecoration(
               border: UnderlineInputBorder(
@@ -720,7 +793,7 @@ class _EditUnitState extends State<EditUnit> {
             controller: controller,
             onChanged: (newValue) {
               // Update userInfo with the new value
-              userInfo[key] = newValue;
+              carInfo[key] = newValue;
             },
             decoration: InputDecoration(
               border: UnderlineInputBorder(
@@ -741,7 +814,7 @@ class _EditUnitState extends State<EditUnit> {
             controller: controller,
             onChanged: (newValue) {
               // Update userInfo with the new value
-              userInfo[key] = newValue;
+              carInfo[key] = newValue;
             },
             decoration: InputDecoration(
               border: UnderlineInputBorder(
@@ -762,7 +835,7 @@ class _EditUnitState extends State<EditUnit> {
             controller: controller,
             onChanged: (newValue) {
               // Update userInfo with the new value
-              userInfo[key] = newValue;
+              carInfo[key] = newValue;
             },
             decoration: InputDecoration(
               border: UnderlineInputBorder(
@@ -783,7 +856,7 @@ class _EditUnitState extends State<EditUnit> {
             controller: controller,
             onChanged: (newValue) {
               // Update userInfo with the new value
-              userInfo[key] = newValue;
+              carInfo[key] = newValue;
             },
             decoration: InputDecoration(
               border: UnderlineInputBorder(
@@ -841,7 +914,7 @@ class _EditUnitState extends State<EditUnit> {
                     fontWeight: FontWeight.bold),
                 const SizedBox(height: 2),
                 CustomComponents.displayText(
-                    "Edit vehicle specification",
+                    "Add vehicle specification",
                     color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
                     fontSize: 10,
                     fontWeight: FontWeight.w500),
@@ -861,11 +934,9 @@ class _EditUnitState extends State<EditUnit> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomComponents.displayText("Car Unit Overview",
-                fontWeight: FontWeight.bold, fontSize: 12),
+            CustomComponents.displayText("Vehicle Information", fontWeight: FontWeight.bold, fontSize: 12),
             const SizedBox(height: 3),
-            CustomComponents.displayText(ProjectStrings.edit_user_info_subheader,
-                fontSize: 10),
+            CustomComponents.displayText("Enter details for the new car unit", fontSize: 10),
           ],
         ),
       ),
@@ -890,7 +961,7 @@ class _EditUnitState extends State<EditUnit> {
             ),
           ),
           CustomComponents.displayText(
-            "Edit Unit",
+            "Add Unit",
             fontWeight: FontWeight.bold,
           ),
           CustomComponents.menuButtons(context),
