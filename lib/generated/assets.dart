@@ -57,6 +57,7 @@ class Assets {
   static const String assetsPicturesCarouselImage4 = 'lib/assets/pictures/carousel_image_4.png';
   static const String assetsPicturesCarouselImage5 = 'lib/assets/pictures/carousel_image_5.png';
   static const String assetsPicturesCarouselImage6 = 'lib/assets/pictures/carousel_image_6.png';
+  static const String assetsPicturesCheckList = 'lib/assets/pictures/check_list.png';
   static const String assetsPicturesCloudy = 'lib/assets/pictures/cloudy.png';
   static const String assetsPicturesColorIcon = 'lib/assets/pictures/color_icon.png';
   static const String assetsPicturesDapBookNotSelected = 'lib/assets/pictures/dap_book_not_selected.png';
@@ -165,7 +166,7 @@ class Assets {
   static const String assetsPicturesVerifyDocuments = 'lib/assets/pictures/verify_documents.png';
   static const String assetsPicturesView = 'lib/assets/pictures/view.png';
   static const String backupBackup = 'lib/view/pages/admin/manage/backup/Backup.dart';
-  static const String bannerBanner = 'lib/view/pages/admin/manage/banner/Banner.dart';
+  static const String bannerBanner = 'lib/view/pages/admin/manage/banner/banner.dart';
   static const String carListCarList = 'lib/view/pages/admin/car_list/car_list_.dart';
   static const String carListCarListController = 'lib/controller/car_list/car_list_controller.dart';
   static const String carListCompleteCarList = 'lib/model/car_list/complete_car_list.dart';
@@ -247,6 +248,8 @@ class Assets {
   static const String picturesCarouselImage4 = 'lib/assets/pictures/carousel_image_4.png';
   static const String picturesCarouselImage5 = 'lib/assets/pictures/carousel_image_5.png';
   static const String picturesCarouselImage6 = 'lib/assets/pictures/carousel_image_6.png';
+  static const String picturesCheckList = 'lib/assets/pictures/check_list.png';
+  static const String picturesCloud = 'lib/assets/pictures/cloud.png';
   static const String picturesCloudy = 'lib/assets/pictures/cloudy.png';
   static const String picturesColorIcon = 'lib/assets/pictures/color_icon.png';
   static const String picturesDapBookNotSelected = 'lib/assets/pictures/dap_book_not_selected.png';
@@ -388,7 +391,7 @@ class Assets {
   static const String unitsAddUnit = 'lib/view/pages/admin/manage/units/add_unit.dart';
   static const String unitsEditUnit = 'lib/view/pages/admin/manage/units/edit_unit.dart';
   static const String unitsUnits = 'lib/view/pages/admin/manage/units/units.dart';
-  static const String unitsViewMode = 'lib/view/pages/admin/manage/units/view_more.dart';
+  static const String unitsViewMore = 'lib/view/pages/admin/manage/units/view_more.dart';
   static const String userListEditUserInfo = 'lib/view/pages/admin/manage/user_list/edit_user_info.dart';
   static const String userListSortFilterDrawer = 'lib/view/pages/admin/manage/user_list/SortFilterDrawer.dart';
   static const String userListUserInfo = 'lib/view/pages/admin/manage/user_list/user_info.dart';

@@ -224,4 +224,8 @@ class PersistentData {
 
   ////////////////////////        manage units    /////////////////////////
   CompleteCarInfo? selectedCarUnitForManageUnit;
+
+  //////    banners and promos    //////
+  List<String> popupImageUrls = [];
+  List<String> promoImageUrls = [];
 }

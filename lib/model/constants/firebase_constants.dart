@@ -9,6 +9,8 @@ class FirebaseConstants {
   static const String outsourceApplication = "dara-outsource-application";
   static const String driverApplication = "dara-driver-application";
   static const String accountantCollection = "dara-accountant-records";
+  static const String bannerPromosCollection = "banner_promos";
+  static const String bannerPopupsCollection = "banner_popups";
 
   static String URlforCarImages(String imagePath) {
     return "https://firebasestorage.googleapis.com/v0/b/dara-renting-app.appspot.com/o/car_images%2$imagePath}?alt=media";

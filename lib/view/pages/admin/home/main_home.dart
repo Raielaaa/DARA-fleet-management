@@ -11,6 +11,7 @@ import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_auth/firebase_auth.dart";
+import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
@@ -39,6 +40,8 @@ class _AdminHomeState extends State<AdminHome> {
   String weatherForecastSelectedAddress = "Current Location";
   RegisterModel? _currentUserInfo;
   List<String> _userFiles = [];
+  List<String> popupImageUrls = [];
+  List<String> promoImageUrls = [];
 
   // Function to send a message
   void _sendMessage() async {
@@ -193,6 +196,7 @@ class _AdminHomeState extends State<AdminHome> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       LoadingDialog().show(context: context, content: "Please wait while we retrieve your profile information.");
       try {
+        await fetchImages();
         await _fetchUserDocumentsForVerification();
         await _fetchUserInfo();
         LoadingDialog().dismiss();
@@ -202,6 +206,33 @@ class _AdminHomeState extends State<AdminHome> {
         debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
       }
     });
+  }
+
+  Future<void> fetchImages() async {
+    try {
+      // Fetch images from banner_popups
+      final popupRef = FirebaseStorage.instance.ref().child('banner_popups');
+      final ListResult popupResult = await popupRef.listAll();
+      for (var ref in popupResult.items) {
+        final String url = await ref.getDownloadURL();
+        popupImageUrls.add(url);
+        PersistentData().popupImageUrls.add(url);
+      }
+
+      // Fetch images from banner_promos
+      final promoRef = FirebaseStorage.instance.ref().child('banner_promos');
+      final ListResult promoResult = await promoRef.listAll();
+      for (var ref in promoResult.items) {
+        final String url = await ref.getDownloadURL();
+        promoImageUrls.add(url);
+        PersistentData().promoImageUrls.add(url);
+      }
+
+      // Update the UI
+      setState(() {});
+    } catch (e) {
+      debugPrint("Failed to load images: $e");
+    }
   }
 
   Future<void> _fetchUserDocumentsForVerification() async {
@@ -833,6 +864,12 @@ class _AdminHomeState extends State<AdminHome> {
                         ),
                         //  Banner
                         const SizedBox(height: 20),
+                        PersistentData().promoImageUrls.isEmpty ? Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 4.0,
+                            color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                          ),
+                        ) :
                         Container(
                           color: Colors.grey[300],
                           width: double.infinity,
@@ -840,80 +877,52 @@ class _AdminHomeState extends State<AdminHome> {
                           child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 25, right: 25, top: 15),
+                                padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: CustomComponents.displayText(
-                                      ProjectStrings.admin_home_banner_header,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
+                                    ProjectStrings.admin_home_banner_header,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 10),
                               SizedBox(
                                 height: 125,
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 25),
-                                  child: ListView(
+                                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                                  child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    children: [
-                                      Padding(
+                                    itemCount: PersistentData().promoImageUrls.length,
+                                    itemBuilder: (context, index) {
+                                      final imageUrl = PersistentData().promoImageUrls[index];
+                                      return Padding(
                                         padding: const EdgeInsets.only(right: 10),
                                         child: Container(
                                           width: 290,
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(7)),
+                                            borderRadius: BorderRadius.circular(7),
+                                          ),
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(7),
-                                            child: Image.asset(
-                                              "lib/assets/pictures/home_bottom_banner_1.jpg",
+                                            child: Image.network(
+                                              imageUrl,
                                               fit: BoxFit.fill,
+                                              errorBuilder: (context, error, stackTrace) =>
+                                              const Icon(Icons.error), // Fallback in case of error
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 10),
-                                        child: Container(
-                                          width: 290,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(7)),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(7),
-                                            child: Image.asset(
-                                              "lib/assets/pictures/home_bottom_banner_2.jpg",
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 10),
-                                        child: Container(
-                                          width: 290,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(7)),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(7),
-                                            child: Image.asset(
-                                              "lib/assets/pictures/home_bottom_banner_3.jpg",
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                      );
+                                    },
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
+
                         const SizedBox(height: 40)
                       ],
                     ),

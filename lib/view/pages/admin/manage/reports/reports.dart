@@ -962,7 +962,7 @@ class _ManageReportsState extends State<ManageReports> {
                                   Navigator.of(context).pushNamed("manage_car_list");
                                 },
                                 child: buildAdminOption(
-                                  "lib/assets/pictures/view.png",
+                                  "lib/assets/pictures/check_list.png",
                                   "Units",
                                   Colors.white,
                                   context,
@@ -972,7 +972,7 @@ class _ManageReportsState extends State<ManageReports> {
                               // car status
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed("manage_car_status");
+                                  Navigator.of(context).pushNamed("manage_banner");
                                 },
                                 child: buildAdminOption(
                                   "lib/assets/pictures/banner.png",
@@ -988,7 +988,7 @@ class _ManageReportsState extends State<ManageReports> {
                                   Navigator.of(context).pushNamed("manage_user_list");
                                 },
                                 child: buildAdminOption(
-                                  "lib/assets/pictures/backuprestore.png",
+                                  "lib/assets/pictures/cloud.png",
                                   "Backup",
                                   Colors.white,
                                   context,
@@ -1167,6 +1167,7 @@ class _ManageReportsState extends State<ManageReports> {
               child: Center(
                 child: Image.asset(
                   imagePath,
+                  color: const Color(0xFF3FA2BE),
                   width: imagePath.contains("manage_report_inquiries.png")
                       ? MediaQuery.of(context).size.width * 0.055
                       : imagePath.contains("application_list.png")
@@ -1175,6 +1176,10 @@ class _ManageReportsState extends State<ManageReports> {
                       ? MediaQuery.of(context).size.width * 0.048
                       : imagePath.contains("backup")
                       ? MediaQuery.of(context).size.width * 0.055
+                      : imagePath.contains("check_list.png")
+                      ? MediaQuery.of(context).size.width * 0.055
+                      : imagePath.contains("cloud.png")
+                      ? MediaQuery.of(context).size.width * 0.043
                       : MediaQuery.of(context).size.width * 0.045,
                 ),
               ),

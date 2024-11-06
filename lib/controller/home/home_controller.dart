@@ -1,4 +1,5 @@
 import 'package:dara_app/controller/singleton/persistent_data.dart';
+import 'package:dara_app/model/constants/firebase_constants.dart';
 import 'package:dara_app/services/firebase/firestore.dart';
 import 'package:dara_app/services/weather/open_weather.dart';
 import 'package:dara_app/view/shared/colors.dart';
@@ -138,9 +139,25 @@ class HomeController {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
-                      child: Image.asset(
-                        "lib/assets/pictures/home_opening_banner.png",
+                      child: Image.network(
+                        PersistentData().popupImageUrls[0],
                         fit: BoxFit.fitWidth,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            // Image has finished loading
+                            return child;
+                          } else {
+                            // Show circular progress indicator while loading
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                    (loadingProgress.expectedTotalBytes ?? 1)
+                                    : null,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),

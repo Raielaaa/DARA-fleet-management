@@ -248,6 +248,8 @@ flutter:
     - lib/assets/pictures/view.png
     - lib/assets/pictures/banner.png
     - lib/assets/pictures/backuprestore.png
+    - lib/assets/pictures/check_list.png
+    - lib/assets/pictures/cloud.png
 
     # - lib/assets/pictures/carousel_image_2.png
     # - lib/assets/pictures/carousel_image_3.png
