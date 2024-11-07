@@ -194,18 +194,22 @@ class _AdminHomeState extends State<AdminHome> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      LoadingDialog().show(context: context, content: "Please wait while we retrieve your profile information.");
-      try {
-        await fetchImages();
-        await _fetchUserDocumentsForVerification();
-        await _fetchUserInfo();
-        LoadingDialog().dismiss();
-        homeController.showOpeningBanner(context, _userFiles.length);
-      } catch(e) {
-        LoadingDialog().dismiss();
-        debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
-      }
+      _fetchAllHomeInfo();
     });
+  }
+
+  Future<void> _fetchAllHomeInfo() async {
+    LoadingDialog().show(context: context, content: "Please wait while we retrieve your profile information.");
+    try {
+      await fetchImages();
+      await _fetchUserDocumentsForVerification();
+      await _fetchUserInfo();
+      LoadingDialog().dismiss();
+      homeController.showOpeningBanner(context, _userFiles.length);
+    } catch(e) {
+      LoadingDialog().dismiss();
+      debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
+    }
   }
 
   Future<void> fetchImages() async {
@@ -315,32 +319,29 @@ class _AdminHomeState extends State<AdminHome> {
   }
 
   Future<void> _refreshPage() async {
+    PersistentData().promoImageUrls.clear();
+    popupImageUrls.clear();
+    promoImageUrls.clear();
     // Fetch new data and update the UI
     homeController.fetchCars();
     // Initialize the future directly in initState
     weatherFuture = homeController.getWeatherForecast(null, null);
 
-    try {
-      //  chatgpt
-      openAI = OpenAI.instance.build(
-        token: Constants.CHAT_GPT_SECRET_KEY, // Replace with your OpenAI API
-        baseOption: HttpSetup(
-          receiveTimeout: Duration(seconds: 20),
-          connectTimeout: Duration(seconds: 20),
-        ),
-        enableLog: true,
-      );
-    } catch(e) {
-      debugPrint("ChatGPT error: ${e.toString()}");
-    }
+    // try {
+    //   //  chatgpt
+    //   openAI = OpenAI.instance.build(
+    //     token: Constants.CHAT_GPT_SECRET_KEY, // Replace with your OpenAI API
+    //     baseOption: HttpSetup(
+    //       receiveTimeout: Duration(seconds: 20),
+    //       connectTimeout: Duration(seconds: 20),
+    //     ),
+    //     enableLog: true,
+    //   );
+    // } catch(e) {
+    //   debugPrint("ChatGPT error: ${e.toString()}");
+    // }
 
-    try {
-      await _fetchUserDocumentsForVerification();
-      await _fetchUserInfo();
-      homeController.showOpeningBanner(context, _userFiles.length);
-    } catch(e) {
-      debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
-    }
+    await _fetchAllHomeInfo();
     CustomComponents.showToastMessage("Page refreshed", Colors.black54, Colors.white);
   }
 
@@ -355,7 +356,9 @@ class _AdminHomeState extends State<AdminHome> {
       canPop: false,
       child: Center(
         child: RefreshIndicator(
-          onRefresh: _refreshPage,
+          onRefresh: () async {
+            _refreshPage();
+          },
           color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
           child: Container(
             color: Color(int.parse(ProjectColors.mainColorBackground.substring(2),
@@ -899,18 +902,48 @@ class _AdminHomeState extends State<AdminHome> {
                                       final imageUrl = PersistentData().promoImageUrls[index];
                                       return Padding(
                                         padding: const EdgeInsets.only(right: 10),
-                                        child: Container(
-                                          width: 290,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(7),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(7),
-                                            child: Image.network(
-                                              imageUrl,
-                                              fit: BoxFit.fill,
-                                              errorBuilder: (context, error, stackTrace) =>
-                                              const Icon(Icons.error), // Fallback in case of error
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                  backgroundColor: Colors.transparent,
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(7),
+                                                    child: Image.network(
+                                                      imageUrl,
+                                                      fit: BoxFit.contain,
+                                                      loadingBuilder: (context, child, loadingProgress) {
+                                                        return loadingProgress == null ? child : Center(
+                                                          child: CircularProgressIndicator(
+                                                            value: loadingProgress.expectedTotalBytes != null
+                                                              ? loadingProgress.cumulativeBytesLoaded /
+                                                              (loadingProgress.expectedTotalBytes ?? 1) : null
+                                                          ),
+                                                        );
+                                                      },
+                                                      errorBuilder:  (context, error, stackTrace) =>
+                                                      const Icon(Icons.error),
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 290,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(7),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(7),
+                                              child: Image.network(
+                                                imageUrl,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error, stackTrace) =>
+                                                const Icon(Icons.error), // Fallback in case of error
+                                              ),
                                             ),
                                           ),
                                         ),

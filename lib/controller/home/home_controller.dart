@@ -130,8 +130,7 @@ class HomeController {
               color: Colors.transparent,
               width: MediaQuery.of(context).size.width - 10,
               child: Column(
-                mainAxisSize:
-                    MainAxisSize.min, // Adjust the height based on content
+                mainAxisSize: MainAxisSize.min, // Adjust the height based on content
                 children: [
                   GestureDetector(
                     onTap: () {
@@ -139,32 +138,37 @@ class HomeController {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
-                      child: Image.network(
-                        PersistentData().popupImageUrls[0],
-                        fit: BoxFit.fitWidth,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            // Image has finished loading
-                            return child;
-                          } else {
-                            // Show circular progress indicator while loading
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                    (loadingProgress.expectedTotalBytes ?? 1)
-                                    : null,
-                              ),
-                            );
-                          }
-                        },
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.5,
+                        ), // Limit the height to 50% of screen height
+                        child: Image.network(
+                          PersistentData().popupImageUrls[0],
+                          fit: BoxFit.cover, // Ensures the image scales properly
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child; // Image has finished loading
+                            } else {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: Color(int.parse(
+                                      ProjectColors.mainColorHex.substring(2),
+                                      radix: 16)),
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes ?? 1)
+                                      : null,
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 15),
                   SizedBox(
-                    width: double
-                        .infinity, // Makes the button take the full width of the parent container
+                    width: double.infinity,
                     child: GestureDetector(
                       onTap: () {
                         _launchFacebookURL(context);
@@ -191,25 +195,26 @@ class HomeController {
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
-                    width: double
-                        .infinity, // Makes the button take the full width of the parent container
+                    width: double.infinity,
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).pop();
-                        debugPrint("Files length: $filesLength............${filesLength == 5}");
-                        debugPrint("Number: ${PersistentData().userInfo!.number}..............${PersistentData().userInfo!.number.isNotEmpty}");
-                        if (PersistentData().userInfo!.number.isNotEmpty && filesLength == 5 && PersistentData().userInfo?.status.toLowerCase() != "verified") {
+                        if (PersistentData().userInfo!.number.isNotEmpty &&
+                            filesLength == 5 &&
+                            PersistentData().userInfo?.status.toLowerCase() !=
+                                "verified") {
                           InfoDialog().show(
                               context: context,
-                              content: "Your account is currently under review. Please await admin approval before proceeding.",
-                              header: "Notice"
-                          );
-                        } else if (PersistentData().userInfo!.number.isEmpty || filesLength < 5) {
+                              content:
+                              "Your account is currently under review. Please await admin approval before proceeding.",
+                              header: "Notice");
+                        } else if (PersistentData().userInfo!.number.isEmpty ||
+                            filesLength < 5) {
                           InfoDialog().show(
                               context: context,
-                              content: "Your account is unverified. Please verify your phone number and submit all required documents to access full features.",
-                              header: "Warning"
-                          );
+                              content:
+                              "Your account is unverified. Please verify your phone number and submit all required documents to access full features.",
+                              header: "Warning");
                         }
                       },
                       child: Container(
