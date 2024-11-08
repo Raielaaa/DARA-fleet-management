@@ -943,7 +943,7 @@ class _ManageReportsState extends State<ManageReports> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // application list
+                              // rent logs
                               GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pushNamed("manage_rent_logs");
@@ -956,7 +956,7 @@ class _ManageReportsState extends State<ManageReports> {
                                 ),
                               ),
                               SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                              // inquiries
+                              // units
                               GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pushNamed("manage_car_list");
@@ -969,7 +969,7 @@ class _ManageReportsState extends State<ManageReports> {
                                 ),
                               ),
                               SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                              // car status
+                              // banner
                               GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pushNamed("manage_banner");
@@ -982,10 +982,10 @@ class _ManageReportsState extends State<ManageReports> {
                                 ),
                               ),
                               SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                              // user list
+                              // backup restore
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed("manage_user_list");
+                                  Navigator.of(context).pushNamed("manage_backup_restore");
                                 },
                                 child: buildAdminOption(
                                   "lib/assets/pictures/cloud.png",
