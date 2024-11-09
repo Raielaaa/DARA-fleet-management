@@ -207,10 +207,8 @@ class _BackupRestoreState extends State<BackupRestore> {
   }
 
   String sanitizeJsonData(String input) {
-    // Replace control characters, quotation marks, backslashes, and ñ/Ñ with an empty string
-    return input.replaceAll(RegExp(r'[\x00-\x1F\x7F\"\\ñÑ\'']'), '');
+    return input.replaceAll("ñ", "n").replaceAll("Ñ", "N").replaceAll("'", "");
   }
-
 
   Future<List<int>?> _downloadFileData(String downloadUrl) async {
     try {
