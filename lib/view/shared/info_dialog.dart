@@ -259,7 +259,7 @@ class InfoDialog {
                       GestureDetector(
                         onTap: () async {
                           if (confirmAction != null) {
-                            LoadingDialog().show(context: context, content: "Updating records, please wait.");
+                            LoadingDialog().show(context: context, content: "Updating records. Please wait and avoid closing the app, as this may take a moment.");
                             await confirmAction();
                             LoadingDialog().dismiss();
                           }

@@ -118,7 +118,7 @@ class HomeController {
     return formattedDate;
   }
 
-  Future<void> showOpeningBanner(BuildContext context, int filesLength) async {
+  Future<void> showOpeningBanner(BuildContext context, int filesLength, String imageURL) async {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -143,7 +143,7 @@ class HomeController {
                           maxHeight: MediaQuery.of(context).size.height * 0.5,
                         ), // Limit the height to 50% of screen height
                         child: Image.network(
-                          PersistentData().popupImageUrls[0],
+                          imageURL,
                           fit: BoxFit.cover, // Ensures the image scales properly
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) {

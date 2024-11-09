@@ -23,8 +23,8 @@ class _VerifyBookingState extends State<VerifyBooking> {
                 RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)))),
         onPressed: () {
-          PersistentData().tabController.jumpToTab(3);
-          // Navigator.of(context).pushNamedAndRemoveUntil("rentals", (route) => false);
+          // PersistentData().tabController.jumpToTab(3);
+          Navigator.of(context).pushNamed("car_list");
         },
         child: Center(
           child: Padding(

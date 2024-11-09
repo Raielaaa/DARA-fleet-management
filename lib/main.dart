@@ -90,128 +90,131 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
       ],
-      child: MaterialApp(
-        // builder: (BuildContext context, Widget? child) {
-        //   return MediaQuery(
-        //     data: MediaQuery.of(context).copyWith(
-        //       devicePixelRatio: 0.5,
-        //       textScaler: const TextScaler.linear(0.8)
-        //     ),
-        //     child: child!
-        //   );
-        // },
-        themeMode: ThemeMode.light,
-        debugShowCheckedModeBanner: false,
-        home: const DeepLinkHandler(),
-        routes: {
-          // Info carousel
-          "entry_page_1": (context) => const CarouselPage1(),
-          "entry_page_2": (context) => const CarouselPage2(),
-          "entry_page_3": (context) => const CarouselPage3(),
-          "entry_page_4": (context) => const CarouselPage4(),
-          "entry_page_5": (context) => const CarouselPage5(),
-          "entry_page_6": (context) => const CarouselPage6(),
+      child: PopScope(
+        canPop: false,
+        child: MaterialApp(
+          // builder: (BuildContext context, Widget? child) {
+          //   return MediaQuery(
+          //     data: MediaQuery.of(context).copyWith(
+          //       devicePixelRatio: 0.5,
+          //       textScaler: const TextScaler.linear(0.8)
+          //     ),
+          //     child: child!
+          //   );
+          // },
+          themeMode: ThemeMode.light,
+          debugShowCheckedModeBanner: false,
+          home: const PopScope(canPop: false, child: DeepLinkHandler()),
+          routes: {
+            // Info carousel
+            "entry_page_1": (context) => const CarouselPage1(),
+            "entry_page_2": (context) => const CarouselPage2(),
+            "entry_page_3": (context) => const CarouselPage3(),
+            "entry_page_4": (context) => const CarouselPage4(),
+            "entry_page_5": (context) => const CarouselPage5(),
+            "entry_page_6": (context) => const CarouselPage6(),
 
-          // Login register opening page
-          "account_opening_page": (context) => const AccountOpening(),
+            // Login register opening page
+            "account_opening_page": (context) => const AccountOpening(),
 
-          // Register
-          "register_main": (context) => const Register(),
-          "register_name_birthday": (context) => const Register(),
-          "register_email_pass": (context) => const RegisterEmailPass(),
-          "register_phone_number": (context) => const RegisterPhoneNumber(),
-          "register_verify_number": (context) => const RegisterVerifyNumber(),
-          "register_successful": (context) => const RegisterSuccessful(),
+            // Register
+            "register_main": (context) => const Register(),
+            "register_name_birthday": (context) => const Register(),
+            "register_email_pass": (context) => const RegisterEmailPass(),
+            "register_phone_number": (context) => const RegisterPhoneNumber(),
+            "register_verify_number": (context) => const RegisterVerifyNumber(),
+            "register_successful": (context) => const RegisterSuccessful(),
 
-          // Login main
-          "login_main": (context) => const LoginMain(),
+            // Login main
+            "login_main": (context) => const LoginMain(),
 
-          // Home page
-          "home_main": (context) => const HomePage(),
+            // Home page
+            "home_main": (context) => const HomePage(),
 
-          "admin_home": (context) => const AdminHome(controller: null),
+            "admin_home": (context) => const AdminHome(controller: null),
 
-          //  Car list
-          "car_list": (context) => const CarList(),
+            //  Car list
+            "car_list": (context) => const CarList(),
 
-          // Rentals - report page
-          "rentals_report": (context) => const Report(),
+            // Rentals - report page
+            "rentals_report": (context) => const Report(),
 
-          "rentals": (context) => const Rentals(),
+            "rentals": (context) => const Rentals(),
 
-          // Profile
-          "profile": (context) => const Profile(),
+            // Profile
+            "profile": (context) => const Profile(),
 
-          // Selected item
-          "selected_item": (context) => const UnitPreview(),
+            // Selected item
+            "selected_item": (context) => const UnitPreview(),
 
-          // Admin options - Manage report
-          "manage_report": (context) => const ManageReports(),
+            // Admin options - Manage report
+            "manage_report": (context) => const ManageReports(),
 
-          // Admin option - Manage inquiries
-          "manage_inquiries": (context) => const Inquiries(),
+            // Admin option - Manage inquiries
+            "manage_inquiries": (context) => const Inquiries(),
 
-          // Admin option - Manage Car Status
-          "manage_car_status": (context) => const CarStatus(),
+            // Admin option - Manage Car Status
+            "manage_car_status": (context) => const CarStatus(),
 
-          // Admin option - User List
-          "manage_user_list": (context) => const UserList(),
-          "manage_user_list_info": (context) => const UserInfo(),
-          "manage_user_info_edit": (context) => const EditUserInfo(),
+            // Admin option - User List
+            "manage_user_list": (context) => const UserList(),
+            "manage_user_list_info": (context) => const UserInfo(),
+            "manage_user_info_edit": (context) => const EditUserInfo(),
 
-          //  Admin option - Application List
-          "manage_application_list": (context) => const ApplicationList(),
-          "manage_application_driver": (context) => const ApplicationDriver(),
-          "manage_application_outsource": (context) => const ApplicationOutsource(),
+            //  Admin option - Application List
+            "manage_application_list": (context) => const ApplicationList(),
+            "manage_application_driver": (context) => const ApplicationDriver(),
+            "manage_application_outsource": (context) => const ApplicationOutsource(),
 
-          //  Admin option - bottom row
-          "manage_rent_logs": (context) => const RentLogs(),
-          "manage_car_list": (context) => const ManageCarList(),
-          "manage_view_more": (context) => const ViewMore(),
-          "manage_edit_unit": (context) => const EditUnit(),
-          "manage_add_unit": (context) => const AddUnit(),
-          "manage_banner": (context) => const ManageBanner(),
-          "manage_backup_restore": (context) => const BackupRestore(),
+            //  Admin option - bottom row
+            "manage_rent_logs": (context) => const RentLogs(),
+            "manage_car_list": (context) => const ManageCarList(),
+            "manage_view_more": (context) => const ViewMore(),
+            "manage_edit_unit": (context) => const EditUnit(),
+            "manage_add_unit": (context) => const AddUnit(),
+            "manage_banner": (context) => const ManageBanner(),
+            "manage_backup_restore": (context) => const BackupRestore(),
 
-          // Renting process - Booking Details
-          "rp_booking_details": (context) => const RPBookingDetails(),
-          "rp_delivery_mode": (context) => const RPDeliveryMode(),
-          "rp_details_fees": (context) => const RPDetailsFees(isDeepLink: false),
-          "rp_payment_success": (context) => const PaymentSuccess(),
-          "rp_submit_documents": (context) => const SubmitDocuments(),
-          "rp_verify_booking": (context) => const VerifyBooking(),
+            // Renting process - Booking Details
+            "rp_booking_details": (context) => const RPBookingDetails(),
+            "rp_delivery_mode": (context) => const RPDeliveryMode(),
+            "rp_details_fees": (context) => const RPDetailsFees(isDeepLink: false),
+            "rp_payment_success": (context) => const PaymentSuccess(),
+            "rp_submit_documents": (context) => const SubmitDocuments(),
+            "rp_verify_booking": (context) => const VerifyBooking(),
 
-          // Top option - report
-          "to_report": (context) => const TopOptionReport(),
+            // Top option - report
+            "to_report": (context) => const TopOptionReport(),
 
-          // Accountant manage option
-          "to_manage_accountant": (context) => const AccountantOption(),
-          "to_income_accountant": (context) => const IncomePage(),
+            // Accountant manage option
+            "to_manage_accountant": (context) => const AccountantOption(),
+            "to_income_accountant": (context) => const IncomePage(),
 
-          // Outsource manage option
-          "manage_outsource": (context) => const OutsourceManage(),
-          "accounting_outsource": (context) => const OutsourceAccounting(),
-          "inquiries_outsource": (context) => const OutsourceInquiries(),
+            // Outsource manage option
+            "manage_outsource": (context) => const OutsourceManage(),
+            "accounting_outsource": (context) => const OutsourceAccounting(),
+            "inquiries_outsource": (context) => const OutsourceInquiries(),
 
-          //  Outsource - apply
-          "ap_vehicle_information": (context) => const VehicleInformation(),
-          "ap_personal_profile": (context) => const PersonalProfile(),
-          "ap_employment_information": (context) => const EmploymentInformation(),
-          "ap_business_information": (context) => const BusinessInformation(),
-          "ap_document_submission": (context) => const DocumentSubmission(),
-          "ap_process_complete": (context) => const ProcessComplete(),
+            //  Outsource - apply
+            "ap_vehicle_information": (context) => const VehicleInformation(),
+            "ap_personal_profile": (context) => const PersonalProfile(),
+            "ap_employment_information": (context) => const EmploymentInformation(),
+            "ap_business_information": (context) => const BusinessInformation(),
+            "ap_document_submission": (context) => const DocumentSubmission(),
+            "ap_process_complete": (context) => const ProcessComplete(),
 
-          //  Driver
-          "driver_main": (context) => const Driver(),
-          "driver_ap_supporting_documents": (context) => const DriverSupportingDocuments(),
-          "driver_ap_personal_information": (context) => const DriverPersonalInformation(),
-          "driver_ap_emergency_contact": (context) => const DriverEmergencyContact(),
-          "driver_ap_educ_prof_information": (context) => const DriverEducProfInformation(),
+            //  Driver
+            "driver_main": (context) => const Driver(),
+            "driver_ap_supporting_documents": (context) => const DriverSupportingDocuments(),
+            "driver_ap_personal_information": (context) => const DriverPersonalInformation(),
+            "driver_ap_emergency_contact": (context) => const DriverEmergencyContact(),
+            "driver_ap_educ_prof_information": (context) => const DriverEducProfInformation(),
 
-          //  maps
-          "map_screen": (context) => MapScreen(),
-          "map_screen_weather": (context) => MapScreenWeather()
-        },
+            //  maps
+            "map_screen": (context) => MapScreen(),
+            "map_screen_weather": (context) => MapScreenWeather()
+          },
+        ),
       ),
     );
   }

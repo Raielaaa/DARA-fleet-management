@@ -205,7 +205,7 @@ class _AdminHomeState extends State<AdminHome> {
       await _fetchUserDocumentsForVerification();
       await _fetchUserInfo();
       LoadingDialog().dismiss();
-      homeController.showOpeningBanner(context, _userFiles.length);
+      homeController.showOpeningBanner(context, _userFiles.length, popupImageUrls[0]);
     } catch(e) {
       LoadingDialog().dismiss();
       debugPrint("main_home-fetchUserInfo error: ${e.toString()}");

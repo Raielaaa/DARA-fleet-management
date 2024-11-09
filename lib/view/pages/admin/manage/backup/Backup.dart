@@ -5,9 +5,11 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/model/constants/firebase_constants.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/loading.dart";
+import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
+import 'package:http/http.dart' as http;
 
 import "../../../../../controller/singleton/persistent_data.dart";
 import "../../../../shared/colors.dart";
@@ -24,8 +26,27 @@ class _BackupRestoreState extends State<BackupRestore> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseStorage storage = FirebaseStorage.instance;
 
-  final List<String> firestoreCollections = [FirebaseConstants.userReportCollection, "sample-collection"];
-  final List<String> storageDirectories = ["sample_storage_backup"];
+  final List<String> firestoreCollections = [
+    FirebaseConstants.accountantCollection,
+    FirebaseConstants.carInfoCollection,
+    FirebaseConstants.driverApplication,
+    FirebaseConstants.outsourceApplication,
+    FirebaseConstants.registerCollection,
+    FirebaseConstants.rentRecordsCollection,
+    FirebaseConstants.registerRoleCollection,
+    FirebaseConstants.userReportCollection,
+  ];
+  final List<String> storageDirectories = [
+    "banner_popups",
+    "banner_promos",
+    "car_images",
+    "driver_application",
+    "outsource_application",
+    "personal_documents_upload",
+    "rent_documents_upload",
+    "report_images",
+    "user_images"
+  ];
 
   // Function to create a backup of all specified Firestore collections and Storage directories
   Future<void> createBackup() async {
@@ -60,7 +81,10 @@ class _BackupRestoreState extends State<BackupRestore> {
       final querySnapshot = await firestore.collection(collection).get();
 
       for (var doc in querySnapshot.docs) {
-        collectionData[doc.id] = doc.data();
+        final docData = doc.data();
+        // Sanitize the document data
+        final sanitizedData = _sanitizeMap(docData);
+        collectionData[doc.id] = sanitizedData;
       }
 
       data[collection] = collectionData;
@@ -69,27 +93,58 @@ class _BackupRestoreState extends State<BackupRestore> {
     return data;
   }
 
+  Map<String, dynamic> _sanitizeMap(Map<dynamic, dynamic> map) {
+    final sanitizedMap = <String, dynamic>{};
+
+    map.forEach((key, value) {
+      if (value is String) {
+        sanitizedMap[key] = sanitizeJsonData(value);
+      } else if (value is Map) {
+        sanitizedMap[key] = _sanitizeMap(value); // Recursively sanitize nested maps
+      } else {
+        sanitizedMap[key] = value;
+      }
+    });
+
+    return sanitizedMap;
+  }
+
+
   // Function to backup multiple Firebase Storage directories
   Future<Map<String, dynamic>> _backupStorageFiles() async {
     final storageFilesData = <String, dynamic>{};
 
     for (var directory in storageDirectories) {
-      final directoryData = <String, dynamic>{};
-      final directoryRef = storage.ref().child(directory);
-      final ListResult result = await directoryRef.listAll();
-
-      for (var item in result.items) {
-        final fileData = await item.getData();
-        if (fileData != null) {
-          directoryData[item.name] = base64Encode(fileData); // Encode file as base64
-        }
-      }
-
+      final directoryData = await _listFilesRecursively(directory);
       storageFilesData[directory] = directoryData;
     }
 
     return storageFilesData;
   }
+
+// Helper function to recursively list files
+  Future<Map<String, dynamic>> _listFilesRecursively(String path) async {
+    final directoryData = <String, dynamic>{};
+    final directoryRef = storage.ref().child(path);
+    final result = await directoryRef.listAll();
+
+    // List files in the current directory
+    for (var item in result.items) {
+      final fileData = await item.getData();
+      if (fileData != null) {
+        directoryData[item.fullPath] = base64Encode(fileData);
+      }
+    }
+
+    // Recurse into subdirectories
+    for (var prefix in result.prefixes) {
+      final subdirectoryData = await _listFilesRecursively(prefix.fullPath);
+      directoryData.addAll(subdirectoryData);
+    }
+
+    return directoryData;
+  }
+
 
   // Function to upload backup JSON data to Firebase Storage
   Future<void> _uploadBackupToStorage(Map<String, dynamic> backupData) async {
@@ -121,18 +176,58 @@ class _BackupRestoreState extends State<BackupRestore> {
   Future<void> restoreBackup(String backupFileName) async {
     try {
       final backupRef = storage.ref('backups/$backupFileName');
-      final backupData = await backupRef.getData();
+      // Fetch the download URL instead of using getData() directly
+      final backupDownloadUrl = await backupRef.getDownloadURL();
+
+      // Download the file content using HTTP or any method to fetch the data as a byte array
+      final backupData = await _downloadFileData(backupDownloadUrl);
 
       if (backupData != null) {
-        final backupJson = jsonDecode(utf8.decode(backupData));
+        final backupJson;
+        try {
+          backupJson = jsonDecode(utf8.decode(backupData));
+        } catch (e) {
+          debugPrint("Decoding error at byte: ${backupData.length}");
+          debugPrint("Error message: $e");
+          return;
+        }
         await _restoreFirestoreData(backupJson['firestore']);
         await _restoreStorageFiles(backupJson['storage']);
-        print("Restore completed successfully.");
+        debugPrint("Restore completed successfully.");
+      } else {
+        throw Exception("Backup data is null.");
       }
     } catch (e) {
-      print("Error restoring backup: $e");
+      debugPrint("Error restoring backup: $e");
+      // Optional: Show user-friendly error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to restore backup: $e')),
+      );
     }
   }
+
+  String sanitizeJsonData(String input) {
+    // Replace control characters, quotation marks, backslashes, and ñ/Ñ with an empty string
+    return input.replaceAll(RegExp(r'[\x00-\x1F\x7F\"\\ñÑ\'']'), '');
+  }
+
+
+  Future<List<int>?> _downloadFileData(String downloadUrl) async {
+    try {
+      // Use the HTTP package to download the file from the URL (This is a simplified example)
+      final response = await http.get(Uri.parse(downloadUrl));
+
+      if (response.statusCode == 200) {
+        return response.bodyBytes; // Return the file as bytes
+      } else {
+        throw Exception("Failed to download file. Status code: ${response.statusCode}");
+      }
+    } catch (e) {
+      debugPrint("Error downloading file: $e");
+      return null;
+    }
+  }
+
 
   // Restore Firestore data for multiple collections
   // Function to restore Firestore data for multiple collections
@@ -140,7 +235,6 @@ class _BackupRestoreState extends State<BackupRestore> {
     final batch = FirebaseFirestore.instance.batch();
 
     try {
-      // Loop through the collections and documents
       for (var collectionName in firestoreData.keys) {
         final collectionData = firestoreData[collectionName];
 
@@ -155,43 +249,98 @@ class _BackupRestoreState extends State<BackupRestore> {
         // Step 2: Add new documents to the batch
         collectionData.forEach((docId, docData) {
           final docRef = collectionRef.doc(docId);
-          batch.set(docRef, docData); // Add set operation to batch
+          final sanitizedData = _sanitizeMap(docData); // Sanitize data before saving
+          batch.set(docRef, sanitizedData);
         });
       }
 
       // Step 3: Commit the batch after all operations are added
       await batch.commit();
     } catch (e) {
-      // Handle any errors here
-      print("Error during Firestore restore: $e");
+      debugPrint("Error during Firestore restore: $e");
     }
   }
 
 
+
   // Restore Firebase Storage files for multiple directories
   // Function to restore Firebase Storage files for multiple directories
+  // Restore Firebase Storage files for multiple directories
   Future<void> _restoreStorageFiles(Map<String, dynamic> storageFiles) async {
     for (var directory in storageFiles.entries) {
       final directoryName = directory.key;
-      final files = directory.value as Map<String, dynamic>;();
+      final files = directory.value as Map<String, dynamic>;
 
-      // Step 1: Remove existing files in the directory
-      final directoryRef = storage.ref().child(directoryName);
-      final ListResult result = await directoryRef.listAll();
+      debugPrint("directory name: $directoryName");
 
-      // Delete all existing files before restoring
-      for (var item in result.items) {
-        await item.delete();
-      }
+      // First, delete the contents of the directory
+      await deleteDirectory(directoryName);
 
-      // Step 2: Upload new files from the backup
+      // Step 1: Upload new files from the backup (optional)
       for (var fileEntry in files.entries) {
         final fileName = fileEntry.key;
         final fileData = base64Decode(fileEntry.value);
-        final fileRef = storage.ref().child('$directoryName/$fileName');
+
+        // Use the correct path structure
+        final fileRef = FirebaseStorage.instance.ref().child(fileName); // Assumes full path in `fileEntry.key`
 
         await fileRef.putData(fileData);
       }
+    }
+  }
+
+  Future<void> deleteDirectory(String directoryPath) async {
+    final storage = FirebaseStorage.instance;
+
+    // Recursively delete all files under the specified directory
+    await _deleteFilesRecursively(directoryPath, storage);
+
+    // After deleting files, check if the folder is now empty
+    await _checkAndRemoveEmptyFolder(directoryPath, storage);
+  }
+
+  Future<void> _deleteFilesRecursively(String path, FirebaseStorage storage) async {
+    try {
+      // Get reference to the directory
+      final directoryRef = storage.ref().child(path);
+
+      // List all items in the directory
+      final ListResult result = await directoryRef.listAll();
+
+      // Delete all files in the current directory
+      for (var item in result.items) {
+        try {
+          // Deleting each file
+          await item.delete();
+          debugPrint('Deleted: ${item.fullPath}');
+        } catch (e) {
+          debugPrint('Error deleting file ${item.fullPath}: $e');
+        }
+      }
+
+      // Recursively delete files in subdirectories
+      for (var prefix in result.prefixes) {
+        await _deleteFilesRecursively(prefix.fullPath, storage);
+      }
+    } catch (e) {
+      debugPrint('Error listing or deleting files in directory: $path, Error: $e');
+    }
+  }
+
+// After deleting files, check if the folder is now empty
+  Future<void> _checkAndRemoveEmptyFolder(String path, FirebaseStorage storage) async {
+    try {
+      final directoryRef = storage.ref().child(path);
+      final ListResult result = await directoryRef.listAll();
+
+      // If there are no items or prefixes left, it should be "empty"
+      if (result.items.isEmpty && result.prefixes.isEmpty) {
+        debugPrint('Folder is empty, folder: $path is now effectively deleted.');
+      } else {
+        debugPrint('Folder is not empty, something is still there.');
+      }
+    } catch (e) {
+      debugPrint('Error checking folder: $path, Error: $e');
     }
   }
 
@@ -231,10 +380,10 @@ class _BackupRestoreState extends State<BackupRestore> {
               ),
               const SizedBox(height: 15),
               createBackupButton(),
-              const SizedBox(height: 15),
               // List and Restore backups
+              const SizedBox(height: 15),
               backupRestoreList(),
-              const SizedBox(height: 60),
+              const SizedBox(height: 65),
             ],
           )
         )
@@ -247,34 +396,142 @@ class _BackupRestoreState extends State<BackupRestore> {
       child: FutureBuilder<List<Map<String, dynamic>>>(
         future: listBackups(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return CircularProgressIndicator(color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)));
-      
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(
+                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                ),
+              ),
+            );
+          }
+
+          if (snapshot.hasData && snapshot.data!.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 10, left: 25, right: 25),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          "lib/assets/pictures/data_not_found.jpg",
+                          width: MediaQuery.of(context).size.width - 200,
+                        ),
+                        const SizedBox(height: 20),
+                        CustomComponents.displayText(
+                            "No records found at the moment. Create your backup now.",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10
+                        ),
+                        const SizedBox(height: 10)
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text(
+                'Error loading backups. Please try again.',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 14,
+                  fontFamily: ProjectStrings.general_font_family
+                ),
+              ),
+            );
+          }
+
           final backups = snapshot.data!;
           return ListView.builder(
+            padding: EdgeInsets.zero,
             itemCount: backups.length,
             itemBuilder: (context, index) {
               final backup = backups[index];
               final date = backup['timestamp'].toLocal();
               final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(date);
-      
-              return ListTile(
-                title: Text('Backup: ${backup['name']}'),
-                subtitle: Text('Date: $formattedDate'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.restore),
-                  onPressed: () async {
-                    InfoDialog().showDecoratedTwoOptionsDialog(
-                        context: context,
-                        content: "Are you sure you want to proceed with this option? This action cannot be undone.",
-                        header: "Warning!",
-                        confirmAction: () async {
-                          await restoreBackup(backup['name']);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Restore completed successfully!')),
-                          );
-                        }
-                    );
-                  },
+
+              return Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                      color: Colors.white
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomComponents.displayText(
+                                backup["name"],
+                                color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                fontStyle: FontStyle.italic,
+                                fontSize: 12
+                            ),
+                            const SizedBox(height: 3),
+                            CustomComponents.displayText(
+                                "Date: $formattedDate",
+                                fontSize: 10
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.restore_page, color: Colors.red, size: 25),
+                              onPressed: () async {
+                                InfoDialog().showDecoratedTwoOptionsDialog(
+                                    context: context,
+                                    content: "Are you sure you want to proceed with this option? This action cannot be undone.",
+                                    header: "Warning!",
+                                    confirmAction: () async {
+                                      await restoreBackup(backup['name']);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Restore completed successfully!')),
+                                      );
+                                    }
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)), size: 25),
+                              onPressed: () async {
+                                InfoDialog().showDecoratedTwoOptionsDialog(
+                                    context: context,
+                                    content: "Are you sure you want to delete this backup? This action cannot be undone.",
+                                    header: "Confirm Deletion",
+                                    confirmAction: () async {
+                                      await deleteBackup(backup['name']);
+                                      setState(() {}); // Refresh list after deletion
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Backup deleted successfully!')),
+                                      );
+                                    }
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               );
             },
@@ -284,13 +541,24 @@ class _BackupRestoreState extends State<BackupRestore> {
     );
   }
 
+// Function to delete a specific backup
+  Future<void> deleteBackup(String backupFileName) async {
+    try {
+      final backupRef = storage.ref('backups/$backupFileName');
+      await backupRef.delete();
+      debugPrint("Backup deleted successfully.");
+    } catch (e) {
+      debugPrint("Error deleting backup: $e");
+    }
+  }
+
   Widget createBackupButton() {
     return GestureDetector(
       onTap: () {
         InfoDialog().showDecoratedTwoOptionsDialog(
           context: context,
           content: "Are you sure you want to proceed with this action?",
-          header: "Confirm Action",
+          header: "Create Backup",
           confirmAction: () async {
             await createBackup();
           }

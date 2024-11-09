@@ -50,6 +50,10 @@ class _InquiriesState extends State<Inquiries> {
     });
   }
 
+  Future<void> refreshPage() async {
+    await _retrieveRentRecords();
+  }
+
   Future<void> _retrieveRentRecords() async {
     try {
       // Show loading dialog
@@ -170,249 +174,255 @@ class _InquiriesState extends State<Inquiries> {
               color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
             ),
           )
-              : Column(
-            children: [
-              actionBar(),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: CustomComponents.displayText(ProjectStrings.ri_title,
-                      fontWeight: FontWeight.bold, fontSize: 12),
-                ),
-              ),
-              const SizedBox(height: 3),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: CustomComponents.displayText(
-                      ProjectStrings.ri_subheader, fontSize: 10),
-                ),
-              ),
-              // Switch option
-              const SizedBox(height: 15),
-              // switcher(ongoingInquiry, pastDuesInquiry),
-              switcher(),
-              const SizedBox(height: 15),
-              Expanded(
-                child: Padding(
+              : RefreshIndicator(
+            color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+            onRefresh: () async {
+              refreshPage();
+            },
+                child: Column(
+                            children: [
+                actionBar(),
+                const SizedBox(height: 20),
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: inquiriesWithUserData.isEmpty
-                      ? Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 30),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: CustomComponents.displayText(ProjectStrings.ri_title,
+                        fontWeight: FontWeight.bold, fontSize: 12),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: CustomComponents.displayText(
+                        ProjectStrings.ri_subheader, fontSize: 10),
+                  ),
+                ),
+                // Switch option
+                const SizedBox(height: 15),
+                // switcher(ongoingInquiry, pastDuesInquiry),
+                switcher(),
+                const SizedBox(height: 15),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: inquiriesWithUserData.isEmpty
+                        ? Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5)
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 30),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    "lib/assets/pictures/data_not_found.jpg",
+                                    width: MediaQuery.of(context).size.width - 200,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  CustomComponents.displayText(
+                                      "No records found at the moment. Please try again later.",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10
+                                  ),
+                                  const SizedBox(height: 10)
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                        : ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: rentInformationList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final rentInfo = rentInformationList[index]; // Use rentInformationList for rentInfo
+
+                        // Get user info and submitted files using the appropriate logic
+                        final userInfo = inquiriesWithUserData
+                            .firstWhere((element) => element['rentInformation'] == rentInfo)['userInfo'];
+                        final submittedFiles = inquiriesWithUserData
+                            .firstWhere((element) => element['rentInformation'] == rentInfo)['submittedFiles'];
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(7),
+                            ),
                             child: Column(
                               children: [
-                                Image.asset(
-                                  "lib/assets/pictures/data_not_found.jpg",
-                                  width: MediaQuery.of(context).size.width - 200,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 15, top: 10),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 3),
+                                        child: Container(
+                                          width: 30,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(int.parse(
+                                                ProjectColors.mainColorBackground.substring(2), radix: 16)),
+                                            border: Border.all(
+                                                color: Color(int.parse(ProjectColors.lineGray)), width: 1),
+                                          ),
+                                          child: Center(
+                                            child: CustomComponents.displayText(
+                                                "${index + 1}",
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 20.0),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            CustomComponents.displayText(
+                                              ProjectStrings.ri_renter_information_title,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            const SizedBox(height: 2),
+                                            CustomComponents.displayText(
+                                              ProjectStrings.ri_renter_information_subheader,
+                                              color: Color(int.parse(
+                                                  ProjectColors.lightGray.substring(2), radix: 16)),
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(height: 20),
-                                CustomComponents.displayText(
-                                    "No records found at the moment. Please try again later.",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10
+                                const SizedBox(height: 10),
+                                Container(
+                                  height: 1,
+                                  width: double.infinity,
+                                  color: Color(int.parse(ProjectColors.lineGray.substring(2), radix: 16)),
                                 ),
-                                const SizedBox(height: 10)
+                                buildInfoRow(ProjectStrings.ri_name_title, "${userInfo?.firstName} ${userInfo?.lastName}"),
+                                buildInfoRow(ProjectStrings.ri_email_title, userInfo?.email ?? "N/A"),
+                                buildInfoRow(ProjectStrings.ri_phone_number_title, userInfo?.number ?? "N/A"),
+                                buildInfoRow("Car Unit:", rentInfo.carName),
+                                buildInfoRow("Car Owner:", rentInfo.carOwner),
+                                buildInfoRow("Role:", userInfo?.role ?? "N/A"),
+                                buildInfoRow("Rent Location:", rentInfo.rentLocation),
+                                buildInfoRow("Est. Driving Distance:", rentInfo.estimatedDrivingDistance),
+                                buildInfoRow("Est. Driving Duration:", rentInfo.estimatedDrivingDuration),
+                                buildInfoRow(ProjectStrings.ri_rent_start_date_title, rentInfo.startDateTime),
+                                buildInfoRow(ProjectStrings.ri_rent_end_date_title, rentInfo.endDateTime),
+                                buildInfoRow(ProjectStrings.ri_delivery_mode_title, rentInfo.pickupOrDelivery),
+                                buildInfoRow(ProjectStrings.ri_delivery_location_title, rentInfo.deliveryLocation),
+                                buildInfoRow(ProjectStrings.ri_reserved_title, rentInfo.reservationFee == "0" ? "No" : "Yes"),
+                                buildInfoRow("With Driver:", rentInfo.withDriver.toLowerCase() == "no" ? "No" : "Yes"),
+                                buildInfoRow("Driver Fee:", rentInfo.driverFee),
+                                buildInfoRow("Total Amount:", rentInfo.totalAmount),
+                                const SizedBox(height: 30),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 15, right: 15),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: CustomComponents.displayText(
+                                      ProjectStrings.ri_attached_document,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                                ...submittedFiles.map((file) {
+                                  return displayDocuments(
+                                    file["storageLocation"],
+                                    (file["fileSize"] / 1024).toStringAsFixed(2),
+                                    DateFormat("MMMM dd, yyyy | hh:mm a").format(file["uploadDate"]).toString(),
+                                  );
+                                }),
+                                //  add note/approve button
+                                const SizedBox(height: 30),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      actionButton(
+                                        iconPath: "lib/assets/pictures/rentals_denied.png",
+                                        backgroundColor: ProjectColors.redButtonBackground,
+                                        labelText: ProjectStrings.ri_add_note,
+                                        textColor: ProjectColors.redButtonMain,
+                                        onTap: () {
+                                          Navigator.pushNamed(context, "rentals_report");
+                                        },
+                                      ),
+                                      const SizedBox(width: 10),
+                                      actionButton(
+                                        iconPath: "lib/assets/pictures/rentals_verified.png",
+                                        backgroundColor: ProjectColors.lightGreen,
+                                        labelText: ProjectStrings.ri_approve,
+                                        textColor: ProjectColors.greenButtonMain,
+                                        onTap: () {
+                                          InfoDialog().showWithCancelProceedButton(
+                                              context: context,
+                                              content: "Are you sure you want to approve this rent application? This action cannot be undone, and the applicant will be notified.",
+                                              header: "Confirm Approval",
+                                              actionCode: 1,
+                                              onProceed: () async {
+                                                InfoDialog().dismiss();
+                                                try {
+                                                  LoadingDialog().show(
+                                                      context: context,
+                                                      content: "Please wait while we update renting records"
+                                                  );
+                                                  await updateDB(rentInformationList[index]);
+                                                  LoadingDialog().dismiss();
+                                                  setState(() {
+                                                    for (int i = ongoingInquiry.length - 1; i >= 0; i--) {
+                                                      if (
+                                                      ongoingInquiry[i].rent_car_UID == rentInformationList[index].rent_car_UID &&
+                                                          ongoingInquiry[i].renterUID == rentInformationList[index].renterUID &&
+                                                          ongoingInquiry[i].startDateTime == rentInformationList[index].startDateTime &&
+                                                          ongoingInquiry[i].estimatedDrivingDistance == rentInformationList[index].estimatedDrivingDistance &&
+                                                          ongoingInquiry[i].estimatedDrivingDuration == rentInformationList[index].estimatedDrivingDuration
+                                                      ) {
+                                                        ongoingInquiry.removeAt(i);
+                                                        debugPrint("Item deleted");
+                                                      }
+                                                    }
+                                                  });
+                                                } catch(e) {
+                                                  InfoDialog().show(
+                                                    context: context,
+                                                    content: "An error occurred while updating the records. Please try again later. Error details: $e",
+                                                  );
+                                                }
+                                              }
+                                          );
+                                        },
+                                      )
+                                    ]
+                                ),
+
+                                const SizedBox(height: 30)
                               ],
                             ),
                           ),
-                        ),
-                      )
-                      : ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: rentInformationList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final rentInfo = rentInformationList[index]; // Use rentInformationList for rentInfo
-
-                      // Get user info and submitted files using the appropriate logic
-                      final userInfo = inquiriesWithUserData
-                          .firstWhere((element) => element['rentInformation'] == rentInfo)['userInfo'];
-                      final submittedFiles = inquiriesWithUserData
-                          .firstWhere((element) => element['rentInformation'] == rentInfo)['submittedFiles'];
-
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15, top: 10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 3),
-                                      child: Container(
-                                        width: 30,
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(int.parse(
-                                              ProjectColors.mainColorBackground.substring(2), radix: 16)),
-                                          border: Border.all(
-                                              color: Color(int.parse(ProjectColors.lineGray)), width: 1),
-                                        ),
-                                        child: Center(
-                                          child: CustomComponents.displayText(
-                                              "${index + 1}",
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20.0),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          CustomComponents.displayText(
-                                            ProjectStrings.ri_renter_information_title,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          const SizedBox(height: 2),
-                                          CustomComponents.displayText(
-                                            ProjectStrings.ri_renter_information_subheader,
-                                            color: Color(int.parse(
-                                                ProjectColors.lightGray.substring(2), radix: 16)),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Container(
-                                height: 1,
-                                width: double.infinity,
-                                color: Color(int.parse(ProjectColors.lineGray.substring(2), radix: 16)),
-                              ),
-                              buildInfoRow(ProjectStrings.ri_name_title, "${userInfo?.firstName} ${userInfo?.lastName}"),
-                              buildInfoRow(ProjectStrings.ri_email_title, userInfo?.email ?? "N/A"),
-                              buildInfoRow(ProjectStrings.ri_phone_number_title, userInfo?.number ?? "N/A"),
-                              buildInfoRow("Car Unit:", rentInfo.carName),
-                              buildInfoRow("Car Owner:", rentInfo.carOwner),
-                              buildInfoRow("Role:", userInfo?.role ?? "N/A"),
-                              buildInfoRow("Rent Location:", rentInfo.rentLocation),
-                              buildInfoRow("Est. Driving Distance:", rentInfo.estimatedDrivingDistance),
-                              buildInfoRow("Est. Driving Duration:", rentInfo.estimatedDrivingDuration),
-                              buildInfoRow(ProjectStrings.ri_rent_start_date_title, rentInfo.startDateTime),
-                              buildInfoRow(ProjectStrings.ri_rent_end_date_title, rentInfo.endDateTime),
-                              buildInfoRow(ProjectStrings.ri_delivery_mode_title, rentInfo.pickupOrDelivery),
-                              buildInfoRow(ProjectStrings.ri_delivery_location_title, rentInfo.deliveryLocation),
-                              buildInfoRow(ProjectStrings.ri_reserved_title, rentInfo.reservationFee == "0" ? "No" : "Yes"),
-                              buildInfoRow("With Driver:", rentInfo.withDriver.toLowerCase() == "no" ? "No" : "Yes"),
-                              buildInfoRow("Driver Fee:", rentInfo.driverFee),
-                              buildInfoRow("Total Amount:", rentInfo.totalAmount),
-                              const SizedBox(height: 30),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15, right: 15),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: CustomComponents.displayText(
-                                    ProjectStrings.ri_attached_document,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              ...submittedFiles.map((file) {
-                                return displayDocuments(
-                                  file["storageLocation"],
-                                  (file["fileSize"] / 1024).toStringAsFixed(2),
-                                  DateFormat("MMMM dd, yyyy | hh:mm a").format(file["uploadDate"]).toString(),
-                                );
-                              }),
-                              //  add note/approve button
-                              const SizedBox(height: 30),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    actionButton(
-                                      iconPath: "lib/assets/pictures/rentals_denied.png",
-                                      backgroundColor: ProjectColors.redButtonBackground,
-                                      labelText: ProjectStrings.ri_add_note,
-                                      textColor: ProjectColors.redButtonMain,
-                                      onTap: () {
-                                        Navigator.pushNamed(context, "rentals_report");
-                                      },
-                                    ),
-                                    const SizedBox(width: 10),
-                                    actionButton(
-                                      iconPath: "lib/assets/pictures/rentals_verified.png",
-                                      backgroundColor: ProjectColors.lightGreen,
-                                      labelText: ProjectStrings.ri_approve,
-                                      textColor: ProjectColors.greenButtonMain,
-                                      onTap: () {
-                                        InfoDialog().showWithCancelProceedButton(
-                                            context: context,
-                                            content: "Are you sure you want to approve this rent application? This action cannot be undone, and the applicant will be notified.",
-                                            header: "Confirm Approval",
-                                            actionCode: 1,
-                                            onProceed: () async {
-                                              InfoDialog().dismiss();
-                                              try {
-                                                LoadingDialog().show(
-                                                    context: context,
-                                                    content: "Please wait while we update renting records"
-                                                );
-                                                await updateDB(rentInformationList[index]);
-                                                LoadingDialog().dismiss();
-                                                setState(() {
-                                                  for (int i = ongoingInquiry.length - 1; i >= 0; i--) {
-                                                    if (
-                                                    ongoingInquiry[i].rent_car_UID == rentInformationList[index].rent_car_UID &&
-                                                        ongoingInquiry[i].renterUID == rentInformationList[index].renterUID &&
-                                                        ongoingInquiry[i].startDateTime == rentInformationList[index].startDateTime &&
-                                                        ongoingInquiry[i].estimatedDrivingDistance == rentInformationList[index].estimatedDrivingDistance &&
-                                                        ongoingInquiry[i].estimatedDrivingDuration == rentInformationList[index].estimatedDrivingDuration
-                                                    ) {
-                                                      ongoingInquiry.removeAt(i);
-                                                      debugPrint("Item deleted");
-                                                    }
-                                                  }
-                                                });
-                                              } catch(e) {
-                                                InfoDialog().show(
-                                                  context: context,
-                                                  content: "An error occurred while updating the records. Please try again later. Error details: $e",
-                                                );
-                                              }
-                                            }
-                                        );
-                                      },
-                                    )
-                                  ]
-                              ),
-
-                              const SizedBox(height: 30)
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
+                const SizedBox(height: 50),
+                            ],
+                          ),
               ),
-              const SizedBox(height: 50),
-            ],
-          ),
         ),
       ),
     );

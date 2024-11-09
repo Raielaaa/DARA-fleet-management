@@ -5,6 +5,7 @@ import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import "package:googleapis/apigeeregistry/v1.dart";
 import "package:mobkit_dashed_border/mobkit_dashed_border.dart";
 import 'package:file_picker/file_picker.dart';
 
@@ -296,7 +297,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
     );
   }
 
-  Widget _proceedButton() {
+  Widget _proceedButton(BuildContext parentContext) {
     return Padding(
       padding: const EdgeInsets.only(top: 80, left: 15, right: 15),
       child: ElevatedButton(
@@ -312,7 +313,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
         onPressed: () async {
           try {
             await updateDB();
-            Navigator.of(context).pushNamed("rp_verify_booking");
+            Navigator.of(parentContext).pushNamed("rp_verify_booking");
           } catch(e) {
             LoadingDialog().dismiss();
             InfoDialog().show(context: context, content: "Something wen wrong. ${e.toString()}.", header: "Warning");
@@ -451,7 +452,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
                               ),
                             ),
                             _submitDocuments("No file selected", 4),
-                            _proceedButton(),
+                            _proceedButton(context),
                             const SizedBox(height: 25),
                           ],
                         ),
