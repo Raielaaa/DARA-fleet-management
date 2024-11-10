@@ -800,7 +800,7 @@ class _ManageReportsState extends State<ManageReports> {
                       ),
                     ),
                     CustomComponents.displayText(
-                      ProjectStrings.manage_reports_appbar,
+                      "Management Dashboard",
                       fontWeight: FontWeight.bold,
                     ),
                     CustomComponents.menuButtons(context),
@@ -851,155 +851,138 @@ class _ManageReportsState extends State<ManageReports> {
 
                       // Admin Options
                       Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              top: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: CustomComponents.displayText(
-                                ProjectStrings.manage_reports_admin_options,
-                                fontWeight: FontWeight.bold,
-                                fontSize: MediaQuery.of(context).size.width * 0.03,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.05,
+                                top: MediaQuery.of(context).size.height * 0.02,
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: CustomComponents.displayText(
+                                  ProjectStrings.manage_reports_admin_options,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: MediaQuery.of(context).size.width * 0.03,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                          Container(
-                            width: double.infinity,
-                            height: 1,
-                            color: Color(int.parse(ProjectColors.lineGray)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: MediaQuery.of(context).size.width * 0.05,
-                              vertical: MediaQuery.of(context).size.height * 0.01,
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                            Container(
+                              width: double.infinity,
+                              height: 1,
+                              color: Color(int.parse(ProjectColors.lineGray)),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // application list
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed("manage_application_list");
-                                  },
-                                  child: buildAdminOption(
-                                    "lib/assets/pictures/application_list.png",
-                                    ProjectStrings.application_list_manage_title,
-                                    Colors.white,
-                                    context,
-                                  ),
-                                ),
-                                SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                                // inquiries
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed("manage_inquiries");
-                                  },
-                                  child: buildAdminOption(
-                                    "lib/assets/pictures/manage_report_inquiries.png",
-                                    ProjectStrings.manage_reports_inquiries,
-                                    Colors.white,
-                                    context,
-                                  ),
-                                ),
-                                SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                                // car status
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed("manage_car_status");
-                                  },
-                                  child: buildAdminOption(
-                                    "lib/assets/pictures/manage_report_car_status.png",
-                                    ProjectStrings.manage_reports_car_status,
-                                    Colors.white,
-                                    context,
-                                  ),
-                                ),
-                                SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                                // user list
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed("manage_user_list");
-                                  },
-                                  child: buildAdminOption(
-                                    "lib/assets/pictures/user_list.png",
-                                    ProjectStrings.manage_reports_user_list,
-                                    Colors.white,
-                                    context,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                            const SizedBox(height: 20),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // rent logs
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed("manage_rent_logs");
-                                },
-                                child: buildAdminOption(
-                                  "lib/assets/pictures/rents.png",
-                                  "Rent Logs",
-                                  Colors.white,
-                                  context,
-                                ),
-                              ),
-                              SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                              // units
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed("manage_car_list");
-                                },
-                                child: buildAdminOption(
-                                  "lib/assets/pictures/check_list.png",
-                                  "Units",
-                                  Colors.white,
-                                  context,
-                                ),
-                              ),
-                              SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                              // banner
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed("manage_banner");
-                                },
-                                child: buildAdminOption(
-                                  "lib/assets/pictures/banner.png",
-                                  "Banner",
-                                  Colors.white,
-                                  context,
-                                ),
-                              ),
-                              SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                              // backup restore
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed("manage_backup_restore");
-                                },
-                                child: buildAdminOption(
-                                  "lib/assets/pictures/cloud.png",
-                                  "Backup",
-                                  Colors.white,
-                                  context,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20)
-                        ],
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xff0564ff),
+                              icon: Icons.apps,
+                              text: "Applications",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_application_list");
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xff00be15),
+                              icon: Icons.question_answer,
+                              text: "Rent inquiries",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_inquiries");
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xfffe7701),
+                              icon: Icons.directions_car,
+                              text: "Car status",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_car_status");
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xffffb103),
+                              icon: Icons.people,
+                              text: "User list",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_user_list");
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xff00be11),
+                              icon: Icons.history,
+                              text: "Rent logs",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_rent_logs");
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xff0564ff),
+                              icon: Icons.car_repair,
+                              text: "Car units",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_car_list");
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xffff7500),
+                              icon: Icons.camera_alt,
+                              text: "Banner",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_banner");
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xff06bc19),
+                              icon: Icons.backup,
+                              text: "Backup and restore",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_backup_restore");
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xff0564ff),
+                              icon: Icons.location_on,
+                              text: "Garage location",
+                              onTap: () {
+
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xffffb103),
+                              icon: Icons.account_circle,
+                              text: "My account",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_user_list");
+                              },
+                            ),
+
+                            const SizedBox(height: 30)
+                          ],
+                        ),
                       ),
-                    ),
 
                       // Integrated Apps
                       const SizedBox(height: 30),
@@ -1137,6 +1120,7 @@ class _ManageReportsState extends State<ManageReports> {
                   ),
                 ),
               ),
+
             ],
           ),
         ),
@@ -1144,58 +1128,78 @@ class _ManageReportsState extends State<ManageReports> {
     );
   }
 
-  Widget buildAdminOption(String imagePath, String label, Color itemBgColor, BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.15,
-      height: MediaQuery.of(context).size.height * 0.10,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(7),
-        color: itemBgColor,
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.01,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.12,
-              height: MediaQuery.of(context).size.width * 0.12,
-              decoration: BoxDecoration(
-                color: Color(int.parse(ProjectColors.reportManageItemBackground)),
-                borderRadius: BorderRadius.circular(100),
+  Widget settingsListItem({
+    required BuildContext context,
+    required Color color,
+    required IconData icon,
+    required String text,
+    required VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15),
+      child: Material(
+        color: Colors.transparent, // Make the Material background transparent
+        child: InkWell(
+          onTap: onTap,
+          splashColor: Colors.blue.withOpacity(0.2), // Splash effect color
+          highlightColor: Colors.blue.withOpacity(0.1), // Highlight effect color
+          borderRadius: BorderRadius.circular(8), // Optional: adds rounded corners to the highlight effect
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        width: 32,
+                        height: 32,
+                      ),
+                      Icon(
+                        icon,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 20), // Spacing between icon and text
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+                    children: [
+                      CustomComponents.displayText(
+                        text,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                      const SizedBox(height: 10), // Space between text and bottom border
+                      Container(
+                        width: MediaQuery.of(context).size.width - 160,
+                        height: 1,
+                        color: Colors.grey.shade300, // Subtle divider line
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              child: Center(
-                child: Image.asset(
-                  imagePath,
-                  color: const Color(0xFF3FA2BE),
-                  width: imagePath.contains("manage_report_inquiries.png")
-                      ? MediaQuery.of(context).size.width * 0.055
-                      : imagePath.contains("application_list.png")
-                      ? MediaQuery.of(context).size.width * 0.035
-                      : imagePath.contains("banner")
-                      ? MediaQuery.of(context).size.width * 0.048
-                      : imagePath.contains("backup")
-                      ? MediaQuery.of(context).size.width * 0.055
-                      : imagePath.contains("check_list.png")
-                      ? MediaQuery.of(context).size.width * 0.055
-                      : imagePath.contains("cloud.png")
-                      ? MediaQuery.of(context).size.width * 0.043
-                      : MediaQuery.of(context).size.width * 0.045,
-                ),
+              const Icon(
+                Icons.chevron_right,
+                color: Color(0xffd6d6d6),
+                size: 25,
               ),
-            ),
+            ],
           ),
-          Positioned(
-            bottom: MediaQuery.of(context).size.height * 0.008,
-            child: CustomComponents.displayText(
-              label,
-              fontSize: 10,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
+
+
 
   Widget buildIntegratedApp(String imagePath, String label, String bgColor) {
     return Stack(
