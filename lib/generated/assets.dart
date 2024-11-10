@@ -58,6 +58,7 @@ class Assets {
   static const String assetsPicturesCarouselImage5 = 'lib/assets/pictures/carousel_image_5.png';
   static const String assetsPicturesCarouselImage6 = 'lib/assets/pictures/carousel_image_6.png';
   static const String assetsPicturesCheckList = 'lib/assets/pictures/check_list.png';
+  static const String assetsPicturesCloud = 'lib/assets/pictures/cloud.png';
   static const String assetsPicturesCloudy = 'lib/assets/pictures/cloudy.png';
   static const String assetsPicturesColorIcon = 'lib/assets/pictures/color_icon.png';
   static const String assetsPicturesDapBookNotSelected = 'lib/assets/pictures/dap_book_not_selected.png';
@@ -207,6 +208,7 @@ class Assets {
   static const String loginLogin = 'lib/view/pages/account/login/login.dart';
   static const String mapsDistanceCalculator = 'lib/services/maps/distance_calculator.dart';
   static const String mapsMapScreen = 'lib/services/maps/map_screen.dart';
+  static const String mapsMapScreenGarage = 'lib/services/maps/map_screen_garage.dart';
   static const String mapsMapScreenWeather = 'lib/services/maps/map_screen_weather.dart';
   static const String outsourceAccountingOutsource = 'lib/view/pages/outsource/accounting_outsource.dart';
   static const String outsourceApplicationOutsource = 'lib/view/pages/admin/manage/application_list/outsource/application_outsource.dart';

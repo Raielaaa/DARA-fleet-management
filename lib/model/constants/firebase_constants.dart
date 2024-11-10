@@ -11,6 +11,7 @@ class FirebaseConstants {
   static const String accountantCollection = "dara-accountant-records";
   static const String bannerPromosCollection = "banner_promos";
   static const String bannerPopupsCollection = "banner_popups";
+  static const String garageCollection = "dara-garage-location";
 
   static String URlforCarImages(String imagePath) {
     return "https://firebasestorage.googleapis.com/v0/b/dara-renting-app.appspot.com/o/car_images%2$imagePath}?alt=media";

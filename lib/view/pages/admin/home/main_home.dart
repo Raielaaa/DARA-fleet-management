@@ -1,3 +1,4 @@
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/controller/home/home_controller.dart";
 import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/controller/utils/constants.dart";
@@ -42,6 +43,8 @@ class _AdminHomeState extends State<AdminHome> {
   List<String> _userFiles = [];
   List<String> popupImageUrls = [];
   List<String> promoImageUrls = [];
+  double mapsGarageLatitude = 0.0;
+  double mapsGarageLongitude = 0.0;
 
   // Function to send a message
   void _sendMessage() async {
@@ -204,11 +207,42 @@ class _AdminHomeState extends State<AdminHome> {
       await fetchImages();
       await _fetchUserDocumentsForVerification();
       await _fetchUserInfo();
+      await retrieveGarageLocation();
       LoadingDialog().dismiss();
       homeController.showOpeningBanner(context, _userFiles.length, popupImageUrls[0]);
     } catch(e) {
       LoadingDialog().dismiss();
       debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
+    }
+  }
+
+  Future<void> retrieveGarageLocation() async {
+    try {
+      // Fetch the document from the Firestore collection
+      DocumentSnapshot<Map<String, dynamic>> result = await FirebaseFirestore.instance
+          .collection("dara-garage-location") // Ensure the collection name matches your database
+          .doc("garage_location") // Use the document ID "garage_location"
+          .get();
+
+      // Check if the document exists
+      if (result.exists) {
+        // Access the latitude and longitude fields from the document data
+        var data = result.data();
+        if (data != null) {
+          String latitude = data['garage_location_latitude'];
+          String longitude = data['garage_location_longitude'];
+
+          // Output the values for verification (or use them as needed in your app)
+          setState(() {
+            mapsGarageLatitude = double.parse(latitude);
+            mapsGarageLongitude = double.parse(longitude);
+          });
+        }
+      } else {
+        debugPrint('Document does not exist');
+      }
+    } catch (e) {
+      debugPrint('Error retrieving garage location: $e');
     }
   }
 
@@ -392,8 +426,7 @@ class _AdminHomeState extends State<AdminHome> {
                                 radix: 16)),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10, bottom: 10, right: 30, left: 30),
+                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 30, left: 30),
                             child: CustomComponents.displayText(
                               PersistentData().userType,
                               color: Colors.white,

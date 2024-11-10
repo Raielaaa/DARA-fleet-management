@@ -1,14 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 
-class MapScreen extends StatefulWidget {
+class MapScreenGarage extends StatefulWidget {
   @override
-  _MapScreenState createState() => _MapScreenState();
+  _MapScreenGarageState createState() => _MapScreenGarageState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapScreenGarageState extends State<MapScreenGarage> {
   late GoogleMapController mapController;
   LatLng selectedLocation = LatLng(14.195691850762733, 121.1643007807619);
 
@@ -41,31 +42,29 @@ class _MapScreenState extends State<MapScreen> {
         onPressed: () async {
           PersistentData _persistentData = PersistentData();
 
-          _persistentData.mapsLongitude = selectedLocation.longitude.toString();
-          _persistentData.mapsLatitude = selectedLocation.latitude.toString();
+          // Update PersistentData with selected location
+          _persistentData.mapsGarageLongitude = selectedLocation.longitude.toString();
+          _persistentData.mapsGarageLatitude = selectedLocation.latitude.toString();
 
-          // Fetch the list of placemarks
+          debugPrint("Longitude: ${_persistentData.mapsGarageLongitude}");
+          debugPrint("Latitude: ${_persistentData.mapsGarageLatitude}");
+
+          // Fetch detailed location info using geocoding
           List<Placemark> placemarks = await placemarkFromCoordinates(
               selectedLocation.latitude, selectedLocation.longitude
           );
-
-          // Extract the first placemark (most relevant)
           Placemark place = placemarks[0];
 
-          // Format the detailed location
+          // Format detailed location
           String detailedLocation = "${place.subThoroughfare}, "
               "${place.thoroughfare}, ${place.locality}, ${place.subAdministrativeArea}, "
               "${place.administrativeArea}, ${place.postalCode}, ${place.country}";
-
-          // Clean up the result to remove any null or empty fields
           detailedLocation = detailedLocation.replaceAll(", null", "").replaceAll(", ,", "");
 
-          // Debug print the detailed location
           debugPrint("Detailed Location: $detailedLocation");
 
-          //  for distance calculation
-          _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude = detailedLocation;
-          debugPrint("Brief selected location - ${_persistentData.bookingDetailsMapsLocationFromLongitudeLatitude}");
+          // Save selected location to Firestore
+          await updateGarageLocationInFirestore(selectedLocation.latitude, selectedLocation.longitude);
 
           // Navigate back and pass the selected location
           Navigator.pop(context, detailedLocation);
@@ -73,5 +72,20 @@ class _MapScreenState extends State<MapScreen> {
         child: Icon(Icons.check),
       ),
     );
+  }
+
+  Future<void> updateGarageLocationInFirestore(double latitude, double longitude) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("dara-garage-location")
+          .doc("garage_location")
+          .update({
+        'garage_location_latitude': latitude.toString(),
+        'garage_location_longitude': longitude.toString(),
+      });
+      debugPrint("Garage location updated successfully in Firestore.");
+    } catch (e) {
+      debugPrint("Error updating garage location: $e");
+    }
   }
 }

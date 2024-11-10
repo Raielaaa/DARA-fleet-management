@@ -1,5 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/controller/utils/intent_utils.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
@@ -30,14 +31,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  double mapsGarageLatitude = 0.0;
+  double mapsGarageLongitude = 0.0;
   int selectedDrawerIndex = 0;
 
   @override
   void initState() {
     super.initState();
     PersistentData().scaffoldKey = scaffoldKey;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Calls showDialog method right after screen display
+      await retrieveGarageLocation();
       showSuccessfulRegisterSnackbar();
     });
 
@@ -49,6 +53,34 @@ class _HomePageState extends State<HomePage> {
     };
 
     PersistentData().scaffoldKey = scaffoldKey; // Set the scaffold key in the singleton
+  }
+
+  Future<void> retrieveGarageLocation() async {
+    try {
+      // Fetch the document from the Firestore collection
+      DocumentSnapshot<Map<String, dynamic>> result = await FirebaseFirestore.instance
+          .collection("dara-garage-location") // Ensure the collection name matches your database
+          .doc("garage_location") // Use the document ID "garage_location"
+          .get();
+
+      // Check if the document exists
+      if (result.exists) {
+        // Access the latitude and longitude fields from the document data
+        var data = result.data();
+        if (data != null) {
+          String latitude = data['garage_location_latitude'];
+          String longitude = data['garage_location_longitude'];
+
+          // Output the values for verification (or use them as needed in your app)
+          mapsGarageLatitude = double.parse(latitude);
+          mapsGarageLongitude = double.parse(longitude);
+        }
+      } else {
+        debugPrint('Document does not exist');
+      }
+    } catch (e) {
+      debugPrint('Error retrieving garage location: $e');
+    }
   }
 
   // Shows dialog if the previous registration process is successful
@@ -125,7 +157,9 @@ class _HomePageState extends State<HomePage> {
             inactiveForegroundColor: PersistentData().userType.toLowerCase() == "admin" ? CupertinoColors.activeBlue : Color(int.parse(ProjectColors.lightBlue.substring(2), radix: 16)),
           ),
           onPressed: (context) async {
-            PersistentData().userType.toLowerCase() == "admin" ? IntentUtils.launchAntripIOT(androidPackageName: "com.slxk.gpsantu") : await IntentUtils.launchGoogleMaps();
+            debugPrint("longitude-test: $mapsGarageLongitude");
+            debugPrint("latitude-test: $mapsGarageLatitude");
+            PersistentData().userType.toLowerCase() == "admin" ? IntentUtils.launchAntripIOT(androidPackageName: "com.slxk.gpsantu") : await IntentUtils.launchGoogleMaps(mapsGarageLongitude, mapsGarageLatitude);
           }
         ),
         PersistentTabConfig(
@@ -169,7 +203,8 @@ class _HomePageState extends State<HomePage> {
           child: FloatingActionButton(
             backgroundColor: Colors.white,
             onPressed: () async {
-              await IntentUtils.launchGoogleMaps();
+
+              await IntentUtils.launchGoogleMaps(mapsGarageLongitude, mapsGarageLatitude);
             },
             shape: const CircleBorder(),
             child: ClipRRect(

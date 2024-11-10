@@ -964,8 +964,8 @@ class _ManageReportsState extends State<ManageReports> {
                               color: const Color(0xff0564ff),
                               icon: Icons.location_on,
                               text: "Garage location",
-                              onTap: () {
-
+                              onTap: () async {
+                                await Navigator.of(context).pushNamed("map_screen_for_garage");
                               },
                             ),
                             const SizedBox(height: 20),

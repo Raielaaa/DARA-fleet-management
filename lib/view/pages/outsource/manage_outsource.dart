@@ -1,3 +1,4 @@
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/view/pages/accountant/income_dialog.dart";
 import "package:dara_app/view/pages/accountant/stateful_dialog.dart";
 import "package:dara_app/view/shared/colors.dart";
@@ -17,6 +18,48 @@ class OutsourceManage extends StatefulWidget {
 }
 
 class _OutsourceManageState extends State<OutsourceManage> {
+  double mapsGarageLatitude = 0.0;
+  double mapsGarageLongitude = 0.0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Calls showDialog method right after screen display
+      retrieveGarageLocation();
+    });
+  }
+
+  Future<void> retrieveGarageLocation() async {
+    try {
+      // Fetch the document from the Firestore collection
+      DocumentSnapshot<Map<String, dynamic>> result = await FirebaseFirestore.instance
+          .collection("dara-garage-location") // Ensure the collection name matches your database
+          .doc("garage_location") // Use the document ID "garage_location"
+          .get();
+
+      // Check if the document exists
+      if (result.exists) {
+        // Access the latitude and longitude fields from the document data
+        var data = result.data();
+        if (data != null) {
+          String latitude = data['garage_location_latitude'];
+          String longitude = data['garage_location_longitude'];
+
+          // Output the values for verification (or use them as needed in your app)
+          mapsGarageLatitude = double.parse(latitude);
+          mapsGarageLongitude = double.parse(longitude);
+        }
+      } else {
+        debugPrint('Document does not exist');
+      }
+    } catch (e) {
+      debugPrint('Error retrieving garage location: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -267,7 +310,7 @@ class _OutsourceManageState extends State<OutsourceManage> {
           children: [
             GestureDetector(
               onTap: () async {
-                await IntentUtils.launchGoogleMaps();
+                await IntentUtils.launchGoogleMaps(mapsGarageLongitude, mapsGarageLatitude);
               },
               child: buildIntegratedApp(
                 "lib/assets/pictures/google_maps_icon.png",

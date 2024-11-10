@@ -1,6 +1,7 @@
 import 'package:dara_app/controller/providers/register_provider.dart';
 import 'package:dara_app/controller/rentals/rent_log.dart';
 import 'package:dara_app/services/maps/map_screen.dart';
+import 'package:dara_app/services/maps/map_screen_garage.dart';
 import 'package:dara_app/services/maps/map_screen_weather.dart';
 import 'package:dara_app/view/pages/account/account_opening.dart';
 import 'package:dara_app/view/pages/account/login/login.dart';
@@ -203,7 +204,7 @@ class MyApp extends StatelessWidget {
             "ap_document_submission": (context) => const DocumentSubmission(),
             "ap_process_complete": (context) => const ProcessComplete(),
 
-            //  Driver
+            //  Drivers
             "driver_main": (context) => const Driver(),
             "driver_ap_supporting_documents": (context) => const DriverSupportingDocuments(),
             "driver_ap_personal_information": (context) => const DriverPersonalInformation(),
@@ -211,6 +212,7 @@ class MyApp extends StatelessWidget {
             "driver_ap_educ_prof_information": (context) => const DriverEducProfInformation(),
 
             //  maps
+            "map_screen_for_garage": (context) => MapScreenGarage(),
             "map_screen": (context) => MapScreen(),
             "map_screen_weather": (context) => MapScreenWeather()
           },

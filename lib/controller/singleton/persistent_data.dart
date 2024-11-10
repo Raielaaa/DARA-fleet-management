@@ -228,4 +228,8 @@ class PersistentData {
   //////    banners and promos    //////
   List<String> popupImageUrls = [];
   List<String> promoImageUrls = [];
+
+  ///////   maps garage   //////
+  String mapsGarageLongitude = "";
+  String mapsGarageLatitude = "";
 }
