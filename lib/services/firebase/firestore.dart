@@ -328,6 +328,18 @@ class Firestore {
       debugPrint("Error updating rent status: $e");
     }
   }
+  
+  Future<void> updateCarStatus({
+    required String carUID,
+    required String newStatus
+  }) async {
+    await _firestore
+      .collection(FirebaseConstants.carInfoCollection)
+      .doc(carUID)
+      .update({
+        "car_availability" : newStatus
+      });
+  }
 
   Future<void> updateRentStatusRentLogs({
     required String carUID,

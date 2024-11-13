@@ -389,6 +389,7 @@ class Assets {
   static const String sharedLoading = 'lib/view/shared/loading.dart';
   static const String sharedStrings = 'lib/view/shared/strings.dart';
   static const String singletonPersistentData = 'lib/controller/singleton/persistent_data.dart';
+  static const String statusEditCarStatus = 'lib/view/pages/admin/manage/status/edit_car_status.dart';
   static const String statusStatus = 'lib/view/pages/admin/manage/status/status.dart';
   static const String unitsAddUnit = 'lib/view/pages/admin/manage/units/add_unit.dart';
   static const String unitsEditUnit = 'lib/view/pages/admin/manage/units/edit_unit.dart';
