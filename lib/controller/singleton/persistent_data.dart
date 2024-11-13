@@ -232,4 +232,7 @@ class PersistentData {
   ///////   maps garage   //////
   String mapsGarageLongitude = "";
   String mapsGarageLatitude = "";
+
+  double latitudeForGarage = 0.0;
+  double longitudeForGarage = 0.0;
 }

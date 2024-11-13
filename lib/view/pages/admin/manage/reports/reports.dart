@@ -978,35 +978,55 @@ class _ManageReportsState extends State<ManageReports> {
                                 Navigator.of(context).pushNamed("manage_user_list");
                               },
                             ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xffe93c2e),
+                              icon: Icons.description,
+                              text: "Reports",
+                              onTap: () {
+                                // Navigator.of(context).pushNamed("manage_user_list");
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            settingsListItem(
+                              context: context,
+                              color: const Color(0xff06bc19),
+                              icon: Icons.integration_instructions,
+                              text: "Integrated Apps",
+                              onTap: () {
+                                Navigator.of(context).pushNamed("manage_integrated_apps");
+                              },
+                            ),
 
                             const SizedBox(height: 30)
                           ],
                         ),
                       ),
 
-                      // Integrated Apps
-                      const SizedBox(height: 30),
-                      CustomComponents.displayText(
-                        ProjectStrings.manage_reports_integrated_apps,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                      const SizedBox(height: 15),
-                      Row(
-                        children: [
-                          buildIntegratedApp(
-                            "lib/assets/pictures/google_maps_icon.png",
-                            ProjectStrings.manage_reports_google_maps,
-                            "0xffffffff"
-                          ),
-                          const SizedBox(width: 15),
-                          buildIntegratedApp(
-                            "lib/assets/pictures/bottom_nav_bar_antrip.png",
-                            ProjectStrings.manage_reports_antrip_iot,
-                            ProjectColors.antripIOTColor
-                          ),
-                        ],
-                      ),
+                      // // Integrated Apps
+                      // const SizedBox(height: 30),
+                      // CustomComponents.displayText(
+                      //   ProjectStrings.manage_reports_integrated_apps,
+                      //   fontWeight: FontWeight.bold,
+                      //   fontSize: 12,
+                      // ),
+                      // const SizedBox(height: 15),
+                      // Row(
+                      //   children: [
+                      //     buildIntegratedApp(
+                      //       "lib/assets/pictures/google_maps_icon.png",
+                      //       ProjectStrings.manage_reports_google_maps,
+                      //       "0xffffffff"
+                      //     ),
+                      //     const SizedBox(width: 15),
+                      //     buildIntegratedApp(
+                      //       "lib/assets/pictures/bottom_nav_bar_antrip.png",
+                      //       ProjectStrings.manage_reports_antrip_iot,
+                      //       ProjectColors.antripIOTColor
+                      //     ),
+                      //   ],
+                      // ),
 
                       // Reports Section
                       const SizedBox(height: 30),

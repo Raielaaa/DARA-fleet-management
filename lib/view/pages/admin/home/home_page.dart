@@ -74,6 +74,8 @@ class _HomePageState extends State<HomePage> {
           // Output the values for verification (or use them as needed in your app)
           mapsGarageLatitude = double.parse(latitude);
           mapsGarageLongitude = double.parse(longitude);
+          PersistentData().longitudeForGarage = mapsGarageLongitude;
+          PersistentData().latitudeForGarage = mapsGarageLatitude;
         }
       } else {
         debugPrint('Document does not exist');
