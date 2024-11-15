@@ -18,9 +18,26 @@ class CarouselPage2 extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Image.asset(
-                "lib/assets/pictures/carousel_image_2.png",
-                width: double.infinity,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 16 / 9 - 0.78,
+                        child: Container(
+                          width: constraints.maxWidth,
+                          color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
+                        ),
+                      ),
+                      // Actual image
+                      Image.asset(
+                        "lib/assets/pictures/carousel_image_2.png",
+                        width: constraints.maxWidth,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             Padding(
