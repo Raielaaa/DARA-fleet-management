@@ -38,38 +38,41 @@ class _MapScreenGarageState extends State<MapScreenGarage> {
           ),
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          PersistentData _persistentData = PersistentData();
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 60),
+        child: FloatingActionButton(
+          onPressed: () async {
+            PersistentData _persistentData = PersistentData();
 
-          // Update PersistentData with selected location
-          _persistentData.mapsGarageLongitude = selectedLocation.longitude.toString();
-          _persistentData.mapsGarageLatitude = selectedLocation.latitude.toString();
+            // Update PersistentData with selected location
+            _persistentData.mapsGarageLongitude = selectedLocation.longitude.toString();
+            _persistentData.mapsGarageLatitude = selectedLocation.latitude.toString();
 
-          debugPrint("Longitude: ${_persistentData.mapsGarageLongitude}");
-          debugPrint("Latitude: ${_persistentData.mapsGarageLatitude}");
+            debugPrint("Longitude: ${_persistentData.mapsGarageLongitude}");
+            debugPrint("Latitude: ${_persistentData.mapsGarageLatitude}");
 
-          // Fetch detailed location info using geocoding
-          List<Placemark> placemarks = await placemarkFromCoordinates(
-              selectedLocation.latitude, selectedLocation.longitude
-          );
-          Placemark place = placemarks[0];
+            // Fetch detailed location info using geocoding
+            List<Placemark> placemarks = await placemarkFromCoordinates(
+                selectedLocation.latitude, selectedLocation.longitude
+            );
+            Placemark place = placemarks[0];
 
-          // Format detailed location
-          String detailedLocation = "${place.subThoroughfare}, "
-              "${place.thoroughfare}, ${place.locality}, ${place.subAdministrativeArea}, "
-              "${place.administrativeArea}, ${place.postalCode}, ${place.country}";
-          detailedLocation = detailedLocation.replaceAll(", null", "").replaceAll(", ,", "");
+            // Format detailed location
+            String detailedLocation = "${place.subThoroughfare}, "
+                "${place.thoroughfare}, ${place.locality}, ${place.subAdministrativeArea}, "
+                "${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+            detailedLocation = detailedLocation.replaceAll(", null", "").replaceAll(", ,", "");
 
-          debugPrint("Detailed Location: $detailedLocation");
+            debugPrint("Detailed Location: $detailedLocation");
 
-          // Save selected location to Firestore
-          await updateGarageLocationInFirestore(selectedLocation.latitude, selectedLocation.longitude);
+            // Save selected location to Firestore
+            await updateGarageLocationInFirestore(selectedLocation.latitude, selectedLocation.longitude);
 
-          // Navigate back and pass the selected location
-          Navigator.pop(context, detailedLocation);
-        },
-        child: Icon(Icons.check),
+            // Navigate back and pass the selected location
+            Navigator.pop(context, detailedLocation);
+          },
+          child: Icon(Icons.check),
+        ),
       ),
     );
   }

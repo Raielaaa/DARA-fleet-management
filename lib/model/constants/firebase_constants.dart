@@ -5,7 +5,7 @@ class FirebaseConstants {
   static const String rentRecordsCollection = "dara-rent-records";
   static const String rentDocumentsUpload = "rent_documents_upload";
   static const String reportImages = "report_images";
-  static const String userReportCollection = "data-user-reports";
+  static const String userReportCollection = "dara-user-reports";
   static const String outsourceApplication = "dara-outsource-application";
   static const String driverApplication = "dara-driver-application";
   static const String accountantCollection = "dara-accountant-records";

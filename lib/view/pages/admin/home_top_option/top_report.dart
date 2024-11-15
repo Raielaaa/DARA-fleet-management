@@ -13,7 +13,10 @@ import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:image_picker/image_picker.dart";
+import "package:intl/intl.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
+
+import "../../../../controller/singleton/persistent_data.dart";
 
 class TopOptionReport extends StatefulWidget {
   const TopOptionReport({super.key});
@@ -235,6 +238,11 @@ class _TopOptionReportState extends State<TopOptionReport> {
         ),
       ],
     );
+  }
+
+  String getCurrentFormattedDateTime() {
+    DateTime now = DateTime.now();
+    return DateFormat('MMMM dd, yyyy : hh:mm a').format(now);
   }
 
   @override
@@ -542,11 +550,17 @@ class _TopOptionReportState extends State<TopOptionReport> {
                                     await Firestore().addReport(
                                         documentName: documentNameAndProblemUID,
                                         data: ReportModel(
-                                            problemSource: carBrands[selectedCard],
-                                            location: _reportLocationController.value.text,
-                                            selectedProblems: compiledSelectedProblems,
-                                            comments: _commentsController.value.text,
-                                            problemUID: documentNameAndProblemUID
+                                          problemSource: carBrands[selectedCard],
+                                          location: _reportLocationController.value.text,
+                                          selectedProblems: compiledSelectedProblems,
+                                          comments: _commentsController.value.text,
+                                          problemUID: documentNameAndProblemUID,
+                                          reportStatus: "unresolved",
+                                          senderName: "${PersistentData().userInfo?.firstName} ${PersistentData().userInfo?.lastName}",
+                                          senderEmail: PersistentData().userInfo!.email,
+                                          senderPhoneNumber: PersistentData().userInfo!.number,
+                                          senderStatus: PersistentData().userInfo!.status,
+                                          dateSubmitted: getCurrentFormattedDateTime()
                                         ).getModelData()
                                     );
                                     await uploadImage(documentNameAndProblemUID);

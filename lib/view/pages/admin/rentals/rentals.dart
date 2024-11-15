@@ -125,7 +125,7 @@ class _Rentals extends State<Rentals> {
   }
 
 
-  Future<void> _seeCompleteBookingInfo(RentInformation rentInformation, CompleteCarInfo carInformation) async {
+  Future<void> _seeCompleteBookingInfo(RentInformation rentInformation, CompleteCarInfo carInformation, BuildContext parentContext) async {
     // LoadingDialog().show(context: context, content: "Please wait while we retrieve your rent information.");
 
     return showDialog(
@@ -406,29 +406,29 @@ class _Rentals extends State<Rentals> {
                     child: Row(
                       children: [
                         //  report
-                        Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(int.parse(
-                                  ProjectColors.redButtonBackground
-                                      .substring(2),
-                                  radix: 16)),
-                            ),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: Image.asset(
-                                    "lib/assets/pictures/rentals_denied.png",
-                                    width: 20,
-                                    height: 20,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(parentContext, "to_report");
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(int.parse(
+                                    ProjectColors.redButtonBackground
+                                        .substring(2),
+                                    radix: 16)),
+                              ),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Image.asset(
+                                      "lib/assets/pictures/rentals_denied.png",
+                                      width: 20,
+                                      height: 20,
+                                    ),
                                   ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, "rentals_report");
-                                  },
-                                  child: Padding(
+                                  Padding(
                                     padding: const EdgeInsets.only(
                                         top: 10, bottom: 10, right: 25, left: 5),
                                     child: CustomComponents.displayText(
@@ -441,9 +441,9 @@ class _Rentals extends State<Rentals> {
                                       fontSize: 10,
                                     ),
                                   ),
-                                ),
-                              ],
-                            )),
+                                ],
+                              )),
+                        ),
 
                         //  approved
                         const SizedBox(width: 20),
@@ -503,7 +503,8 @@ class _Rentals extends State<Rentals> {
     required String startDate,
     required String endDate,
     required String totalAmount,
-    required String rentStatus
+    required String rentStatus,
+    required BuildContext parentContext
   }) {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
@@ -585,7 +586,7 @@ class _Rentals extends State<Rentals> {
                             final CompleteCarInfo selectedCarCompleteInfo = await RentLog().getSelectedCarCompleteInfo(carName: carName);
                             LoadingDialog().dismiss();
 
-                            _seeCompleteBookingInfo(retrievedRentingData[0], selectedCarCompleteInfo);
+                            _seeCompleteBookingInfo(retrievedRentingData[0], selectedCarCompleteInfo, parentContext);
                           },
                           child: Align(
                             alignment: Alignment.centerRight,
@@ -708,7 +709,7 @@ class _Rentals extends State<Rentals> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext parentContext) {
     return Scaffold(
       body: _isLoading ? const Center(child: CircularProgressIndicator()) // Show loading indicator
           : Container(
@@ -884,7 +885,8 @@ class _Rentals extends State<Rentals> {
                         startDate: rentInfo.startDateTime,
                         endDate: rentInfo.endDateTime,
                         totalAmount: "PHP ${rentInfo.totalAmount} / total",
-                        rentStatus: rentInfo.rentStatus.toLowerCase()
+                        rentStatus: rentInfo.rentStatus.toLowerCase(),
+                        parentContext: parentContext
                       );
                     },
                   ),

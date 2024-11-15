@@ -7,6 +7,7 @@ import 'package:dara_app/model/driver/driver_application.dart';
 import 'package:dara_app/model/home/featured_car_info.dart';
 import 'package:dara_app/model/outsource/OutsourceApplication.dart';
 import 'package:dara_app/model/renting_proccess/renting_process.dart';
+import 'package:dara_app/model/report/report.dart';
 import 'package:dara_app/view/shared/info_dialog.dart';
 import 'package:dara_app/view/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -109,6 +110,13 @@ class Firestore {
     QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.carInfoCollection).get();
     return querySnapshot.docs
         .map((doc) => FeaturedCarInfo.fromFirestore(doc.data() as Map<String, dynamic>))
+        .toList();
+  }
+  
+  Future<List<ReportModel>> getReports() async {
+    QuerySnapshot querySnapshot = await _firestore.collection(FirebaseConstants.userReportCollection).get();
+    return querySnapshot.docs
+        .map((doc) => ReportModel.fromFirestore(doc.data() as Map<String, dynamic>))
         .toList();
   }
 

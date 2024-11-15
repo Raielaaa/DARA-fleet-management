@@ -207,6 +207,7 @@ class Assets {
   static const String libFirebaseOptions = 'lib/firebase_options.dart';
   static const String libMain = 'lib/main.dart';
   static const String loginLogin = 'lib/view/pages/account/login/login.dart';
+  static const String mainReportReportPage = 'lib/view/pages/admin/manage/main_report/report_page.dart';
   static const String mapsDistanceCalculator = 'lib/services/maps/distance_calculator.dart';
   static const String mapsMapScreen = 'lib/services/maps/map_screen.dart';
   static const String mapsMapScreenGarage = 'lib/services/maps/map_screen_garage.dart';
