@@ -239,8 +239,8 @@ class _UserInfoState extends State<UserInfo> {
               _infoField(ProjectStrings.ri_email_title, "${PersistentData().selectedUser?.email}"),
               _infoField(ProjectStrings.ri_phone_number_title, "${PersistentData().selectedUser?.number}"),
               _infoField("Role", "${PersistentData().selectedUser?.role}"),
-              _infoField("Birthday", "${PersistentData().selectedUser?.birthday}"),
-              _infoField(ProjectStrings.admin_user_info_age_title, "${calculateAge(PersistentData().selectedUser!.birthday)} years old"),
+              _infoField("Birthday", PersistentData().selectedUser?.birthday ?? ""),
+              _infoField(ProjectStrings.admin_user_info_age_title, PersistentData().selectedUser!.birthday.isNotEmpty ? "${calculateAge(PersistentData().selectedUser!.birthday)} years old" : ""),
               _infoField(ProjectStrings.admin_user_info_account_status_title, "${PersistentData().selectedUser?.status}"),
               _infoField(ProjectStrings.admin_user_info_date_registered_title, "${PersistentData().selectedUser?.dateCreated}"),
           

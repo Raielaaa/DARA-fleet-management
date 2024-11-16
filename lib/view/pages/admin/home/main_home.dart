@@ -204,6 +204,7 @@ class _AdminHomeState extends State<AdminHome> {
   Future<void> _fetchAllHomeInfo() async {
     LoadingDialog().show(context: context, content: "Please wait while we retrieve your profile information.");
     try {
+      debugPrint("current-logged-in-user: ${FirebaseAuth.instance.currentUser!.uid} - ${FirebaseAuth.instance.currentUser!.email}");
       await fetchImages();
       await _fetchUserDocumentsForVerification();
       await _fetchUserInfo();
@@ -665,16 +666,27 @@ class _AdminHomeState extends State<AdminHome> {
                               // );
                               try {
                                 InfoDialog().showWithCancelProceedButton(
-                                    context: context,
-                                    content: "Are you sure you want to logout your account?",
-                                    header: "Confirm Action",
-                                    actionCode: 1,
-                                    onProceed: () async {
-                                  await FirebaseAuth.instance.signOut();
-                                  InfoDialog().dismiss();
-                                  _controller.dispose();
-                                  Navigator.of(context, rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (context) => const AccountOpening()));
-                                });
+                                  context: context,
+                                  content: "Are you sure you want to logout your account?",
+                                  header: "Confirm Action",
+                                  actionCode: 1,
+                                  onProceed: () async {
+                                    try {
+                                      await FirebaseAuth.instance.signOut(); // Firebase sign-out
+                                      await PersistentData().googleSignIn.signOut(); // Google sign-out
+                                      PersistentData().clear(); // Clear stored data
+
+                                      InfoDialog().dismiss();
+                                      _controller.dispose();
+
+                                      Navigator.of(context, rootNavigator: true).pushReplacement(
+                                        MaterialPageRoute(builder: (context) => const AccountOpening()),
+                                      );
+                                    } catch (e) {
+                                      InfoDialog().show(context: context, content: "Logout error: ${e.toString()}", header: "Error");
+                                    }
+                                  },
+                                );
                               } catch(e) {
                                 debugPrint("Error@main_home.dart@ln601: $e");
                               }

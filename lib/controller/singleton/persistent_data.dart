@@ -6,6 +6,7 @@ import 'package:dara_app/model/outsource/OutsourceApplication.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
@@ -70,6 +71,15 @@ class PersistentData {
   String userUId = "";
 
   String birthdayFromGoogleSignIn = "";
+
+  //    google signing/signout
+  GoogleSignInAccount? googleAccount;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  void clear() {
+    googleAccount = null;
+  }
+
 
   //  maps
   String mapsLatitude = "";

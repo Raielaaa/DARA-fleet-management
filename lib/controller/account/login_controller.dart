@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/services/firebase/auth.dart';
 import 'package:dara_app/services/google/google.dart';
@@ -46,6 +47,7 @@ class LoginController {
           documentName: userUID ?? "empty document name",
           data: _userData.getModelData()
       );
+      LoadingDialog().dismiss();
       Navigator.of(context).pushNamed("home_main");
       debugPrint("breakpoint-login-credentials-creation");
 
@@ -75,6 +77,11 @@ class LoginController {
     GoogleLogin().signInWithGoogle(context);
   }
 
+  Future<bool> checkIfUserExists({required String userUID}) async {
+    final userDoc = await FirebaseFirestore.instance.collection(FirebaseConstants.registerCollection).doc(userUID).get();
+    return userDoc.exists;
+  }
+
   void validateInputs(
     {
       required BuildContext context,
@@ -100,7 +107,7 @@ class LoginController {
         CustomComponents.showAlertDialog(
           context: context,
           title: ProjectStrings.account_register_dialog_warning_1_title,
-          content: "An error occured",
+          content: "An error occurred",
           numberOfOptions: 1,
           onPressedPositive: () {
             Navigator.of(context).pop();

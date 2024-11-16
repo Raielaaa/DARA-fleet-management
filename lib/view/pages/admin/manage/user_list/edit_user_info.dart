@@ -46,8 +46,8 @@ class _EditUserInfoState extends State<EditUserInfo> {
             "name": "${PersistentData().selectedUser?.firstName} ${PersistentData().selectedUser?.lastName}",
             "phone_number": "${PersistentData().selectedUser?.number}",
             "role": "${PersistentData().selectedUser?.role}",
-            "birthday": "${PersistentData().selectedUser?.birthday}",
-            "age": "${calculateAge(PersistentData().selectedUser!.birthday)}",
+            "birthday": PersistentData().selectedUser?.birthday ?? "NA",
+            "age": PersistentData().selectedUser!.birthday.isNotEmpty ? "${calculateAge(PersistentData().selectedUser!.birthday)}" : "0",
             "account_status": "${PersistentData().selectedUser?.status}",
             "date_registered": "${PersistentData().selectedUser?.dateCreated}",
           };
@@ -678,53 +678,58 @@ class _EditUserInfoState extends State<EditUserInfo> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
+          Expanded(
             child: Row(
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3),
-                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))),
+                    borderRadius: BorderRadius.circular(3),
+                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
-                    child: CustomComponents.displayText(documentName!.split(".").last.toUpperCase(),
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12),
+                    child: CustomComponents.displayText(
+                      documentName?.split(".").last.toUpperCase() ?? "",
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      documentName?.split("/").last ?? "Empty",
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        documentName?.split("/").last ?? "Empty",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
-                          fontFamily: ProjectStrings.general_font_family
+                          fontFamily: ProjectStrings.general_font_family,
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        CustomComponents.displayText("$fileSize KB",
+                      Row(
+                        children: [
+                          CustomComponents.displayText(
+                            "$fileSize KB",
                             fontSize: 10,
-                            color: Color(int.parse(
-                                ProjectColors.lightGray.substring(2),
-                                radix: 16))),
-                        const SizedBox(width: 20),
-                        CustomComponents.displayText(
+                            color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                          ),
+                          const SizedBox(width: 20),
+                          CustomComponents.displayText(
                             fileDateUploaded,
                             fontSize: 10,
-                            color: Color(int.parse(
-                                ProjectColors.lightGray.substring(2),
-                                radix: 16)))
-                      ],
-                    )
-                  ],
-                )
+                            color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -732,13 +737,14 @@ class _EditUserInfoState extends State<EditUserInfo> {
             children: [
               GestureDetector(
                 onTap: () {
-                  viewDocument(documentName);
+                  viewDocument(documentName!);
                 },
-                child: CustomComponents.displayText(ProjectStrings.ri_view,
-                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2),
-                        radix: 16)),
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold),
+                child: CustomComponents.displayText(
+                  ProjectStrings.ri_view,
+                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(width: 30),
               GestureDetector(
@@ -750,20 +756,22 @@ class _EditUserInfoState extends State<EditUserInfo> {
                     actionCode: 1,
                     onProceed: () {
                       setState(() {
-                        removeDocuments(documentName);
+                        removeDocuments(documentName!);
                         submittedFiles.removeWhere((file) => file["storageLocation"] == documentName);
                       });
                       InfoDialog().dismiss();
-                    });
+                    },
+                  );
                 },
-                child: CustomComponents.displayText(ProjectStrings.edit_user_info_delete,
-                    color: Color(int.parse(ProjectColors.redButtonMain.substring(2),
-                        radix: 16)),
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold),
+                child: CustomComponents.displayText(
+                  ProjectStrings.edit_user_info_delete,
+                  color: Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

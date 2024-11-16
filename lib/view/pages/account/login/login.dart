@@ -429,20 +429,31 @@ class _LoginMain extends State<LoginMain> {
                 onPressed: () async {
                   if (PersistentData().userType != "Admin" && PersistentData().userType != "Accountant") {
                     // Call signInWithGoogle function when the button is pressed
+                    LoadingDialog().show(context: context, content: "Please wait while we verify your google sign-in credentials.");
                     final User? user = await _googleLogin.signInWithGoogle(context);
                     if (user != null) {
-                      //  insert items to db
-                      List<String>? subdividedName = user.displayName?.split(" ");
+                      // Check if user already exists in DB
                       LoginController _loginController = LoginController();
-                      _loginController.insertGoogleCredentialsToDB(
+                      bool userExists = await _loginController.checkIfUserExists(userUID: user.uid);
+
+                      if (!userExists) {
+                        // User does not exist, insert into DB
+                        List<String>? subdividedName = user.displayName?.split(" ");
+                        _loginController.insertGoogleCredentialsToDB(
                           userUID: user.uid,
                           firstName: subdividedName!.first,
                           lastName: subdividedName.last,
-                          birthday: PersistentData().birthdayFromGoogleSignIn,
+                          birthday: "",
                           email: user.email!,
                           role: PersistentData().userType,
-                          context: context
-                      );
+                          context: context,
+                        );
+                      } else {
+                        // User exists, proceed with login
+                        debugPrint("User already exists in the database. Proceeding with login...");
+                        LoadingDialog().dismiss();
+                        Navigator.of(context).pushNamed("home_main");
+                      }
                     }
                   } else {
                     InfoDialog().show(
