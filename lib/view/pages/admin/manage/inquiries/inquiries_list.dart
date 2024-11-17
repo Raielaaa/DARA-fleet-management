@@ -28,6 +28,7 @@ class _ViewInquiriesState extends State<ViewInquiries> {
   List<RentInformation> ongoingInquiry = [];
   List<RentInformation> pastDuesInquiry = [];
   List<RentInformation> listToBeDisplayed = [];
+  int _selectedIndex = 0;
   bool _isLoading = true;
 
   @override
@@ -36,6 +37,25 @@ class _ViewInquiriesState extends State<ViewInquiries> {
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback((_) => _retrieveRentRecords());
+  }
+
+  void _performSearch(String query) {
+    query = query.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        listToBeDisplayed = _selectedIndex == 0 ? ongoingInquiry : pastDuesInquiry;
+      } else {
+        listToBeDisplayed = listToBeDisplayed.where((inquiry) =>
+        inquiry.carName.toLowerCase().contains(query) ||
+            inquiry.startDateTime.toLowerCase().contains(query) ||
+            inquiry.endDateTime.toLowerCase().contains(query) ||
+            inquiry.pickupOrDelivery.toLowerCase().contains(query) ||
+            inquiry.totalAmount.toLowerCase().contains(query) ||
+            inquiry.rentLocation.toLowerCase().contains(query) ||
+            (inquiry.reservationFee != "0" ? "reserved" : "unreserved").contains(query)
+        ).toList();
+      }
+    });
   }
 
   Future<void> _retrieveRentRecords() async {
@@ -456,10 +476,11 @@ class _ViewInquiriesState extends State<ViewInquiries> {
             SizedBox(
               width: MediaQuery.of(context).size.width - 170,
               child: TextField(
+                onChanged: (value) => _performSearch(value),
                 controller: _searchController,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.zero,
-                  hintText: "Search by car name, date, remaining days, or delivery mode",
+                  hintText: "Search by car name, date, delivery mode, rent amount, rent location, reserved or not",
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                     color: Colors.grey.shade500,
@@ -492,6 +513,7 @@ class _ViewInquiriesState extends State<ViewInquiries> {
       containerWight: MediaQuery.of(context).size.width - 50,
       onSelect: (index) {
         setState(() {
+          _selectedIndex = index;
           listToBeDisplayed = index == 0 ? ongoingInquiry : pastDuesInquiry;
         });
       },
