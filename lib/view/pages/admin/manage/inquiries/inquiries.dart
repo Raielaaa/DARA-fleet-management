@@ -33,11 +33,8 @@ class Inquiries extends StatefulWidget {
 }
 
 class _InquiriesState extends State<Inquiries> {
-  RegisterModel? _userInfoTemp;
   List<RentInformation> ongoingInquiry = [];
   List<RentInformation> pastDuesInquiry = [];
-  List<Map<String, dynamic>> _submittedFiles = [];
-
   List<RentInformation> rentInformationList = [];
   List<Map<String, dynamic>> inquiriesWithUserData = [];
   bool _isLoading = true;
@@ -45,88 +42,63 @@ class _InquiriesState extends State<Inquiries> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _retrieveRentRecords();
-    });
+    SchedulerBinding.instance.addPostFrameCallback((_) => _retrieveRentRecords());
   }
 
-  Future<void> refreshPage() async {
-    await _retrieveRentRecords();
-  }
+  Future<void> refreshPage() async => await _retrieveRentRecords();
 
   Future<void> _retrieveRentRecords() async {
+    LoadingDialog().show(context: context, content: "Retrieving rent inquiries. Please wait a moment.");
     try {
-      // Show loading dialog
-      LoadingDialog().show(
-        context: context,
-        content: "Retrieving rent inquiries. Please wait a moment.",
-      );
-
-      // Retrieve all rent records
-      List<RentInformation> pendingRecords = [];
-
-      List<RentInformation> records = await Firestore().getRentRecords();
-      for (var item in records) {
-        if (item.rentStatus.toLowerCase() == "pending") {
-          pendingRecords.add(item);
-        }
-        debugPrint("Test rent info: ${item.driverFee}");
-      }
-      List<Map<String, dynamic>> tempData = [];
-
-      // Clear existing lists
-      ongoingInquiry.clear();
-      pastDuesInquiry.clear();
-
-      // Retrieve user data and submitted files for each record
-      for (var record in pendingRecords) {
-        RegisterModel? userInfo = await Firestore().getUserInfo(record.renterUID);
-        List<Map<String, dynamic>> userFiles = await Storage().getUserFilesForInquiry(FirebaseConstants.rentDocumentsUpload, record.renterUID);
-
-        // Add the data to a temporary list
-        tempData.add({
-          'rentInformation': record,
-          'userInfo': userInfo,
-          'submittedFiles': userFiles,
-        });
-
-        // Separate records into ongoing and past dues based on the startDateTime
-        if (isDateInPast(record.startDateTime)) {
-          pastDuesInquiry.add(record);
-        } else {
-          ongoingInquiry.add(record);
-        }
-      }
+      final pendingRecords = await _fetchPendingRecords();
+      final data = await _fetchUserData(pendingRecords);
 
       if (!mounted) return;
 
-      // Update the state with the initial data (current dues)
       setState(() {
-        inquiriesWithUserData = tempData;
-        rentInformationList = ongoingInquiry;  // Set the default view to ongoingInquiry
+        inquiriesWithUserData = data;
+        rentInformationList = ongoingInquiry;
         _isLoading = false;
       });
-
-      // Dismiss the loading dialog
-      LoadingDialog().dismiss();
     } catch (e) {
-      if (mounted) {
-        // Dismiss loading dialog and show error dialog
-        LoadingDialog().dismiss();
-        InfoDialog().show(
-          context: context,
-          content: "Something went wrong: $e",
-          header: "Warning",
-        );
-      }
-      debugPrint("Error@inquiries.dart@ln45: $e");
+      if (mounted) LoadingDialog().show(context: context, content: "Something went wrong: $e");
+      debugPrint("Error@inquiries.dart: $e");
+    } finally {
+      LoadingDialog().dismiss();
     }
   }
 
+  Future<List<RentInformation>> _fetchPendingRecords() async {
+    final records = await Firestore().getRentRecords();
+    return records.where((item) => item.rentStatus.toLowerCase() == "pending").toList();
+  }
+
+  Future<List<Map<String, dynamic>>> _fetchUserData(List<RentInformation> records) async {
+    ongoingInquiry.clear();
+    pastDuesInquiry.clear();
+
+    return Future.wait(records.map((record) async {
+      final userInfo = await Firestore().getUserInfo(record.renterUID);
+      final userFiles = await Storage().getUserFilesForInquiry(
+        FirebaseConstants.rentDocumentsUpload, record.renterUID,
+      );
+
+      if (isDateInPast(record.startDateTime)) {
+        pastDuesInquiry.add(record);
+      } else {
+        ongoingInquiry.add(record);
+      }
+
+      return {
+        'rentInformation': record,
+        'userInfo': userInfo,
+        'submittedFiles': userFiles,
+      };
+    }));
+  }
 
   bool isDateInPast(String dateStr) {
-    DateFormat format = DateFormat("MMMM d, yyyy | hh:mm a");
-    DateTime parsedDate = format.parse(dateStr);
+    final parsedDate = DateFormat("MMMM d, yyyy | hh:mm a").parse(dateStr);
     return parsedDate.isBefore(DateTime.now());
   }
 

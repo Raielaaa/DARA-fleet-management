@@ -138,7 +138,8 @@ class _ManageReportsState extends State<ManageReports> {
                               icon: Icons.question_answer,
                               text: "Rent inquiries",
                               onTap: () {
-                                Navigator.of(context).pushNamed("manage_inquiries");
+                                // Navigator.of(context).pushNamed("manage_inquiries");
+                                Navigator.of(context).pushNamed("manage_view_inquiries");
                               },
                             ),
                             const SizedBox(height: 20),

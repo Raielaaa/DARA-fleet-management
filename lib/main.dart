@@ -22,6 +22,8 @@ import 'package:dara_app/view/pages/admin/manage/application_list/outsource/appl
 import 'package:dara_app/view/pages/admin/manage/backup/Backup.dart';
 import 'package:dara_app/view/pages/admin/manage/banner/banner.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries.dart';
+import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries_list.dart';
+import 'package:dara_app/view/pages/admin/manage/inquiries/view_inquiry.dart';
 import 'package:dara_app/view/pages/admin/manage/integrated_apps/integrated_apps_dart.dart';
 import 'package:dara_app/view/pages/admin/manage/main_report/report_page.dart';
 import 'package:dara_app/view/pages/admin/manage/rent_logs/rent_logs.dart';
@@ -179,6 +181,8 @@ class MyApp extends StatelessWidget {
             "manage_backup_restore": (context) => const BackupRestore(),
             "manage_integrated_apps": (context) => const IntegratedApps(),
             "manage_report_main": (context) => const ReportPage(),
+            "manage_view_inquiries": (context) => const ViewInquiries(),
+            // "manage_view_inquiry": (context) => const ViewInquiry(),
 
             // Renting process - Booking Details
             "rp_booking_details": (context) => const RPBookingDetails(),
