@@ -44,35 +44,41 @@ class _EditRentalInfoBottomSheetState extends State<EditRentalInfoBottomSheet> {
     return FractionallySizedBox(
       heightFactor: 0.55,
       widthFactor: 1,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
-        child: ListView(
-          children: [
-            UnconstrainedBox(
-              child: Container(
-                width: 50,
-                height: 7,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(50),
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
+          child: ListView(
+            children: [
+              UnconstrainedBox(
+                child: Container(
+                  width: 50,
+                  height: 7,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            CustomComponents.displayText("Edit Rental Information", fontWeight: FontWeight.bold),
-            const SizedBox(height: 5),
-            CustomComponents.displayText("Update payment status and rental progress", fontSize: 10),
-            const SizedBox(height: 30),
-            CustomComponents.displayText("Payment Status", fontWeight: FontWeight.bold, fontSize: 10),
-            const SizedBox(height: 10),
-            switchOptionPaymentStatus(),
-            const SizedBox(height: 15),
-            CustomComponents.displayText("Rent Status", fontWeight: FontWeight.bold, fontSize: 10),
-            const SizedBox(height: 10),
-            switchOptionRentStatus(),
-            const SizedBox(height: 50),
-            saveCancelButtons(),
-          ],
+              const SizedBox(height: 30),
+              CustomComponents.displayText("Edit Rental Information", fontWeight: FontWeight.bold),
+              const SizedBox(height: 5),
+              CustomComponents.displayText("Update payment status and rental progress", fontSize: 10),
+              const SizedBox(height: 30),
+              CustomComponents.displayText("Payment Status", fontWeight: FontWeight.bold, fontSize: 10),
+              const SizedBox(height: 10),
+              switchOptionPaymentStatus(),
+              const SizedBox(height: 15),
+              CustomComponents.displayText("Rent Status", fontWeight: FontWeight.bold, fontSize: 10),
+              const SizedBox(height: 10),
+              switchOptionRentStatus(),
+              const SizedBox(height: 50),
+              saveCancelButtons(),
+            ],
+          ),
         ),
       ),
     );
@@ -82,7 +88,7 @@ class _EditRentalInfoBottomSheetState extends State<EditRentalInfoBottomSheet> {
   Widget switchOptionPaymentStatus() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xfffafafa),
         borderRadius: BorderRadius.circular(7),
       ),
       child: Padding(
@@ -130,7 +136,7 @@ class _EditRentalInfoBottomSheetState extends State<EditRentalInfoBottomSheet> {
                   decoration: BoxDecoration(
                     color: _currentSelectedIndexPaymentStatus == 1
                         ? Color(int.parse(ProjectColors.mainColorHexBackground))
-                        : Colors.white,
+                        :  const Color(0xfffafafa),
                     borderRadius: BorderRadius.circular(7),
                   ),
                   alignment: Alignment.center, // Center the text
@@ -153,7 +159,7 @@ class _EditRentalInfoBottomSheetState extends State<EditRentalInfoBottomSheet> {
   Widget switchOptionRentStatus() {
     return SlideSwitcher(
       indents: 3,
-      containerColor: Colors.white,
+      containerColor:  const Color(0xfffafafa),
       containerBorderRadius: 7,
       slidersColors: [
         Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16)),

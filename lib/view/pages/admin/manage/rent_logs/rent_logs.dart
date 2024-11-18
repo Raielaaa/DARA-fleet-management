@@ -829,7 +829,8 @@ class _RentLogsState extends State<RentLogs> {
                         ),
                         builder: (BuildContext context) {
                           return EditRentalInfoBottomSheet(completeRentInfo: completeRentInfo, parentContext: context,);
-                      });
+                        }
+                      );
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,

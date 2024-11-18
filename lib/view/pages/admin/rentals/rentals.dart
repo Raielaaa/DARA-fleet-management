@@ -452,7 +452,7 @@ class _Rentals extends State<Rentals> {
                               borderRadius: BorderRadius.circular(10),
                               color: rentInformation.rentStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16)) :
                                      rentInformation.rentStatus.toLowerCase() == "pending" ? Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)) :
-                                     rentInformation.rentStatus.toLowerCase() == "denied" ? Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)) : Colors.white
+                                     rentInformation.rentStatus.toLowerCase() == "declined" ? Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)) : Colors.white
                             ),
                             child: Row(
                               children: [
@@ -461,7 +461,7 @@ class _Rentals extends State<Rentals> {
                                   child: Image.asset(
                                     rentInformation.rentStatus.toLowerCase() == "approved" ? "lib/assets/pictures/rentals_verified.png" :
                                     rentInformation.rentStatus.toLowerCase() == "pending" ? "lib/assets/pictures/rentals_pending.png" :
-                                    rentInformation.rentStatus.toLowerCase() == "denied" ? "lib/assets/pictures/rentals_denied.png" : "lib/assets/pictures/rentals_denied.png",
+                                    rentInformation.rentStatus.toLowerCase() == "declined" || rentInformation.rentStatus.toLowerCase() == "denied" ? "lib/assets/pictures/rentals_denied.png" : "lib/assets/pictures/rentals_denied.png",
                                     width: 20,
                                     height: 20,
                                   ),
@@ -473,7 +473,7 @@ class _Rentals extends State<Rentals> {
                                     CustomComponents.capitalizeFirstLetter(rentInformation.rentStatus),
                                     color: rentInformation.rentStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16)) :
                                     rentInformation.rentStatus.toLowerCase() == "pending" ? Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)) :
-                                    rentInformation.rentStatus.toLowerCase() == "denied" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)) : Colors.white,
+                                    rentInformation.rentStatus.toLowerCase() == "declined" || rentInformation.rentStatus.toLowerCase() == "denied" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)) : Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10,
                                   ),
@@ -635,7 +635,7 @@ class _Rentals extends State<Rentals> {
                       borderRadius: BorderRadius.circular(10),
                       color: rentStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16)) :
                           rentStatus.toLowerCase() == "pending" ? Color(int.parse(ProjectColors.carouselNotSelected.substring(2), radix: 16)) :
-                          rentStatus.toLowerCase() == "denied" ? Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)) : Colors.white
+                          rentStatus.toLowerCase() == "declined" ? Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)) : Colors.white
                     ),
                     child: Row(
                       children: [
@@ -644,7 +644,7 @@ class _Rentals extends State<Rentals> {
                           child: Image.asset(
                             rentStatus.toLowerCase() == "approved" ? "lib/assets/pictures/rentals_verified.png" :
                             rentStatus.toLowerCase() == "pending" ? "lib/assets/pictures/rentals_pending.png" :
-                            rentStatus.toLowerCase() == "denied" ? "lib/assets/pictures/rentals_denied.png" : "lib/assets/pictures/rentals_denied.png",
+                            rentStatus.toLowerCase() == "declined" ? "lib/assets/pictures/rentals_denied.png" : "lib/assets/pictures/rentals_denied.png",
                             width: 20,
                             height: 20,
                           ),
@@ -656,7 +656,7 @@ class _Rentals extends State<Rentals> {
 
                             color: rentStatus.toLowerCase() == "approved" ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16)) :
                               rentStatus.toLowerCase() == "pending" ? Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)) :
-                              rentStatus.toLowerCase() == "denied" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)) : Colors.white,
+                              rentStatus.toLowerCase() == "declined" ? Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)) : Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 10,
                           ),

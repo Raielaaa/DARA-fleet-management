@@ -1,4 +1,5 @@
 import "package:cached_network_image/cached_network_image.dart";
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/model/account/register_model.dart";
 import "package:dara_app/view/pages/admin/manage/inquiries/pdf_viewer.dart";
 import "package:dio/dio.dart";
@@ -36,6 +37,7 @@ class ViewInquiry extends StatefulWidget {
 class _ViewInquiryState extends State<ViewInquiry> {
   late RegisterModel userInfo;
   late List<Map<String, dynamic>> submittedFiles;
+  final TextEditingController _denyController = TextEditingController();
   bool _isLoading = true;
 
   @override
@@ -172,6 +174,60 @@ class _ViewInquiryState extends State<ViewInquiry> {
         ),
       ),
     );
+  }
+
+  Future<void> updateDenyDB(RentInformation rentInformation) async {
+    await updateRentNotes(
+      rentRenterUID: rentInformation.renterUID,
+      rentStartDateTime: rentInformation.startDateTime,
+      rentEndDateTime: rentInformation.endDateTime,
+      rentDeliveryLocation: rentInformation.deliveryLocation,
+      rentRentLocation: rentInformation.rentLocation,
+      rentTotalAmount: rentInformation.totalAmount,
+      updatedNotes: _denyController.value.text
+    );
+  }
+
+  Future<void> updateRentNotes({
+    required String rentRenterUID,
+    required String rentStartDateTime,
+    required String rentEndDateTime,
+    required String rentDeliveryLocation,
+    required String rentRentLocation,
+    required String rentTotalAmount,
+    required String updatedNotes,
+  }) async {
+    try {
+      // Reference to the Firestore collection
+      final rentRecordsRef = FirebaseFirestore.instance.collection('dara-rent-records');
+
+      // Query the collection with the provided field values
+      final querySnapshot = await rentRecordsRef
+          .where('rent_renterUID', isEqualTo: rentRenterUID)
+          .where('rent_startDateTime', isEqualTo: rentStartDateTime)
+          .where('rent_endDateTime', isEqualTo: rentEndDateTime)
+          .where('rent_deliveryLocation', isEqualTo: rentDeliveryLocation)
+          .where('rent_rentLocation', isEqualTo: rentRentLocation)
+          .where('rent_totalAmount', isEqualTo: rentTotalAmount)
+          .get();
+
+      // Check if documents match the query
+      if (querySnapshot.docs.isEmpty) {
+        CustomComponents.showToastMessage("No matching documents found.", Colors.red, Colors.white);
+        return;
+      }
+
+      // Iterate through the matched documents and update the rent_notes field
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.update({
+          "rent_notes": updatedNotes,
+          "rent_status": "declined"
+        });
+        CustomComponents.showToastMessage("Updated rent_notes for document ID: ${doc.id}", Colors.green, Colors.white);
+      }
+    } catch (e) {
+      InfoDialog().show(context: context, content: "Error updating rent_notes: $e");
+    }
   }
 
   Future<void> updateDB(RentInformation rentInformation) async {
@@ -338,7 +394,7 @@ class _ViewInquiryState extends State<ViewInquiry> {
                               labelText: ProjectStrings.ri_add_note,
                               textColor: ProjectColors.redButtonMain,
                               onTap: () {
-                                Navigator.pushNamed(context, "rentals_report");
+                                _showDeclineBottomDialog(context, currentItem);
                               },
                             ),
                             const SizedBox(width: 10),
@@ -362,7 +418,7 @@ class _ViewInquiryState extends State<ViewInquiry> {
                                         );
                                         await updateDB(currentItem);
                                         LoadingDialog().dismiss();
-                                        Navigator.of(context).dispose();
+                                        Navigator.of(context).pop();
                                       } catch(e) {
                                         InfoDialog().show(
                                           context: context,
@@ -384,6 +440,127 @@ class _ViewInquiryState extends State<ViewInquiry> {
               const SizedBox(height: 50),
             ]
           ),
+    );
+  }
+
+  Future _showDeclineBottomDialog(BuildContext parentContext, RentInformation currentItem) {
+    return showModalBottomSheet(
+      context: parentContext,
+      isScrollControlled: true, // Ensures it respects its content size
+      builder: (BuildContext context) {
+        return Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 50,
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: Image.asset(
+                          "lib/assets/pictures/home_top_report.png",
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: CustomComponents.displayText(
+                          "Please provide a note explaining why this rent application was declined. (Optional)",
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: CustomComponents.displayText(
+                      "Message",
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: Color(int.parse(
+                          ProjectColors.blackHeader.substring(2), radix: 16)),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  CustomComponents.displayTextField(
+                    "Your message",
+                    controller: _denyController,
+                    labelColor: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                    maxLength: 50
+                  ),
+                  const SizedBox(height: 25),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        InfoDialog().showDecoratedTwoOptionsDialog(
+                          context: context,
+                          content: "Are you sure you want to proceed with this option? This action cannot be undone!",
+                          header: "Confirm Action",
+                          confirmAction: () async {
+                            Navigator.of(context).pop();
+                            try {
+                              await updateDenyDB(currentItem);
+                              Navigator.of(parentContext).pop();
+                            } catch(e) {
+                              InfoDialog().show(
+                                context: parentContext,
+                                content: "An error occurred while updating the records. Please try again later. Error details: $e",
+                              );
+                            }
+                          }
+                        );
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll<Color>(
+                          Color(int.parse(
+                              ProjectColors.mainColorHex
+                                  .substring(2),
+                              radix: 16)),
+                        ),
+                        shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(17),
+                        child: CustomComponents.displayText(
+                          "Update Rent Record",
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 80),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
