@@ -26,6 +26,7 @@ import 'package:dara_app/view/pages/admin/manage/inquiries/inquiries_list.dart';
 import 'package:dara_app/view/pages/admin/manage/inquiries/view_inquiry.dart';
 import 'package:dara_app/view/pages/admin/manage/integrated_apps/integrated_apps_dart.dart';
 import 'package:dara_app/view/pages/admin/manage/main_report/report_page.dart';
+import 'package:dara_app/view/pages/admin/manage/my_account/my_account.dart';
 import 'package:dara_app/view/pages/admin/manage/rent_logs/rent_logs.dart';
 import 'package:dara_app/view/pages/admin/manage/reports/reports.dart';
 import 'package:dara_app/view/pages/admin/manage/status/status.dart';
@@ -182,6 +183,7 @@ class MyApp extends StatelessWidget {
             "manage_integrated_apps": (context) => const IntegratedApps(),
             "manage_report_main": (context) => const ReportPage(),
             "manage_view_inquiries": (context) => const ViewInquiries(),
+            "manage_my_account": (context) => const MyAccount(),
             // "manage_view_inquiry": (context) => const ViewInquiry(),
 
             // Renting process - Booking Details

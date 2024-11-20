@@ -219,7 +219,7 @@ class _ManageReportsState extends State<ManageReports> {
                               icon: Icons.account_circle,
                               text: "My account",
                               onTap: () {
-                                Navigator.of(context).pushNamed("manage_user_list");
+                                Navigator.of(context).pushNamed("manage_my_account");
                               },
                             ),
                             const SizedBox(height: 20),

@@ -54,6 +54,18 @@ class _LoginMain extends State<LoginMain> {
             child: ListView(
                 controller: controller,
                 children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: 5,
+                      width: 35,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(100)
+                      ),
+                    )
+                  ),
+                  const SizedBox(height: 30),
                   CustomComponents.displayText(
                       "Please enter the email address you used to register with us:",
                     fontWeight: FontWeight.bold,
@@ -64,7 +76,7 @@ class _LoginMain extends State<LoginMain> {
                       "Enter your email here",
                     controller: _passwordResetController
                   ),
-                  //  Login button
+                  //  proceed button
                   const SizedBox(height: 50),
                   SizedBox(
                     width: double.infinity,

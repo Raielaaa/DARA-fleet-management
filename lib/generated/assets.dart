@@ -214,6 +214,7 @@ class Assets {
   static const String mapsMapScreen = 'lib/services/maps/map_screen.dart';
   static const String mapsMapScreenGarage = 'lib/services/maps/map_screen_garage.dart';
   static const String mapsMapScreenWeather = 'lib/services/maps/map_screen_weather.dart';
+  static const String myAccountMyAccount = 'lib/view/pages/admin/manage/my_account/my_account.dart';
   static const String outsourceAccountingOutsource = 'lib/view/pages/outsource/accounting_outsource.dart';
   static const String outsourceApplicationOutsource = 'lib/view/pages/admin/manage/application_list/outsource/application_outsource.dart';
   static const String outsourceInquiriesOutsource = 'lib/view/pages/outsource/inquiries_outsource.dart';

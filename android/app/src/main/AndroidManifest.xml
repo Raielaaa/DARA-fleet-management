@@ -65,7 +65,11 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="https" android:host="payment-success.com"/>
                 <data android:scheme="https" android:host="payment-failed.com"/>
+                <data android:scheme="https"
+                    android:host="daraapp.page.link"
+                    android:pathPrefix="/" />
             </intent-filter>
+
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

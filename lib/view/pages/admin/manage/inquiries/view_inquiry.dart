@@ -184,7 +184,7 @@ class _ViewInquiryState extends State<ViewInquiry> {
       rentDeliveryLocation: rentInformation.deliveryLocation,
       rentRentLocation: rentInformation.rentLocation,
       rentTotalAmount: rentInformation.totalAmount,
-      updatedNotes: _denyController.value.text
+      updatedNotes: _denyController.value.text.isEmpty ? "NONE" : _denyController.value.text
     );
   }
 
@@ -220,7 +220,7 @@ class _ViewInquiryState extends State<ViewInquiry> {
       // Iterate through the matched documents and update the rent_notes field
       for (var doc in querySnapshot.docs) {
         await doc.reference.update({
-          "rent_notes": updatedNotes,
+          "rent_notes": updatedNotes ?? "NONE",
           "rent_status": "declined"
         });
         CustomComponents.showToastMessage("Updated rent_notes for document ID: ${doc.id}", Colors.green, Colors.white);
