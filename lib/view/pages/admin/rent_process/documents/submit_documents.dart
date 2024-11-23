@@ -1,3 +1,4 @@
+import "package:dara_app/controller/car_list/car_list_controller.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
@@ -9,7 +10,9 @@ import "package:googleapis/apigeeregistry/v1.dart";
 import "package:mobkit_dashed_border/mobkit_dashed_border.dart";
 import 'package:file_picker/file_picker.dart';
 
+import "../../../../../controller/singleton/persistent_data.dart";
 import "../../../../../model/constants/firebase_constants.dart";
+import "../../../../../services/firebase/auth.dart";
 import "../../../../../services/firebase/storage.dart";
 
 
@@ -157,7 +160,26 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
     }
   }
 
+  int getCurrentTimeOfTheDayInSeconds() {
+    // Get the current time
+    DateTime now = DateTime.now();
+
+    // Extract hours, minutes, and seconds
+    int hoursInSeconds = now.hour * 3600;  // 1 hour = 3600 seconds
+    int minutesInSeconds = now.minute * 60; // 1 minute = 60 seconds
+    int seconds = now.second;
+
+    // Calculate the total time in seconds
+    return hoursInSeconds + minutesInSeconds + seconds;
+  }
+
   Future<void> updateDB() async {
+    await CarListController().submitRentRecords(
+        collectionName: FirebaseConstants.rentRecordsCollection,
+        documentName: "${Auth().currentUser!.uid} - ${getCurrentTimeOfTheDayInSeconds()}",
+        data: PersistentData().rentInfoToBeSaved.getModelData()
+    );
+
     Storage _storage = Storage();
 
     // Handling deletion

@@ -1,3 +1,5 @@
+import "dart:math";
+
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
 import "package:intl/intl.dart";
@@ -715,6 +717,24 @@ class _RentLogsState extends State<RentLogs> {
     }
   }
 
+  String getInitials(String input) {
+    // Split the string into words
+    List<String> words = input.split(' ');
+
+    // Filter out numeric words
+    List<String> filteredWords = words.where((word) => !RegExp(r'^\d+$').hasMatch(word)).toList();
+
+    // Ensure there are at least two non-numeric words
+    if (filteredWords.length < 2) return '';
+
+    // Get the first letter of the first two non-numeric words
+    String firstInitial = filteredWords[0][0];
+    String secondInitial = filteredWords[1][0];
+
+    // Combine them and return
+    return firstInitial + secondInitial;
+  }
+
   Widget _designPerItem({
     required String carName,
     required String rentDateRange,
@@ -725,6 +745,17 @@ class _RentLogsState extends State<RentLogs> {
     required RentInformation completeRentInfo,
     required String postApproveStatus
   }) {
+    final colors = [
+      const Color(0xff0564ff),
+      const Color(0xff00be15),
+      const Color(0xfffe7701),
+      const Color(0xffffb103),
+      const Color(0xffe93c2e),
+    ];
+
+    // Select a random color
+    final randomColor = colors[Random().nextInt(colors.length)];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Container(
@@ -746,11 +777,17 @@ class _RentLogsState extends State<RentLogs> {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
+                      color: randomColor,
+                      shape: BoxShape.circle,
                     ),
-                    child: Image.asset(
-                      "lib/assets/pictures/user_info_user.png",
-                      fit: BoxFit.contain,
+                    alignment: Alignment.center,
+                    child: Text(
+                      getInitials(renterName),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Padding(

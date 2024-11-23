@@ -12,8 +12,8 @@ class RentProcess {
   File? _selectedImage;
   String _imageName = ProjectStrings.rp_details_fees_proof_payment_image_notice;
 
-  void startGcashPayment(BuildContext context) {
-    gcashPayment(context);
+  void startGcashPayment(BuildContext context, double amount) {
+    gcashPayment(context, amount);
   }
 
   Future<void> _pickImage(BuildContext context) async {

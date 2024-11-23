@@ -1,3 +1,4 @@
+import "package:dara_app/controller/singleton/persistent_data.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
@@ -56,7 +57,6 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
           heightFactor: 0.75, // 3/4 of the screen height
           child: Column(
             children: [
-              // Use Expanded to fill the available space
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
@@ -172,7 +172,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                               fontSize: 10,
                               fontWeight: FontWeight.bold),
                           CustomComponents.displayText(
-                              ProjectStrings.ps_transaction_date_content,
+                              "Reservation Fee",
                               fontSize: 10)
                         ],
                       ),
@@ -188,7 +188,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                               fontSize: 10,
                               fontWeight: FontWeight.bold),
                           CustomComponents.displayText(
-                              ProjectStrings.ps_transaction_number_content,
+                              PersistentData().gcashTransactionId,
                               fontSize: 10)
                         ],
                       ),
@@ -204,7 +204,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                               fontSize: 10,
                               fontWeight: FontWeight.bold),
                           CustomComponents.displayText(
-                              ProjectStrings.ps_transaction_date_content,
+                          PersistentData().getCurrentFormattedDate(),
                               fontSize: 10)
                         ],
                       ),

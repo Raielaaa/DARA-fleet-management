@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dara_app/controller/admin_manage/application_list/application_list.dart';
 import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/model/outsource/OutsourceApplication.dart';
@@ -169,6 +171,24 @@ class _ApplicationListState extends State<ApplicationList> {
     );
   }
 
+  String getInitials(String input) {
+    // Split the string into words
+    List<String> words = input.split(' ');
+
+    // Filter out numeric words
+    List<String> filteredWords = words.where((word) => !RegExp(r'^\d+$').hasMatch(word)).toList();
+
+    // Ensure there are at least two non-numeric words
+    if (filteredWords.length < 2) return '';
+
+    // Get the first letter of the first two non-numeric words
+    String firstInitial = filteredWords[0][0];
+    String secondInitial = filteredWords[1][0];
+
+    // Combine them and return
+    return firstInitial + secondInitial;
+  }
+
   Widget _designPerItem({
     required String userID,
     required String imagePath,
@@ -179,6 +199,17 @@ class _ApplicationListState extends State<ApplicationList> {
     required String userType,
     required String dateRegistered
   }) {
+    final colors = [
+      const Color(0xff0564ff),
+      const Color(0xff00be15),
+      const Color(0xfffe7701),
+      const Color(0xffffb103),
+      const Color(0xffe93c2e),
+    ];
+
+    // Select a random color
+    final randomColor = colors[Random().nextInt(colors.length)];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Container(
@@ -200,11 +231,17 @@ class _ApplicationListState extends State<ApplicationList> {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
+                      color: randomColor,
+                      shape: BoxShape.circle,
                     ),
-                    child: Image.asset(
-                      imagePath,
-                      fit: BoxFit.contain,
+                    alignment: Alignment.center,
+                    child: Text(
+                      getInitials(userName),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Padding(

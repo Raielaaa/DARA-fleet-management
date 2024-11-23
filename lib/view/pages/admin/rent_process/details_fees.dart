@@ -100,19 +100,6 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
     });
   }
 
-  int getCurrentTimeOfTheDayInSeconds() {
-    // Get the current time
-    DateTime now = DateTime.now();
-
-    // Extract hours, minutes, and seconds
-    int hoursInSeconds = now.hour * 3600;  // 1 hour = 3600 seconds
-    int minutesInSeconds = now.minute * 60; // 1 minute = 60 seconds
-    int seconds = now.second;
-
-    // Calculate the total time in seconds
-    return hoursInSeconds + minutesInSeconds + seconds;
-  }
-
   @override
   Widget build(BuildContext context) {
     CarListController _carListController = CarListController();
@@ -158,39 +145,34 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                               rent_car_UID: _persistentData.selectedCarItem?.carUID ?? "null",
                               adminNotes: "NONE",
                               rentStatus: "pending",
-                                carType: _persistentData.selectedCarItem?.carType ?? "null",
-                                renterUID: _auth.currentUser?.uid ?? "null",
-                                renterEmail: _auth.currentUser?.email ?? "null",
-                                carName: _persistentData.selectedCarItem?.name ?? "",
-                                startDateTime: "${_persistentData.bookingDetailsStartingDate} | ${_persistentData.bookingDetailsStartingTime}",
-                                endDateTime: "${_persistentData.bookingDetailsEndingDate} | ${_persistentData.bookingDetailsEndingTime}",
-                                rentLocation: _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude_forrent_location,
-                                deliveryLocation: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? _persistentData.deliveryModeLocation : _persistentData.deliveryModeLocation,
-                                estimatedDrivingDistance: drivingDistance,
-                                estimatedDrivingDuration: drivingDuration,
-                                pickupOrDelivery: _persistentData.deliveryModePickUpOrDelivery,
-                                deliveryDistance: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? drivingDistanceDriver : "NA",
-                                deliveryDuration: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? drivingDurationDriver : "NA",
-                                withDriver: _persistentData.bookingDetailsRentWithDriver ? "yes" : "no",
-                                rentalFee: rentalFee.toString(),
-                                mileageFee: mileageFee.toString(),
-                                deliveryFee: deliveryFee.toString(),
-                                driverFee: _persistentData.bookingDetailsRentWithDriver ? driverFee.toString() : "PHP 0.0",
-                                reservationFee: payReservationFee ? "500" : "0",
-                                totalAmount: totalFee.toString(),
+                              carType: _persistentData.selectedCarItem?.carType ?? "null",
+                              renterUID: _auth.currentUser?.uid ?? "null",
+                              renterEmail: _auth.currentUser?.email ?? "null",
+                              carName: _persistentData.selectedCarItem?.name ?? "",
+                              startDateTime: "${_persistentData.bookingDetailsStartingDate} | ${_persistentData.bookingDetailsStartingTime}",
+                              endDateTime: "${_persistentData.bookingDetailsEndingDate} | ${_persistentData.bookingDetailsEndingTime}",
+                              rentLocation: _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude_forrent_location,
+                              deliveryLocation: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? _persistentData.deliveryModeLocation : _persistentData.deliveryModeLocation,
+                              estimatedDrivingDistance: drivingDistance,
+                              estimatedDrivingDuration: drivingDuration,
+                              pickupOrDelivery: _persistentData.deliveryModePickUpOrDelivery,
+                              deliveryDistance: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? drivingDistanceDriver : "NA",
+                              deliveryDuration: _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? drivingDurationDriver : "NA",
+                              withDriver: _persistentData.bookingDetailsRentWithDriver ? "yes" : "no",
+                              rentalFee: rentalFee.toString(),
+                              mileageFee: mileageFee.toString(),
+                              deliveryFee: deliveryFee.toString(),
+                              driverFee: _persistentData.bookingDetailsRentWithDriver ? driverFee.toString() : "PHP 0.0",
+                              reservationFee: payReservationFee ? "${totalFee * 0.25}" : "0",
+                              totalAmount: totalFee.toString(),
                               carOwner: _persistentData.selectedCarItem?.carOwner ?? "null"
                             );
 
-                            LoadingDialog().show(context: context, content: "Please wait while we process your rent application.");
-                            await _carListController.submitRentRecords(
-                                collectionName: FirebaseConstants.rentRecordsCollection,
-                                documentName: "${_auth.currentUser!.uid} - ${getCurrentTimeOfTheDayInSeconds()}",
-                                data: _rentInformation.getModelData()
-                            );
-                            LoadingDialog().dismiss();
+                            PersistentData().rentInfoToBeSaved = _rentInformation;
 
                             if (payReservationFee) {
-                              rentProcess.startGcashPayment(context);
+                              rentProcess.startGcashPayment(context, totalFee * 0.01);
+                              // Navigator.of(context).pushNamed("rp_payment_success");
                             } else {
                               Navigator.of(context).pushNamed("rp_submit_documents");
                             }

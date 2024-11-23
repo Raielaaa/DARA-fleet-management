@@ -3,21 +3,24 @@ import 'package:dara_app/view/pages/admin/rent_process/gcash_webview.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 import 'package:flutter/material.dart';
 
-Future<void> gcashPayment(BuildContext context) async {
+import '../../controller/singleton/persistent_data.dart';
+
+Future<void> gcashPayment(BuildContext context, double amount) async {
   const String publicApiKey = Constants.PAYMONGO_PUBLIC_KEY;
 
-  const publicSDK = PaymongoClient<PaymongoPublic>(publicApiKey);
+  const PaymongoClient<PaymongoPublic> publicSDK = PaymongoClient<PaymongoPublic>(publicApiKey);
 
-  const data = SourceAttributes(
+  SourceAttributes data = SourceAttributes(
     type: "gcash",
     // Update amount to cents (e.g., 1000 PHP = 100000 cents)
-    amount: 10000,
+    // amount: 10000,
+    amount: amount,
     currency: "PHP",
-    redirect: Redirect(
+    redirect: const Redirect(
       success: "https://payment-success.com",
       failed: "https://payment-failed.com",
     ),
-    billing: PayMongoBilling(
+    billing: const PayMongoBilling(
       name: "Ralph Daniel Honra",
       phone: "09701900391",
       email: "rbhonra@ccc.edu.ph",
@@ -35,8 +38,13 @@ Future<void> gcashPayment(BuildContext context) async {
     final result = await publicSDK.instance.source.create(data);
     debugPrint('Payment Source Created: ${result.toJson()}');
 
+    // Extract transaction ID or reference number
+    final String transactionId = result.id; // The unique ID of the source
+    debugPrint('Transaction ID: $transactionId');
+    PersistentData().gcashTransactionId = transactionId;
+
     // Use checkout_url if available
-    final paymentUrl = result.attributes?.redirect.checkoutUrl ?? result.attributes?.redirect.url;
+    final String? paymentUrl = result.attributes?.redirect.checkoutUrl ?? result.attributes?.redirect.url;
     if (paymentUrl != null) {
       Navigator.push(
         context,

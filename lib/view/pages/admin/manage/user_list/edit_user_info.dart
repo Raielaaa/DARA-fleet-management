@@ -586,6 +586,28 @@ class _EditUserInfoState extends State<EditUserInfo> {
                 ),
               ),
               DropdownMenuItem(
+                value: "accountant",
+                child: Text(
+                  "Accountant",
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: Color(0xFF1D1D1D),
+                      fontFamily: ProjectStrings.general_font_family
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
+                value: "admin",
+                child: Text(
+                  "Admin",
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: Color(0xFF1D1D1D),
+                      fontFamily: ProjectStrings.general_font_family
+                  ),
+                ),
+              ),
+              DropdownMenuItem(
                 value: "driver",
                 child: Text(
                   "Driver",

@@ -245,4 +245,11 @@ class PersistentData {
 
   double latitudeForGarage = 0.0;
   double longitudeForGarage = 0.0;
+
+
+  ////  gcash transaction id ///////
+  String gcashTransactionId= "";
+
+  //  rent info to be sent to db //
+  late RentInformation rentInfoToBeSaved;
 }
