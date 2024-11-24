@@ -361,9 +361,14 @@ class _EmploymentInformationState extends State<EmploymentInformation> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/left_arrow.png"),
+          GestureDetector(
+            onTap: () {
+              PersistentData().openDrawer(0);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset("lib/assets/pictures/menu.png"),
+            ),
           ),
           CustomComponents.displayText(
             ProjectStrings.outsource_ei_appbar_title,

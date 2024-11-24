@@ -328,9 +328,14 @@ class _DriverEducProfInformationState extends State<DriverEducProfInformation> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/left_arrow.png"),
+          GestureDetector(
+            onTap: () {
+              PersistentData().openDrawer(0);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset("lib/assets/pictures/menu.png"),
+            ),
           ),
           CustomComponents.displayText(
             ProjectStrings.driver_ep_title,
