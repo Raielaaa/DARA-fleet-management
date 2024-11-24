@@ -5,6 +5,8 @@ import 'package:dara_app/view/shared/loading.dart';
 import 'package:dara_app/view/shared/strings.dart';
 import 'package:flutter/material.dart';
 
+import '../../controller/singleton/persistent_data.dart';
+
 class InfoDialog {
   static final InfoDialog _instance = InfoDialog._internal();
 
@@ -135,7 +137,7 @@ class InfoDialog {
                           onTap: () {
                             dismiss();
                             if (actionCode == 0) {
-                              RentProcess().showUploadPhotoBottomDialog(context);
+                              RentProcess().showUploadPhotoBottomDialog(context, PersistentData().gcashAlternativeImagePath);
                             }
                           },
                           child: CustomComponents.displayText(

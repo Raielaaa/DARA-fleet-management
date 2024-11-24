@@ -10,6 +10,7 @@ import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/info_dialog.dart";
 import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 
 import "../../../../services/maps/distance_calculator.dart";
@@ -140,6 +141,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                             Auth _auth = Auth();
 
                             RentInformation _rentInformation = RentInformation(
+                              imagePathForAlternativePayment: "",
                               postApproveStatus: "ongoing",
                               paymentStatus: "unpaid",
                               rent_car_UID: _persistentData.selectedCarItem?.carUID ?? "null",
@@ -193,7 +195,8 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          rentProcess.showUploadPhotoBottomDialog(context);
+                          PersistentData().gcashAlternativeImagePath = "rents_gcash_alternatives/${FirebaseAuth.instance.currentUser!.uid}_${DateTime.now().microsecondsSinceEpoch}";
+                          rentProcess.showUploadPhotoBottomDialog(context, PersistentData().gcashAlternativeImagePath);
                         },
                         child: RichText(
                             textAlign: TextAlign.center,
@@ -542,7 +545,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
             ),
             _buildDetailsRow(
                 "Reservation Fee",
-                payReservationFee ? "PHP 500 (Excluded from the calculation)" : "PHP 0.0",
+                payReservationFee ? "PHP ${totalFee * 0.25} (Excluded from the calculation)" : "PHP 0.0",
                 false
             ),
             const Divider(),
@@ -606,7 +609,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                 children: [
                   Transform.scale(
                     scale:
-                        0.8, // Adjust the scale to change the size of the checkbox
+                        0.8,
                     child: Checkbox(
                       value: payReservationFee,
                       onChanged: (bool? value) {
@@ -623,7 +626,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                     ),
                   ),
                   const SizedBox(
-                      width: 8), // Add spacing between checkbox and text
+                      width: 8),
                   CustomComponents.displayText(
                       ProjectStrings.rp_details_fees_agreement,
                       fontSize: 10)

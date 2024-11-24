@@ -446,7 +446,7 @@ class _ProfileState extends State<Profile> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomComponents.displayText(
-                                        "Hello, ${_currentUserInfo?.role}",
+                                        "Hello, ${PersistentData().userType}",
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14
                                     ),

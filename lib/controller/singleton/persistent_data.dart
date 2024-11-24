@@ -252,4 +252,5 @@ class PersistentData {
 
   //  rent info to be sent to db //
   late RentInformation rentInfoToBeSaved;
+  String gcashAlternativeImagePath = "";
 }

@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/services/gcash/gcash_payment.dart';
 import 'package:dara_app/view/shared/colors.dart';
 import 'package:dara_app/view/shared/components.dart';
+import 'package:dara_app/view/shared/loading.dart';
 import 'package:dara_app/view/shared/strings.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
@@ -16,7 +20,7 @@ class RentProcess {
     gcashPayment(context, amount);
   }
 
-  Future<void> _pickImage(BuildContext context) async {
+  Future<void> _pickImage(BuildContext context, String imageName) async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -27,11 +31,11 @@ class RentProcess {
 
       // Rebuild the bottom sheet with updated image
       Navigator.pop(context); // Close the current bottom sheet
-      showUploadPhotoBottomDialog(context); // Re-open with updated state
+      showUploadPhotoBottomDialog(context, imageName); // Re-open with updated state
     }
   }
 
-  Future<void> showUploadPhotoBottomDialog(BuildContext context) async {
+  Future<void> showUploadPhotoBottomDialog(BuildContext context, String imageName) async {
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -79,7 +83,7 @@ class RentProcess {
 
               const SizedBox(height: 15),
               GestureDetector(
-                onTap: () => _pickImage(context),
+                onTap: () => _pickImage(context, imageName),
                 child: _uploadPhoto(),
               ),
               const SizedBox(height: 10),
@@ -102,8 +106,22 @@ class RentProcess {
                         shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)))),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed("rp_submit_documents");
+                    onPressed: () async {
+                      try {
+                        LoadingDialog().show(
+                          context: context,
+                          content: "Please wait while we upload your selected photo.",
+                        );
+                        await _uploadImageToFirebase(imageName);
+                        PersistentData().gcashAlternativeImagePath = imageName;
+                        LoadingDialog().dismiss();
+                        debugPrint("GcashAlternativeImage-Path: ${PersistentData().gcashAlternativeImagePath}");
+                        Navigator.of(context).pushNamed("rp_submit_documents");
+                      } catch(e) {
+                        LoadingDialog().dismiss();
+                        CustomComponents.showToastMessage("An error occurred while trying to upload your image", Colors.red, Colors.white);
+                        debugPrint("An error occurred@rent_process.dart@showUploadPhotoBottomDialog()");
+                      }
                     },
                     child: Center(
                       child: Padding(
@@ -123,6 +141,17 @@ class RentProcess {
         );
       },
     );
+  }
+
+  Future<void> _uploadImageToFirebase(String imageName) async {
+    try {
+      final String fileName = imageName;
+
+      final Reference storageReference = FirebaseStorage.instance.ref().child(fileName);
+      await storageReference.putFile(_selectedImage!);
+    } catch (e) {
+      debugPrint("Error uploading image: $e");
+    }
   }
 
   Widget _uploadPhoto() {

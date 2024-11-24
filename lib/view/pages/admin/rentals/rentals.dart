@@ -710,6 +710,8 @@ class _Rentals extends State<Rentals> {
 
   @override
   Widget build(BuildContext parentContext) {
+    debugPrint("user role: ${PersistentData().userInfo!.role}");
+
     return Scaffold(
       body: _isLoading ? const Center(child: CircularProgressIndicator()) // Show loading indicator
           : Container(
@@ -764,7 +766,7 @@ class _Rentals extends State<Rentals> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomComponents.displayText(
-                            "Hello, ${PersistentData().userInfo!.role}",
+                            "Hello, ${PersistentData().userType}",
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),

@@ -120,7 +120,7 @@ class _MyAccountState extends State<MyAccount> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //  new email
-          const SizedBox(height: 40),
+          const SizedBox(height: 25),
           CustomComponents.displayText(
               ProjectStrings.account_register_ep_email,
               fontSize: 10,

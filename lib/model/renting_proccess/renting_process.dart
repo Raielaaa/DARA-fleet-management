@@ -25,6 +25,7 @@ class RentInformation {
   String carOwner;
   String paymentStatus;
   String postApproveStatus;
+  String imagePathForAlternativePayment;
 
   RentInformation({
     required this.postApproveStatus,
@@ -52,11 +53,13 @@ class RentInformation {
     required this.carType,
     required this.rentStatus,
     required this.adminNotes,
-    required this.carOwner
+    required this.carOwner,
+    required this.imagePathForAlternativePayment
   });
 
   Map<String, String> getModelData() {
     return {
+      "rent_image_path_for_alternative_payment" : imagePathForAlternativePayment,
       "rent_post_approve_status" : postApproveStatus,
       "rent_payment_status" : paymentStatus,
       "rent_car_UID" : rent_car_UID,
@@ -88,6 +91,7 @@ class RentInformation {
 
   factory RentInformation.fromFirestore(Map<String, dynamic> data) {
     return RentInformation(
+        imagePathForAlternativePayment: data["rent_image_path_for_alternative_payment"] ?? "",
         postApproveStatus: data["rent_post_approve_status"] ?? "",
         paymentStatus: data["rent_payment_status"] ?? "",
         carType: data["rent_carType"] ?? "",

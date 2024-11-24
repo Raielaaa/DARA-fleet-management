@@ -121,16 +121,59 @@ class _ViewInquiryState extends State<ViewInquiry> {
               radix: 16,
             )),
           ),
-          const Spacer(),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.6,
-            child: CustomComponents.displayText(
-              value,
-              fontWeight: FontWeight.bold,
-              fontSize: 10,
-              textAlign: TextAlign.end,
+          const SizedBox(width: 30),
+          value != "see photo" ?
+          Expanded(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: CustomComponents.displayText(
+                value,
+                fontWeight: FontWeight.bold,
+                fontSize: 10,
+                textAlign: TextAlign.end
+              ),
             ),
-          ),
+          ) : Expanded(
+            child: widget.rentInfo.imagePathForAlternativePayment.isNotEmpty ? GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: CachedNetworkImage(
+                        imageUrl: FirebaseConstants.retrieveImage(widget.rentInfo.imagePathForAlternativePayment),
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: CustomComponents.displayText(
+                    value,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                    fontStyle: FontStyle.italic,
+                    textAlign: TextAlign.end,
+                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                ),
+              ),
+            ) :
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: CustomComponents.displayText(
+                  "NA",
+                  fontWeight: FontWeight.bold,
+                  fontSize: 10,
+                  fontStyle: FontStyle.italic,
+                  textAlign: TextAlign.end,
+                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+              ),
+            )
+          )
         ],
       ),
     );
@@ -364,6 +407,7 @@ class _ViewInquiryState extends State<ViewInquiry> {
                       buildInfoRow("With Driver:", currentItem.withDriver.toLowerCase() == "no" ? "No" : "Yes"),
                       buildInfoRow("Driver Fee:", currentItem.driverFee),
                       buildInfoRow("Total Amount:", currentItem.totalAmount),
+                      buildInfoRow("External payment proof:", "see photo"),
                       const SizedBox(height: 30),
                       Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),

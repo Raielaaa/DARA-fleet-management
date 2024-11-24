@@ -1,3 +1,4 @@
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/controller/car_list/car_list_controller.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
@@ -174,11 +175,18 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
   }
 
   Future<void> updateDB() async {
+    String docName = "${Auth().currentUser!.uid} - ${getCurrentTimeOfTheDayInSeconds()}";
     await CarListController().submitRentRecords(
         collectionName: FirebaseConstants.rentRecordsCollection,
-        documentName: "${Auth().currentUser!.uid} - ${getCurrentTimeOfTheDayInSeconds()}",
+        documentName: docName,
         data: PersistentData().rentInfoToBeSaved.getModelData()
     );
+    await FirebaseFirestore.instance.collection(FirebaseConstants.rentRecordsCollection)
+    .doc(docName)
+    .update({
+      "rent_image_path_for_alternative_payment" : PersistentData().gcashAlternativeImagePath
+    });
+
 
     Storage _storage = Storage();
 
