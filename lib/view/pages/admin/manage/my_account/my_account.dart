@@ -131,6 +131,7 @@ class _MyAccountState extends State<MyAccount> {
           CustomComponents.displayTextField(
               "Your new email",
               controller: _emailController,
+              maxLength: 30,
               labelColor: Color(int.parse(
                   ProjectColors.lightGray.substring(2),
                   radix: 16))),

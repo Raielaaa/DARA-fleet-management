@@ -422,7 +422,7 @@ class _OutsourceManageState extends State<OutsourceManage> {
                 const SizedBox(width: 10),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushNamed("inquiries_outsource");
+                    Navigator.of(context).pushNamed("manage_rent_inquiries_for_outsource");
                   },
                   child: buildAdminOption(
                     "lib/assets/pictures/manage_report_inquiries.png",

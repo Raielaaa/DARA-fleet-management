@@ -37,40 +37,43 @@ class _MapScreenState extends State<MapScreen> {
           ),
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          PersistentData _persistentData = PersistentData();
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 60),
+        child: FloatingActionButton(
+          onPressed: () async {
+            PersistentData _persistentData = PersistentData();
 
-          _persistentData.mapsLongitude = selectedLocation.longitude.toString();
-          _persistentData.mapsLatitude = selectedLocation.latitude.toString();
+            _persistentData.mapsLongitude = selectedLocation.longitude.toString();
+            _persistentData.mapsLatitude = selectedLocation.latitude.toString();
 
-          // Fetch the list of placemarks
-          List<Placemark> placemarks = await placemarkFromCoordinates(
-              selectedLocation.latitude, selectedLocation.longitude
-          );
+            // Fetch the list of placemarks
+            List<Placemark> placemarks = await placemarkFromCoordinates(
+                selectedLocation.latitude, selectedLocation.longitude
+            );
 
-          // Extract the first placemark (most relevant)
-          Placemark place = placemarks[0];
+            // Extract the first placemark (most relevant)
+            Placemark place = placemarks[0];
 
-          // Format the detailed location
-          String detailedLocation = "${place.subThoroughfare}, "
-              "${place.thoroughfare}, ${place.locality}, ${place.subAdministrativeArea}, "
-              "${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+            // Format the detailed location
+            String detailedLocation = "${place.subThoroughfare}, "
+                "${place.thoroughfare}, ${place.locality}, ${place.subAdministrativeArea}, "
+                "${place.administrativeArea}, ${place.postalCode}, ${place.country}";
 
-          // Clean up the result to remove any null or empty fields
-          detailedLocation = detailedLocation.replaceAll(", null", "").replaceAll(", ,", "");
+            // Clean up the result to remove any null or empty fields
+            detailedLocation = detailedLocation.replaceAll(", null", "").replaceAll(", ,", "");
 
-          // Debug print the detailed location
-          debugPrint("Detailed Location: $detailedLocation");
+            // Debug print the detailed location
+            debugPrint("Detailed Location: $detailedLocation");
 
-          //  for distance calculation
-          _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude = detailedLocation;
-          debugPrint("Brief selected location - ${_persistentData.bookingDetailsMapsLocationFromLongitudeLatitude}");
+            //  for distance calculation
+            _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude = detailedLocation;
+            debugPrint("Brief selected location - ${_persistentData.bookingDetailsMapsLocationFromLongitudeLatitude}");
 
-          // Navigate back and pass the selected location
-          Navigator.pop(context, detailedLocation);
-        },
-        child: Icon(Icons.check),
+            // Navigate back and pass the selected location
+            Navigator.pop(context, detailedLocation);
+          },
+          child: Icon(Icons.check),
+        ),
       ),
     );
   }

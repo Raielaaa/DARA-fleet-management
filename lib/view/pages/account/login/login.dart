@@ -318,6 +318,7 @@ class _LoginMain extends State<LoginMain> {
               CustomComponents.displayTextField(
                   ProjectStrings.account_register_ep_email_hint,
                   controller: _emailController,
+                  maxLength: 30,
                   labelColor: Color(int.parse(
                       ProjectColors.lightGray.substring(2),
                       radix: 16))),

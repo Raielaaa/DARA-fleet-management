@@ -38,7 +38,7 @@ class _MapScreenWeatherState extends State<MapScreenWeather> {
         },
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 50),
+        padding: const EdgeInsets.only(bottom: 60),
         child: FloatingActionButton(
           shape: const CircleBorder(),
           onPressed: () async {

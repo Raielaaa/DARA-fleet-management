@@ -217,7 +217,9 @@ class Assets {
   static const String myAccountMyAccount = 'lib/view/pages/admin/manage/my_account/my_account.dart';
   static const String outsourceAccountingOutsource = 'lib/view/pages/outsource/accounting_outsource.dart';
   static const String outsourceApplicationOutsource = 'lib/view/pages/admin/manage/application_list/outsource/application_outsource.dart';
+  static const String outsourceInquiriesInquiriesList = 'lib/view/pages/outsource/inquiries/inquiries_list.dart';
   static const String outsourceInquiriesOutsource = 'lib/view/pages/outsource/inquiries_outsource.dart';
+  static const String outsourceInquiriesViewInquiry = 'lib/view/pages/outsource/inquiries/view_inquiry.dart';
   static const String outsourceManageOutsource = 'lib/view/pages/outsource/manage_outsource.dart';
   static const String outsourceOutsourceApplication = 'lib/model/outsource/OutsourceApplication.dart';
   static const String picturesAbout = 'lib/assets/pictures/about.png';

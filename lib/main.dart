@@ -66,6 +66,8 @@ import 'package:dara_app/view/pages/outsource/application_process/input_pages/do
 import 'package:dara_app/view/pages/outsource/application_process/input_pages/employment_information.dart';
 import 'package:dara_app/view/pages/outsource/application_process/input_pages/personal_profile.dart';
 import 'package:dara_app/view/pages/outsource/application_process/input_pages/vehicle_information.dart';
+import 'package:dara_app/view/pages/outsource/inquiries/inquiries_list.dart';
+import 'package:dara_app/view/pages/outsource/inquiries/view_inquiry.dart';
 import 'package:dara_app/view/pages/outsource/inquiries_outsource.dart';
 import 'package:dara_app/view/pages/outsource/manage_outsource.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -205,6 +207,7 @@ class MyApp extends StatelessWidget {
             "manage_outsource": (context) => const OutsourceManage(),
             "accounting_outsource": (context) => const OutsourceAccounting(),
             "inquiries_outsource": (context) => const OutsourceInquiries(),
+            "manage_rent_inquiries_for_outsource": (context) => const ViewInquiriesOutsource(),
 
             //  Outsource - apply
             "ap_vehicle_information": (context) => const VehicleInformation(),
