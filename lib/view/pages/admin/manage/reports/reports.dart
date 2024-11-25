@@ -356,8 +356,6 @@ class _ManageReportsState extends State<ManageReports> {
     );
   }
 
-
-
   Widget buildIntegratedApp(String imagePath, String label, String bgColor) {
     return Stack(
       alignment: Alignment.center,

@@ -400,52 +400,142 @@ class _AccountantOptionState extends State<AccountantOption> {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20, top: 20),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: CustomComponents.displayText(
-                ProjectStrings.manage_accountant_options,
-                fontWeight: FontWeight.bold,
-                fontSize: 10,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
           Container(
-            width: double.infinity,
-            height: 1,
-            color: Color(int.parse(ProjectColors.lineGray)),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-            child: Row(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(7),
+            ),
+            child: Column(
               children: [
-                GestureDetector(
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.05,
+                    top: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: CustomComponents.displayText(
+                      "Accountant Options",
+                      fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.width * 0.03,
+                    ),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Container(
+                  width: double.infinity,
+                  height: 1,
+                  color: Color(int.parse(ProjectColors.lineGray)),
+                ),
+                const SizedBox(height: 20),
+
+                settingsListItem(
+                  context: context,
+                  color: const Color(0xff0564ff),
+                  icon: Icons.attach_money,
+                  text: "Income",
                   onTap: () {
                     Navigator.of(context).pushNamed("to_income_accountant");
                   },
-                  child: buildAdminOption(
-                    "lib/assets/pictures/accountant_income.png",
-                    ProjectStrings.manage_accountant_manage_options_income,
-                    Colors.white,
-                  ),
                 ),
-                const SizedBox(width: 10),
-                GestureDetector(
+                const SizedBox(height: 20),
+                settingsListItem(
+                  context: context,
+                  color: const Color(0xff00be15),
+                  icon: Icons.car_repair,
+                  text: "Car status",
                   onTap: () {
+                    // Navigator.of(context).pushNamed("manage_inquiries");
                     Navigator.of(context).pushNamed("manage_car_status");
                   },
-                  child: buildAdminOption(
-                    "lib/assets/pictures/manage_report_car_status.png",
-                    ProjectStrings.manage_reports_car_status,
-                    Colors.white,
-                  ),
                 ),
+                const SizedBox(height: 20),
+                settingsListItem(
+                  context: context,
+                  color: const Color(0xfffe7701),
+                  icon: Icons.account_circle,
+                  text: "My account",
+                  onTap: () {
+                    Navigator.of(context).pushNamed("manage_my_account");
+                  },
+                ),
+
+                const SizedBox(height: 30)
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget settingsListItem({
+    required BuildContext context,
+    required Color color,
+    required IconData icon,
+    required String text,
+    required VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15),
+      child: Material(
+        color: Colors.transparent, // Make the Material background transparent
+        child: InkWell(
+          onTap: onTap,
+          splashColor: Colors.blue.withOpacity(0.2), // Splash effect color
+          highlightColor: Colors.blue.withOpacity(0.1), // Highlight effect color
+          borderRadius: BorderRadius.circular(8), // Optional: adds rounded corners to the highlight effect
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        width: 32,
+                        height: 32,
+                      ),
+                      Icon(
+                        icon,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 20), // Spacing between icon and text
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+                    children: [
+                      CustomComponents.displayText(
+                        text,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                      const SizedBox(height: 10), // Space between text and bottom border
+                      Container(
+                        width: MediaQuery.of(context).size.width - 160,
+                        height: 1,
+                        color: Colors.grey.shade300, // Subtle divider line
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const Icon(
+                Icons.chevron_right,
+                color: Color(0xffd6d6d6),
+                size: 25,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
