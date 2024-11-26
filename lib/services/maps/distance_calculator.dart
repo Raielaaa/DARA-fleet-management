@@ -13,6 +13,8 @@ class DistanceCalculator {
 
   Future<void> calculateDistance(double startLat, double startLng, double endLat, double endLng) async {
     try {
+      debugPrint("start-lat: $startLat");
+      debugPrint("start-long: $startLng");
       //  making a request to Google Directions API
       DirectionsResponse response = await _directions.directionsWithLocation(
         Location(lat: startLat, lng: startLng),

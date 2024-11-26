@@ -1,3 +1,6 @@
+import "dart:convert";
+
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/controller/car_list/car_list_controller.dart";
 import "package:dara_app/controller/rent_process/rent_fee_calculator.dart";
 import "package:dara_app/controller/rent_process/rent_process.dart";
@@ -12,7 +15,9 @@ import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import 'package:http/http.dart' as http;
 
+import "../../../../controller/utils/constants.dart";
 import "../../../../services/maps/distance_calculator.dart";
 
 class RPDetailsFees extends StatefulWidget {
@@ -37,12 +42,21 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
   double mileageFee = 0.0;
   double rentalFee = 0.0;
   double totalFee = 0.0;
+  double garageLatitude = 0.0;
+  double garageLongitude = 0.0;
+  String garageLocation = "";
+  bool isLoading = true;
+  String googleApiKey = Constants.DIRECTION_API_KEY;
 
   @override
   void initState() {
     super.initState();
 
     debugPrint("Rental duration in munutes: ${PersistentData().rentalDurationInMinutes}");
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await getGarageLocationName();
+      calculateDistance();
+    });
     if (widget.isDeepLink) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         InfoDialog().showWithCancelProceedButton(
@@ -52,8 +66,71 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
         );
       });
     }
+  }
 
-    calculateDistance();
+  Future<void> getGarageLocationName() async {
+    try {
+      DocumentReference garageLocationDoc = FirebaseFirestore.instance.collection('dara-garage-location').doc('garage_location');
+      DocumentSnapshot docSnapshot = await garageLocationDoc.get();
+
+      if (docSnapshot.exists) {
+        String latitude = docSnapshot['garage_location_latitude'] ?? "0";
+        String longitude = docSnapshot['garage_location_longitude'] ?? "0";
+
+        setState(() {
+          garageLatitude = double.parse(latitude);
+          garageLongitude = double.parse(longitude);
+        });
+
+        // Fetch the readable location name using the Geocoding API
+        String address = await getAddressFromCoordinates(latitude, longitude);
+        setState(() {
+          garageLocation = address;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        CustomComponents.showToastMessage("Document does not exist!", Colors.red, Colors.white);
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      CustomComponents.showToastMessage("Error fetching garage location: $e", Colors.red, Colors.white);
+      debugPrint("Error fetching garage location@delivery_mode.dart@getGarageLocationName: $e");
+    }
+  }
+
+// Function to get the address from latitude and longitude using Google Maps API
+  Future<String> getAddressFromCoordinates(String latitude, String longitude) async {
+    final url = Uri.parse(
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$googleApiKey');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+          // Get the formatted address from the results
+          return data['results'][0]['formatted_address'] ?? "Unknown Address";
+        } else {
+          return "No address found";
+        }
+      } else {
+        return "Failed to fetch address";
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      CustomComponents.showToastMessage("Error fetching address: $e", Colors.red, Colors.white);
+      debugPrint("Error fetching address@delivery_mode.dart@getAddressFromCoordinates: $e");
+      return "Error occurred";
+    }
   }
 
   Future<void> calculateDistance() async {
@@ -86,7 +163,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
   Future<void> calculateDeliveryLocationGarageIfWithDriver() async {
     DistanceCalculator distanceCalculator = DistanceCalculator();
 
-    await distanceCalculator.calculateDistance(14.1954, 121.1641, _persistentData.startMapsLatitude, _persistentData.startMapsLongitude);
+    await distanceCalculator.calculateDistance(garageLatitude, garageLongitude, _persistentData.startMapsLatitude, _persistentData.startMapsLongitude);
 
     setState(() {
       drivingDistanceDriver = _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? distanceCalculator.getDrivingDistance() : "NA";
@@ -115,7 +192,18 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
             children: [
               _buildAppBar(),
 
-              Expanded(
+              isLoading ? Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 25),
+                  child: SizedBox(
+                    width: 35,
+                    height: 35,
+                    child: CircularProgressIndicator(
+                      color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                    ),
+                  ),
+                ),
+              ) : Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
@@ -475,7 +563,7 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: CustomComponents.displayText(
-                    _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? _persistentData.deliveryModeLocation : "${_persistentData.deliveryModeLocation} (garage location)",
+                    _persistentData.deliveryModePickUpOrDelivery == "Delivery" ? _persistentData.deliveryModeLocation : "$garageLocation (garage location)",
                     fontSize: 10
                 ),
               ),

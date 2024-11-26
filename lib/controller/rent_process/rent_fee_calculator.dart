@@ -5,7 +5,7 @@ class RentFeeCalculator {
     double distanceIncrement = 0;
 
     int stepSize = 15; // Every 15km increases the fee
-    int baseIncrement = 50; // Each step increases the fee by 50
+    int baseIncrement = 200; // Each step increases the fee by 50
 
     // Calculate the step based on delivery distance
     int step = (deliveryDistance / stepSize).ceil() - 1; // Start counting from 0 for <15km
