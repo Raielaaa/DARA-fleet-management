@@ -342,8 +342,15 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
         ),
         onPressed: () async {
           try {
-            await updateDB();
-            Navigator.of(parentContext).pushNamed("rp_verify_booking");
+            InfoDialog().showDecoratedTwoOptionsDialog(
+              context: context,
+              header: "Confirm Booking",
+              content: "Are you sure you want to proceed with this booking? This action cannot be undone!",
+              confirmAction: () async {
+                await updateDB();
+                Navigator.of(parentContext).pushNamed("rp_verify_booking");
+              }
+            );
           } catch(e) {
             LoadingDialog().dismiss();
             InfoDialog().show(context: context, content: "Something wen wrong. ${e.toString()}.", header: "Warning");

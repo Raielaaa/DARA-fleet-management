@@ -455,7 +455,7 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                           );
                                         } else {
                                           _persistentData.deliveryModePickUpOrDelivery = isPickUpSelected ? "Pick Up" : "Delivery";
-                                          _persistentData.deliveryModeLocation = isPickUpSelected ? ProjectStrings.rp_mode_pickup_location_label : selectedAddress;
+                                          _persistentData.deliveryModeLocation = isPickUpSelected ? garageLocation : selectedAddress;
                                           debugPrint("selected address: $selectedAddress");
 
                                           if (isPickUpSelected) {

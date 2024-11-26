@@ -30,6 +30,7 @@ class _RentLogsState extends State<RentLogs> {
   List<RentInformation> approvedRents = [];
   List<RentInformation> deniedRents = [];
   List<RentInformation> historyRents = [];
+  List<RentInformation> declinedRents = [];
   List<RentInformation> allRents = [];
   List<RentInformation> listToBeDisplayed = [];
   TextEditingController _searchController = TextEditingController();
@@ -315,6 +316,11 @@ class _RentLogsState extends State<RentLogs> {
                             ProjectColors.lightGray,
                           ),
                           buildInfoRowSecondPanel(
+                            "Total Amount",
+                            rentInformation.totalAmount,
+                            ProjectColors.lightGray,
+                          ),
+                          buildInfoRowSecondPanel(
                             ProjectStrings.dialog_admin_notes_title,
                             rentInformation.adminNotes,
                             ProjectColors.lightGray,
@@ -503,9 +509,13 @@ class _RentLogsState extends State<RentLogs> {
       final endDate = rent.endDateTime.toLowerCase();
       final remainingDays = calculateDateDifference(rent.startDateTime, rent.endDateTime).toLowerCase();
       final searchQuery = query.toLowerCase();
+      final renterEmail = rent.renterEmail.toLowerCase();
+      final rentAmount = rent.totalAmount.toLowerCase();
 
       return carName.contains(searchQuery) ||
           deliveryMode.contains(searchQuery) ||
+          rentAmount.contains(searchQuery) ||
+          renterEmail.contains(searchQuery) ||
           startDate.contains(searchQuery) ||
           endDate.contains(searchQuery) ||
           remainingDays.contains(searchQuery);
@@ -531,7 +541,7 @@ class _RentLogsState extends State<RentLogs> {
       await _retrieveUserInfo(allRents); // Fetch user info after getting rent records
 
       for (var item in allRents) {
-        if (item.rentStatus.toLowerCase() == "approved" || item.rentStatus.toLowerCase() == "denied" || item.rentStatus.toLowerCase() == "declined") {
+        if (item.rentStatus.toLowerCase() == "approved" || item.rentStatus.toLowerCase() == "denied") {
           if (item.postApproveStatus.toLowerCase() == "completed") {
             setState(() {
               historyRents.add(item);
@@ -548,6 +558,11 @@ class _RentLogsState extends State<RentLogs> {
               _isLoading = false;
             });
           }
+        } else if (item.rentStatus.toLowerCase() == "declined") {
+          setState(() {
+            declinedRents.add(item);
+            _isLoading = false;
+          });
         }
       }
       _updateListToBeDisplayed();
@@ -582,6 +597,8 @@ class _RentLogsState extends State<RentLogs> {
         listToBeDisplayed = historyRents;
       } else if (_currentSelectedIndex == 2) {
         listToBeDisplayed = deniedRents;
+      } else if (_currentSelectedIndex == 3) {
+        listToBeDisplayed = declinedRents;
       }
     });
   }
@@ -862,6 +879,7 @@ class _RentLogsState extends State<RentLogs> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
+                      _currentSelectedIndex != 3 ?
                       showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
@@ -871,6 +889,10 @@ class _RentLogsState extends State<RentLogs> {
                         builder: (BuildContext context) {
                           return EditRentalInfoBottomSheet(completeRentInfo: completeRentInfo, parentContext: context,);
                         }
+                      ) : CustomComponents.showToastMessage(
+                          "Status change is not permitted for declined rental requests.",
+                          Colors.red,
+                          Colors.white
                       );
                     },
                     child: Column(
@@ -1198,19 +1220,25 @@ class _RentLogsState extends State<RentLogs> {
         CustomComponents.displayText(
           "Ongoing",
           color: Color(int.parse(ProjectColors.mainColorHex)),
-          fontSize: 12,
+          fontSize: 10,
           fontWeight: FontWeight.w600,
         ),
         CustomComponents.displayText(
           "Completed",
           color: Color(int.parse(ProjectColors.mainColorHex)),
-          fontSize: 12,
+          fontSize: 10,
           fontWeight: FontWeight.w600,
         ),
         CustomComponents.displayText(
           "Cancelled",
           color: Color(int.parse(ProjectColors.mainColorHex)),
-          fontSize: 12,
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+        ),
+        CustomComponents.displayText(
+          "Declined",
+          color: Color(int.parse(ProjectColors.mainColorHex)),
+          fontSize: 10,
           fontWeight: FontWeight.w600,
         ),
       ],

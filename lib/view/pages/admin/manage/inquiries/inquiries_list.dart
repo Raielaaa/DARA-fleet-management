@@ -49,6 +49,7 @@ class _ViewInquiriesState extends State<ViewInquiries> {
         inquiry.carName.toLowerCase().contains(query) ||
             inquiry.startDateTime.toLowerCase().contains(query) ||
             inquiry.endDateTime.toLowerCase().contains(query) ||
+            inquiry.renterEmail.toLowerCase().contains(query) ||
             inquiry.pickupOrDelivery.toLowerCase().contains(query) ||
             inquiry.totalAmount.toLowerCase().contains(query) ||
             inquiry.rentLocation.toLowerCase().contains(query) ||
