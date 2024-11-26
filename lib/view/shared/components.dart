@@ -8,6 +8,7 @@ import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:simple_loading_dialog/simple_loading_dialog.dart";
 
@@ -216,30 +217,29 @@ class CustomComponents {
   }
 
   static TextField displayTextField(
-    String label,
-    {
-      TextEditingController? controller,
-      bool isFocused = false,
-      TextInputType keyboardType = TextInputType.emailAddress,
-      TextInputAction textInputAction = TextInputAction.next,
-      bool isAutoCorrected = false,
-      TextAlign textAlign = TextAlign.start,
-      Color cursorColor = const Color(0xff3FA2BE),
-      int maxLength = 20,
-      int maxLines = 1,
-      FontWeight labelWeight = FontWeight.bold,
-      Color labelColor = Colors.grey,
-      bool isIconPresent = false,
-      bool isTextHidden = false,
-      InputBorder inputBorder = const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(7)),
-        borderSide: BorderSide(
-          color: Color(0xff3FA2BE)
-        )
-      ),
-      Function()? iconPressed
-    }
-  ) {
+      String label, {
+        TextEditingController? controller,
+        bool isFocused = false,
+        TextInputType keyboardType = TextInputType.emailAddress,
+        TextInputAction textInputAction = TextInputAction.next,
+        bool isAutoCorrected = false,
+        TextAlign textAlign = TextAlign.start,
+        Color cursorColor = const Color(0xff3FA2BE),
+        int maxLength = 20,
+        int maxLines = 1,
+        FontWeight labelWeight = FontWeight.bold,
+        Color labelColor = Colors.grey,
+        bool isIconPresent = false,
+        bool isTextHidden = false,
+        InputBorder inputBorder = const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(7)),
+          borderSide: BorderSide(
+            color: Color(0xff3FA2BE),
+          ),
+        ),
+        Function()? iconPressed,
+        List<TextInputFormatter>? inputFormatters, // <-- New optional parameter
+      }) {
     return TextField(
       controller: controller,
       obscureText: isTextHidden,
@@ -255,32 +255,32 @@ class CustomComponents {
       style: const TextStyle(
         color: Colors.black,
         fontFamily: ProjectStrings.general_font_family,
-        fontSize: 10
+        fontSize: 10,
       ),
+      inputFormatters: inputFormatters, // <-- Pass inputFormatters here
       decoration: InputDecoration(
         suffixIcon: isIconPresent
-          ? IconButton(
-              onPressed: iconPressed,
-              icon: Icon(
-                isTextHidden ? Icons.visibility_off : Icons.visibility,
-                color: const Color(0xff3FA2BE)
-              ),
-            )
-          : null,
+            ? IconButton(
+          onPressed: iconPressed,
+          icon: Icon(
+            isTextHidden ? Icons.visibility_off : Icons.visibility,
+            color: const Color(0xff3FA2BE),
+          ),
+        )
+            : null,
         contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(7)
+          borderRadius: BorderRadius.circular(7),
         ),
         focusedBorder: inputBorder,
         labelText: label,
         labelStyle: TextStyle(
           fontWeight: FontWeight.normal,
           color: labelColor,
-          fontSize: 10
+          fontSize: 10,
         ),
         floatingLabelStyle: const TextStyle(
           color: Color(0xff3FA2BE),
-          // fontWeight: FontWeight.bold
         ),
       ),
     );

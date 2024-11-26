@@ -184,6 +184,7 @@ class Assets {
   static const String driverDriverApplication = 'lib/model/driver/driver_application.dart';
   static const String entryEntryPageVideo = 'lib/view/pages/entry/entry_page_video.dart';
   static const String firebaseAuth = 'lib/services/firebase/auth.dart';
+  static const String firebaseCloudMessaging = 'lib/services/firebase/cloud_messaging.dart';
   static const String firebaseFirestore = 'lib/services/firebase/firestore.dart';
   static const String firebasePhoneAuthService = 'lib/services/firebase/phone_auth_service.dart';
   static const String firebaseStorage = 'lib/services/firebase/storage.dart';

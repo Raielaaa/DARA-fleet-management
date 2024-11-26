@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dara_app/controller/singleton/persistent_data.dart';
 import 'package:dara_app/controller/utils/intent_utils.dart';
 import 'package:dara_app/model/constants/firebase_constants.dart';
+import 'package:dara_app/services/firebase/cloud_messaging.dart';
 import 'package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart';
 import 'package:dara_app/view/pages/admin/car_list/car_list_.dart';
 import 'package:dara_app/view/pages/admin/home/main_home.dart';
@@ -41,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     PersistentData().scaffoldKey = scaffoldKey;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Calls showDialog method right after screen display
+      await submitTokenIfAdmin();
       await retrieveGarageLocation();
       showSuccessfulRegisterSnackbar();
     });
@@ -53,6 +55,16 @@ class _HomePageState extends State<HomePage> {
     };
 
     PersistentData().scaffoldKey = scaffoldKey; // Set the scaffold key in the singleton
+  }
+
+  Future<void> submitTokenIfAdmin() async {
+    try {
+      if (PersistentData().userType.toLowerCase() == "admin") {
+        await FirebaseCloudMessaging.saveAdminDeviceToken(FirebaseAuth.instance.currentUser!.uid);
+      }
+    } catch(e) {
+      CustomComponents.showToastMessage("Error on submitting admin token", Colors.red, Colors.white);
+    }
   }
 
   Future<void> retrieveGarageLocation() async {

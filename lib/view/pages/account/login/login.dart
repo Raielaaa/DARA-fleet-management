@@ -169,11 +169,11 @@ class _LoginMain extends State<LoginMain> {
                     horizontal: isSmallScreen ? 11 : 19,
                   ),
                   child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2, // Two columns
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      childAspectRatio: 1 / 0.65, // Adjust the aspect ratio to control height
+                      childAspectRatio: 1 / 0.70,
                     ),
                     itemCount: 5, // Number of items
                     shrinkWrap: true,
@@ -250,7 +250,7 @@ class _LoginMain extends State<LoginMain> {
                 ),
               ),
             ),
-            const Spacer()
+            const SizedBox(height: 10),
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+import "dart:convert";
+
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/controller/car_list/car_list_controller.dart";
 import "package:dara_app/view/shared/colors.dart";
@@ -7,9 +9,11 @@ import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
-import "package:googleapis/apigeeregistry/v1.dart";
+import "package:googleapis_auth/auth_io.dart";
 import "package:mobkit_dashed_border/mobkit_dashed_border.dart";
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:googleapis_auth/googleapis_auth.dart';
 
 import "../../../../../controller/singleton/persistent_data.dart";
 import "../../../../../model/constants/firebase_constants.dart";
@@ -348,6 +352,7 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
               content: "Are you sure you want to proceed with this booking? This action cannot be undone!",
               confirmAction: () async {
                 await updateDB();
+                await notifyAdminOnNewRent(PersistentData().rentInfoToBeSaved.carName, PersistentData().rentInfoToBeSaved.renterEmail);
                 Navigator.of(parentContext).pushNamed("rp_verify_booking");
               }
             );
@@ -369,6 +374,82 @@ class _SubmitDocumentsState extends State<SubmitDocuments> {
         ),
       ),
     );
+  }
+
+  Future<void> notifyAdminOnNewRent(String carName, String renterName) async {
+    try {
+      // Retrieve the service account credentials JSON from your Firebase console
+      final serviceAccountCredentials = ServiceAccountCredentials.fromJson(r'''{
+      "type": "service_account",
+  "project_id": "dara-renting-app",
+  "private_key_id": "71989bd22ccca7cd7a496d4b850676efaa6b0c13",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC7XhYJ59GP4/hC\nMWV2LRZUHZX/Af+CCEzCk1xGbzQuYZniNmwJHmTMjN5KKo+/yXrXoGioyLZwKj6U\nhzqjcQRE3fgqvncNfl+S4bqs6oBF50kgqMNrT7bnZzEoNvtdbsUFUNHl8q7/QAPt\nR31/GLfPa3Fo8qYi6rWhyvqEIku9j/62B6fgLhOM1pJKqe9NZOfY9Xxnc04mQ6a9\nChML79XtnKxkE0NjxtjUYDNPA8gRJOgvNcreWaG9PzzIJKnhgVaFWowgwfl9SjP1\nuDSpooOecmt6yW+IDTLQjCxxFZ4UyMX8v5IdNHBaQDRjGXzdbLP8bBU+DOqk0E+B\nDCb+RIfTAgMBAAECggEAIsApgD7RnElg0w4MTmXAXWt7VWeOdxSJABGKrLmVSQDr\nJIyJbwuHEHUUCVdpf92jffiPULahN55uKugF1Shx7T/p9iuLMyJ8IWbiU43Oqqhh\n5L/INs/7EWIPOPExn7uaqQi7VVW0ZTz/PXPj772q4bqAt0FB1PoJI+/clMMznv2T\nqgseS1/U3z8ZsQYpxcMINK4ZV0WW2hBbOV9D4aFZ+HzhWNzST9FELfcA3sE/l16j\nIdtf53thHA4CRYpeaToeeaVqj5NYu0Ot89U2jJt/bkZfffAOvVo0i8l0zzZbovy9\n1hPPXqSH+EO1rs34jqn82Tl4C8PgLJxNO8049BGQOQKBgQDjFg59YbDwNnOa/fOI\nz4MreERFqkjDBg5aEvQBtxRC7YjQ37dP4bZgjeNJbcfHfTGowW6f/jZPsNOLEFZM\naMUpkpwVbh9EDd1DwclbCk3V49gUPgeg9C+FdhuWGfG9jMARSePOklnmXxKUiXHa\npwZIm5OMnN0puuOgBoX4PwW5vwKBgQDTOWNpwHigL+h+8+vQ6n+9A/69cGuZZEC6\nzLNegJN4AMv6kRkDxmVjlpnrIKW+Y+z1/64RRJ2MO1JZwSTSn39rhrkRTxSvnAZS\nt3/ZWjTldj34igpZTLjX1YWdbIjurWOGntDID6BKp3dh1b6lYR84s0tKfm/i8EZo\n682grrju7QKBgQDiVZGLllrskNkYmhSpP2rVYMFrThXHi7myPUHGk9s1+dprlQ74\nJ1fHVKQ9A5YjVrywHltMS+uF8hBmgpoA/kvE68N1+JRhGBB5ACTZAKQjkzxCsLCZ\n08epldZY/PLcofStRqAvu96upgO22GcKL38rzyR4+b/VX9iQHvBYRThHsQKBgQDS\nbmsPMTQ7il8bE1FM6kJmgbNo8bYQtGMUdtj//iJsvIZ609FTBHWAGMqxB+531j99\n+MJm66/1xCfPyW8w8rvT2P1JNDrMlSlrgOq7FHZ8YCdvE78pphjE1jFuW3G0L0Nn\nG5OurHqpxVtXOcXcJv0e1Ojeh0ZalbvfzYQnX8pYJQKBgQCwgqPfg8ahsy5ooFpo\n6I33kjCCwVqqG13CBumTuaePDHxSvShXSdSDVyrcF+mC7kzicXOWu1TnPOzNqAeb\nNzVv1m2M/SQWfRXrR7zV0nvj4V6LrfH3ihy1hlcs3/Na+n8/vOJHQvXcUPJpRmAd\nNDRcIng4rBBE33m4ZXw30zVp5A==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-mvg9p@dara-renting-app.iam.gserviceaccount.com",
+  "client_id": "103374805067281690715",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-mvg9p%40dara-renting-app.iam.gserviceaccount.com",
+    }''');
+
+      // Create an auth client
+      final authClient = await clientViaServiceAccount(
+          serviceAccountCredentials,
+          ['https://www.googleapis.com/auth/firebase.messaging']
+      );
+
+      // Get the OAuth 2.0 token for FCM
+      final token = await authClient.credentials.accessToken;
+
+      // Fetch admin device tokens from Firestore
+      QuerySnapshot adminSnapshot = await FirebaseFirestore.instance.collection("adminTokens").get();
+
+      List<String> tokens = [];
+      for (var doc in adminSnapshot.docs) {
+        String? token = doc["deviceToken"];
+        if (token != null) {
+          tokens.add(token);
+        }
+      }
+
+      if (tokens.isNotEmpty) {
+        // Create FCM notification payload
+        Map<String, dynamic> notificationPayload = {
+          "registration_ids": tokens, // Target all admin devices
+          "notification": {
+            "title": "New Rent Request",
+            "body": "$renterName has requested to rent $carName. View details in the app.",
+          },
+          "data": {
+            "type": "rent_notification",
+            "renterName": renterName,
+          },
+        };
+
+        // Send the notification using FCM's API
+        final response = await http.post(
+          Uri.parse('https://fcm.googleapis.com/v1/projects/dara-renting-app/messages:send'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${token}',
+          },
+          body: json.encode({
+            "message": notificationPayload,
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          debugPrint("Notification sent successfully!");
+          CustomComponents.showToastMessage("Notification sent successfully!", Colors.green, Colors.white);
+        } else {
+          debugPrint("Failed to send notification: ${response.body}");
+          CustomComponents.showToastMessage("Failed to send notification", Colors.red, Colors.white);
+        }
+      }
+    } catch (e) {
+      debugPrint("Error sending notifications: $e");
+      CustomComponents.showToastMessage("Error sending notifications: $e", Colors.red, Colors.white);
+    }
   }
 
   @override

@@ -5,6 +5,7 @@ import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter/widgets.dart";
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import "package:intl/intl.dart";
@@ -147,7 +148,7 @@ class _RegisterState extends State<Register> {
 
   Widget _userType(String header, String subHeader, String imagePath, bool isSmallScreen) {
     return Container(
-      width: isSmallScreen ? 155 : 175,
+      width: MediaQuery.of(context).size.width / 3 + 12,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: Colors.white,
@@ -301,6 +302,10 @@ class _RegisterState extends State<Register> {
                       ProjectColors.lightGray.substring(2),
                       radix: 16)),
                   isFocused: true,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]'))
+                  ],
+                  keyboardType: TextInputType.name,
                   controller: _firstNameController),
 
               //  Last name
@@ -314,6 +319,10 @@ class _RegisterState extends State<Register> {
               CustomComponents.displayTextField(
                   ProjectStrings.account_register_1_lastname_hint,
                   controller: _lastNameController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]'))
+                  ],
+                  keyboardType: TextInputType.text,
                   labelColor: Color(int.parse(
                       ProjectColors.lightGray.substring(2),
                       radix: 16))),

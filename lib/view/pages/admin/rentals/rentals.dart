@@ -777,173 +777,178 @@ class _Rentals extends State<Rentals> {
         color: Color(int.parse(ProjectColors.mainColorBackground.substring(2), radix: 16)),
         child: Padding(
           padding: const EdgeInsets.only(top: 38),
-          child: RefreshIndicator(
-            onRefresh: _refresh,
-            color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-            child: ListView(
-              padding: EdgeInsets.zero, // Removes default ListView padding
-              children: [
-                // ActionBar
-                _actionBar(),
+          child: Column(
+            children: [
+              // ActionBar
+              _actionBar(),
 
-                // Header
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        "lib/assets/pictures/app_logo_circle.png",
-                        width: 120.0,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                          child: CustomComponents.displayText(
-                            PersistentData().userType,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: _refresh,
+                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 15, right: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CustomComponents.displayText(
-                              "Hello, ${PersistentData().userType}",
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                            Image.asset(
+                              "lib/assets/pictures/app_logo_circle.png",
+                              width: 120.0,
                             ),
-                            CustomComponents.displayText(
-                              "PH ${PersistentData().userInfo!.number.isNotEmpty ? PersistentData().userInfo?.number : "- click here to verify"}",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10,
-                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                            ),
-                            const SizedBox(height: 10),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: PersistentData().userInfo!.number.isNotEmpty
-                                    ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16))
-                                    : Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)),
+                                color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
                               ),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Image.asset(
-                                      PersistentData().userInfo!.number.isNotEmpty
-                                          ? "lib/assets/pictures/rentals_verified.png"
-                                          : "lib/assets/pictures/rentals_denied.png",
-                                      width: 20,
-                                      height: 20,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                                    child: CustomComponents.displayText(
-                                      PersistentData().userInfo?.number.isNotEmpty == true
-                                          ? ProjectStrings.rentals_header_verified_button
-                                          : "Unverified",
-                                      color: PersistentData().userInfo!.number.isNotEmpty
-                                          ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16))
-                                          : Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                                child: CustomComponents.displayText(
+                                  PersistentData().userType,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: Image.asset(
-                          "lib/assets/pictures/home_top_image_2.png",
-                          fit: BoxFit.contain,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 15, right: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomComponents.displayText(
+                                    "Hello, ${PersistentData().userType}",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  CustomComponents.displayText(
+                                    "PH ${PersistentData().userInfo!.number.isNotEmpty ? PersistentData().userInfo?.number : "- click here to verify"}",
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 10,
+                                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: PersistentData().userInfo!.number.isNotEmpty
+                                          ? Color(int.parse(ProjectColors.lightGreen.substring(2), radix: 16))
+                                          : Color(int.parse(ProjectColors.redButtonBackground.substring(2), radix: 16)),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 20),
+                                          child: Image.asset(
+                                            PersistentData().userInfo!.number.isNotEmpty
+                                                ? "lib/assets/pictures/rentals_verified.png"
+                                                : "lib/assets/pictures/rentals_denied.png",
+                                            width: 20,
+                                            height: 20,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                                          child: CustomComponents.displayText(
+                                            PersistentData().userInfo?.number.isNotEmpty == true
+                                                ? ProjectStrings.rentals_header_verified_button
+                                                : "Unverified",
+                                            color: PersistentData().userInfo!.number.isNotEmpty
+                                                ? Color(int.parse(ProjectColors.greenButtonMain.substring(2), radix: 16))
+                                                : Color(int.parse(ProjectColors.redButtonMain.substring(2), radix: 16)),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Image.asset(
+                                "lib/assets/pictures/home_top_image_2.png",
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+
+                      // Switch option
+                      const SizedBox(height: 0),
+                      switcher(_rentRecordsOnGoing, _rentRecordsHistory),
+
+                      // List Items
+                      const SizedBox(height: 5),
+                      if (itemsToBeDisplayed.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25.0, right: 25, top: 10),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 30),
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      "lib/assets/pictures/data_not_found.jpg",
+                                      width: MediaQuery.of(context).size.width - 200,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    CustomComponents.displayText(
+                                      "No records found at the moment. Please try again later.",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10,
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        ListView.builder(
+                          shrinkWrap: true, // Allow the ListView to occupy only as much space as needed
+                          physics: const NeverScrollableScrollPhysics(), // Prevent nested ListView from scrolling
+                          padding: const EdgeInsets.only(top: 0, bottom: 100),
+                          itemCount: itemsToBeDisplayed.length,
+                          itemBuilder: (context, index) {
+                            final rentInfo = itemsToBeDisplayed[index];
+                            return buildCarListItem(
+                              imagePath: rentInfo.rent_car_UID,
+                              carName: rentInfo.carName,
+                              carRentLocation: rentInfo.rentLocation,
+                              carStartEndDate: "${rentInfo.startDateTime} - ${rentInfo.endDateTime}",
+                              startDate: rentInfo.startDateTime,
+                              endDate: rentInfo.endDateTime,
+                              totalAmount: "PHP ${rentInfo.totalAmount} / total",
+                              rentStatus: rentInfo.rentStatus.toLowerCase(),
+                              parentContext: parentContext,
+                            );
+                          },
+                        )
                     ],
                   ),
                 ),
-
-                // Switch option
-                const SizedBox(height: 0),
-                switcher(_rentRecordsOnGoing, _rentRecordsHistory),
-
-                // List Items
-                const SizedBox(height: 5),
-                if (itemsToBeDisplayed.isEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0, right: 25, top: 10),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 30),
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                "lib/assets/pictures/data_not_found.jpg",
-                                width: MediaQuery.of(context).size.width - 200,
-                              ),
-                              const SizedBox(height: 20),
-                              CustomComponents.displayText(
-                                "No records found at the moment. Please try again later.",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10,
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                else
-                  ListView.builder(
-                    shrinkWrap: true, // Allow the ListView to occupy only as much space as needed
-                    physics: const NeverScrollableScrollPhysics(), // Prevent nested ListView from scrolling
-                    padding: const EdgeInsets.only(top: 0, bottom: 100),
-                    itemCount: itemsToBeDisplayed.length,
-                    itemBuilder: (context, index) {
-                      final rentInfo = itemsToBeDisplayed[index];
-                      return buildCarListItem(
-                        imagePath: rentInfo.rent_car_UID,
-                        carName: rentInfo.carName,
-                        carRentLocation: rentInfo.rentLocation,
-                        carStartEndDate: "${rentInfo.startDateTime} - ${rentInfo.endDateTime}",
-                        startDate: rentInfo.startDateTime,
-                        endDate: rentInfo.endDateTime,
-                        totalAmount: "PHP ${rentInfo.totalAmount} / total",
-                        rentStatus: rentInfo.rentStatus.toLowerCase(),
-                        parentContext: parentContext,
-                      );
-                    },
-                  ),
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),
