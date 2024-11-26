@@ -361,12 +361,17 @@ class _UserInfoState extends State<UserInfo> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      documentName?.split("/").last ?? "Empty",
+                      documentName != null
+                          ? (documentName.split("/").last.length > 30
+                          ? "${documentName.split("/").last.substring(0, 27)}..."
+                          : documentName.split("/").last)
+                          : "Empty",
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                       style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: ProjectStrings.general_font_family
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: ProjectStrings.general_font_family,
                       ),
                     ),
                     Row(

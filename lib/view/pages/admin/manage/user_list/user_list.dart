@@ -245,8 +245,13 @@ class _UserListState extends State<UserList> {
     if (filteredWords.length < 2) return '';
 
     // Get the first letter of the first two non-numeric words
-    String firstInitial = filteredWords[0][0];
-    String secondInitial = filteredWords[1][0];
+    String firstInitial = "";
+    String secondInitial = "";
+
+    try {
+      firstInitial = filteredWords[0][0];
+      secondInitial = filteredWords[1][0];
+    } catch(ignored) {};
 
     // Combine them and return
     return firstInitial + secondInitial;

@@ -333,17 +333,17 @@ class _AccountantOptionState extends State<AccountantOption> {
                 "0xffffffff",
               ),
             ),
-            const SizedBox(width: 15),
-            GestureDetector(
-              onTap: () {
-                _accessDenied();
-              },
-              child: buildIntegratedApp(
-                "lib/assets/pictures/bottom_nav_bar_antrip.png",
-                ProjectStrings.manage_reports_antrip_iot,
-                ProjectColors.antripIOTColor,
-              ),
-            ),
+            // const SizedBox(width: 15),
+            // GestureDetector(
+            //   onTap: () {
+            //     _accessDenied();
+            //   },
+            //   child: buildIntegratedApp(
+            //     "lib/assets/pictures/bottom_nav_bar_antrip.png",
+            //     ProjectStrings.manage_reports_antrip_iot,
+            //     ProjectColors.antripIOTColor,
+            //   ),
+            // ),
           ],
         ),
       ],

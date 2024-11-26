@@ -403,7 +403,7 @@ class _ViewInquiryState extends State<ViewInquiry> {
                       buildInfoRow(ProjectStrings.ri_rent_end_date_title, currentItem.endDateTime),
                       buildInfoRow(ProjectStrings.ri_delivery_mode_title, currentItem.pickupOrDelivery),
                       buildInfoRow(ProjectStrings.ri_delivery_location_title, currentItem.deliveryLocation),
-                      buildInfoRow(ProjectStrings.ri_reserved_title, currentItem.reservationFee == "0" ? "No" : "Yes"),
+                      buildInfoRow(ProjectStrings.ri_reserved_title, currentItem.reservationFee == "0" ? "No" : "Yes (PHP ${currentItem.reservationFee})"),
                       buildInfoRow("With Driver:", currentItem.withDriver.toLowerCase() == "no" ? "No" : "Yes"),
                       buildInfoRow("Driver Fee:", currentItem.driverFee),
                       buildInfoRow("Total Amount:", currentItem.totalAmount),
