@@ -14,6 +14,7 @@ import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
+import "package:geolocator/geolocator.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:http/http.dart' as http;
@@ -180,7 +181,7 @@ class _AdminHomeState extends State<AdminHome> {
   void initState() {
     super.initState();
     // Initialize the future directly in initState
-    weatherFuture = homeController.getWeatherForecast(null, null);
+    weatherFuture = homeController.getWeatherForecast(PersistentData().currentLocationLong, PersistentData().currentLocationLat);
 
     try {
       //  chatgpt

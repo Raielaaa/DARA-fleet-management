@@ -338,6 +338,11 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                                               BorderRadius.circular(5)))),
                                   onPressed: () {
                                     PersistentData _persistentData = PersistentData();
+                                    debugPrint("1st: ${_persistentData.bookingDetailsMapsLocationFromLongitudeLatitude}");
+                                    debugPrint("start-date: ${_persistentData.bookingDetailsStartingDate}");
+                                    debugPrint("end-date: ${_persistentData.bookingDetailsEndingDate}");
+                                    debugPrint("start-time: ${_persistentData.bookingDetailsStartingTime}");
+                                    debugPrint("end-time: ${_persistentData.bookingDetailsEndingTime}");
 
                                     if (
                                     _persistentData.bookingDetailsMapsLocationFromLongitudeLatitude == "" ||

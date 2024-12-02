@@ -9,6 +9,7 @@ import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import "package:geolocator/geolocator.dart";
 import "package:google_sign_in/google_sign_in.dart";
 
 class LoginMain extends StatefulWidget {
@@ -395,7 +396,10 @@ class _LoginMain extends State<LoginMain> {
                 child: CustomComponents.displayElevatedButton(
                   ProjectStrings.account_login_main_login_button,
                   fontSize: 12,
-                  onPressed: () {
+                  onPressed: () async {
+                    LoadingDialog().show(context: context, content: "Please wait while process necessary information");
+                    await fetchCurrentLocationLatLong();
+                    LoadingDialog().dismiss();
                     LoginController loginController = LoginController();
                     loginController.validateInputs(
                         context: context,
@@ -547,5 +551,32 @@ class _LoginMain extends State<LoginMain> {
             ],
           )),
     );
+  }
+
+  Future<void> fetchCurrentLocationLatLong() async {
+    try {
+      // Request permissions if not granted
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        permission = await Geolocator.requestPermission();
+      }
+
+      // Fetch the current location
+      if (permission == LocationPermission.whileInUse ||
+          permission == LocationPermission.always) {
+        Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+        debugPrint("pos-lat-maps: ${position.latitude}");
+        debugPrint("pos-long-maps: ${position.longitude}");
+        PersistentData().currentLocationLat = position.latitude;
+        PersistentData().currentLocationLong = position.longitude;
+      } else {
+        CustomComponents.showToastMessage("Location permissions are not granted", Colors.red, Colors.white);
+      }
+    } catch(e) {
+      debugPrint("error@fetchCurrentLocationLatLong");
+    }
   }
 }

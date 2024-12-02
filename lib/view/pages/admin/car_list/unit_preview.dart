@@ -392,401 +392,313 @@ class _UnitPreviewState extends State<UnitPreview> {
               //  car information panel
               Expanded(
                 child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
-                    child: Container(
-                      width: double.infinity,
-                      height: 440,
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(7),
-                              bottomRight: Radius.circular(7))),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: CustomComponents.displayText(
-                                        selectedCarItem.name,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                  padding: EdgeInsets.zero,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15, left: 15),
+                      child: Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height / 2 + 70,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(7),
+                                bottomRight: Radius.circular(7))),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: CustomComponents.displayText(
+                                      selectedCarItem.name,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(10),
+                                        color: selectedCarItem.availability.toLowerCase() == "available" ? Color(int.parse(
+                                            ProjectColors
+                                                .greenButtonBackground
+                                                .substring(2),
+                                            radix: 16)) : Color(int.parse(
+                                            ProjectColors
+                                                .redButtonBackground
+                                                .substring(2),
+                                            radix: 16)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 10,
+                                            right: 25,
+                                            left: 25),
+                                        child: CustomComponents.displayText(
+                                          CustomComponents.capitalizeFirstLetter(selectedCarItem.availability),
                                           color: selectedCarItem.availability.toLowerCase() == "available" ? Color(int.parse(
                                               ProjectColors
-                                                  .greenButtonBackground
+                                                  .greenButtonMain
                                                   .substring(2),
                                               radix: 16)) : Color(int.parse(
                                               ProjectColors
-                                                  .redButtonBackground
+                                                  .redButtonMain
                                                   .substring(2),
                                               radix: 16)),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10,
-                                              bottom: 10,
-                                              right: 25,
-                                              left: 25),
-                                          child: CustomComponents.displayText(
-                                            CustomComponents.capitalizeFirstLetter(selectedCarItem.availability),
-                                            color: selectedCarItem.availability.toLowerCase() == "available" ? Color(int.parse(
-                                                ProjectColors
-                                                    .greenButtonMain
-                                                    .substring(2),
-                                                radix: 16)) : Color(int.parse(
-                                                ProjectColors
-                                                    .redButtonMain
-                                                    .substring(2),
-                                                radix: 16)),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10,
-                                          ),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: CustomComponents.displayText(
-                                  selectedCarItem.shortDescription,
-                                  fontSize: 10
+                                  ),
+                                ],
                               ),
-                            ),
-                            Expanded(
-                              // main info
-                              child: DefaultTabController(
-                                  length: 2,
-                                  child: Scaffold(
-                                    backgroundColor: Colors.white,
-                                    appBar: PreferredSize(
-                                      preferredSize: const Size.fromHeight(29),
-                                      child: AppBar(
-                                        backgroundColor: Colors.white,
-                                        automaticallyImplyLeading: false,
-                                        toolbarHeight: 0,
-                                        bottom: const TabBar(
-                                          indicatorSize:
-                                              TabBarIndicatorSize.tab,
-                                          indicatorColor: Color(0xff3FA2BE),
-                                          tabs: [
-                                            //  first tab
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 10),
-                                              child: Text(
-                                                ProjectStrings.si_features,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 10,
-                                                    color: Color(0xff3FA2BE)),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: CustomComponents.displayText(
+                                    selectedCarItem.shortDescription,
+                                    fontSize: 10
+                                ),
+                              ),
+                              Expanded(
+                                // main info
+                                child: DefaultTabController(
+                                    length: 2,
+                                    child: Scaffold(
+                                      backgroundColor: Colors.white,
+                                      appBar: PreferredSize(
+                                        preferredSize: const Size.fromHeight(29),
+                                        child: AppBar(
+                                          backgroundColor: Colors.white,
+                                          automaticallyImplyLeading: false,
+                                          toolbarHeight: 0,
+                                          bottom: const TabBar(
+                                            indicatorSize:
+                                            TabBarIndicatorSize.tab,
+                                            indicatorColor: Color(0xff3FA2BE),
+                                            tabs: [
+                                              //  first tab
+                                              Padding(
+                                                padding:
+                                                EdgeInsets.only(bottom: 10),
+                                                child: Text(
+                                                  ProjectStrings.si_features,
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 10,
+                                                      color: Color(0xff3FA2BE)),
+                                                ),
                                               ),
-                                            ),
-                                            //  second tab
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 10),
-                                              child: Text(
-                                                ProjectStrings.si_about,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 10,
-                                                    color: Color(0xff3FA2BE)),
+                                              //  second tab
+                                              Padding(
+                                                padding:
+                                                EdgeInsets.only(bottom: 10),
+                                                child: Text(
+                                                  ProjectStrings.si_about,
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 10,
+                                                      color: Color(0xff3FA2BE)),
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    body: TabBarView(children: [
-                                      //  first tab item
-                                      Column(
-                                        children: [
-                                          const SizedBox(height: 30),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              //  color
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                      "lib/assets/pictures/si_color.png",
-                                                      width: 30),
-                                                  const SizedBox(height: 10),
-                                                  CustomComponents.displayText(
-                                                      ProjectStrings
-                                                          .si_color_title,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 10),
-                                                  CustomComponents.displayText(
-                                                      selectedCarItem.color,
-                                                      fontSize: 10),
-                                                ],
+                                      body: TabBarView(children: [
+                                        //  first tab item
+                                        buildResponsiveUI(context),
+                                        //  second tab item
+                                        Container(
+                                            child: Column(children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 15, right: 15, top: 15),
+                                                child: CustomComponents.displayText(
+                                                    selectedCarItem.shortDescription,
+                                                    fontWeight: FontWeight.bold),
                                               ),
-                                              //  transmission
-                                              const SizedBox(width: 60),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                      "lib/assets/pictures/si_transmission.png",
-                                                      width: 30),
-                                                  const SizedBox(height: 10),
-                                                  CustomComponents.displayText(
-                                                      ProjectStrings
-                                                          .si_transmission_title,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 10),
-                                                  CustomComponents.displayText(
-                                                      selectedCarItem.transmission,
-                                                      fontSize: 10),
-                                                ],
-                                              ),
-                                              const SizedBox(width: 60),
-                                              //  fuel
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                      "lib/assets/pictures/si_fuel.png",
-                                                      width: 30),
-                                                  const SizedBox(height: 10),
-                                                  CustomComponents.displayText(
-                                                      ProjectStrings
-                                                          .si_fuel_title,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 10),
-                                                  CustomComponents.displayText(
-                                                      selectedCarItem.fuelVariant,
-                                                      fontSize: 10),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-
-                                          //  second row
-                                          const SizedBox(height: 30),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              //  color
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                      "lib/assets/pictures/si_horsepower.png",
-                                                      width: 30),
-                                                  const SizedBox(height: 10),
-                                                  CustomComponents.displayText(
-                                                      ProjectStrings
-                                                          .si_horsepower_title,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 10),
-                                                  CustomComponents.displayText(
-                                                      selectedCarItem.horsePower,
-                                                      fontSize: 10),
-                                                ],
-                                              ),
-                                              //  transmission
-                                              const SizedBox(width: 60),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                      "lib/assets/pictures/si_seats.png",
-                                                      width: 30),
-                                                  const SizedBox(height: 10),
-                                                  CustomComponents.displayText(
-                                                      ProjectStrings
-                                                          .si_seats_title,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 10),
-                                                  CustomComponents.displayText(
-                                                      "${selectedCarItem.capacity} seats",
-                                                      fontSize: 10),
-                                                ],
-                                              ),
-                                              const SizedBox(width: 60),
-                                              //  engine
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                      "lib/assets/pictures/si_engine.png",
-                                                      width: 30),
-                                                  const SizedBox(height: 10),
-                                                  CustomComponents.displayText(
-                                                      ProjectStrings
-                                                          .si_engine_title,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 10),
-                                                  CustomComponents.displayText(
-                                                      selectedCarItem.engine,
-                                                      fontSize: 10),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-
-                                          const SizedBox(height: 30),
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              //  fuel capacity
-                                              Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                      "lib/assets/pictures/si_fuel_capacity.png",
-                                                      width: 30),
-                                                  const SizedBox(height: 10),
-                                                  CustomComponents.displayText(
-                                                      "Fuel Capacity",
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                      fontSize: 10),
-                                                  CustomComponents.displayText(
-                                                      selectedCarItem.fuel,
-                                                      fontSize: 10),
-                                                ],
-                                              ),
-                                              //  mileage
-                                              const SizedBox(width: 60),
-                                              Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                      "lib/assets/pictures/si_mileage.png",
-                                                      width: 30),
-                                                  const SizedBox(height: 10),
-                                                  CustomComponents.displayText(
-                                                      "Mileage",
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                      fontSize: 10),
-                                                  CustomComponents.displayText(
-                                                      selectedCarItem.mileage,
-                                                      fontSize: 10),
-                                                ],
-                                              ),
-                                              const SizedBox(width: 60),
-                                              //  rent count
-                                              Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                      "lib/assets/pictures/si_rent_count.png",
-                                                      width: 30),
-                                                  const SizedBox(height: 10),
-                                                  CustomComponents.displayText(
-                                                      "Rent Count",
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                      fontSize: 10),
-                                                  CustomComponents.displayText(
-                                                      selectedCarItem.rentCount,
-                                                      fontSize: 10),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-
-                                          const SizedBox(height: 20)
-                                        ],
-                                      ),
-                                      //  second tab item
-                                      Container(
-                                          child: Column(children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15, right: 15, top: 15),
-                                          child: CustomComponents.displayText(
-                                              selectedCarItem.shortDescription,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15, right: 15),
-                                          child: Expanded(
-                                            child: CustomComponents.displayText(
-                                                selectedCarItem.longDescription,
-                                                textAlign: TextAlign.justify,
-                                                fontSize: 10
-                                            ),
-                                          ),
-                                        )
-                                      ]))
-                                    ]),
-                                  )),
-                            )
-                          ],
+                                              const SizedBox(height: 10),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 15, right: 15),
+                                                child: Expanded(
+                                                  child: CustomComponents.displayText(
+                                                      selectedCarItem.longDescription,
+                                                      textAlign: TextAlign.justify,
+                                                      fontSize: 10
+                                                  ),
+                                                ),
+                                              )
+                                            ]))
+                                      ]),
+                                    )),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
-                  //  renting process button
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 15, right: 15, top: 20),
-                    child: CustomComponents.displayElevatedButton(
-                        ProjectStrings.si_proceed_tp_renting_process,
-                        onPressed: () {
-                          if (selectedCarItem.availability != "available") {
-                            InfoDialog().show(context: context, content: "The selected car unit is currently unavailable. Please check back later. Thank you for your understanding.", header: "Warning");
-                          } else if (PersistentData().userInfo?.status.toLowerCase() != "verified" || PersistentData().userInfo!.number.toString().isEmpty) {
-                            InfoDialog().show(
-                                context: context,
-                                content: "Your account is currently unverified. To proceed with renting a car, please complete the verification process or, if you have already submitted your documents, kindly wait until your account is verified.",
-                                header: "Account Verification Required"
-                            );
-                          }
-                          else {
-                            _showInformationDialog(context);
-                          }
-                    }),
-                  ),
+                    //  renting process button
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(left: 15, right: 15, top: 20),
+                      child: CustomComponents.displayElevatedButton(
+                          ProjectStrings.si_proceed_tp_renting_process,
+                          onPressed: () {
+                            if (selectedCarItem.availability != "available") {
+                              InfoDialog().show(context: context, content: "The selected car unit is currently unavailable. Please check back later. Thank you for your understanding.", header: "Warning");
+                            } else if (PersistentData().userInfo?.status.toLowerCase() != "verified" || PersistentData().userInfo!.number.toString().isEmpty) {
+                              InfoDialog().show(
+                                  context: context,
+                                  content: "Your account is currently unverified. To proceed with renting a car, please complete the verification process or, if you have already submitted your documents, kindly wait until your account is verified.",
+                                  header: "Account Verification Required"
+                              );
+                            }
+                            else {
+                              _showInformationDialog(context);
+                            }
+                          }),
+                    ),
 
-                  const SizedBox(height: 100)
-                ],
-              ))
+                    const SizedBox(height: 100)
+                  ],
+                ),
+              )
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildResponsiveUI(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final columnSpacing = screenWidth * 0.1; // 8% of the screen width for spacing
+
+    return Column(
+      children: [
+        const SizedBox(height: 30),
+        // First Row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildFeatureColumn(
+              context,
+              "lib/assets/pictures/si_color.png",
+              ProjectStrings.si_color_title,
+              selectedCarItem.color,
+            ),
+            SizedBox(width: columnSpacing),
+            buildFeatureColumn(
+              context,
+              "lib/assets/pictures/si_transmission.png",
+              ProjectStrings.si_transmission_title,
+              selectedCarItem.transmission,
+            ),
+            SizedBox(width: columnSpacing),
+            buildFeatureColumn(
+              context,
+              "lib/assets/pictures/si_fuel.png",
+              ProjectStrings.si_fuel_title,
+              selectedCarItem.fuelVariant,
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 30),
+        // Second Row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildFeatureColumn(
+              context,
+              "lib/assets/pictures/si_horsepower.png",
+              ProjectStrings.si_horsepower_title,
+              selectedCarItem.horsePower,
+            ),
+            SizedBox(width: columnSpacing),
+            buildFeatureColumn(
+              context,
+              "lib/assets/pictures/si_seats.png",
+              ProjectStrings.si_seats_title,
+              "${selectedCarItem.capacity} seats",
+            ),
+            SizedBox(width: columnSpacing),
+            buildFeatureColumn(
+              context,
+              "lib/assets/pictures/si_engine.png",
+              ProjectStrings.si_engine_title,
+              selectedCarItem.engine,
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 30),
+        // Third Row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildFeatureColumn(
+              context,
+              "lib/assets/pictures/si_fuel_capacity.png",
+              "Fuel Capacity",
+              selectedCarItem.fuel,
+            ),
+            SizedBox(width: columnSpacing),
+            buildFeatureColumn(
+              context,
+              "lib/assets/pictures/si_mileage.png",
+              "Mileage",
+              selectedCarItem.mileage,
+            ),
+            SizedBox(width: columnSpacing),
+            buildFeatureColumn(
+              context,
+              "lib/assets/pictures/si_rent_count.png",
+              "Rent Count",
+              selectedCarItem.rentCount,
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+
+// Helper function to build each feature column
+  Widget buildFeatureColumn(BuildContext context, String imagePath, String title, String value) {
+    final iconSize = MediaQuery.of(context).size.width * 0.08; // Icon size relative to screen width
+
+    return Flexible(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            imagePath,
+            width: iconSize,
+          ),
+          const SizedBox(height: 10),
+          CustomComponents.displayText(
+            title,
+            fontWeight: FontWeight.bold,
+            fontSize: 10,
+          ),
+          CustomComponents.displayText(
+            value,
+            textAlign: TextAlign.center,
+            fontSize: 10,
+          ),
+        ],
       ),
     );
   }

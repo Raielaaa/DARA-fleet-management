@@ -253,4 +253,10 @@ class PersistentData {
   //  rent info to be sent to db //
   late RentInformation rentInfoToBeSaved;
   String gcashAlternativeImagePath = "";
+
+
+
+  ///   current location longitude and latitude
+  double currentLocationLat = 0.0;
+  double currentLocationLong = 0.0;
 }

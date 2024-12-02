@@ -22,6 +22,8 @@ class HomeController {
   }
 
   Future<List<List<String>>> getWeatherForecast(double? selectedLongitude, double? selectedLatitude) async {
+    debugPrint("current-lat: $selectedLatitude");
+    debugPrint("current-long: $selectedLongitude");
     OpenWeather openWeather = OpenWeather();
     List<List<String>> forecastData = [];
 

@@ -10,7 +10,7 @@ class MapScreenWeather extends StatefulWidget {
 
 class _MapScreenWeatherState extends State<MapScreenWeather> {
   late GoogleMapController mapController;
-  LatLng selectedLocation = LatLng(14.195691850762733, 121.1643007807619);
+  LatLng selectedLocation = LatLng(PersistentData().currentLocationLat, PersistentData().currentLocationLong);
 
   @override
   Widget build(BuildContext context) {
