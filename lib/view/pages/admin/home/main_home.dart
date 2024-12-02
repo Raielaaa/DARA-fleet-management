@@ -13,6 +13,7 @@ import "package:dara_app/view/shared/loading.dart";
 import "package:dara_app/view/shared/strings.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_storage/firebase_storage.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 import "package:flutter/material.dart";
 import "package:geolocator/geolocator.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
@@ -211,10 +212,26 @@ class _AdminHomeState extends State<AdminHome> {
       await _fetchUserInfo();
       await retrieveGarageLocation();
       LoadingDialog().dismiss();
-      homeController.showOpeningBanner(context, _userFiles.length, popupImageUrls[0]);
+      await openingBanner(context);
+      // homeController.showOpeningBanner(context, _userFiles.length, popupImageUrls[0]);
     } catch(e) {
       LoadingDialog().dismiss();
       debugPrint("main_home-fetchUserInfo error: ${e.toString()}");
+    }
+  }
+
+  //  will be shown only once per day
+  Future<void> openingBanner(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? lastRunDate = prefs.getString('last_banner_shown_date');
+    String todayDate = DateTime.now().toIso8601String().split('T')[0];
+
+    if (lastRunDate != todayDate) {
+      // Run the function only if it hasn't run today
+      homeController.showOpeningBanner(context, _userFiles.length, popupImageUrls[0]);
+
+      // Save today's date
+      await prefs.setString('last_banner_shown_date', todayDate);
     }
   }
 
