@@ -2,10 +2,12 @@ import "package:cached_network_image/cached_network_image.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dara_app/model/account/register_model.dart";
 import "package:dara_app/view/pages/admin/manage/inquiries/pdf_viewer.dart";
+import "package:dara_app/view/pages/admin/manage/inquiries/route_view_page.dart";
 import "package:dio/dio.dart";
 import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import "package:intl/intl.dart";
 import "package:open_file/open_file.dart";
 import "package:path_provider/path_provider.dart";
@@ -408,7 +410,16 @@ class _ViewInquiryState extends State<ViewInquiry> {
                       buildInfoRow("Driver Fee:", currentItem.driverFee),
                       buildInfoRow("Total Amount:", currentItem.totalAmount),
                       buildInfoRow("External payment proof:", "see photo"),
+
+                      const SizedBox(height: 10),
+                      seeRouteButton(
+                        currentItem.startingLocationLatitude,
+                        currentItem.startingLocationLongitude,
+                        currentItem.endingLocationLatitude,
+                        currentItem.endingLocationLongitude
+                      ),
                       const SizedBox(height: 30),
+
                       Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: Align(
@@ -484,6 +495,53 @@ class _ViewInquiryState extends State<ViewInquiry> {
               const SizedBox(height: 50),
             ]
           ),
+    );
+  }
+
+  Widget seeRouteButton(String startLat, String startLong, String endLat, String endLong) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () async {
+          if (startLat.isNotEmpty) {
+            final double startLatPoint = double.parse(startLat);
+            final double startLongPoint = double.parse(startLong);
+            final LatLng startPoint = LatLng(startLatPoint, startLongPoint);
+
+            final double endLatPoint = double.parse(endLat);
+            final double endLongPoint = double.parse(endLong);
+            final LatLng endPoint = LatLng(endLatPoint, endLongPoint);
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RouteViewPage(
+                  startPoint: startPoint,
+                  endPoint: endPoint,
+                ),
+              ),
+            );
+          } else {
+            CustomComponents.showToastMessage("Route unavailable. Please try again later.", Colors.red, Colors.white);
+          }
+        },
+        style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll<Color>(Color(int.parse(
+                ProjectColors.mainColorHex.substring(2),
+                radix: 16))),
+            shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)))),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: CustomComponents.displayText(
+              "See Booked Route",
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 10),
+        ),
+      ),
     );
   }
 

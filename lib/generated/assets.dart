@@ -205,6 +205,7 @@ class Assets {
   static const String inquiriesInquiries = 'lib/view/pages/admin/manage/inquiries/inquiries.dart';
   static const String inquiriesInquiriesList = 'lib/view/pages/admin/manage/inquiries/inquiries_list.dart';
   static const String inquiriesPdfViewer = 'lib/view/pages/admin/manage/inquiries/pdf_viewer.dart';
+  static const String inquiriesRouteViewPage = 'lib/view/pages/admin/manage/inquiries/route_view_page.dart';
   static const String inquiriesViewInquiry = 'lib/view/pages/admin/manage/inquiries/view_inquiry.dart';
   static const String integratedAppsIntegratedAppsDart = 'lib/view/pages/admin/manage/integrated_apps/integrated_apps_dart.dart';
   static const String libFirebaseOptions = 'lib/firebase_options.dart';

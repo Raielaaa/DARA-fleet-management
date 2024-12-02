@@ -26,8 +26,16 @@ class RentInformation {
   String paymentStatus;
   String postApproveStatus;
   String imagePathForAlternativePayment;
+  String startingLocationLongitude;
+  String startingLocationLatitude;
+  String endingLocationLongitude;
+  String endingLocationLatitude;
 
   RentInformation({
+    required this.startingLocationLatitude,
+    required this.startingLocationLongitude,
+    required this.endingLocationLatitude,
+    required this.endingLocationLongitude,
     required this.postApproveStatus,
     required this.paymentStatus,
     required this.rent_car_UID,
@@ -59,6 +67,10 @@ class RentInformation {
 
   Map<String, String> getModelData() {
     return {
+      "rent_starting_longitude" : startingLocationLongitude,
+      "rent_starting_latitude" : startingLocationLatitude,
+      "rent_ending_longitude" : endingLocationLongitude,
+      "rent_ending_latitude" : endingLocationLatitude,
       "rent_image_path_for_alternative_payment" : imagePathForAlternativePayment,
       "rent_post_approve_status" : postApproveStatus,
       "rent_payment_status" : paymentStatus,
@@ -91,6 +103,10 @@ class RentInformation {
 
   factory RentInformation.fromFirestore(Map<String, dynamic> data) {
     return RentInformation(
+        startingLocationLongitude: data["rent_starting_longitude"] ?? "",
+        startingLocationLatitude: data["rent_starting_latitude"] ?? "",
+        endingLocationLongitude: data["rent_ending_longitude"] ?? "",
+        endingLocationLatitude: data["rent_ending_latitude"] ?? "",
         imagePathForAlternativePayment: data["rent_image_path_for_alternative_payment"] ?? "",
         postApproveStatus: data["rent_post_approve_status"] ?? "",
         paymentStatus: data["rent_payment_status"] ?? "",

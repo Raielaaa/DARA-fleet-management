@@ -468,8 +468,8 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                           debugPrint("selected address: $selectedAddress");
 
                                           if (isPickUpSelected) {
-                                            _persistentData.startMapsLatitude = 14.1954;
-                                            _persistentData.startMapsLongitude = 121.1641;
+                                            _persistentData.startMapsLatitude = _persistentData.latitudeForGarage;
+                                            _persistentData.startMapsLongitude = _persistentData.longitudeForGarage;
                                             debugPrint("isPickUpselected - true");
                                           } else {
                                             _persistentData.startMapsLatitude = double.parse(_persistentData.mapsLatitude);

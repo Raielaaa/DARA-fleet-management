@@ -255,7 +255,11 @@ class _RPDetailsFeesState extends State<RPDetailsFees> {
                               driverFee: _persistentData.bookingDetailsRentWithDriver ? driverFee.toString() : "PHP 0.0",
                               reservationFee: payReservationFee ? "${totalFee * 0.25}" : "0",
                               totalAmount: totalFee.toString(),
-                              carOwner: _persistentData.selectedCarItem?.carOwner ?? "null"
+                              carOwner: _persistentData.selectedCarItem?.carOwner ?? "null",
+                              startingLocationLatitude: _persistentData.startMapsLatitude.toString(),
+                              startingLocationLongitude: _persistentData.startMapsLongitude.toString(),
+                              endingLocationLatitude: _persistentData.endMapsLatitude.toString(),
+                              endingLocationLongitude: _persistentData.endMapsLongitude.toString()
                             );
 
                             PersistentData().rentInfoToBeSaved = _rentInformation;
