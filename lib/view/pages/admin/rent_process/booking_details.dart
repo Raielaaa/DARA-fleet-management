@@ -171,7 +171,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                               //  image
                               Image.asset(
                                   "lib/assets/pictures/save_booking_details_2.png",
-                                height: 200
+                                  height: 200
                               ),
 
                               //  start and end date
@@ -254,7 +254,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                                           Expanded(
                                             child: Padding(
                                                 padding: const EdgeInsets.only(left: 10),
-                                                child: Text(
+                                                child: Expanded(child: Text(
                                                   selectedAddress,
                                                   style: TextStyle(
                                                       fontSize: 10,
@@ -262,7 +262,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                                                       color: Colors.grey.shade600,
                                                       fontFamily: ProjectStrings.general_font_family
                                                   ),
-                                                )
+                                                ))
                                             ),
                                           ),
                                         ],
@@ -274,7 +274,6 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                               //  book with a driver
                               const SizedBox(height: 30),
                               Container(
-                                height: 90,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -287,37 +286,39 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                                   ),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, right: 15, top: 10, bottom: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          CustomComponents.displayText(
-                                            ProjectStrings.rp_bk_book_driver,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
+                                  padding: const EdgeInsets.symmetric(vertical: 15),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 15),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              CustomComponents.displayText(
+                                                ProjectStrings.rp_bk_book_driver,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              const SizedBox(height: 5),
+                                              CustomComponents.displayText(
+                                                  ProjectStrings.rp_bk_book_driver_body,
+                                                  fontSize: 10),
+                                            ],
                                           ),
-                                          const SizedBox(height: 5),
-                                          SizedBox(
-                                            width: 200,
-                                            child: CustomComponents.displayText(
-                                                ProjectStrings.rp_bk_book_driver_body,
-                                                fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                      Switch(value: rentWithDriver, onChanged: (result) {
-                                        setState(() {
-                                          rentWithDriver = !rentWithDriver;
-                                          _persistentData.bookingDetailsRentWithDriver = rentWithDriver;
-                                        });
-                                      })
-                                    ],
+                                        ),
+                                        Switch(value: rentWithDriver, onChanged: (result) {
+                                          setState(() {
+                                            rentWithDriver = !rentWithDriver;
+                                            _persistentData.bookingDetailsRentWithDriver = rentWithDriver;
+                                          });
+                                        })
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -425,9 +426,14 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
       color: Colors.white,
       child: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/left_arrow.png"),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset("lib/assets/pictures/left_arrow.png"),
+            ),
           ),
           Center(
             child: CustomComponents.displayText(
@@ -459,7 +465,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
             });
           },
           child: Container(
-            width: 155,
+            width: MediaQuery.of(context).size.width / 2 - 50,
             height: 35,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -481,10 +487,12 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
                   ),
                 ),
                 const SizedBox(width: 15),
-                CustomComponents.displayText(
-                  datePickerField.selectedDate,
-                  fontSize: 10,
-                  color: Colors.grey.shade600,
+                Expanded(
+                  child: CustomComponents.displayText(
+                    datePickerField.selectedDate,
+                    fontSize: 10,
+                    color: Colors.grey.shade600,
+                  ),
                 ),
               ],
             ),
@@ -513,7 +521,7 @@ class _RPBookingDetailsState extends State<RPBookingDetails> {
             });
           },
           child: Container(
-            width: 155,
+            width: MediaQuery.of(context).size.width / 2 - 50,
             height: 35,
             decoration: BoxDecoration(
               color: Colors.white,

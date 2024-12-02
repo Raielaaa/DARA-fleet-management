@@ -22,12 +22,12 @@ class InfoDialog {
 
   // Method to show the loading dialog
   void show(
-    {
-      required BuildContext context,
-      required String content,
-      String header = "Please wait..."
-    }
-  ) {
+      {
+        required BuildContext context,
+        required String content,
+        String header = "Please wait..."
+      }
+      ) {
     debugPrint("breakpoint - 1");
     if (!_isShowing) {
       debugPrint("breakpoint - 2");
@@ -52,9 +52,9 @@ class InfoDialog {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: CustomComponents.displayText(
-                      header,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12
+                        header,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12
                     ),
                   ),
                   const Padding(
@@ -64,8 +64,8 @@ class InfoDialog {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: CustomComponents.displayText(
-                      content,
-                      fontSize: 10
+                        content,
+                        fontSize: 10
                     ),
                   ),
                 ],
@@ -81,14 +81,14 @@ class InfoDialog {
   }
 
   void showWithCancelProceedButton(
-    {
-      required BuildContext context,
-      required String content,
-      String header = "Please wait...",
-      int actionCode = 0,
-      void Function()? onProceed,
-    }
-  ) {
+      {
+        required BuildContext context,
+        required String content,
+        String header = "Please wait...",
+        int actionCode = 0,
+        void Function()? onProceed,
+      }
+      ) {
     debugPrint("breakpoint - 1");
     if (!_isShowing) {
       debugPrint("breakpoint - 2");
@@ -115,9 +115,9 @@ class InfoDialog {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: CustomComponents.displayText(
-                        header,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12
+                          header,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12
                       ),
                     ),
                     const Padding(
@@ -125,8 +125,8 @@ class InfoDialog {
                       child: Divider(),
                     ),
                     CustomComponents.displayText(
-                      content,
-                      fontSize: 10
+                        content,
+                        fontSize: 10
                     ),
 
                     const SizedBox(height: 20),
@@ -141,10 +141,10 @@ class InfoDialog {
                             }
                           },
                           child: CustomComponents.displayText(
-                            "Cancel",
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
+                              "Cancel",
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16))
                           ),
                         ),
                         const SizedBox(width:100),
@@ -155,13 +155,13 @@ class InfoDialog {
                             }
                             if (onProceed != null) {
                               onProceed();
-                            }  
+                            }
                           },
                           child: CustomComponents.displayText(
-                            "Proceed",
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                              "Proceed",
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
                           ),
                         )
                       ],
@@ -230,22 +230,21 @@ class InfoDialog {
                   ),
                   const SizedBox(height: 25),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          dismiss();
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color(int.parse(
-                                ProjectColors.confirmActionCancelBackground.substring(2),
-                                radix: 16)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 40),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            dismiss();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color(int.parse(
+                                  ProjectColors.confirmActionCancelBackground.substring(2),
+                                  radix: 16)),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            alignment: Alignment.center,
                             child: CustomComponents.displayText(
                               ProjectStrings.income_page_confirm_delete_cancel,
                               color: Color(int.parse(
@@ -258,25 +257,29 @@ class InfoDialog {
                         ),
                       ),
                       const SizedBox(width: 30),
-                      GestureDetector(
-                        onTap: () async {
-                          if (confirmAction != null) {
-                            LoadingDialog().show(context: context, content: "Updating records. Please wait and avoid closing the app, as this may take a moment.");
-                            await confirmAction();
-                            LoadingDialog().dismiss();
-                          }
-                          dismiss(); // Ensure dismissal after action completes
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color(int.parse(
-                                ProjectColors.redButtonBackground.substring(2),
-                                radix: 16)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 40),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            if (confirmAction != null) {
+                              LoadingDialog().show(
+                                context: context,
+                                content:
+                                "Updating records. Please wait and avoid closing the app, as this may take a moment.",
+                              );
+                              await confirmAction();
+                              LoadingDialog().dismiss();
+                            }
+                            dismiss();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color(int.parse(
+                                  ProjectColors.redButtonBackground.substring(2),
+                                  radix: 16)),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            alignment: Alignment.center,
                             child: CustomComponents.displayText(
                               ProjectStrings.income_page_confirm_delete_confirm,
                               color: Color(int.parse(

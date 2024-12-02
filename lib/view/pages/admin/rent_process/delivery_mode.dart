@@ -42,9 +42,14 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
       color: Colors.white,
       child: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.asset("lib/assets/pictures/left_arrow.png"),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Image.asset("lib/assets/pictures/left_arrow.png"),
+            ),
           ),
           Center(
             child: CustomComponents.displayText(
@@ -176,8 +181,8 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                           });
                                         },
                                         child: Container(
-                                          width: 160,
-                                          height: 150,
+                                          width: MediaQuery.of(context).size.width / 2 - 50,
+                                          height: MediaQuery.of(context).size.width / 2 - 50,
                                           decoration: BoxDecoration(
                                             borderRadius: const BorderRadius.all(Radius.circular(5)),
                                             border: Border.all(
@@ -192,15 +197,16 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                           ),
                                           child: Column(
                                             children: [
-                                              Padding(
-                                                padding: const EdgeInsets.all(10.0),
-                                                child: ClipRRect(
-                                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                  child: Image.asset(
-                                                    "lib/assets/pictures/delivery_mode_pick_up.png",
-                                                    fit: BoxFit.fill,
-                                                    width: double.infinity,
-                                                    height: 100,
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: ClipRRect(
+                                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                    child: Image.asset(
+                                                      "lib/assets/pictures/delivery_mode_pick_up.png",
+                                                      fit: BoxFit.fill,
+                                                      width: double.infinity,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -211,6 +217,7 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                                   fontSize: 10,
                                                 ),
                                               ),
+                                              const SizedBox(height: 10)
                                             ],
                                           ),
                                         ),
@@ -223,8 +230,8 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                           });
                                         },
                                         child: Container(
-                                          width: 160,
-                                          height: 150,
+                                          width: MediaQuery.of(context).size.width / 2 - 50,
+                                          height: MediaQuery.of(context).size.width / 2 - 50,
                                           decoration: BoxDecoration(
                                             borderRadius: const BorderRadius.all(Radius.circular(5)),
                                             border: Border.all(
@@ -239,15 +246,16 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                           ),
                                           child: Column(
                                             children: [
-                                              Padding(
-                                                padding: const EdgeInsets.all(10.0),
-                                                child: ClipRRect(
-                                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                  child: Image.asset(
-                                                    "lib/assets/pictures/delivery_mode_delivery.png",
-                                                    fit: BoxFit.cover,
-                                                    width: double.infinity,
-                                                    height: 100,
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: ClipRRect(
+                                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                    child: Image.asset(
+                                                      "lib/assets/pictures/delivery_mode_delivery.png",
+                                                      fit: BoxFit.cover,
+                                                      width: double.infinity,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -258,6 +266,7 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                                   fontSize: 10,
                                                 ),
                                               ),
+                                              const SizedBox(height: 10)
                                             ],
                                           ),
                                         ),
@@ -269,7 +278,7 @@ class _RPDeliveryModeState extends State<RPDeliveryMode> {
                                   const SizedBox(height: 30),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment
-                                        .start, // Ensures alignment to start
+                                        .start,
                                     children: [
                                       CustomComponents.displayText(
                                         ProjectStrings.rp_mode_pickup_location,

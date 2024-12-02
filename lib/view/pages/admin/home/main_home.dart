@@ -462,10 +462,10 @@ class _AdminHomeState extends State<AdminHome> {
                                   }
                                 },
                                 child: CustomComponents.displayText(
-                                  "PH ${_currentUserInfo?.number.isNotEmpty == true ? _currentUserInfo?.number : "- click to verify phone number"}",
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 10,
-                                  color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                                    "PH ${_currentUserInfo?.number.isNotEmpty == true ? _currentUserInfo?.number : "- click to verify phone number"}",
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 10,
+                                    color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -528,241 +528,73 @@ class _AdminHomeState extends State<AdminHome> {
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Row(
                       children: [
-                        //  inquire
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: GestureDetector(
-                              onTap: () {
-                                widget.controller?.jumpToTab(1);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Colors.white38,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "lib/assets/pictures/home_logo_inquire.png",
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 7),
-                                        child: CustomComponents.displayText(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10,
-                                          ProjectStrings
-                                              .admin_home_top_options_inquire,
-                                          color: Color(int.parse(
-                                              ProjectColors.darkGray.substring(2),
-                                              radix: 16)),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        buildTopOption(
+                          onTap: () {
+                            widget.controller?.jumpToTab(1);
+                          },
+                          imagePath: "lib/assets/pictures/home_logo_inquire.png",
+                          labelText: ProjectStrings.admin_home_top_options_inquire,
+                          labelColor: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
                         ),
-                        //  contact
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: GestureDetector(
-                              onTap: () {
-                                homeController.showContactBottomDialog(context);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Colors.white38,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "lib/assets/pictures/home_top_contact.png",
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 7),
-                                        child: CustomComponents.displayText(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10,
-                                          ProjectStrings
-                                              .admin_home_top_options_contact,
-                                          color: Color(int.parse(
-                                              ProjectColors.darkGray.substring(2),
-                                              radix: 16)),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        buildTopOption(
+                          onTap: () {
+                            homeController.showContactBottomDialog(context);
+                          },
+                          imagePath: "lib/assets/pictures/home_top_contact.png",
+                          labelText: ProjectStrings.admin_home_top_options_contact,
+                          labelColor: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
                         ),
-                        //  report
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushNamed("to_report");
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Colors.white38,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "lib/assets/pictures/home_top_report.png",
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 7),
-                                        child: CustomComponents.displayText(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10,
-                                          ProjectStrings
-                                              .admin_home_top_options_report,
-                                          color: Color(int.parse(
-                                              ProjectColors.darkGray.substring(2),
-                                              radix: 16)),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        buildTopOption(
+                          onTap: () {
+                            Navigator.of(context).pushNamed("to_report");
+                          },
+                          imagePath: "lib/assets/pictures/home_top_report.png",
+                          labelText: ProjectStrings.admin_home_top_options_report,
+                          labelColor: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
                         ),
-                        //  logout
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () async {
-                              //  for AI chatbot
-                              // showModalBottomSheet<void>(
-                              //     backgroundColor: Colors.white,
-                              //     isScrollControlled: true,
-                              //     context: context,
-                              //     builder: (BuildContext context) {
-                              //       return StatefulBuilder(
-                              //         builder: (BuildContext context, StateSetter setModalState) {
-                              //           return displayBottomSheetChatBot(context, setModalState);
-                              //         },
-                              //       );
-                              //     }
-                              // );
-                              try {
-                                InfoDialog().showWithCancelProceedButton(
-                                  context: context,
-                                  content: "Are you sure you want to logout your account?",
-                                  header: "Confirm Action",
-                                  actionCode: 1,
-                                  onProceed: () async {
-                                    try {
-                                      await FirebaseAuth.instance.signOut(); // Firebase sign-out
-                                      await PersistentData().googleSignIn.signOut(); // Google sign-out
-                                      PersistentData().clear(); // Clear stored data
+                        buildTopOption(
+                          onTap: () async {
+                            try {
+                              InfoDialog().showWithCancelProceedButton(
+                                context: context,
+                                content: "Are you sure you want to logout your account?",
+                                header: "Confirm Action",
+                                actionCode: 1,
+                                onProceed: () async {
+                                  try {
+                                    await FirebaseAuth.instance.signOut(); // Firebase sign-out
+                                    await PersistentData().googleSignIn.signOut(); // Google sign-out
+                                    PersistentData().clear(); // Clear stored data
 
-                                      InfoDialog().dismiss();
-                                      _controller.dispose();
-
-                                      Navigator.of(context, rootNavigator: true).pushReplacement(
-                                        MaterialPageRoute(builder: (context) => const AccountOpening()),
-                                      );
-                                    } catch (e) {
-                                      InfoDialog().show(context: context, content: "Logout error: ${e.toString()}", header: "Error");
-                                    }
-                                  },
-                                );
-                              } catch(e) {
-                                debugPrint("Error@main_home.dart@ln601: $e");
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 4),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Colors.white38,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "lib/assets/pictures/top_option_logout.png",
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 7),
-                                        child: CustomComponents.displayText(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10,
-                                          "Logout",
-                                          color: Color(int.parse(
-                                              ProjectColors.darkGray.substring(2),
-                                              radix: 16)),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                                    InfoDialog().dismiss();
+                                    Navigator.of(context, rootNavigator: true).pushReplacement(
+                                      MaterialPageRoute(builder: (context) => const AccountOpening()),
+                                    );
+                                  } catch (e) {
+                                    InfoDialog().show(
+                                      context: context,
+                                      content: "Logout error: ${e.toString()}",
+                                      header: "Error",
+                                    );
+                                  }
+                                },
+                              );
+                            } catch (e) {
+                              debugPrint("Error@main_home.dart: $e");
+                            }
+                          },
+                          imagePath: "lib/assets/pictures/top_option_logout.png",
+                          labelText: "Logout",
+                          labelColor: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
                         ),
-                        //  manage
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: GestureDetector(
-                              onTap: () {
-                                homeController.topOptionManageAccessibility(context);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: Colors.white38,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "lib/assets/pictures/home_top_manage.png",
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 7),
-                                        child: CustomComponents.displayText(
-                                          manageTextIfDriver,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10,
-                                          color: Color(int.parse(
-                                              ProjectColors.darkGray.substring(2),
-                                              radix: 16)),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+
+                        buildTopOption(
+                          onTap: () {
+                            homeController.topOptionManageAccessibility(context);
+                          },
+                          imagePath: "lib/assets/pictures/home_top_manage.png",
+                          labelText: manageTextIfDriver,
+                          labelColor: Color(int.parse(ProjectColors.darkGray.substring(2), radix: 16)),
                         ),
                       ],
                     ),
@@ -797,8 +629,8 @@ class _AdminHomeState extends State<AdminHome> {
                                   children: [
                                     CustomComponents.displayText(
                                         weatherForecastSelectedAddress,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold
                                     ),
                                     GestureDetector(
                                       onTap: () async {
@@ -812,10 +644,10 @@ class _AdminHomeState extends State<AdminHome> {
                                         }
                                       },
                                       child: CustomComponents.displayText(
-                                        " : Change Location",
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                                          " : Change Location",
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
                                       ),
                                     )
                                   ],
@@ -875,39 +707,39 @@ class _AdminHomeState extends State<AdminHome> {
                           child: SizedBox(
                             height: 190.0, // Set a specific height
                             child: FutureBuilder<List<FeaturedCarInfo>>(
-                              future: homeController.fetchCars(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return const Center(child: CircularProgressIndicator()); // Loading indicator
-                                } else if (snapshot.hasError) {
-                                  return const Center(child: Text('Error loading cars')); // Error handling
-                                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                  return const Center(child: Text('No cars available')); // No data handling
+                                future: homeController.fetchCars(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return const Center(child: CircularProgressIndicator()); // Loading indicator
+                                  } else if (snapshot.hasError) {
+                                    return const Center(child: Text('Error loading cars')); // Error handling
+                                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                    return const Center(child: Text('No cars available')); // No data handling
+                                  }
+
+                                  List<FeaturedCarInfo> cars = snapshot.data!;
+                                  //  sort the list by car_rent_count in descending order
+                                  cars.sort((a, b) => b.rentCount.compareTo(a.rentCount));
+                                  List<FeaturedCarInfo> topThreeCars = cars.take(3).toList();
+
+                                  return ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: topThreeCars.length,
+                                    itemBuilder: (context, index) {
+                                      FeaturedCarInfo car = topThreeCars[index];
+
+                                      return featuredItemUI(
+                                          imageUrl: car.mainPicUrl,
+                                          carName: car.name,
+                                          transmission: car.transmission,
+                                          mileage: car.mileage,
+                                          price: car.price,
+                                          capacity: car.capacity,
+                                          carInfo: car
+                                      );
+                                    },
+                                  );
                                 }
-
-                                List<FeaturedCarInfo> cars = snapshot.data!;
-                                //  sort the list by car_rent_count in descending order
-                                cars.sort((a, b) => b.rentCount.compareTo(a.rentCount));
-                                List<FeaturedCarInfo> topThreeCars = cars.take(3).toList();
-
-                                return ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: topThreeCars.length,
-                                  itemBuilder: (context, index) {
-                                    FeaturedCarInfo car = topThreeCars[index];
-
-                                    return featuredItemUI(
-                                      imageUrl: car.mainPicUrl,
-                                      carName: car.name,
-                                      transmission: car.transmission,
-                                      mileage: car.mileage,
-                                      price: car.price,
-                                      capacity: car.capacity,
-                                      carInfo: car
-                                    );
-                                  },
-                                );
-                              }
                             ),
                           ),
                         ),
@@ -915,8 +747,8 @@ class _AdminHomeState extends State<AdminHome> {
                         const SizedBox(height: 20),
                         PersistentData().promoImageUrls.isEmpty ? Center(
                           child: CircularProgressIndicator(
-                            strokeWidth: 4.0,
-                            color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
+                              strokeWidth: 4.0,
+                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16))
                           ),
                         ) :
                         Container(
@@ -951,30 +783,30 @@ class _AdminHomeState extends State<AdminHome> {
                                         child: GestureDetector(
                                           onTap: () {
                                             showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Dialog(
-                                                  backgroundColor: Colors.transparent,
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.circular(7),
-                                                    child: Image.network(
-                                                      imageUrl,
-                                                      fit: BoxFit.contain,
-                                                      loadingBuilder: (context, child, loadingProgress) {
-                                                        return loadingProgress == null ? child : Center(
-                                                          child: CircularProgressIndicator(
-                                                            value: loadingProgress.expectedTotalBytes != null
-                                                              ? loadingProgress.cumulativeBytesLoaded /
-                                                              (loadingProgress.expectedTotalBytes ?? 1) : null
-                                                          ),
-                                                        );
-                                                      },
-                                                      errorBuilder:  (context, error, stackTrace) =>
-                                                      const Icon(Icons.error),
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return Dialog(
+                                                    backgroundColor: Colors.transparent,
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(7),
+                                                      child: Image.network(
+                                                        imageUrl,
+                                                        fit: BoxFit.contain,
+                                                        loadingBuilder: (context, child, loadingProgress) {
+                                                          return loadingProgress == null ? child : Center(
+                                                            child: CircularProgressIndicator(
+                                                                value: loadingProgress.expectedTotalBytes != null
+                                                                    ? loadingProgress.cumulativeBytesLoaded /
+                                                                    (loadingProgress.expectedTotalBytes ?? 1) : null
+                                                            ),
+                                                          );
+                                                        },
+                                                        errorBuilder:  (context, error, stackTrace) =>
+                                                        const Icon(Icons.error),
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              }
+                                                  );
+                                                }
                                             );
                                           },
                                           child: Container(
@@ -1015,6 +847,55 @@ class _AdminHomeState extends State<AdminHome> {
     );
   }
 
+  Widget buildTopOption({
+    required VoidCallback onTap,
+    required String imagePath,
+    required String labelText,
+    required Color labelColor,
+  }) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(7),
+              color: Colors.white38,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Image.asset(
+                    imagePath,
+                    fit: BoxFit.contain,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 7),
+                      child: Text(
+                        labelText,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10,
+                          color: labelColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      )
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
   Widget featuredItemUI({
     required String imageUrl,
     required String carName,
@@ -1044,13 +925,13 @@ class _AdminHomeState extends State<AdminHome> {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                      fullUrl,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Center(child: Text('Image not found'));
-                      })
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                        fullUrl,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Center(child: Text('Image not found'));
+                        })
                 ),
               ),
               CustomComponents.displayText(
@@ -1115,7 +996,7 @@ class _AdminHomeState extends State<AdminHome> {
                     GestureDetector(
                       onTap: () {
                         PersistentData().selectedCarItem = CompleteCarInfo(
-                          carUID: carInfo.carUID,
+                            carUID: carInfo.carUID,
                             carType: carInfo.carType,
                             transmission: carInfo.transmission,
                             totalEarnings: carInfo.totalEarnings,
@@ -1138,7 +1019,7 @@ class _AdminHomeState extends State<AdminHome> {
                             horsePower: carInfo.horsePower,
                             longDescription: carInfo.longDescription,
                             shortDescription: carInfo.shortDescription,
-                          carOwner: carInfo.carOwner
+                            carOwner: carInfo.carOwner
                         );
                         Navigator.of(context).pushNamed("selected_item");
                       },

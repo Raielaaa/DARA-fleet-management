@@ -279,16 +279,16 @@ class _CarListState extends State<CarList> {
             Column(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(7),
-                    topRight: Radius.circular(7),
-                  ),
-                  child: Image.network(
-                    FirebaseConstants.retrieveImage(mostFavoriteCar.pic1Url),
-                    fit: BoxFit.cover,
-                    height: 200,
-                    width: double.infinity,
-                  )
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(7),
+                      topRight: Radius.circular(7),
+                    ),
+                    child: Image.network(
+                      FirebaseConstants.retrieveImage(mostFavoriteCar.pic1Url),
+                      fit: BoxFit.cover,
+                      height: 200,
+                      width: double.infinity,
+                    )
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10, right: 15, left: 15),
@@ -325,12 +325,12 @@ class _CarListState extends State<CarList> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child:
-                      Flexible(
-                        child: CustomComponents.displayText(
-                          mostFavoriteCar.shortDescription,
-                          fontSize: 10,
-                        ),
+                    Flexible(
+                      child: CustomComponents.displayText(
+                        mostFavoriteCar.shortDescription,
+                        fontSize: 10,
                       ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -500,11 +500,16 @@ class _CarListState extends State<CarList> {
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                 ),
-                                CustomComponents.displayText(
-                                  mostFavoriteCar.color,
-                                  fontSize: 10,
-                                  color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
-                                ),
+                                Text(
+                                  mostFavoriteCar.color.split(" ")[0],
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Color(int.parse(ProjectColors.lightGray.substring(2), radix: 16)),
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                )
                               ],
                             ),
                           ],

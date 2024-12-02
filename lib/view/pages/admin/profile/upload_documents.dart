@@ -250,7 +250,7 @@ class _UploadDocumentsState extends State<UploadDocuments> {
 
   @override
   Widget build(BuildContext context) {
-    return  Dialog(
+    return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
@@ -258,179 +258,182 @@ class _UploadDocumentsState extends State<UploadDocuments> {
         ProjectColors.mainColorBackground.substring(2),
         radix: 16,
       )),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Top design
-          Stack(
+      child: FractionallySizedBox(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(5),
-                  topRight: Radius.circular(5),
-                ),
-                child: Image.asset(
-                  "lib/assets/pictures/header_background_curves.png",
-                  width: MediaQuery.of(context).size.width - 10,
-                  height: 70, // Adjust height as needed
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 15, left: 15, top: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomComponents.displayText(
-                      ProjectStrings.dialog_title_1,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
+              // Top design
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(5),
+                      topRight: Radius.circular(5),
                     ),
-                    Image.asset(
-                      "lib/assets/pictures/app_logo_circle.png",
-                      width: 80.0,
+                    child: Image.asset(
+                      "lib/assets/pictures/header_background_curves.png",
+                      width: MediaQuery.of(context).size.width - 10,
+                      height: 70, // Adjust height as needed
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15, left: 15, top: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomComponents.displayText(
+                          ProjectStrings.dialog_title_1,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                        Image.asset(
+                          "lib/assets/pictures/app_logo_circle.png",
+                          width: 80.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              // Main content
+              const SizedBox(height: 10),
+              Container(
+                width: double.infinity,
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    // Main panel numbered header
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, top: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 3),
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(int.parse(
+                                  ProjectColors.mainColorBackground.substring(2),
+                                  radix: 16,
+                                )),
+                                border: Border.all(
+                                  color: Color(int.parse(ProjectColors.lineGray)),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: CustomComponents.displayText(
+                                  "1",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 20.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomComponents.displayText(
+                                  ProjectStrings.user_info_header_title,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                const SizedBox(height: 2),
+                                CustomComponents.displayText(
+                                  ProjectStrings.user_info_header,
+                                  color: Color(int.parse(
+                                    ProjectColors.lightGray.substring(2),
+                                    radix: 16,
+                                  )),
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 1,
+                      width: double.infinity,
+                      color: Color(int.parse(
+                        ProjectColors.lineGray.substring(2),
+                        radix: 16,
+                      )),
+                    ),
+
+                    // ListView for uploaded documents
+                    SizedBox(
+                      child: _isLoading
+                          ? const Center(child: CircularProgressIndicator()) // Show loading indicator
+                          : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _originalFilePaths.length,
+                        itemBuilder: (context, index) {
+                          return _uploadDocumentsItem(
+                            _originalFilePaths[index],
+                            getDocumentTitle(index),
+                            index,
+                          );
+                        },
+                      ),
+                    ),
+
+                    // Save documents button
+                    const SizedBox(height: 30),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          LoadingDialog().show(context: context, content: "Please wait while we process your documents.");
+                          await updateDB();
+                          LoadingDialog().dismiss();
+                          Navigator.of(context).pop();
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll<Color>(Color(int.parse(
+                                ProjectColors.userInfoDialogBrokenLinesColor.substring(2),
+                                radix: 16))),
+                            shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: CustomComponents.displayText(
+                              ProjectStrings.user_info_save_documents,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 10),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
+              Container(
+                height: 30,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(5),
+                        bottomRight: Radius.circular(5)),
+                    color: Colors.white),
+              )
             ],
           ),
-
-          // Main content
-          const SizedBox(height: 10),
-          Container(
-            width: double.infinity,
-            color: Colors.white,
-            child: Column(
-              children: [
-                // Main panel numbered header
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, top: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 3),
-                        child: Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(int.parse(
-                              ProjectColors.mainColorBackground.substring(2),
-                              radix: 16,
-                            )),
-                            border: Border.all(
-                              color: Color(int.parse(ProjectColors.lineGray)),
-                              width: 1,
-                            ),
-                          ),
-                          child: Center(
-                            child: CustomComponents.displayText(
-                              "1",
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomComponents.displayText(
-                              ProjectStrings.user_info_header_title,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            const SizedBox(height: 2),
-                            CustomComponents.displayText(
-                              ProjectStrings.user_info_header,
-                              color: Color(int.parse(
-                                ProjectColors.lightGray.substring(2),
-                                radix: 16,
-                              )),
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  height: 1,
-                  width: double.infinity,
-                  color: Color(int.parse(
-                    ProjectColors.lineGray.substring(2),
-                    radix: 16,
-                  )),
-                ),
-
-                // ListView for uploaded documents
-                SizedBox(
-                  height: 485, // Adjust height as needed
-                  child: _isLoading
-                      ? const Center(child: CircularProgressIndicator()) // Show loading indicator
-                      : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _originalFilePaths.length,
-                    itemBuilder: (context, index) {
-                      return _uploadDocumentsItem(
-                        _originalFilePaths[index],
-                        getDocumentTitle(index),
-                        index,
-                      );
-                    },
-                  ),
-                ),
-
-                // Save documents button
-                const SizedBox(height: 30),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      LoadingDialog().show(context: context, content: "Please wait while we process your documents.");
-                      await updateDB();
-                      LoadingDialog().dismiss();
-                      Navigator.of(context).pop();
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(Color(int.parse(
-                            ProjectColors.userInfoDialogBrokenLinesColor.substring(2),
-                            radix: 16))),
-                        shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)))),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: CustomComponents.displayText(
-                          ProjectStrings.user_info_save_documents,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 10),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 30,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(5)),
-                color: Colors.white),
-          )
-        ],
+        ),
       ),
     );
   }

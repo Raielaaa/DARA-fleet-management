@@ -93,47 +93,69 @@ class _RegisterState extends State<Register> {
                   ),
                   const SizedBox(height: 10),
                   // Main body
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          PersistentData().selectedRoleOnRegister = "Outsource";
-                          Navigator.of(context).pop();
-                        },
-                        child: _userType(
-                          ProjectStrings.user_type_outsource_title,
-                          ProjectStrings.user_type_outsource_content,
-                          "lib/assets/pictures/user_type_outsource.jpg",
-                          isSmallScreen,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isSmallScreen ? 11 : 19,
+                    ),
+                    child: Column(
+                      children: [
+                        // Row 1
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  PersistentData().selectedRoleOnRegister = "Outsource";
+                                  Navigator.of(context).pop();
+                                },
+                                child: _userType(
+                                  ProjectStrings.user_type_outsource_title,
+                                  ProjectStrings.user_type_outsource_content,
+                                  "lib/assets/pictures/user_type_outsource.jpg",
+                                  isSmallScreen,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  PersistentData().selectedRoleOnRegister = "Driver";
+                                  Navigator.of(context).pop();
+                                },
+                                child: _userType(
+                                  ProjectStrings.user_type_driver_title,
+                                  ProjectStrings.user_type_driver_content,
+                                  "lib/assets/pictures/user_type_driver.jpeg",
+                                  isSmallScreen,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          PersistentData().selectedRoleOnRegister = "Driver";
-                          Navigator.of(context).pop();
-                        },
-                        child: _userType(
-                          ProjectStrings.user_type_driver_title,
-                          ProjectStrings.user_type_driver_content,
-                          "lib/assets/pictures/user_type_driver.jpeg",
-                          isSmallScreen,
+                        const SizedBox(height: 10),
+                        // Row 2
+                        Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  PersistentData().selectedRoleOnRegister = "Renter";
+                                  Navigator.of(context).pop();
+                                },
+                                child: _userType(
+                                  ProjectStrings.user_type_user_title,
+                                  ProjectStrings.user_type_user_body,
+                                  "lib/assets/pictures/user_type_user.jpg",
+                                  isSmallScreen,
+                                ),
+                              ),
+                            ),
+                            const Spacer(), // Align single item to the left
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {
-                      PersistentData().selectedRoleOnRegister = "Renter";
-                      Navigator.of(context).pop();
-                    },
-                    child: _userType(
-                      ProjectStrings.user_type_user_title,
-                      ProjectStrings.user_type_user_body,
-                      "lib/assets/pictures/user_type_user.jpg",
-                      isSmallScreen,
+                      ],
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -199,39 +221,39 @@ class _RegisterState extends State<Register> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = (await showRoundedDatePicker(
-          context: context,
-          height: 400,
-          theme: ThemeData(
-            primaryColor: Color(
-                int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-            colorScheme: ColorScheme(
-                brightness: Brightness.light,
-                primary: Color(int.parse(
-                    ProjectColors.mainColorHex.substring(2),
-                    radix: 16)),
-                onPrimary: Colors.white,
-                secondary: Colors.white,
-                onSecondary: Colors.white,
-                error: Colors.red,
-                onError: Colors.red,
-                background: Colors.white,
-                onBackground: Colors.white,
-                surface: Colors.white,
-                onSurface: Color(int.parse(ProjectColors.blackBody.substring(2),
-                    radix: 16))),
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(int.parse(
-                    ProjectColors.mainColorHex.substring(2),
-                    radix: 16))),
-              ),
-            ),
+      context: context,
+      height: 400,
+      theme: ThemeData(
+        primaryColor: Color(
+            int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+        colorScheme: ColorScheme(
+            brightness: Brightness.light,
+            primary: Color(int.parse(
+                ProjectColors.mainColorHex.substring(2),
+                radix: 16)),
+            onPrimary: Colors.white,
+            secondary: Colors.white,
+            onSecondary: Colors.white,
+            error: Colors.red,
+            onError: Colors.red,
+            background: Colors.white,
+            onBackground: Colors.white,
+            surface: Colors.white,
+            onSurface: Color(int.parse(ProjectColors.blackBody.substring(2),
+                radix: 16))),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Color(int.parse(
+                ProjectColors.mainColorHex.substring(2),
+                radix: 16))),
           ),
-          initialDate: _selectedDate ?? DateTime.now(),
-          firstDate: DateTime(DateTime.now().year - 100),
-          lastDate: DateTime.now(),
-          borderRadius: 16,
-        )) ??
+        ),
+      ),
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 100),
+      lastDate: DateTime.now(),
+      borderRadius: 16,
+    )) ??
         DateTime.now();
 
     if (picked != _selectedDate) {
@@ -263,7 +285,7 @@ class _RegisterState extends State<Register> {
                   iconSize: 25.0, // desired size
                   padding: EdgeInsets.zero,
                   constraints:
-                      const BoxConstraints(), // override default min size of 48px
+                  const BoxConstraints(), // override default min size of 48px
                   style: const ButtonStyle(
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
@@ -285,7 +307,7 @@ class _RegisterState extends State<Register> {
               CustomComponents.displayText(
                   ProjectStrings.account_register_1_subheader,
                   fontSize: 12
-                  ),
+              ),
 
               //  First name
               const SizedBox(height: 40),
@@ -375,14 +397,14 @@ class _RegisterState extends State<Register> {
                                   fontSize: 10,
                                   color: Color(0xff3FA2BE),
                                   fontFamily:
-                                      ProjectStrings.general_font_family)),
+                                  ProjectStrings.general_font_family)),
                           TextSpan(
                               text: ProjectStrings.account_register_1_condition_3,
                               style: TextStyle(
                                   fontSize: 10,
                                   color: Color(0xff08080a),
                                   fontFamily:
-                                      ProjectStrings.general_font_family)),
+                                  ProjectStrings.general_font_family)),
                           TextSpan(
                               text: ProjectStrings.account_register_1_condition_4,
                               style: TextStyle(
@@ -429,15 +451,15 @@ class _RegisterState extends State<Register> {
                               color: Color(0xff08080a),
                               fontFamily: ProjectStrings.general_font_family),
                           children: <TextSpan>[
-                        TextSpan(
-                            text: ProjectStrings
-                                .account_register_ep_have_an_account_2,
-                            style: TextStyle(
-                                fontFamily: ProjectStrings.general_font_family,
-                                color: Color(0xff3FA2BE),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 10))
-                      ])),
+                            TextSpan(
+                                text: ProjectStrings
+                                    .account_register_ep_have_an_account_2,
+                                style: TextStyle(
+                                    fontFamily: ProjectStrings.general_font_family,
+                                    color: Color(0xff3FA2BE),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 10))
+                          ])),
                 ),
               )
             ],

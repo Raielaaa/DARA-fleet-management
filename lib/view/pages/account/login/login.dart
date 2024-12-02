@@ -56,26 +56,26 @@ class _LoginMain extends State<LoginMain> {
                 controller: controller,
                 children: [
                   Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      height: 5,
-                      width: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(100)
-                      ),
-                    )
+                      alignment: Alignment.center,
+                      child: Container(
+                        height: 5,
+                        width: 35,
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(100)
+                        ),
+                      )
                   ),
                   const SizedBox(height: 30),
                   CustomComponents.displayText(
                       "Please enter the email address you used to register with us:",
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12
                   ),
                   const SizedBox(height: 20),
                   CustomComponents.displayTextField(
                       "Enter your email here",
-                    controller: _passwordResetController
+                      controller: _passwordResetController
                   ),
                   //  proceed button
                   const SizedBox(height: 50),
@@ -164,43 +164,73 @@ class _LoginMain extends State<LoginMain> {
                   ],
                 ),
                 const SizedBox(height: 15),
-                // Grid of user type options
+                // User type options
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: isSmallScreen ? 11 : 19,
                   ),
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Two columns
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 1 / 0.70,
-                    ),
-                    itemCount: 5, // Number of items
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      // List of user types and corresponding image paths
-                      final userTypes = [
-                        {"header": "Admin/Manager", "imagePath": "lib/assets/pictures/admin_manager.jpg", "userType": "Admin"},
-                        {"header": "Accountant", "imagePath": "lib/assets/pictures/accountant.jpg", "userType": "Accountant"},
-                        {"header": "Driver", "imagePath": "lib/assets/pictures/user_type_driver.jpeg", "userType": "Driver"},
-                        {"header": "Outsource", "imagePath": "lib/assets/pictures/user_type_outsource.jpg", "userType": "Outsource"},
-                        {"header": "Renter", "imagePath": "lib/assets/pictures/user_type_user.jpg", "userType": "Renter"},
-                      ];
-
-                      // Get the current user type data
-                      final userTypeData = userTypes[index];
-
-                      return _buildUserTypeOption(
-                        userTypeData["header"]!,
-                        userTypeData["imagePath"]!,
-                        userTypeData["userType"]!,
-                      );
-                    },
+                  child: Column(
+                    children: [
+                      // Row 1
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: _buildUserTypeOption(
+                              "Admin/Manager",
+                              "lib/assets/pictures/admin_manager.jpg",
+                              "Admin",
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _buildUserTypeOption(
+                              "Accountant",
+                              "lib/assets/pictures/accountant.jpg",
+                              "Accountant",
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      // Row 2
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: _buildUserTypeOption(
+                              "Driver",
+                              "lib/assets/pictures/user_type_driver.jpeg",
+                              "Driver",
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _buildUserTypeOption(
+                              "Outsource",
+                              "lib/assets/pictures/user_type_outsource.jpg",
+                              "Outsource",
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      // Row 3
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildUserTypeOption(
+                              "Renter",
+                              "lib/assets/pictures/user_type_user.jpg",
+                              "Renter",
+                            ),
+                          ),
+                          const Spacer(), // Align the single item to the left
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-
                 const SizedBox(height: 30),
               ],
             ),
@@ -225,7 +255,7 @@ class _LoginMain extends State<LoginMain> {
           color: Colors.white,
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min, // Let the height adjust based on content
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.only(
@@ -234,7 +264,7 @@ class _LoginMain extends State<LoginMain> {
               ),
               child: Image.asset(
                 imagePath,
-                height: 60,
+                height: 60, // Fixed height for image
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -258,7 +288,6 @@ class _LoginMain extends State<LoginMain> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     InfoDialog().dismissBoolean();
@@ -266,7 +295,7 @@ class _LoginMain extends State<LoginMain> {
     return Material(
       child: Container(
           padding:
-              const EdgeInsets.only(left: 25, right: 25, bottom: 25, top: 62),
+          const EdgeInsets.only(left: 25, right: 25, bottom: 25, top: 62),
           color: Color(int.parse(ProjectColors.mainColorBackground.substring(2),
               radix: 16)),
           child: Column(
@@ -283,7 +312,7 @@ class _LoginMain extends State<LoginMain> {
                   iconSize: 25.0, // desired size
                   padding: EdgeInsets.zero,
                   constraints:
-                      const BoxConstraints(), // override default min size of 48px
+                  const BoxConstraints(), // override default min size of 48px
                   style: const ButtonStyle(
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
@@ -303,9 +332,9 @@ class _LoginMain extends State<LoginMain> {
               //  Text subheader
               const SizedBox(height: 5),
               CustomComponents.displayText(
-                  ProjectStrings.account_login_main_subheader,
-                  fontSize: 12,
-                  ),
+                ProjectStrings.account_login_main_subheader,
+                fontSize: 12,
+              ),
 
               //  Email
               const SizedBox(height: 40),
@@ -416,9 +445,9 @@ class _LoginMain extends State<LoginMain> {
                   //  First line
                   Expanded(
                       child: Container(
-                    height: 1,
-                    color: Colors.grey,
-                  )),
+                        height: 1,
+                        color: Colors.grey,
+                      )),
 
                   //  Text - "Or"
                   const SizedBox(width: 10),
@@ -434,9 +463,9 @@ class _LoginMain extends State<LoginMain> {
                   //  Second line
                   Expanded(
                       child: Container(
-                    height: 1,
-                    color: Colors.grey,
-                  ))
+                        height: 1,
+                        color: Colors.grey,
+                      ))
                 ],
               ),
 
@@ -484,7 +513,7 @@ class _LoginMain extends State<LoginMain> {
                   padding: const MaterialStatePropertyAll<EdgeInsets>(
                       EdgeInsets.all(3)),
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue),
+                  MaterialStateProperty.all<Color>(Colors.blue),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
@@ -492,7 +521,7 @@ class _LoginMain extends State<LoginMain> {
                   ),
                 ),
                 child:
-                    Stack(alignment: Alignment.centerLeft, children: <Widget>[
+                Stack(alignment: Alignment.centerLeft, children: <Widget>[
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
@@ -538,7 +567,7 @@ class _LoginMain extends State<LoginMain> {
                         children: [
                           TextSpan(
                               text:
-                                  ProjectStrings.account_login_main_no_account_2,
+                              ProjectStrings.account_login_main_no_account_2,
                               style: const TextStyle(
                                   fontSize: 10,
                                   color: Color(0xff3FA2BE),
