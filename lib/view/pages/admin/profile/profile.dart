@@ -8,6 +8,7 @@ import "package:dara_app/model/renting_proccess/renting_process.dart";
 import "package:dara_app/services/firebase/firestore.dart";
 import "package:dara_app/view/pages/account/register/widgets/terms_and_conditions.dart";
 import "package:dara_app/view/pages/admin/profile/upload_documents.dart";
+import "package:dara_app/view/pages/admin/rent_process/documents/share_page.dart";
 import "package:dara_app/view/shared/colors.dart";
 import "package:dara_app/view/shared/components.dart";
 import "package:dara_app/view/shared/loading.dart";
@@ -410,9 +411,15 @@ class _ProfileState extends State<Profile> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Image.asset(
-                                    "lib/assets/pictures/app_logo_circle.png",
-                                    width: 120.0,
+                                  GestureDetector(
+                                    onTap: () {
+                                      //  for testing only
+                                      // Navigator.of(context).pushNamed("rp_payment_success");
+                                    },
+                                    child: Image.asset(
+                                      "lib/assets/pictures/app_logo_circle.png",
+                                      width: 120.0,
+                                    ),
                                   ),
                                   Container(
                                     decoration: BoxDecoration(

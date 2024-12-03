@@ -177,6 +177,7 @@ class Assets {
   static const String carouselCarouselPage = 'lib/view/pages/carousel/carousel_page.dart';
   static const String centerButtonGoogleMaps = 'lib/view/pages/admin/center_button/google_maps.dart';
   static const String constantsFirebaseConstants = 'lib/model/constants/firebase_constants.dart';
+  static const String documentsSharePage = 'lib/view/pages/admin/rent_process/documents/share_page.dart';
   static const String documentsSubmitDocuments = 'lib/view/pages/admin/rent_process/documents/submit_documents.dart';
   static const String documentsVerifyBooking = 'lib/view/pages/admin/rent_process/documents/verify_booking.dart';
   static const String driverApplicationDriver = 'lib/view/pages/admin/manage/application_list/driver/application_driver.dart';
