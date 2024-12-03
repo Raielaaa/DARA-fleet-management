@@ -184,6 +184,7 @@ class InfoDialog {
     required String content,
     String header = "Please wait...",
     Future<void> Function()? confirmAction,
+    bool showLoadingDialog = true
   }) {
     if (!_isShowing) {
       _isShowing = true;
@@ -261,13 +262,17 @@ class InfoDialog {
                         child: GestureDetector(
                           onTap: () async {
                             if (confirmAction != null) {
-                              LoadingDialog().show(
-                                context: context,
-                                content:
-                                "Updating records. Please wait and avoid closing the app, as this may take a moment.",
-                              );
-                              await confirmAction();
-                              LoadingDialog().dismiss();
+                              if (showLoadingDialog) {
+                                LoadingDialog().show(
+                                  context: context,
+                                  content:
+                                  "Updating records. Please wait and avoid closing the app, as this may take a moment.",
+                                );
+                                await confirmAction();
+                                LoadingDialog().dismiss();
+                              } else {
+                                await confirmAction();
+                              }
                             }
                             dismiss();
                           },

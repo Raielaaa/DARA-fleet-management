@@ -1,12 +1,15 @@
 import "dart:math";
 
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
+import "package:google_maps_webservice/directions.dart";
 import "package:intl/intl.dart";
 import "package:slide_switcher/slide_switcher.dart";
 
 import "../../../../../controller/rentals/rent_log.dart";
 import "../../../../../controller/singleton/persistent_data.dart";
+import "../../../../../controller/utils/constants.dart";
 import "../../../../../model/account/register_model.dart";
 import "../../../../../model/car_list/complete_car_list.dart";
 import "../../../../../model/renting_proccess/renting_process.dart";
@@ -35,6 +38,7 @@ class _RentLogsState extends State<RentLogs> {
   List<RentInformation> listToBeDisplayed = [];
   TextEditingController _searchController = TextEditingController();
   bool _isLoading = true;
+  final String apiKey = Constants.DIRECTION_API_KEY;
 
   // This map will hold user info for quick access
   Map<String, RegisterModel> userInfoCache = {};
@@ -955,33 +959,90 @@ class _RentLogsState extends State<RentLogs> {
                     ),
                   ),
 
-                  // User type
-                  GestureDetector(
-                    onTap: () async {
-                      LoadingDialog().show(context: context, content: "Please wait while retrieve your rent information");
-                      final List<RentInformation> retrievedRentingData = await RentLog().getSelectedRentRecords(startDate: completeRentInfo.startDateTime, endDate: completeRentInfo.endDateTime, location: completeRentInfo.rentLocation);
-                      final CompleteCarInfo selectedCarCompleteInfo = await RentLog().getSelectedCarCompleteInfo(carName: carName);
-                      final RegisterModel? userInfo = await Firestore().getUserInfo(completeRentInfo.renterUID);
-                      LoadingDialog().dismiss();
+                  Row(
+                    children: [
+                      _currentSelectedIndex == 0 ? GestureDetector(
+                        onTap: () {
+                          InfoDialog().showDecoratedTwoOptionsDialog(
+                            context: context,
+                            header: "Confirm Route Change",
+                            content: "You are about to modify the booked route for this renter. Please confirm if you wish to proceed with this action, as it may impact the rental agreement.",
+                            showLoadingDialog: false,
+                            confirmAction: () async {
+                              PersistentData().latitudeForChangeLoc = double.parse(completeRentInfo.endingLocationLatitude);
+                              PersistentData().longitudeForChangeLoc = double.parse(completeRentInfo.endingLocationLongitude);
+                              final selectedLocation = await Navigator.of(context).pushNamed("maps_change_loc") as Map<String, String>;
+                              
+                              if (selectedLocation.isNotEmpty) {
+                                String newEndLocName = selectedLocation["name"] ?? "Unknown";
+                                String newEndLongitude = selectedLocation["longitude"] ?? "0.0";
+                                String newEndLatitude = selectedLocation["latitude"] ?? "0.0";
 
-                      _seeCompleteBookingInfo(retrievedRentingData[0], selectedCarCompleteInfo, userInfo!);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
-                        child: CustomComponents.displayText(
-                          "See more",
-                          color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10,
+                                double startLatitude = double.parse(completeRentInfo.endingLocationLatitude);
+                                double startLongitude = double.parse(completeRentInfo.endingLocationLongitude);
+                                double newEndLong = double.parse(newEndLongitude);
+                                double newEndLat = double.parse(newEndLatitude);
+
+                                String additionalAmount = await calculateDistance(startLatitude, startLongitude, newEndLat, newEndLong);
+                                LoadingDialog().show(context: context, content: "Updating records, please wait.");
+                                await updateRentTotalAmount(
+                                  completeRentInfo.renterUID,
+                                  completeRentInfo.carName,
+                                  double.parse(additionalAmount),
+                                  completeRentInfo.startingLocationLatitude,
+                                  completeRentInfo.startingLocationLongitude,
+                                  newEndLocName,
+                                  newEndLat.toString(),
+                                  newEndLong.toString()
+                                );
+                                LoadingDialog().dismiss();
+                              }
+                            }
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 5),
+                            child: Icon(
+                              Icons.swap_vert,
+                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      ) : const SizedBox(),
+                      const SizedBox(width: 7),
+                      GestureDetector(
+                        onTap: () async {
+                          LoadingDialog().show(context: context, content: "Please wait while retrieve your rent information");
+                          final List<RentInformation> retrievedRentingData = await RentLog().getSelectedRentRecords(startDate: completeRentInfo.startDateTime, endDate: completeRentInfo.endDateTime, location: completeRentInfo.rentLocation);
+                          final CompleteCarInfo selectedCarCompleteInfo = await RentLog().getSelectedCarCompleteInfo(carName: carName);
+                          final RegisterModel? userInfo = await Firestore().getUserInfo(completeRentInfo.renterUID);
+                          LoadingDialog().dismiss();
+
+                          _seeCompleteBookingInfo(retrievedRentingData[0], selectedCarCompleteInfo, userInfo!);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color(int.parse(ProjectColors.mainColorHexBackground.substring(2), radix: 16))
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 10),
+                            child: CustomComponents.displayText(
+                              "See more",
+                              color: Color(int.parse(ProjectColors.mainColorHex.substring(2), radix: 16)),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
@@ -989,6 +1050,105 @@ class _RentLogsState extends State<RentLogs> {
         ),
       ),
     );
+  }
+
+  Future<void> updateRentTotalAmount(
+    String renterUID,
+    String carName,
+    double additionalAmount,
+    String startLat,
+    String startLong,
+    String newDestination,
+    String newEndLat,
+    String newEndLong
+  ) async {
+    try {
+      // Reference to the Firestore collection
+      CollectionReference rentRecords = FirebaseFirestore.instance.collection('dara-rent-records');
+
+      // Query the document with specific fields
+      QuerySnapshot querySnapshot = await rentRecords
+          .where('rent_renterUID', isEqualTo: renterUID)
+          .where('rent_carName', isEqualTo: carName)
+          .where("rent_starting_latitude", isEqualTo: startLat)
+          .where("rent_starting_longitude", isEqualTo: startLong)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Loop through documents if multiple matches
+        for (var doc in querySnapshot.docs) {
+          // Parse current totalAmount
+          double currentTotalAmount = double.parse(doc['rent_totalAmount']);
+
+          // Add additionalAmount to the total
+          double updatedTotalAmount = currentTotalAmount + additionalAmount;
+
+          // Update the document
+          await doc.reference.update({'rent_totalAmount': updatedTotalAmount.toString()});
+          await doc.reference.update({'rent_rentLocation': newDestination});
+          await doc.reference.update({'rent_ending_latitude': newEndLat});
+          await doc.reference.update({'rent_ending_longitude': newEndLong});
+
+          debugPrint('Updated total amount for ${doc.id}: $updatedTotalAmount');
+        }
+      } else {
+        debugPrint('No matching document found for the provided fields.');
+      }
+    } catch (e) {
+      debugPrint('Error updating rent_totalAmount: $e');
+    }
+  }
+
+
+  Future<String> calculateDistance(double startLat, double startLng, double endLat, double endLng) async {
+    try {
+      debugPrint("startlat: $startLat");
+      debugPrint("startLng: $startLng");
+      debugPrint("endLat: $endLat");
+      debugPrint("endLng: $endLng");
+      GoogleMapsDirections directions = GoogleMapsDirections(apiKey: apiKey);
+      //  making a request to Google Directions API
+      DirectionsResponse response = await directions.directionsWithLocation(
+        Location(lat: startLat, lng: startLng),
+        Location(lat: endLat, lng: endLng),
+        travelMode: TravelMode.driving,
+      );
+
+      if (response.isOkay) {
+        //  extract the distance in meters from the response
+        final distance = response.routes[0].legs[0].distance.value / 1000;
+        double additionalMileageFee = calculateMileageFee(double.parse(distance.toString()));
+        return additionalMileageFee.toString();
+      } else {
+        debugPrint("Error fetching directions: ${response.errorMessage}");
+        return "";
+      }
+    } catch (e) {
+      debugPrint("Direction API error: $e");
+      return "";
+    }
+  }
+
+  static double calculateMileageFee(double totalDistanceTravelled) {
+    double baseMileageFee = 500;
+    double mileageFee = 0;
+
+    // Define step size and increment amount
+    int stepSize = 75; // Every 75 km, the fee increases
+    int baseIncrement = 500; // Increment starts at 500 and increases by 500 for each step
+
+    // Calculate which step the total distance traveled falls into
+    int step = ((totalDistanceTravelled - 76) / stepSize).ceil(); // Starts counting from 76km
+
+    // If distance is less than 76km, no mileage fee
+    if (totalDistanceTravelled < 76) {
+      return 0;
+    }
+
+    // Calculate the mileage fee based on the step (no clamping, so the fee can go beyond 300km)
+    mileageFee = baseMileageFee + (step * baseIncrement);
+
+    return mileageFee;
   }
 
   // Future showEditBottomSheet(BuildContext parentContext, RentInformation completeRentInfo) {

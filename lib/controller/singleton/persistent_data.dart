@@ -259,4 +259,8 @@ class PersistentData {
   ///   current location longitude and latitude
   double currentLocationLat = 0.0;
   double currentLocationLong = 0.0;
+
+  //  change loc
+  double latitudeForChangeLoc = 0.0;
+  double longitudeForChangeLoc = 0.0;
 }

@@ -3,6 +3,7 @@ import 'package:dara_app/controller/rentals/rent_log.dart';
 import 'package:dara_app/services/maps/map_screen.dart';
 import 'package:dara_app/services/maps/map_screen_garage.dart';
 import 'package:dara_app/services/maps/map_screen_weather.dart';
+import 'package:dara_app/services/maps/maps_change_loc.dart';
 import 'package:dara_app/view/pages/account/account_opening.dart';
 import 'package:dara_app/view/pages/account/login/login.dart';
 import 'package:dara_app/view/pages/account/register/register.dart';
@@ -190,6 +191,7 @@ class MyApp extends StatelessWidget {
             "manage_report_main": (context) => const ReportPage(),
             "manage_view_inquiries": (context) => const ViewInquiries(),
             "manage_my_account": (context) => const MyAccount(),
+            "maps_change_loc": (context) => MapScreenChangeLoc(),
             // "manage_view_inquiry": (context) => const ViewInquiry(),
 
             // Renting process - Booking Details
